@@ -10,12 +10,12 @@ public class EnemySoundDetection : MonoBehaviour
     [SerializeField] private float minDetectionRadius = 1f;
     [SerializeField, Min(0f)] private float maxDetectionRadius = 50f;
     [SerializeField] private float soundFalloffDistance = 30f;
+    [SerializeField, Min(0)] private float soundSensitivityMultiplier = 1.0f; // Global sensitivity multiplier for all sound sources
     
     [Header("Audio Source Detection")]
     [SerializeField] private float audioSourceCheckInterval = 0.1f;
-    [SerializeField] private float maxAudioSourceDistance = 100f;
+    [SerializeField] private float maxSoundDetectionDistance = 100f; // Max distance for all sound sources
     [SerializeField] private LayerMask audioSourceLayerMask = -1; // Default to all layers
-    [SerializeField, Min(1)] private float audioSourceSensitivityMultiplier = 1.0f; // Adjust sensitivity of audio source detection
     
     [Header("Loudness Calculation (PC-Quality)")]
     [SerializeField] private int frequencyBands = 256; // Higher = more accurate spectrum (PC-quality)
@@ -25,9 +25,7 @@ public class EnemySoundDetection : MonoBehaviour
     
     [Header("Microphone Input")]
     [SerializeField] private bool enableMicrophoneInput = true;
-    [SerializeField] private float microphoneMaxDetectionDistance = 50f; // Max distance for microphone detection
     [SerializeField] private float microphoneVolumeSensitivity = 1.0f;
-    [SerializeField, Min(1)] private float microphoneSensitivityMultiplier = 1.0f; // Adjust sensitivity of microphone detection
     [SerializeField] private int microphoneSampleRate = 44100;
     
     [Header("Visual Feedback")]
@@ -107,11 +105,11 @@ public class EnemySoundDetection : MonoBehaviour
 
         // Draw audio source detection range (blue wireframe)
         Gizmos.color = new Color(0f, 0.5f, 1f, 0.3f);
-        Gizmos.DrawWireSphere(transform.position, maxAudioSourceDistance);
+        Gizmos.DrawWireSphere(transform.position, maxSoundDetectionDistance);
 
         // Draw microphone detection range (cyan wireframe)
         Gizmos.color = new Color(0f, 1f, 1f, 0.2f);
-        Gizmos.DrawWireSphere(transform.position, microphoneMaxDetectionDistance);
+        Gizmos.DrawWireSphere(transform.position, maxSoundDetectionDistance);
     }
 
     void OnDrawGizmosSelected()
@@ -131,11 +129,11 @@ public class EnemySoundDetection : MonoBehaviour
 
         // Draw audio source detection range (blue wireframe)
         Gizmos.color = new Color(0f, 0.5f, 1f, 0.5f);
-        Gizmos.DrawWireSphere(transform.position, maxAudioSourceDistance);
+        Gizmos.DrawWireSphere(transform.position, maxSoundDetectionDistance);
 
         // Draw microphone detection range (cyan wireframe)
         Gizmos.color = new Color(0f, 1f, 1f, 0.4f);
-        Gizmos.DrawWireSphere(transform.position, microphoneMaxDetectionDistance);
+        Gizmos.DrawWireSphere(transform.position, maxSoundDetectionDistance);
 
         // Draw radius indicator line with color matching sphere
         Gizmos.color = new Color(sphereColor.r, sphereColor.g, sphereColor.b, 1f);
@@ -146,9 +144,7 @@ public class EnemySoundDetection : MonoBehaviour
         UnityEditor.Handles.Label(transform.position + Vector3.up * detectionSphereRadius * 1.1f, 
             $"Sound Radius: {detectionSphereRadius:F2}");
         UnityEditor.Handles.Label(transform.position + Vector3.up * (detectionSphereRadius + 5f),
-            $"Audio Src Max: {maxAudioSourceDistance:F2}");
-        UnityEditor.Handles.Label(transform.position + Vector3.up * (detectionSphereRadius + 10f),
-            $"Mic Max: {microphoneMaxDetectionDistance:F2}");
+            $"Max Sound Detection: {maxSoundDetectionDistance:F2}");
         #endif
     }
 
@@ -187,10 +183,10 @@ public class EnemySoundDetection : MonoBehaviour
             }
 
             float distance = Vector3.Distance(transform.position, audioSource.transform.position);
-            Debug.Log($"AudioSource '{audioSource.gameObject.name}' at distance {distance:F2}");
+            // Debug.Log($"AudioSource '{audioSource.gameObject.name}' at distance {distance:F2}");
 
             // Only consider audio sources within max distance
-            if (distance > maxAudioSourceDistance)
+            if (distance > maxSoundDetectionDistance)
             {
                 continue;
             }
@@ -210,8 +206,8 @@ public class EnemySoundDetection : MonoBehaviour
             // Calculate loudness with PC-quality spectrum analysis
             float loudness = CalculateAudioSourceLoudness(audioSource);
 
-            // Apply audio source sensitivity multiplier
-            loudness *= audioSourceSensitivityMultiplier;
+            // Apply global sound sensitivity multiplier
+            loudness *= soundSensitivityMultiplier;
 
             // Calculate falloff based on distance
             float falloff = Mathf.Pow(1f - Mathf.Clamp01(distance / soundFalloffDistance), 1.5f);
@@ -365,8 +361,8 @@ public class EnemySoundDetection : MonoBehaviour
         float soundLevel = microphoneLoudness * microphoneVolumeSensitivity;
         soundLevel = loudnessResponseCurve.Evaluate(soundLevel);
         
-        // Apply microphone sensitivity multiplier
-        soundLevel *= microphoneSensitivityMultiplier;
+        // Apply global sound sensitivity multiplier
+        soundLevel *= soundSensitivityMultiplier;
 
         // Smooth loudness over time
         previousLoudness = Mathf.Lerp(previousLoudness, soundLevel, loudnessSmoothing);
@@ -399,6 +395,10 @@ public class EnemySoundDetection : MonoBehaviour
     /// </summary>
     private void InitializeMicrophone()
     {
+        foreach (var mic in Microphone.devices)
+        {
+            Debug.Log($"Microphone found: {mic}");
+        }
         string microphoneName = Microphone.devices.Length > 0 ? Microphone.devices[0] : null;
 
         if (string.IsNullOrEmpty(microphoneName))
@@ -407,7 +407,7 @@ public class EnemySoundDetection : MonoBehaviour
             enableMicrophoneInput = false;
             return;
         }
-
+        Debug.Log($"Using microphone: {microphoneName}");
         // Start recording from microphone
         microphoneClip = Microphone.Start(microphoneName, true, 1, microphoneSampleRate);
 
@@ -454,7 +454,7 @@ public class EnemySoundDetection : MonoBehaviour
                 closestAudioSourceDistance = distance;
             }
             
-            if (distance <= maxAudioSourceDistance)
+            if (distance <= maxSoundDetectionDistance)
             {
                 activeAudioSources.Add(audioSource);
             }
@@ -472,13 +472,13 @@ public class EnemySoundDetection : MonoBehaviour
     /// </summary>
     private float CalculateProximityFactor()
     {
-        if (closestAudioSourceDistance == float.MaxValue || closestAudioSourceDistance >= maxAudioSourceDistance)
+        if (closestAudioSourceDistance == float.MaxValue || closestAudioSourceDistance >= maxSoundDetectionDistance)
         {
             return 0f;
         }
 
         // Normalize distance: 0 at closest point, 1 at max distance
-        float normalizedDistance = closestAudioSourceDistance / maxAudioSourceDistance;
+        float normalizedDistance = closestAudioSourceDistance / maxSoundDetectionDistance;
         
         // Invert so closer = higher factor (0.5 to 1.0 range for gentle boost)
         float proximityFactor = (1f - normalizedDistance) * 0.5f;
