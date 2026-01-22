@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class EnemySightDetection : MonoBehaviour
 {
     public float viewRadius;
@@ -31,17 +32,24 @@ public class EnemySightDetection : MonoBehaviour
             {
                 if(!Physics.Raycast(transform.position, playerTarget, distanceToPlayer, obstacleMask))
                 {
+                    ChangePlayerMaterial(Color.green);
                     canSeePlayer = true;
                 }
                 else
                 {
+                    ChangePlayerMaterial(Color.white);
                     canSeePlayer = false;
                 }
             }
         }
         else if(canSeePlayer)
         {
+            ChangePlayerMaterial(Color.white);
             canSeePlayer = false;
         }
+    }
+    public void ChangePlayerMaterial(Color newColor)
+    {
+        player.GetComponent<Renderer>().material.color = newColor;
     }
 }
