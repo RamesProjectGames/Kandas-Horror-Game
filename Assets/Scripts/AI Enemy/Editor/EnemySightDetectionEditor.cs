@@ -19,8 +19,13 @@ public class EnemySightDetectionEditor : Editor
 
         if(sight.canSeePlayer)
         {
+            sight.ChangePlayerMaterial(Color.green);
             Handles.color = Color.green;
             Handles.DrawLine(sight.transform.position, sight.player.transform.position);
+        }
+        else
+        {
+            sight.ChangePlayerMaterial(Color.white);
         }
     }
 

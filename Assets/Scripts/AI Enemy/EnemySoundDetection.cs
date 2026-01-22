@@ -11,6 +11,7 @@ public class EnemySoundDetection : MonoBehaviour
     [SerializeField, Min(0f)] private float maxDetectionRadius = 50f;
     [SerializeField] private float soundFalloffDistance = 30f;
     [SerializeField, Min(0)] private float soundSensitivityMultiplier = 1.0f; // Global sensitivity multiplier for all sound sources
+    [SerializeField] private MicrophoneManager microphoneManager; // Reference to microphone manager
     
     [Header("Audio Source Detection")]
     [SerializeField] private float audioSourceCheckInterval = 0.1f;
@@ -23,11 +24,6 @@ public class EnemySoundDetection : MonoBehaviour
     [SerializeField] private float peakFrequencyWeight = 1.5f; // Weight for peak frequencies
     [SerializeField] private AnimationCurve loudnessResponseCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     
-    [Header("Microphone Input")]
-    [SerializeField] private bool enableMicrophoneInput = true;
-    [SerializeField] private float microphoneVolumeSensitivity = 1.0f;
-    [SerializeField] private int microphoneSampleRate = 44100;
-    
     [Header("Visual Feedback")]
     [SerializeField] private bool showDetectionSphere = true;
     [SerializeField] private Color sphereColor = new Color(1f, 0.5f, 0f, 0.3f);
@@ -38,20 +34,22 @@ public class EnemySoundDetection : MonoBehaviour
     private float audioSourceCheckTimer = 0f;
     private float closestAudioSourceDistance = float.MaxValue;
     
-    private AudioClip microphoneClip;
     private float[] frequencySpectrumData;
     private float[] smoothedFrequencyData;
-    private float previousLoudness = 0f;
     
     private Collider[] detectedColliders = new Collider[100];
     private HashSet<AudioSource> activeAudioSources = new HashSet<AudioSource>();
 
     void Start()
     {
-        // Initialize microphone if enabled
-        if (enableMicrophoneInput)
+        // Initialize microphone manager reference if not assigned
+        if (microphoneManager == null)
         {
-            InitializeMicrophone();
+            microphoneManager = FindAnyObjectByType<MicrophoneManager>(FindObjectsInactive.Include);
+            if (microphoneManager == null)
+            {
+                Debug.LogWarning("MicrophoneManager not found in scene!");
+            }
         }
 
         // Create a sphere collider for visualization if it doesn't exist
@@ -158,10 +156,10 @@ public class EnemySoundDetection : MonoBehaviour
         // Get sound from in-game audio sources
         soundLevel += GetAudioSourceSoundLevel();
 
-        // Get sound from microphone
-        if (enableMicrophoneInput && Microphone.IsRecording(null))
+        // Get sound from microphone via MicrophoneManager
+        if (microphoneManager != null && microphoneManager.IsMicrophoneActive())
         {
-            soundLevel += GetMicrophoneSoundLevel();
+            soundLevel += microphoneManager.GetMicrophoneLoudness();
         }
 
         // Clamp and normalize the sound level
@@ -311,115 +309,17 @@ public class EnemySoundDetection : MonoBehaviour
     }
 
     /// <summary>
-    /// Detects and calculates sound level from microphone input with PC-quality spectrum analysis
+    /// Gets sound level from microphone via MicrophoneManager
     /// </summary>
     private float GetMicrophoneSoundLevel()
     {
-        if (microphoneClip == null)
+        if (microphoneManager != null && microphoneManager.IsMicrophoneActive())
         {
-            return 0f;
+            float micLoudness = microphoneManager.GetMicrophoneLoudness();
+            // Apply global sound sensitivity multiplier
+            return micLoudness * soundSensitivityMultiplier;
         }
-
-        // Initialize spectrum data if needed
-        if (frequencySpectrumData == null || frequencySpectrumData.Length != frequencyBands)
-        {
-            frequencySpectrumData = new float[frequencyBands];
-            smoothedFrequencyData = new float[frequencyBands];
-        }
-
-        // Get spectrum data from audio listener with high-quality FFT
-        AudioListener.GetSpectrumData(frequencySpectrumData, 0, FFTWindow.Blackman);
-
-        // Calculate weighted loudness from microphone input
-        float totalLoudness = 0f;
-        float peakMagnitude = 0f;
-
-        for (int i = 0; i < frequencySpectrumData.Length; i++)
-        {
-            float magnitude = frequencySpectrumData[i];
-            
-            // Smooth frequency data over time
-            smoothedFrequencyData[i] = Mathf.Lerp(smoothedFrequencyData[i], magnitude, 0.3f);
-            
-            // Apply frequency weighting (human hearing perception)
-            float frequencyWeight = GetFrequencyWeight(i);
-            totalLoudness += smoothedFrequencyData[i] * frequencyWeight;
-
-            // Track peak magnitude
-            if (smoothedFrequencyData[i] > peakMagnitude)
-            {
-                peakMagnitude = smoothedFrequencyData[i];
-            }
-        }
-
-        // Normalize loudness
-        float averageLoudness = totalLoudness / frequencyBands;
-        float peakLoudness = peakMagnitude * peakFrequencyWeight;
-        float microphoneLoudness = Mathf.Max(averageLoudness, peakLoudness * 0.5f);
-
-        // Apply sensitivity and response curve
-        float soundLevel = microphoneLoudness * microphoneVolumeSensitivity;
-        soundLevel = loudnessResponseCurve.Evaluate(soundLevel);
-        
-        // Apply global sound sensitivity multiplier
-        soundLevel *= soundSensitivityMultiplier;
-
-        // Smooth loudness over time
-        previousLoudness = Mathf.Lerp(previousLoudness, soundLevel, loudnessSmoothing);
-
-        return Mathf.Clamp01(previousLoudness);
-    }
-
-    /// <summary>
-    /// Gets frequency weighting based on human hearing perception (A-weighting inspired)
-    /// </summary>
-    private float GetFrequencyWeight(int frequencyBandIndex)
-    {
-        float normalizedIndex = (float)frequencyBandIndex / frequencyBands;
-        
-        // A-weighting inspired curve: emphasis on speech/footstep frequencies (500Hz-4kHz)
-        if (normalizedIndex < 0.1f) // Sub-bass
-            return 0.3f;
-        else if (normalizedIndex < 0.3f) // Bass (typical footstep range)
-            return 1.3f;
-        else if (normalizedIndex < 0.6f) // Mid-range (speech range)
-            return 1.5f;
-        else if (normalizedIndex < 0.8f) // Upper-mid
-            return 1.2f;
-        else // Treble
-            return 0.9f;
-    }
-
-    /// <summary>
-    /// Initializes microphone input for sound detection
-    /// </summary>
-    private void InitializeMicrophone()
-    {
-        foreach (var mic in Microphone.devices)
-        {
-            Debug.Log($"Microphone found: {mic}");
-        }
-        string microphoneName = Microphone.devices.Length > 0 ? Microphone.devices[0] : null;
-
-        if (string.IsNullOrEmpty(microphoneName))
-        {
-            Debug.LogWarning("No microphone device found!");
-            enableMicrophoneInput = false;
-            return;
-        }
-        Debug.Log($"Using microphone: {microphoneName}");
-        // Start recording from microphone
-        microphoneClip = Microphone.Start(microphoneName, true, 1, microphoneSampleRate);
-
-        if (microphoneClip == null)
-        {
-            Debug.LogError("Failed to start microphone recording!");
-            enableMicrophoneInput = false;
-        }
-        else
-        {
-            Debug.Log($"Microphone initialized: {microphoneName}");
-        }
+        return 0f;
     }
 
     /// <summary>
@@ -555,11 +455,8 @@ public class EnemySoundDetection : MonoBehaviour
 
     void OnDestroy()
     {
-        // Stop microphone recording when object is destroyed
-        if (enableMicrophoneInput && Microphone.IsRecording(null))
-        {
-            Microphone.End(null);
-        }
+        // Stop microphone recording via MicrophoneManager when object is destroyed
+        // MicrophoneManager handles microphone cleanup automatically
     }
 }
 
