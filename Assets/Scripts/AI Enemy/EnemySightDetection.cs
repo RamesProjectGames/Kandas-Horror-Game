@@ -41,6 +41,11 @@ public class EnemySightDetection : MonoBehaviour
                     canSeePlayer = false;
                 }
             }
+            else
+            {
+                ChangePlayerMaterial(Color.white);
+                canSeePlayer = false;
+            }
         }
         else if(canSeePlayer)
         {
