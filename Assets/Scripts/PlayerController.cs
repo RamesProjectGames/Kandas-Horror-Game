@@ -2,21 +2,23 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 //[RequireComponent (typeof(CharacterController), typeof(Animator))]
-[RequireComponent (typeof(CharacterController), typeof(AudioSource))]
+[RequireComponent(typeof(CharacterController), typeof(AudioSource))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Built-in")]
+    [Header("Main Components")]
     [SerializeField] private CharacterController controller;
     [SerializeField] private AudioSource audioSrc;
     [SerializeField] private GameObject face;
-    [SerializeField] private Camera playerCam;
     //[SerializeField] private Animator anim;
-    [SerializeField] private Transform cam;
-    public Transform ground;
-    public LayerMask layerMask;
+
+    [Header("Ground Detection")]
+    public Transform foot;
+    public LayerMask groundMask, interactableMask;
     public AudioClip[] audioClip;
-    private Vector2 lockAxis;
-    private Vector3 input, up;
+
+    [Header("Input Action")]
+    private Vector3 input;
+    private Vector3 up;
     private InputAction moveAction, lookAction, jumpAction, sprintAction, unlockAction;
 
     [Header("Numeric Values")]
@@ -26,13 +28,13 @@ public class PlayerController : MonoBehaviour
     private float xMove, pitch, yaw, upVel, stamina;
     private bool isGrounded;
 
-    [Header("Mouse Settings")]
-    public float mouseSensitivity = 2.0f;
+    [Header("Player Camera Settings")]
+    [SerializeField] private Camera playerCam;
+    [SerializeField] private Transform cam;
+    public float mouseSensitivity = .2f;
     public float smoothTime = 0.1f;
-
-    [Header("Rotation Limits")]
-    public float minVerticalAngle = -20f;
-    public float maxVerticalAngle = 20f;
+    public float minVerticalAngle = -20f, maxVerticalAngle = 20f;
+    public float interactionAngle = 20f, interactionDist = 2f;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,7 +45,7 @@ public class PlayerController : MonoBehaviour
         audioSrc = GetComponent<AudioSource>();
 
         stamina = maxStamina;
-        
+
         // Initialize input actions from InputSystem_Actions
         var inputActions = GetComponent<PlayerInput>();
         if (inputActions != null)
@@ -64,100 +66,132 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //Mouse Lock - Unlock when holding Alt
-        if (unlockAction != null && unlockAction.IsPressed())
-            Cursor.lockState = CursorLockMode.None;
-        else
-            Cursor.lockState = CursorLockMode.Locked;
+        {
+            if (unlockAction != null && unlockAction.IsPressed())
+                Cursor.lockState = CursorLockMode.None;
+            else
+                Cursor.lockState = CursorLockMode.Locked;
+        }
 
         //Jump
-        if (isGrounded && upVel < 0f)
         {
-            upVel = 0f;
-            //anim.SetBool("isJumping", false);
-        }
-        else
-        {
-            upVel -= gravity * Time.deltaTime;
-            jumpCd -= Time.deltaTime;
-        }
-
-        if (isGrounded && jumpAction != null && jumpAction.WasPerformedThisFrame() && jumpCd <= 0f)
-        {
-            //anim.SetBool("isJumping", true);
-            upVel = Mathf.Sqrt(jumpPow * 2f * gravity);
-            isGrounded = false;
-            jumpCd = 1f;
-        }
-
-        //Movement
-        if (sprintAction != null && sprintAction.IsPressed() && !isExhastued)
-        {
-            stamina -= staminaDecayRate * Time.deltaTime;
-            if (stamina <= 0f)
+            if (isGrounded && upVel < 0f)
             {
-                isExhastued = true;
-            }
-            moveSpd = 200f;            
-        }
-        else if(isExhastued)
-        {
-            moveSpd = 50f;
-            if(stamina >= maxStamina)
-            {
-                isExhastued = false;
+                upVel = 0f;
+                //anim.SetBool("isJumping", false);
             }
             else
             {
-                stamina += (staminaDecayRate / 2f) * Time.deltaTime;                
+                upVel -= gravity * Time.deltaTime;
+                jumpCd -= Time.deltaTime;
+            }
+
+            if (isGrounded && jumpAction != null && jumpAction.WasPerformedThisFrame() && jumpCd <= 0f)
+            {
+                //anim.SetBool("isJumping", true);
+                upVel = Mathf.Sqrt(jumpPow * 2f * gravity);
+                isGrounded = false;
+                jumpCd = 1f;
             }
         }
-        else
-        {
-            moveSpd = 100f;            
-        }
 
-        Vector2 moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
-        Vector3 hor = transform.right * moveInput.x * moveSpd * Time.deltaTime;
-        Vector3 ver = transform.forward * moveInput.y * moveSpd * Time.deltaTime;
-        up = transform.up * upVel;
+        //Movement
+        {
+            if (sprintAction != null && sprintAction.IsPressed() && !isExhastued)
+            {
+                stamina -= staminaDecayRate * Time.deltaTime;
+                if (stamina <= 0f)
+                {
+                    isExhastued = true;
+                }
+                moveSpd = 200f;
+            }
+            else if (isExhastued)
+            {
+                moveSpd = 50f;
+                if (stamina >= maxStamina)
+                {
+                    isExhastued = false;
+                }
+                else
+                {
+                    stamina += (staminaDecayRate / 2f) * Time.deltaTime;
+                }
+            }
+            else
+            {
+                moveSpd = 100f;
+            }
 
-        input = hor + ver;
+            Vector2 moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
+            Vector3 hor = transform.right * moveInput.x * moveSpd * Time.deltaTime;
+            Vector3 ver = transform.forward * moveInput.y * moveSpd * Time.deltaTime;
+            up = transform.up * upVel;
 
-        if (input == Vector3.zero)
-        {
-            //anim.SetFloat("Speed", 0f);
-            //anim.SetBool("isWalking", false);
-            //anim.SetBool("isRunning", false);
-        }
-        else if (sprintAction == null || !sprintAction.IsPressed())
-        {
-            //anim.SetFloat("Speed", Mathf.Sign(Input.GetAxis("Vertical")) * input.magnitude);
-            //anim.SetBool("isWalking", true);
-            //anim.SetBool("isRunning", false);
-        }
-        else
-        {
-            //anim.SetFloat("Speed", Input.GetAxis("Vertical") * input.magnitude);
-            //anim.SetBool("isWalking", false);
-            //anim.SetBool("isRunning", true);
+            input = hor + ver;
+
+            if (input == Vector3.zero)
+            {
+                //anim.SetFloat("Speed", 0f);
+                //anim.SetBool("isWalking", false);
+                //anim.SetBool("isRunning", false);
+            }
+            else if (sprintAction == null || !sprintAction.IsPressed())
+            {
+                //anim.SetFloat("Speed", Mathf.Sign(Input.GetAxis("Vertical")) * input.magnitude);
+                //anim.SetBool("isWalking", true);
+                //anim.SetBool("isRunning", false);
+            }
+            else
+            {
+                //anim.SetFloat("Speed", Input.GetAxis("Vertical") * input.magnitude);
+                //anim.SetBool("isWalking", false);
+                //anim.SetBool("isRunning", true);
+            }
         }
 
         //Rotation
-        Vector2 lookInput = lookAction != null ? lookAction.ReadValue<Vector2>() : Vector2.zero;
-        yaw = transform.localEulerAngles.y + lookInput.x * mouseSensitivity;
+        {
+            Vector2 lookInput = lookAction != null ? lookAction.ReadValue<Vector2>() : Vector2.zero;
+            yaw = transform.localEulerAngles.y + lookInput.x * mouseSensitivity;
 
-        pitch -= mouseSensitivity * lookInput.y;
+            pitch -= mouseSensitivity * lookInput.y;
 
-        // Clamp pitch between lookAngle
-        pitch = Mathf.Clamp(pitch, minVerticalAngle, maxVerticalAngle);
+            // Clamp pitch between lookAngle
+            pitch = Mathf.Clamp(pitch, minVerticalAngle, maxVerticalAngle);
 
-        transform.localEulerAngles = new Vector3(0, yaw, 0);
-        face.transform.localEulerAngles = new Vector3(pitch, 0, 0);
+            transform.localEulerAngles = new Vector3(0, yaw, 0);
+            face.transform.localEulerAngles = new Vector3(pitch, 0, 0);
+        }
+
+        //Face
+        {
+            //if (Vector3.Angle(transform.forward, playerTarget) < interactionAngle / 2)
+            //{
+            //    float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+
+            //    if (distanceToPlayer < viewRadius)
+            //    {
+            //        if (!Physics.Raycast(playerCam.transform.position, playerTarget, distanceToPlayer, obstacleMask))
+            //        {
+            //        }
+            //        else
+            //        {
+            //        }
+            //    }
+            //    else
+            //    {
+            //    }
+            //}
+            //else if (canSeePlayer)
+            //{
+            //}
+        }
     }
-    
+
     private void FixedUpdate()
     {
-        isGrounded = Physics.CheckSphere(ground.position, groundDist, layerMask);
+        isGrounded = Physics.CheckSphere(foot.position, groundDist, groundMask);
         //Debug.Log($"Player is Grounded: {isGrounded}");
         controller.SimpleMove(moveSpd * Time.fixedDeltaTime * input);
         controller.Move(Time.fixedDeltaTime * up);
