@@ -264,7 +264,6 @@ GameObject:
   - component: {fileID: 76717633}
   - component: {fileID: 76717632}
   - component: {fileID: 76717631}
-  - component: {fileID: 76717634}
   m_Layer: 8
   m_Name: Wall
   m_TagString: Untagged
@@ -506,7 +505,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 147673205}
-  - component: {fileID: 147673206}
   m_Layer: 0
   m_Name: Environment
   m_TagString: Untagged
@@ -530,10 +528,6 @@ Transform:
   - {fileID: 1389537822}
   - {fileID: 343170957}
   - {fileID: 76717630}
-  - {fileID: 1925790020}
-  - {fileID: 386861884}
-  - {fileID: 1862275911}
-  - {fileID: 2085454134}
   - {fileID: 838628988}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -817,6 +811,131 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1562211049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &248444827
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 248444832}
+  - component: {fileID: 248444831}
+  - component: {fileID: 248444830}
+  - component: {fileID: 248444829}
+  - component: {fileID: 248444828}
+  m_Layer: 0
+  m_Name: Hiding Place
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &248444828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248444827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c28615e9102ff4aa420f021e5d3d3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 2
+  hidingHeight: 1
+  visualizationEnabled: 1
+  discoveryTime: 2
+--- !u!65 &248444829
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248444827}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &248444830
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248444827}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &248444831
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248444827}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &248444832
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248444827}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 20.78, y: 0.765041, z: -10.66}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &264176312
 GameObject:
   m_ObjectHideFlags: 0
@@ -951,7 +1070,6 @@ GameObject:
   - component: {fileID: 343170960}
   - component: {fileID: 343170959}
   - component: {fileID: 343170962}
-  - component: {fileID: 343170963}
   m_Layer: 0
   m_Name: TV
   m_TagString: Untagged
@@ -3155,14 +3273,6 @@ Transform:
   m_Children:
   - {fileID: 1798204204}
   - {fileID: 1887765864}
-  - {fileID: 1508463950}
-  - {fileID: 1649503078}
-  - {fileID: 224984865}
-  - {fileID: 1646086663}
-  - {fileID: 1610346846}
-  - {fileID: 183622741}
-  - {fileID: 686949271}
-  - {fileID: 887558506}
   m_Father: {fileID: 147673205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &900163779
@@ -5932,6 +6042,7 @@ GameObject:
   - component: {fileID: 1562211050}
   - component: {fileID: 1562211051}
   - component: {fileID: 1562211052}
+  - component: {fileID: 1562211053}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -6102,7 +6213,7 @@ Transform:
   m_GameObject: {fileID: 1562211042}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7.03, z: -5}
+  m_LocalPosition: {x: 0, y: 1.77, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6352,6 +6463,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   holdPoint: {fileID: 161661405}
+--- !u!114 &1562211053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562211042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a0027ebe5e71d43822630d7b042748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 3
+  hidingSpotLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &1564729385
 GameObject:
   m_ObjectHideFlags: 0
@@ -7396,14 +7523,14 @@ MonoBehaviour:
   point:
   - {fileID: 1798204205}
   - {fileID: 1887765865}
-  - {fileID: 1508463951}
-  - {fileID: 1649503079}
-  - {fileID: 224984866}
-  - {fileID: 1646086664}
-  - {fileID: 1610346847}
-  - {fileID: 183622742}
-  - {fileID: 686949272}
-  - {fileID: 887558507}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   idxPoint: 0
   fov: {fileID: 1733759645}
   soundSource: {x: 0, y: 0, z: 0}
@@ -7645,7 +7772,6 @@ MonoBehaviour:
   maxDetectionRadius: 30
   soundFalloffDistance: 30
   soundSensitivityMultiplier: 5
-  microphoneManager: {fileID: 0}
   microphoneManager: {fileID: 0}
   audioSourceCheckInterval: 0.1
   maxSoundDetectionDistance: 30
@@ -10629,3 +10755,4 @@ SceneRoots:
   - {fileID: 1038799899}
   - {fileID: 796171848}
   - {fileID: 1986009866}
+  - {fileID: 248444832}

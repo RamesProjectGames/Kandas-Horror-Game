@@ -57,7 +57,7 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
             {
                 if (!reachPoint)
                 {
-                    Vector3 posTarget = new Vector3(point[idxPoint].position.x, transform.position.y, point[idxPoint].position.z);
+                    // Vector3 posTarget = new Vector3(point[idxPoint].position.x, transform.position.y, point[idxPoint].position.z);
 
                     if (Vector3.Distance(transform.position, posTarget) > 0.1f)
                     {
@@ -208,10 +208,10 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
             this.transform.rotation = Quaternion.LookRotation(posPoint);
             Vector3 posPlayer = new Vector3(fov.player.transform.position.x, transform.position.y, fov.player.transform.position.z);
 
-            transform.position = Vector3.MoveTowards(transform.position, posPlayer, pursueSpeed * Time.deltaTime);
-            Vector3 posPoint = posPlayer - transform.position;
-            transform.rotation = Quaternion.LookRotation(posPoint);
-            Debug.Log($"Mob Chasing player");
+            // transform.position = Vector3.MoveTowards(transform.position, posPlayer, pursueSpeed * Time.deltaTime);
+            // Vector3 posPoint = posPlayer - transform.position;
+            // transform.rotation = Quaternion.LookRotation(posPoint);
+            // Debug.Log($"Mob Chasing player");
         }
 
         // Advance discovery progress
