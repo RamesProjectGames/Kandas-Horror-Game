@@ -62,13 +62,10 @@ public class TVHandler : MonoBehaviour
 
     void ResetAfterVideoStopped(VideoPlayer vp)
     {
-        if(!videoPlayer.isLooping)
-        {
-            audioSrc.maxDistance = 0.001f;
-            volumeTriggerRadius = 0.001f;
-            audioSrc.minDistance = 0f;
-            CheckObjectsInRadius();
-        }
+        audioSrc.maxDistance = 0.001f;
+        volumeTriggerRadius = 0.001f;
+        audioSrc.minDistance = 0f;
+        CheckObjectsInRadius();
     }
 
     void CheckObjectsInRadius()

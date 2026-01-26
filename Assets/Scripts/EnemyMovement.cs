@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
@@ -23,6 +22,7 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
     private bool isDiscoveringSpot = false;
     private int initialPatrolIndex = 0; // Store initial patrol point to return to
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -44,21 +44,18 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
         Vector3 posTarget = new Vector3(point[idxPoint].position.x, this.transform.position.y, point[idxPoint].position.z);
 
         Vector3 posPlayer = new Vector3(fov.player.transform.position.x, this.transform.position.y, fov.player.transform.position.z);
-        
+
         // If player was spotted while hiding, prioritize discovering the hiding spot
         if (isDiscoveringSpot && targetHidingSpot != null)
         {
             HandleHidingSpotDiscovery();
         }
         else if (!fov.canSeePlayer)
-        if (!fov.canSeePlayer)
         {
-            if(agent.isStopped && !comeback)
+            if (agent.isStopped && !comeback)
             {
                 if (!reachPoint)
                 {
-                    // Vector3 posTarget = new Vector3(point[idxPoint].position.x, transform.position.y, point[idxPoint].position.z);
-
                     if (Vector3.Distance(transform.position, posTarget) > 0.1f)
                     {
                         transform.position = Vector3.MoveTowards(transform.position, posTarget, speed * Time.deltaTime);
@@ -82,23 +79,10 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
                     CheckForHiddenPlayers();
 
                     if (Vector3.Distance(this.transform.position, posTarget) > 0.1f)
-                    currIdleTime -= Time.deltaTime;
+                        currIdleTime -= Time.deltaTime;
                     if (currIdleTime <= 0)
                     {
                         reachPoint = false;
-                        Debug.Log($"mob continuing journey");
-                    }
-                    else
-                    {
-                        // Debug.Log("Player arrived at waypoint, updating next waypoint");
-                        if (point[idxPoint].endPosition)
-                        {
-                            reachPoint = true;
-                            currIdleTime = idleTime;
-                        }
-                        idxPoint++;
-                        idxPoint = idxPoint % point.Length;
-                        Debug.Log($"mob idle after moving");
                     }
                 }
             }
@@ -111,7 +95,6 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
                         Vector3 posPoint = soundSource - transform.position;
                         transform.rotation = Quaternion.LookRotation(posPoint);
                         reachPoint = true;
-                        ObserveSurroundings();
                         agent.isStopped = true;
                     }
                     else if (comeback)
@@ -120,11 +103,6 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
                         comeback = false;
                         agent.isStopped = true;
                     }
-                    Debug.Log($"mob idle after chasing audio");
-                }
-                else if(!agent.isStopped)
-                {
-                    Debug.Log($"Mob chasing audio");
                 }
             }
         }
@@ -186,6 +164,8 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
         reachPoint = false;
     }
 
+
+
     /// <summary>
     /// Handle the discovery process of opening a hiding spot.
     /// </summary>
@@ -219,7 +199,7 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
         {
             // Discovery complete - open the hiding spot
             targetHidingSpot.DiscoverSpot();
-            
+
             // Force the hidden player to unhide
             GameObject hiddenPlayer = targetHidingSpot.GetHiddenPlayer();
             if (hiddenPlayer != null)
@@ -243,16 +223,14 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
     /// </summary>
     public void ReturnToPatrol()
     {
+        agent.speed = 3f;
+        detectedSound = false;
+        agent.isStopped = false;
+        comeback = true;
         isDiscoveringSpot = false;
         targetHidingSpot = null;
-        idxPoint = initialPatrolIndex;
         reachPoint = false;
         detectedSound = false;
-    }
-
-    void ObserveSurroundings()
-    {
-        //Observe
 
         Vector3 posTarget = new Vector3(point[idxPoint].position.x, transform.position.y, point[idxPoint].position.z);
         agent.SetDestination(posTarget);
@@ -268,15 +246,12 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
     {
         agent.speed = 6f;
         detectedSound = true;
-        soundSource = new Vector3(audioSource.gameObject.transform.position.x, transform.position.y, audioSource.gameObject.transform.position.z-5f);
+        soundSource = new Vector3(audioSource.gameObject.transform.position.x, transform.position.y, audioSource.gameObject.transform.position.z - 5f);
         StartAgentMovement();
     }
 
     public void OnExitAudioRadius(GameObject audioSource)
     {
-        agent.speed = 3f;
-        detectedSound = false;
-        agent.isStopped = false;
-        comeback = true;
+        ReturnToPatrol();
     }
 }
