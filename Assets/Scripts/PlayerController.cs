@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 //[RequireComponent (typeof(CharacterController), typeof(Animator))]
 [RequireComponent (typeof(CharacterController), typeof(AudioSource))]
@@ -16,11 +17,13 @@ public class PlayerController : MonoBehaviour
     public AudioClip[] audioClip;
     private Vector2 lockAxis;
     private Vector3 input, up;
+    private InputAction moveAction, lookAction, jumpAction, sprintAction, unlockAction;
 
     [Header("Numeric Values")]
     [SerializeField] private float jumpPow;
-    [SerializeField] private float gravity = 9.81f, groundDist = 1f, moveSpd = 100f, jumpCd;
-    private float xMove, pitch, yaw, upVel;
+    [SerializeField] private float gravity = 9.81f, groundDist = 1f, moveSpd = 100f, jumpCd, maxStamina, staminaDecayRate;
+    [SerializeField] private bool isExhastued;
+    private float xMove, pitch, yaw, upVel, stamina;
     private bool isGrounded;
 
     [Header("Mouse Settings")]
@@ -38,11 +41,34 @@ public class PlayerController : MonoBehaviour
         //anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         audioSrc = GetComponent<AudioSource>();
+
+        stamina = maxStamina;
+        
+        // Initialize input actions from InputSystem_Actions
+        var inputActions = GetComponent<PlayerInput>();
+        if (inputActions != null)
+        {
+            moveAction = inputActions.actions.FindAction("Move");
+            lookAction = inputActions.actions.FindAction("Look");
+            jumpAction = inputActions.actions.FindAction("Jump");
+            sprintAction = inputActions.actions.FindAction("Sprint");
+            unlockAction = inputActions.actions.FindAction("Unlock");
+        }
+        else
+        {
+            Debug.LogWarning("PlayerInput component not found! Input will not work properly.");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Mouse Lock - Unlock when holding Alt
+        if (unlockAction != null && unlockAction.IsPressed())
+            Cursor.lockState = CursorLockMode.None;
+        else
+            Cursor.lockState = CursorLockMode.Locked;
+
         //Jump
         if (isGrounded && upVel < 0f)
         {
@@ -55,7 +81,7 @@ public class PlayerController : MonoBehaviour
             jumpCd -= Time.deltaTime;
         }
 
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space) && jumpCd <= 0f)
+        if (isGrounded && jumpAction != null && jumpAction.WasPerformedThisFrame() && jumpCd <= 0f)
         {
             //anim.SetBool("isJumping", true);
             upVel = Mathf.Sqrt(jumpPow * 2f * gravity);
@@ -64,13 +90,35 @@ public class PlayerController : MonoBehaviour
         }
 
         //Movement
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-            moveSpd = 200f;
+        if (sprintAction != null && sprintAction.IsPressed() && !isExhastued)
+        {
+            stamina -= staminaDecayRate * Time.deltaTime;
+            if (stamina <= 0f)
+            {
+                isExhastued = true;
+            }
+            moveSpd = 200f;            
+        }
+        else if(isExhastued)
+        {
+            moveSpd = 50f;
+            if(stamina >= maxStamina)
+            {
+                isExhastued = false;
+            }
+            else
+            {
+                stamina += (staminaDecayRate / 2f) * Time.deltaTime;                
+            }
+        }
         else
-            moveSpd = 100f;
+        {
+            moveSpd = 100f;            
+        }
 
-        Vector3 hor = transform.right * Input.GetAxis("Horizontal") * moveSpd * Time.deltaTime;
-        Vector3 ver = transform.forward * Input.GetAxis("Vertical") * moveSpd * Time.deltaTime;
+        Vector2 moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
+        Vector3 hor = transform.right * moveInput.x * moveSpd * Time.deltaTime;
+        Vector3 ver = transform.forward * moveInput.y * moveSpd * Time.deltaTime;
         up = transform.up * upVel;
 
         input = hor + ver;
@@ -81,7 +129,7 @@ public class PlayerController : MonoBehaviour
             //anim.SetBool("isWalking", false);
             //anim.SetBool("isRunning", false);
         }
-        else if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
+        else if (sprintAction == null || !sprintAction.IsPressed())
         {
             //anim.SetFloat("Speed", Mathf.Sign(Input.GetAxis("Vertical")) * input.magnitude);
             //anim.SetBool("isWalking", true);
@@ -95,9 +143,10 @@ public class PlayerController : MonoBehaviour
         }
 
         //Rotation
-        yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
+        Vector2 lookInput = lookAction != null ? lookAction.ReadValue<Vector2>() : Vector2.zero;
+        yaw = transform.localEulerAngles.y + lookInput.x * mouseSensitivity;
 
-        pitch -= mouseSensitivity * Input.GetAxis("Mouse Y");
+        pitch -= mouseSensitivity * lookInput.y;
 
         // Clamp pitch between lookAngle
         pitch = Mathf.Clamp(pitch, minVerticalAngle, maxVerticalAngle);

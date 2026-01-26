@@ -7,12 +7,20 @@ public class ItemInteraction : MonoBehaviour
     public GameObject pickupUI;
 
     private Rigidbody rb;
+    public Transform player;
     public bool IsHeld { get; private set; }
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         pickupUI.SetActive(false);
+    }
+
+    void Update()
+    {
+        pickupUI.transform.LookAt(player.position);
+        pickupUI.transform.Rotate(0, 180, 0);
     }
 
     public void ShowUI()

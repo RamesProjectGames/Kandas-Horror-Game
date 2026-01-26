@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [ExecuteInEditMode]
 public class EnemySightDetection : MonoBehaviour
@@ -13,6 +14,10 @@ public class EnemySightDetection : MonoBehaviour
     public GameObject player;
 
     public bool canSeePlayer;
+    
+    [Header("Hiding Spot Tracking")]
+    [SerializeField] private bool playerWasSpottedWhileHiding = false;
+    public bool PlayerWasSpottedWhileHiding => playerWasSpottedWhileHiding;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,6 +39,13 @@ public class EnemySightDetection : MonoBehaviour
                 {
                     ChangePlayerMaterial(Color.green);
                     canSeePlayer = true;
+                    
+                    // Check if player is hiding
+                    PlayerHiding playerHiding = player.GetComponent<PlayerHiding>();
+                    if (playerHiding != null && playerHiding.IsHiding())
+                    {
+                        playerWasSpottedWhileHiding = true;
+                    }
                 }
                 else
                 {
@@ -56,5 +68,14 @@ public class EnemySightDetection : MonoBehaviour
     public void ChangePlayerMaterial(Color newColor)
     {
         player.GetComponent<Renderer>().material.color = newColor;
+    }
+
+    /// <summary>
+    /// Reset the spotted while hiding flag. Call this when the player successfully hides
+    /// in a new location or when the hunt is abandoned.
+    /// </summary>
+    public void ResetSpottedFlag()
+    {
+        playerWasSpottedWhileHiding = false;
     }
 }
