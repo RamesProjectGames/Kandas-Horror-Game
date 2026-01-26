@@ -21,8 +21,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Numeric Values")]
     [SerializeField] private float jumpPow;
-    [SerializeField] private float gravity = 9.81f, groundDist = 1f, moveSpd = 100f, jumpCd;
-    private float xMove, pitch, yaw, upVel;
+    [SerializeField] private float gravity = 9.81f, groundDist = 1f, moveSpd = 100f, jumpCd, maxStamina, staminaDecayRate;
+    [SerializeField] private bool isExhastued;
+    private float xMove, pitch, yaw, upVel, stamina;
     private bool isGrounded;
 
     [Header("Mouse Settings")]
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour
         //anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         audioSrc = GetComponent<AudioSource>();
+
+        stamina = maxStamina;
         
         // Initialize input actions from InputSystem_Actions
         var inputActions = GetComponent<PlayerInput>();
@@ -87,10 +90,31 @@ public class PlayerController : MonoBehaviour
         }
 
         //Movement
-        if (sprintAction != null && sprintAction.IsPressed())
-            moveSpd = 200f;
+        if (sprintAction != null && sprintAction.IsPressed() && !isExhastued)
+        {
+            stamina -= staminaDecayRate * Time.deltaTime;
+            if (stamina <= 0f)
+            {
+                isExhastued = true;
+            }
+            moveSpd = 200f;            
+        }
+        else if(isExhastued)
+        {
+            moveSpd = 50f;
+            if(stamina >= maxStamina)
+            {
+                isExhastued = false;
+            }
+            else
+            {
+                stamina += (staminaDecayRate / 2f) * Time.deltaTime;                
+            }
+        }
         else
-            moveSpd = 100f;
+        {
+            moveSpd = 100f;            
+        }
 
         Vector2 moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
         Vector3 hor = transform.right * moveInput.x * moveSpd * Time.deltaTime;
