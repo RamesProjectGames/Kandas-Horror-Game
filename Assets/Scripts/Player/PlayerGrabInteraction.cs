@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerGrabInteraction : MonoBehaviour
 {
@@ -9,17 +10,28 @@ public class PlayerGrabInteraction : MonoBehaviour
 
     private ItemInteraction currentItem;
     private ItemInteraction heldItem;
+    private InputAction grabAction, throwAction;
+
+    void Start()
+    {
+        var inputActions = GetComponent<PlayerInput>();
+        if (inputActions != null)
+        {
+            grabAction = inputActions.actions.FindAction("Grab");
+            throwAction = inputActions.actions.FindAction("Throw");
+        }
+    }
 
     void Update()
     {
         DetectItemInteraction();
 
-        if (Input.GetKeyDown(KeyCode.E) && currentItem != null && heldItem == null)
+        if (grabAction != null && grabAction.WasPerformedThisFrame() && currentItem != null && heldItem == null)
         {
             heldItem = currentItem;
             heldItem.Pickup(holdPoint);
         }
-        else if (Input.GetKeyDown(KeyCode.Q) && heldItem != null)
+        else if (throwAction != null && throwAction.WasPerformedThisFrame() && heldItem != null)
         {
             heldItem.Throw(transform.forward);
             heldItem = null;
