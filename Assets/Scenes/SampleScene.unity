@@ -264,6 +264,7 @@ GameObject:
   - component: {fileID: 76717633}
   - component: {fileID: 76717632}
   - component: {fileID: 76717631}
+  - component: {fileID: 76717634}
   m_Layer: 8
   m_Name: Wall
   m_TagString: Untagged
@@ -280,8 +281,8 @@ Transform:
   m_GameObject: {fileID: 76717629}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.6, z: 5}
-  m_LocalScale: {x: 25, y: 5, z: 1}
+  m_LocalPosition: {x: 0, y: 2.5, z: 5}
+  m_LocalScale: {x: 40, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 147673205}
@@ -505,6 +506,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 147673205}
+  - component: {fileID: 147673206}
   m_Layer: 0
   m_Name: Environment
   m_TagString: Untagged
@@ -528,6 +530,10 @@ Transform:
   - {fileID: 1389537822}
   - {fileID: 343170957}
   - {fileID: 76717630}
+  - {fileID: 1925790020}
+  - {fileID: 386861884}
+  - {fileID: 1862275911}
+  - {fileID: 2085454134}
   - {fileID: 838628988}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -945,6 +951,7 @@ GameObject:
   - component: {fileID: 343170960}
   - component: {fileID: 343170959}
   - component: {fileID: 343170962}
+  - component: {fileID: 343170963}
   m_Layer: 0
   m_Name: TV
   m_TagString: Untagged
@@ -3148,6 +3155,14 @@ Transform:
   m_Children:
   - {fileID: 1798204204}
   - {fileID: 1887765864}
+  - {fileID: 1508463950}
+  - {fileID: 1649503078}
+  - {fileID: 224984865}
+  - {fileID: 1646086663}
+  - {fileID: 1610346846}
+  - {fileID: 183622741}
+  - {fileID: 686949271}
+  - {fileID: 887558506}
   m_Father: {fileID: 147673205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &900163779
@@ -6087,7 +6102,7 @@ Transform:
   m_GameObject: {fileID: 1562211042}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -5}
+  m_LocalPosition: {x: 0, y: 7.03, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7381,6 +7396,14 @@ MonoBehaviour:
   point:
   - {fileID: 1798204205}
   - {fileID: 1887765865}
+  - {fileID: 1508463951}
+  - {fileID: 1649503079}
+  - {fileID: 224984866}
+  - {fileID: 1646086664}
+  - {fileID: 1610346847}
+  - {fileID: 183622742}
+  - {fileID: 686949272}
+  - {fileID: 887558507}
   idxPoint: 0
   fov: {fileID: 1733759645}
   soundSource: {x: 0, y: 0, z: 0}
@@ -7596,7 +7619,7 @@ Transform:
   m_GameObject: {fileID: 1733759635}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.33, y: 1, z: 3.35}
+  m_LocalPosition: {x: -15, y: 1, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7622,6 +7645,7 @@ MonoBehaviour:
   maxDetectionRadius: 30
   soundFalloffDistance: 30
   soundSensitivityMultiplier: 5
+  microphoneManager: {fileID: 0}
   microphoneManager: {fileID: 0}
   audioSourceCheckInterval: 0.1
   maxSoundDetectionDistance: 30
@@ -8980,7 +9004,7 @@ Transform:
   m_GameObject: {fileID: 1887765863}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15, y: 0, z: 0}
+  m_LocalPosition: {x: -2.38, y: 0, z: 1.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

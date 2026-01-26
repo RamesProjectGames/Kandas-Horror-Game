@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
 {
     [SerializeField] Waypoint[] point;
     [SerializeField] int idxPoint = 0;
     [SerializeField] EnemySightDetection fov;
+    NavMeshAgent agent;
     bool detectedSound;
     public Vector3 soundSource;
     public float speed = 3f;
@@ -25,6 +27,15 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
     void Start()
     {
         initialPatrolIndex = idxPoint;
+        agent = GetComponent<NavMeshAgent>();
+        if (agent == null) agent = gameObject.AddComponent<NavMeshAgent>();
+
+        // Configure NavMeshAgent for patrol/search
+        agent.angularSpeed = 300f;
+        agent.acceleration = 8f;
+        agent.stoppingDistance = 0.1f;
+        agent.isStopped = true;
+        currIdleTime = idleTime;
     }
 
     // Update is called once per frame
@@ -40,21 +51,29 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
             HandleHidingSpotDiscovery();
         }
         else if (!fov.canSeePlayer)
+        if (!fov.canSeePlayer)
         {
-            if(!reachPoint)
+            if(agent.isStopped && !comeback)
             {
-                if (detectedSound)
+                if (!reachPoint)
                 {
-                    if (Vector3.Distance(this.transform.position, soundSource) > 2f)
+                    Vector3 posTarget = new Vector3(point[idxPoint].position.x, transform.position.y, point[idxPoint].position.z);
+
+                    if (Vector3.Distance(transform.position, posTarget) > 0.1f)
                     {
-                        this.transform.position = Vector3.MoveTowards(this.transform.position, soundSource, pursueSpeed * Time.deltaTime);
-                        Vector3 posPoint = soundSource - this.transform.position;
-                        this.transform.rotation = Quaternion.LookRotation(posPoint);
+                        transform.position = Vector3.MoveTowards(transform.position, posTarget, speed * Time.deltaTime);
+                        Vector3 posPoint = posTarget - transform.position;
+                        transform.rotation = Quaternion.LookRotation(posPoint);
                     }
                     else
                     {
-                        reachPoint = true;
-                        currIdleTime = idleTime;
+                        if (point[idxPoint].endPosition)
+                        {
+                            reachPoint = point[idxPoint].endPosition;
+                            currIdleTime = idleTime;
+                        }
+                        Debug.Log($"Player arrived at waypoint {idxPoint}, updating next waypoint {idxPoint++}");
+                        idxPoint = idxPoint % point.Length;
                     }
                 }
                 else
@@ -63,10 +82,11 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
                     CheckForHiddenPlayers();
 
                     if (Vector3.Distance(this.transform.position, posTarget) > 0.1f)
+                    currIdleTime -= Time.deltaTime;
+                    if (currIdleTime <= 0)
                     {
-                        this.transform.position = Vector3.MoveTowards(this.transform.position, posTarget, speed * Time.deltaTime);
-                        Vector3 posPoint = posTarget - this.transform.position;
-                        this.transform.rotation = Quaternion.LookRotation(posPoint);
+                        reachPoint = false;
+                        Debug.Log($"mob continuing journey");
                     }
                     else
                     {
@@ -78,21 +98,33 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
                         }
                         idxPoint++;
                         idxPoint = idxPoint % point.Length;
+                        Debug.Log($"mob idle after moving");
                     }
                 }
             }
             else
             {
-                if (detectedSound)
+                if (agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    //ObserveSurroundings();
+                    if (detectedSound)
+                    {
+                        Vector3 posPoint = soundSource - transform.position;
+                        transform.rotation = Quaternion.LookRotation(posPoint);
+                        reachPoint = true;
+                        ObserveSurroundings();
+                        agent.isStopped = true;
+                    }
+                    else if (comeback)
+                    {
+                        reachPoint = point[idxPoint].endPosition;
+                        comeback = false;
+                        agent.isStopped = true;
+                    }
+                    Debug.Log($"mob idle after chasing audio");
                 }
-                else
+                else if(!agent.isStopped)
                 {
-                    currIdleTime -= Time.deltaTime;
-                    if (currIdleTime <= 0)
-                        reachPoint = false;
-
+                    Debug.Log($"Mob chasing audio");
                 }
             }
         }
@@ -174,6 +206,12 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
             this.transform.position = Vector3.MoveTowards(this.transform.position, hidingSpotPos, pursueSpeed * Time.deltaTime);
             Vector3 posPoint = hidingSpotPos - this.transform.position;
             this.transform.rotation = Quaternion.LookRotation(posPoint);
+            Vector3 posPlayer = new Vector3(fov.player.transform.position.x, transform.position.y, fov.player.transform.position.z);
+
+            transform.position = Vector3.MoveTowards(transform.position, posPlayer, pursueSpeed * Time.deltaTime);
+            Vector3 posPoint = posPlayer - transform.position;
+            transform.rotation = Quaternion.LookRotation(posPoint);
+            Debug.Log($"Mob Chasing player");
         }
 
         // Advance discovery progress
@@ -212,14 +250,33 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
         detectedSound = false;
     }
 
+    void ObserveSurroundings()
+    {
+        //Observe
+
+        Vector3 posTarget = new Vector3(point[idxPoint].position.x, transform.position.y, point[idxPoint].position.z);
+        agent.SetDestination(posTarget);
+    }
+
+    void StartAgentMovement()
+    {
+        agent.isStopped = false;
+        agent.SetDestination(soundSource);
+        reachPoint = false;
+    }
     public void OnEnterAudioRadius(GameObject audioSource)
     {
+        agent.speed = 6f;
         detectedSound = true;
-        soundSource = audioSource.gameObject.transform.position;
+        soundSource = new Vector3(audioSource.gameObject.transform.position.x, transform.position.y, audioSource.gameObject.transform.position.z-5f);
+        StartAgentMovement();
     }
 
     public void OnExitAudioRadius(GameObject audioSource)
     {
-        //throw new System.NotImplementedException();
+        agent.speed = 3f;
+        detectedSound = false;
+        agent.isStopped = false;
+        comeback = true;
     }
 }

@@ -12,7 +12,7 @@ public class TVHandler : MonoBehaviour
     public AudioSource audioSrc;
     public VideoPlayer videoPlayer;
     public float volumeTriggerRadius;
-    private List<IAudioRadiusListener> objectsInRadius = new List<IAudioRadiusListener>();
+    List<IAudioRadiusListener> objectsInRadius = new List<IAudioRadiusListener>();
     //private float increaseInterval = 1f, increaseRunningInterval;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,6 +22,11 @@ public class TVHandler : MonoBehaviour
         PlayVideo(videoClips[0]);
         volumeTriggerRadius = audioSrc.maxDistance;
         //increaseRunningInterval = increaseInterval;
+        if (videoPlayer != null)
+        {
+            // Subscribe the EndReached method to the loopPointReached event
+            videoPlayer.loopPointReached += ResetAfterVideoStopped;
+        }
     }
 
     // Update is called once per frame
@@ -55,19 +60,29 @@ public class TVHandler : MonoBehaviour
         videoPlayer.Play();
     }
 
+    void ResetAfterVideoStopped(VideoPlayer vp)
+    {
+        if(!videoPlayer.isLooping)
+        {
+            audioSrc.maxDistance = 0.001f;
+            volumeTriggerRadius = 0.001f;
+            audioSrc.minDistance = 0f;
+            CheckObjectsInRadius();
+        }
+    }
+
     void CheckObjectsInRadius()
     {
         // Get all objects with a specific tag or component
-        Collider[] surroundingObjects = Physics.OverlapSphere(this.transform.position, volumeTriggerRadius);
+        Collider[] surroundingObjects = Physics.OverlapSphere(videoPlayer.gameObject.transform.position, 100);
 
         foreach (Collider nearbyObject in surroundingObjects)
         {
             if (!nearbyObject.TryGetComponent(out IAudioRadiusListener listener))
                 continue;
             float distance = Vector3.Distance(transform.position, nearbyObject.transform.position);
-            bool isInRadius = distance <= audioSrc.maxDistance;
+            bool isInRadius = distance <= volumeTriggerRadius;
 
-            // Check if state changed
             bool wasInRadius = objectsInRadius.Contains(listener);
 
             if (isInRadius && !wasInRadius)
