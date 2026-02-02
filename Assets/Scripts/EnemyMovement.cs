@@ -95,6 +95,7 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
                         Vector3 posPoint = soundSource - transform.position;
                         transform.rotation = Quaternion.LookRotation(posPoint);
                         reachPoint = true;
+                        agent.SetDestination(posTarget);
                         agent.isStopped = true;
                     }
                     else if (comeback)

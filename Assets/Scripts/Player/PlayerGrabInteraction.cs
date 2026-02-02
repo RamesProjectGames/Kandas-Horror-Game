@@ -5,12 +5,12 @@ public class PlayerGrabInteraction : MonoBehaviour
 {
     public float pickupRadius = 2f;
     public float frontDotThreshold = 0.5f;
-    public LayerMask pickupLayer;
+    public LayerMask pickupLayer, interactableLayer;
     public Transform holdPoint;
 
     private ItemInteraction currentItem;
     private ItemInteraction heldItem;
-    private InputAction grabAction, throwAction;
+    private InputAction grabAction, throwAction, interAction;
 
     void Start()
     {
@@ -19,6 +19,7 @@ public class PlayerGrabInteraction : MonoBehaviour
         {
             grabAction = inputActions.actions.FindAction("Grab");
             throwAction = inputActions.actions.FindAction("Throw");
+            interAction = inputActions.actions.FindAction("Interact");
         }
     }
 
@@ -26,16 +27,26 @@ public class PlayerGrabInteraction : MonoBehaviour
     {
         DetectItemInteraction();
 
-        if (grabAction != null && grabAction.WasPerformedThisFrame() && currentItem != null && heldItem == null)
+        if (interAction != null && interAction.WasPerformedThisFrame())
         {
-            heldItem = currentItem;
-            heldItem.Pickup(holdPoint);
-        }
-        else if (throwAction != null && throwAction.WasPerformedThisFrame() && heldItem != null)
-        {
-            heldItem.Throw(transform.forward);
-            heldItem = null;
-            currentItem = null;
+            if(1 << currentItem.gameObject.layer == interactableLayer)
+            {
+                currentItem.onInteract.Invoke();
+            }
+            else if(1 << currentItem.gameObject.layer == pickupLayer)
+            {
+                if (currentItem != null && heldItem == null)
+                {
+                    heldItem = currentItem;
+                    heldItem.Pickup(holdPoint);
+                }
+                else if (heldItem != null)
+                {
+                    heldItem.Throw(transform.forward);
+                    heldItem = null;
+                    currentItem = null;
+                }
+            }
         }
     }
 
@@ -44,7 +55,7 @@ public class PlayerGrabInteraction : MonoBehaviour
         ItemInteraction bestItem = null;
         float bestDistance = float.MaxValue;
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, pickupLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, pickupLayer | interactableLayer);
 
         foreach (Collider hit in hits)
         {
@@ -55,14 +66,15 @@ public class PlayerGrabInteraction : MonoBehaviour
             float dot = Vector3.Dot(transform.forward, toItem);
 
             // Only detect front cone
-            if (dot < frontDotThreshold)
-                continue;
-
-            float distance = Vector3.Distance(transform.position, hit.transform.position);
-            if (distance < bestDistance)
+            if (dot >= frontDotThreshold)
             {
-                bestDistance = distance;
-                bestItem = item;
+
+                float distance = Vector3.Distance(transform.position, hit.transform.position);
+                if (distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    bestItem = item;
+                }
             }
         }
 
