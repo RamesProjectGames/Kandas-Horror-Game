@@ -1448,6 +1448,7 @@ MonoBehaviour:
     m_Bits: 256
   player: {fileID: 1560931083}
   canSeePlayer: 0
+  playerWasSpottedWhileHiding: 0
 --- !u!54 &1532091695
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1832,6 +1833,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 5
   pickupUI: {fileID: 608637637}
+  player: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
