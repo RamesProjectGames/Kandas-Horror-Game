@@ -74,26 +74,26 @@ public class PlayerController : MonoBehaviour
         }
 
         //Jump
-        {
-            if (isGrounded && upVel < 0f)
-            {
-                upVel = 0f;
-                //anim.SetBool("isJumping", false);
-            }
-            else
-            {
-                upVel -= gravity * Time.deltaTime;
-                jumpCd -= Time.deltaTime;
-            }
+        //{
+        //    if (isGrounded && upVel < 0f)
+        //    {
+        //        upVel = 0f;
+        //        //anim.SetBool("isJumping", false);
+        //    }
+        //    else
+        //    {
+        //        upVel -= gravity * Time.deltaTime;
+        //        jumpCd -= Time.deltaTime;
+        //    }
 
-            if (isGrounded && jumpAction != null && jumpAction.WasPerformedThisFrame() && jumpCd <= 0f)
-            {
-                //anim.SetBool("isJumping", true);
-                upVel = Mathf.Sqrt(jumpPow * 2f * gravity);
-                isGrounded = false;
-                jumpCd = 1f;
-            }
-        }
+        //    if (isGrounded && jumpAction != null && jumpAction.WasPerformedThisFrame() && jumpCd <= 0f)
+        //    {
+        //        //anim.SetBool("isJumping", true);
+        //        upVel = Mathf.Sqrt(jumpPow * 2f * gravity);
+        //        isGrounded = false;
+        //        jumpCd = 1f;
+        //    }
+        //}
 
         //Movement
         {

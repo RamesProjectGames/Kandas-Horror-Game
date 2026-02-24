@@ -29,22 +29,25 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         if (interAction != null && interAction.WasPerformedThisFrame())
         {
-            if(1 << currentItem.gameObject.layer == interactableLayer)
+            if (currentItem != null)
             {
-                currentItem.onInteract.Invoke();
-            }
-            else if(1 << currentItem.gameObject.layer == pickupLayer)
-            {
-                if (currentItem != null && heldItem == null)
+                if (1 << currentItem.gameObject.layer == interactableLayer)
                 {
-                    heldItem = currentItem;
-                    heldItem.Pickup(holdPoint);
+                    currentItem.onInteract.Invoke();
                 }
-                else if (heldItem != null)
+                else if (1 << currentItem.gameObject.layer == pickupLayer)
                 {
-                    heldItem.Throw(transform.forward);
-                    heldItem = null;
-                    currentItem = null;
+                    if (currentItem != null && heldItem == null)
+                    {
+                        heldItem = currentItem;
+                        heldItem.Pickup(holdPoint);
+                    }
+                    else if (heldItem != null)
+                    {
+                        heldItem.Throw(transform.forward);
+                        heldItem = null;
+                        currentItem = null;
+                    }
                 }
             }
         }
