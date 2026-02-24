@@ -942,7 +942,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 1052.53}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &107750267
 MonoBehaviour:
@@ -2353,10 +2353,10 @@ RectTransform:
   - {fileID: 1309788880}
   m_Father: {fileID: 107750266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 94.253}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 603.03033, y: -548.3915}
+  m_SizeDelta: {x: 1206.0607, y: 94.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &264176312
 GameObject:
@@ -2440,7 +2440,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 264176315}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1650219214}
+        m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
+        m_MethodName: CloseSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &264176315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3485,10 +3497,10 @@ RectTransform:
   - {fileID: 1643813571}
   m_Father: {fileID: 107750266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 80}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 603.03033, y: -1012.52997}
+  m_SizeDelta: {x: 1206.0607, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &361460943
 MonoBehaviour:
@@ -3688,10 +3700,10 @@ RectTransform:
   - {fileID: 766271102}
   m_Father: {fileID: 107750266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 94.253}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 603.03033, y: -265.6325}
+  m_SizeDelta: {x: 1206.0607, y: 94.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &386015015
 GameObject:
@@ -3846,10 +3858,10 @@ RectTransform:
   - {fileID: 1609856822}
   m_Father: {fileID: 107750266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 94.253}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 603.03033, y: -171.3795}
+  m_SizeDelta: {x: 1206.0607, y: 94.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &397725079
 GameObject:
@@ -8315,7 +8327,7 @@ GameObject:
   - component: {fileID: 781202069}
   - component: {fileID: 781202068}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Grapichs Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8336,10 +8348,10 @@ RectTransform:
   - {fileID: 2049216840}
   m_Father: {fileID: 1262093050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 67.753}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 82.913704, y: -43.8765}
+  m_SizeDelta: {x: 155.82741, y: 67.753}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &781202068
 MonoBehaviour:
@@ -8384,7 +8396,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 781202069}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1650219214}
+        m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
+        m_MethodName: HighlightSectionButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1650219214}
+        m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
+        m_MethodName: ScrollToSection
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &781202069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8966,10 +9002,10 @@ RectTransform:
   - {fileID: 221467591}
   m_Father: {fileID: 107750266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 94.253}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 603.03033, y: -642.64453}
+  m_SizeDelta: {x: 1206.0607, y: 94.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &813461526
 GameObject:
@@ -12627,7 +12663,7 @@ GameObject:
   - component: {fileID: 1049854283}
   - component: {fileID: 1049854282}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: Audio Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12648,10 +12684,10 @@ RectTransform:
   - {fileID: 777609924}
   m_Father: {fileID: 1262093050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 67.753}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 82.913704, y: -126.6295}
+  m_SizeDelta: {x: 155.82741, y: 67.753}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1049854282
 MonoBehaviour:
@@ -12696,7 +12732,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1049854283}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1650219214}
+        m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
+        m_MethodName: HighlightSectionButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1650219214}
+        m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
+        m_MethodName: ScrollToSection
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1049854283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13288,7 +13348,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.5
+  m_fontSize: 34.55
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -14528,10 +14588,10 @@ RectTransform:
   - {fileID: 927674736}
   m_Father: {fileID: 107750266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 94.253}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 603.03033, y: -77.126495}
+  m_SizeDelta: {x: 1206.0607, y: 94.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1215123257
 GameObject:
@@ -14565,10 +14625,10 @@ RectTransform:
   - {fileID: 1793077299}
   m_Father: {fileID: 107750266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 94.253}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 603.03033, y: -736.8975}
+  m_SizeDelta: {x: 1206.0607, y: 94.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1219594498
 GameObject:
@@ -16169,7 +16229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1360360675
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16188,8 +16248,8 @@ RectTransform:
   - {fileID: 1262093050}
   - {fileID: 264176313}
   - {fileID: 1506665942}
-  - {fileID: 249142420}
   - {fileID: 1904054388}
+  - {fileID: 249142420}
   - {fileID: 27843660}
   m_Father: {fileID: 1038799899}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16230,10 +16290,10 @@ RectTransform:
   - {fileID: 944461916}
   m_Father: {fileID: 107750266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 94.253}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 603.03033, y: -359.8855}
+  m_SizeDelta: {x: 1206.0607, y: 94.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1363002252
 GameObject:
@@ -17368,7 +17428,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42.1
+  m_fontSize: 38.8
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -18783,7 +18843,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000061035156}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1533911876
@@ -19779,7 +19839,7 @@ GameObject:
   - component: {fileID: 1580850303}
   - component: {fileID: 1580850302}
   m_Layer: 5
-  m_Name: Button (3)
+  m_Name: Language Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19800,10 +19860,10 @@ RectTransform:
   - {fileID: 1073871421}
   m_Father: {fileID: 1262093050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 67.753}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 82.913704, y: -292.1355}
+  m_SizeDelta: {x: 155.82741, y: 67.753}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1580850302
 MonoBehaviour:
@@ -19848,7 +19908,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1580850303}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1650219214}
+        m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
+        m_MethodName: HighlightSectionButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1650219214}
+        m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
+        m_MethodName: ScrollToSection
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1580850303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21280,7 +21364,7 @@ GameObject:
   - component: {fileID: 1640408288}
   - component: {fileID: 1640408287}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Control Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21301,10 +21385,10 @@ RectTransform:
   - {fileID: 1435642938}
   m_Father: {fileID: 1262093050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 67.753}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 82.913704, y: -209.38249}
+  m_SizeDelta: {x: 155.82741, y: 67.753}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1640408287
 MonoBehaviour:
@@ -21349,7 +21433,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1640408288}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1650219214}
+        m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
+        m_MethodName: HighlightSectionButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1650219214}
+        m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
+        m_MethodName: ScrollToSection
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1640408288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21570,6 +21678,17 @@ MonoBehaviour:
   soundEffectVolumeSlider: {fileID: 1351928690}
   mobVolumeSlider: {fileID: 1376076726}
   languageDropdown: {fileID: 1846237746}
+  SettingPanel: {fileID: 1360360674}
+  scrollings:
+  - {fileID: 1506665941}
+  - {fileID: 249142419}
+  - {fileID: 1904054387}
+  - {fileID: 27843659}
+  sectionButtons:
+  - {fileID: 781202068}
+  - {fileID: 1049854282}
+  - {fileID: 1640408287}
+  - {fileID: 1580850302}
 --- !u!4 &1650219215
 Transform:
   m_ObjectHideFlags: 0
@@ -22010,10 +22129,10 @@ RectTransform:
   - {fileID: 1937822019}
   m_Father: {fileID: 107750266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 94.253}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 603.03033, y: -925.4035}
+  m_SizeDelta: {x: 1206.0607, y: 94.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1707333468
 GameObject:
@@ -23138,10 +23257,10 @@ RectTransform:
   - {fileID: 378848240}
   m_Father: {fileID: 107750266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 94.253}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 603.03033, y: -454.1385}
+  m_SizeDelta: {x: 1206.0607, y: 94.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1772177430
 GameObject:
@@ -27644,10 +27763,10 @@ RectTransform:
   - {fileID: 1930862984}
   m_Father: {fileID: 107750266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 94.253}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 603.03033, y: -831.1505}
+  m_SizeDelta: {x: 1206.0607, y: 94.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2033489202
 GameObject:
@@ -28185,13 +28304,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.85
+  m_fontSize: 36.8
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 4
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -28612,7 +28731,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.915009, y: 9.213989}
+  m_AnchoredPosition: {x: -11.914978, y: 9.213989}
   m_SizeDelta: {x: -257.67102, y: -358.998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2123931834

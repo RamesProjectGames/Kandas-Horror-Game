@@ -15,6 +15,9 @@ public class SettingsUI : MonoBehaviour
         UpdateUI();
         PopulateAudioInputDevices();
         PopulateLanguageOptions();
+        ScrollToSection(0);
+        HighlightSectionButton(0);
+        CloseSettings();
     }
     #region Graphics Settings UI Elements
     [Header("Graphics Settings UI Elements")]
@@ -233,5 +236,30 @@ public class SettingsUI : MonoBehaviour
     }
     public void SetLanguage(int index) { settingManager.SetLanguage(index); }
     public void ResetLanguageToDefault() { settingManager.ResetLanguageToDefault(); UpdateUI(); }
+    #endregion
+
+    #region UI Navigation
+
+    [Header("UI Navigation")]
+    public GameObject SettingPanel;
+    public List<GameObject> scrollings = new List<GameObject>();
+    public List<Button> sectionButtons = new List<Button>();
+
+    public void ScrollToSection(int index)
+    {
+        for (int i = 0; i < scrollings.Count; i++)
+        {
+            scrollings[i].SetActive(i == index);
+        }
+    }
+    public void HighlightSectionButton(int index)
+    {
+        for (int i = 0; i < sectionButtons.Count; i++)
+        {
+            sectionButtons[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().fontStyle = i == index ? FontStyles.Underline : FontStyles.Normal;
+        }
+    }
+    public void OpenSettings() { SettingPanel.SetActive(true); }
+    public void CloseSettings() { SettingPanel.SetActive(false); }
     #endregion
 }
