@@ -32,23 +32,19 @@ public class TVHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //increaseRunningInterval -= Time.deltaTime;
-        //if(increaseRunningInterval <= 0)
-        //{
-        //    if (videoPlayer.isPlaying)
-        //    {
-        //        audioSrc.maxDistance += 1f;
-        //        volumeTrigger.radius = audioSrc.maxDistance;
-        //    }
-        //    increaseRunningInterval = increaseInterval;
-        //}
-
         if (videoPlayer.isPlaying)
         {
             audioSrc.maxDistance += Time.deltaTime;
             volumeTriggerRadius = audioSrc.maxDistance;
             CheckObjectsInRadius();
         }
+    }
+
+    public void ReduceVolume()
+    {
+        Debug.Log("turning down the heat, boooooo");
+        audioSrc.maxDistance -= 1f;
+        volumeTriggerRadius -= 1f;
     }
 
     public void PlayVideo(VideoClip clip)
@@ -75,26 +71,27 @@ public class TVHandler : MonoBehaviour
 
         foreach (Collider nearbyObject in surroundingObjects)
         {
-            if (!nearbyObject.TryGetComponent(out IAudioRadiusListener listener))
-                continue;
-            float distance = Vector3.Distance(transform.position, nearbyObject.transform.position);
-            bool isInRadius = distance <= volumeTriggerRadius;
-
-            bool wasInRadius = objectsInRadius.Contains(listener);
-
-            if (isInRadius && !wasInRadius)
+            if (nearbyObject.TryGetComponent(out IAudioRadiusListener listener))
             {
-                // Entered radius
-                Debug.Log($"Object {nearbyObject.gameObject} listened");
-                objectsInRadius.Add(listener);
-                listener.OnEnterAudioRadius(this.gameObject);
-            }
-            else if (!isInRadius && wasInRadius)
-            {
-                // Exited radius
-                Debug.Log($"Object {nearbyObject.gameObject} stopped listening");
-                objectsInRadius.Remove(listener);
-                listener.OnExitAudioRadius(this.gameObject);
+                float distance = Vector3.Distance(transform.position, nearbyObject.transform.position);
+                bool isInRadius = distance <= volumeTriggerRadius;
+
+                bool wasInRadius = objectsInRadius.Contains(listener);
+
+                if (isInRadius && !wasInRadius)
+                {
+                    // Entered radius
+                    Debug.Log($"Object {nearbyObject.gameObject} listened");
+                    objectsInRadius.Add(listener);
+                    listener.OnEnterAudioRadius(this.gameObject);
+                }
+                else if (!isInRadius && wasInRadius)
+                {
+                    // Exited radius
+                    Debug.Log($"Object {nearbyObject.gameObject} stopped listening");
+                    objectsInRadius.Remove(listener);
+                    listener.OnExitAudioRadius(this.gameObject);
+                }
             }
         }
     }

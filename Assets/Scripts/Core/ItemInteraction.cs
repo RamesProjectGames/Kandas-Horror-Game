@@ -1,10 +1,13 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ItemInteraction : MonoBehaviour
 {
     public float throwForce = 10f;
     public GameObject pickupUI;
+
+    public UnityEvent onInteract;
 
     private Rigidbody rb;
     public Transform player;

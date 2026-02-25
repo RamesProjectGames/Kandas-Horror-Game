@@ -23,9 +23,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Numeric Values")]
     [SerializeField] private float jumpPow;
-    [SerializeField] private float gravity = 9.81f, groundDist = 1f, moveSpd = 100f, jumpCd, maxStamina, staminaDecayRate;
-    [SerializeField] private bool isExhastued;
-    private float xMove, pitch, yaw, upVel, stamina;
+    [SerializeField] private float gravity = 9.81f, groundDist = 1f, speed = 150f, sprintMulti = 2.0f, jumpCd, maxStamina, staminaDecayRate;
+    [SerializeField] private bool isExhausted;
+    private float xMove, pitch, yaw, upVel, stamina, moveSpd;
     private bool isGrounded;
 
     [Header("Player Camera Settings")]
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = .2f;
     public float smoothTime = 0.1f;
     public float minVerticalAngle = -20f, maxVerticalAngle = 20f;
-    public float interactionAngle = 20f, interactionDist = 2f;
+    public float interactionAngle = 20f, interactionDist = 5f;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -74,44 +74,44 @@ public class PlayerController : MonoBehaviour
         }
 
         //Jump
-        {
-            if (isGrounded && upVel < 0f)
-            {
-                upVel = 0f;
-                //anim.SetBool("isJumping", false);
-            }
-            else
-            {
-                upVel -= gravity * Time.deltaTime;
-                jumpCd -= Time.deltaTime;
-            }
+        //{
+        //    if (isGrounded && upVel < 0f)
+        //    {
+        //        upVel = 0f;
+        //        //anim.SetBool("isJumping", false);
+        //    }
+        //    else
+        //    {
+        //        upVel -= gravity * Time.deltaTime;
+        //        jumpCd -= Time.deltaTime;
+        //    }
 
-            if (isGrounded && jumpAction != null && jumpAction.WasPerformedThisFrame() && jumpCd <= 0f)
-            {
-                //anim.SetBool("isJumping", true);
-                upVel = Mathf.Sqrt(jumpPow * 2f * gravity);
-                isGrounded = false;
-                jumpCd = 1f;
-            }
-        }
+        //    if (isGrounded && jumpAction != null && jumpAction.WasPerformedThisFrame() && jumpCd <= 0f)
+        //    {
+        //        //anim.SetBool("isJumping", true);
+        //        upVel = Mathf.Sqrt(jumpPow * 2f * gravity);
+        //        isGrounded = false;
+        //        jumpCd = 1f;
+        //    }
+        //}
 
         //Movement
         {
-            if (sprintAction != null && sprintAction.IsPressed() && !isExhastued)
+            if (sprintAction != null && sprintAction.IsPressed() && !isExhausted)
             {
                 stamina -= staminaDecayRate * Time.deltaTime;
                 if (stamina <= 0f)
                 {
-                    isExhastued = true;
+                    isExhausted = true;
                 }
-                moveSpd = 200f;
+                moveSpd = speed * sprintMulti;
             }
-            else if (isExhastued)
+            else if (isExhausted)
             {
-                moveSpd = 50f;
+                moveSpd = speed / sprintMulti;
                 if (stamina >= maxStamina)
                 {
-                    isExhastued = false;
+                    isExhausted = false;
                 }
                 else
                 {
@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                moveSpd = 100f;
+                moveSpd = speed;
             }
 
             Vector2 moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
@@ -162,30 +162,6 @@ public class PlayerController : MonoBehaviour
 
             transform.localEulerAngles = new Vector3(0, yaw, 0);
             face.transform.localEulerAngles = new Vector3(pitch, 0, 0);
-        }
-
-        //Face
-        {
-            //if (Vector3.Angle(transform.forward, playerTarget) < interactionAngle / 2)
-            //{
-            //    float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-
-            //    if (distanceToPlayer < viewRadius)
-            //    {
-            //        if (!Physics.Raycast(playerCam.transform.position, playerTarget, distanceToPlayer, obstacleMask))
-            //        {
-            //        }
-            //        else
-            //        {
-            //        }
-            //    }
-            //    else
-            //    {
-            //    }
-            //}
-            //else if (canSeePlayer)
-            //{
-            //}
         }
     }
 
