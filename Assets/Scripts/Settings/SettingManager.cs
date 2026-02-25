@@ -7,6 +7,8 @@ using UnityEngine.InputSystem.Samples.RebindUI;
 public class SettingManager : MonoBehaviour
 {
     public static SettingManager Instance { get; private set; }
+    [HideInInspector]
+    public bool isSettingOpen = false;
     void Awake()
     {
         if (Instance == null)

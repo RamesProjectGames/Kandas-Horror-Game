@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     [Header("Input Action")]
     private Vector3 input;
     private Vector3 up;
-    private InputAction moveAction, lookAction, jumpAction, sprintAction, unlockAction;
+    private InputAction moveAction, lookAction, jumpAction, sprintAction, unlockAction, pauseAction;
 
     [Header("Numeric Values")]
     [SerializeField] private float jumpPow;
@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
             jumpAction = inputActions.actions.FindAction("Jump");
             sprintAction = inputActions.actions.FindAction("Sprint");
             unlockAction = inputActions.actions.FindAction("Unlock");
+            pauseAction = inputActions.actions.FindAction("Pause");
         }
         else
         {
@@ -65,13 +66,25 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        {
+            if(pauseAction != null && pauseAction.IsPressed())
+            {
+                SettingManager.Instance.isSettingOpen = !SettingManager.Instance.isSettingOpen;
+            }
+        }
         //Mouse Lock - Unlock when holding Alt
         {
             if (unlockAction != null && unlockAction.IsPressed())
-                Cursor.lockState = CursorLockMode.None;
+            {
+                Cursor.lockState = CursorLockMode.None;                
+            }
             else
-                Cursor.lockState = CursorLockMode.Locked;
+            {
+                Cursor.lockState = CursorLockMode.Locked;                
+            }
         }
+
+        if(Cursor.lockState == CursorLockMode.Locked || SettingManager.Instance.isSettingOpen) return;
 
         //Jump
         //{

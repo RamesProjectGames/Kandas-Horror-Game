@@ -20,6 +20,10 @@ public class SettingsUI : MonoBehaviour
         HighlightSectionButton(0);
         CloseSettings();
     }
+    void Update()
+    {
+        SettingPanel.SetActive(settingManager.isSettingOpen); 
+    }
     #region Graphics Settings UI Elements
     [Header("Graphics Settings UI Elements")]
     // UI Texts for displaying current values
@@ -270,7 +274,7 @@ public class SettingsUI : MonoBehaviour
             sectionButtons[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().fontStyle = i == index ? FontStyles.Underline : FontStyles.Normal;
         }
     }
-    public void OpenSettings() { SettingPanel.SetActive(true); }
-    public void CloseSettings() { SettingPanel.SetActive(false); }
+    public void OpenSettings() { settingManager.isSettingOpen = true; }
+    public void CloseSettings() { settingManager.isSettingOpen = false; }
     #endregion
 }
