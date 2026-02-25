@@ -18,7 +18,7 @@ public class SettingManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        rebindActions = new List<RebindActionUI>(FindObjectsByType<RebindActionUI>(sortMode: FindObjectsSortMode.None));
+        // rebindActions = new List<RebindActionUI>(FindObjectsByType<RebindActionUI>(sortMode: FindObjectsSortMode.None));
         savePath = Application.persistentDataPath + "/settings.json";
         LoadSettings();
     }
@@ -302,7 +302,6 @@ public class SettingManager : MonoBehaviour
     [SerializeField] private float maximumMicrophoneVolume = 500f;
     [SerializeField] private float minimumMouseSensitivity = 0.1f;
     [SerializeField] private float maximumMouseSensitivity = 1f;
-    [SerializeField] private List<RebindActionUI> rebindActions = new List<RebindActionUI>();
     
     public void SelectAudioInputDevice(int index)
     {
@@ -345,10 +344,6 @@ public class SettingManager : MonoBehaviour
         settings.MicrophoneSensitivity = 100f;
         settings.MouseSensitivity = 1.0f;
         settings.SprintToggle = false;
-        foreach (var rebindUI in rebindActions)
-        {
-            rebindUI.ResetToDefault();
-        }
         SaveSettings();
     }
     #endregion 

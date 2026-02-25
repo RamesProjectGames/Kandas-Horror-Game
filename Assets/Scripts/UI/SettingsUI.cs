@@ -5,6 +5,7 @@ using FMOD;
 using FMODUnity;
 using System.Collections.Generic;
 using System;
+using UnityEngine.InputSystem.Samples.RebindUI;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -126,7 +127,8 @@ public class SettingsUI : MonoBehaviour
     public TMP_Dropdown outputDropdown;
     public Slider microphoneSensitivitySlider;
     public Slider mouseSensitivitySlider;
-    public TextMeshProUGUI sprintToggleText;
+    public TextMeshProUGUI sprintToggleText;    
+    [SerializeField] private List<RebindActionUI> rebindActions = new List<RebindActionUI>();
     public void PopulateAudioInputDevices()
     {
         microphoneDropdown.ClearOptions();
@@ -198,7 +200,15 @@ public class SettingsUI : MonoBehaviour
         settingManager.ToggleSprintToggle();
         sprintToggleText.text = settingManager.settings.SprintToggle ? "Toggle" : "Hold";
     }
-    public void ResetControlSettingsToDefaults() { settingManager.ResetControlsToDefaults(); UpdateUI(); }
+    public void ResetControlSettingsToDefaults() 
+    { 
+        settingManager.ResetControlsToDefaults();
+        foreach (var rebindUI in rebindActions)
+        {
+            rebindUI.ResetToDefault();
+        }
+        UpdateUI(); 
+    }
     #endregion
 
     #region Audio Settings UI Elements
