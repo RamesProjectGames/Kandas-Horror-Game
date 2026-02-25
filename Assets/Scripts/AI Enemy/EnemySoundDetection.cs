@@ -159,7 +159,7 @@ public class EnemySoundDetection : MonoBehaviour
         // Get sound from microphone via MicrophoneManager
         if (microphoneManager != null && microphoneManager.IsMicrophoneActive())
         {
-            soundLevel += microphoneManager.GetMicrophoneLoudness();
+            soundLevel += microphoneManager.GetMicrophoneLoudness() * SettingManager.Instance.settings.MicrophoneSensitivity;
         }
 
         // Clamp and normalize the sound level

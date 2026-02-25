@@ -1,9 +1,14 @@
+using System.Collections.Generic;
+using FMODUnity;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
-
+using UnityEngine.InputSystem.Samples.RebindUI;
 public class SettingManager : MonoBehaviour
 {
     public static SettingManager Instance { get; private set; }
+    [HideInInspector]
+    public bool isSettingOpen = false;
     void Awake()
     {
         if (Instance == null)
@@ -15,6 +20,7 @@ public class SettingManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        // rebindActions = new List<RebindActionUI>(FindObjectsByType<RebindActionUI>(sortMode: FindObjectsSortMode.None));
         savePath = Application.persistentDataPath + "/settings.json";
         LoadSettings();
     }
@@ -124,6 +130,7 @@ public class SettingManager : MonoBehaviour
             AutoAdjustGraphicsSettings();
             ApplyGraphicsSettings();
         }
+
     }
 
     public void ApplyGraphicsSettings()
@@ -227,7 +234,7 @@ public class SettingManager : MonoBehaviour
         settings.GameResolution = resolution;
         ApplyGraphicsSettings();
     }
-    public void ResetToDefaults()
+    public void ResetGrapichsToDefaults()
     {
         settings = new SettingData();
         AutoAdjustGraphicsSettings();
@@ -293,7 +300,93 @@ public class SettingManager : MonoBehaviour
 
     #region Control Settings Methods
 
+    [SerializeField] private float minimumMicrophoneVolume = 100f;
+    [SerializeField] private float maximumMicrophoneVolume = 500f;
+    [SerializeField] private float minimumMouseSensitivity = 0.1f;
+    [SerializeField] private float maximumMouseSensitivity = 1f;
     
+    public void SelectAudioInputDevice(int index)
+    {
+        if (index >= 0 && index < Microphone.devices.Length)
+        {
+            settings.AudioInputDeviceName = Microphone.devices[index];
+        }
+        else
+        {
+            settings.AudioInputDeviceName = "";
+        }
+        SaveSettings();
+    }
+    public void SelectAudioOutputDevice(int index)
+    {
+        var coreSystem = RuntimeManager.CoreSystem;
+        settings.AudioOutputDeviceIndex = index;
 
+        coreSystem.setDriver(settings.AudioOutputDeviceIndex);
+        SaveSettings();
+    }
+    public void SetMicrophoneSensitivity(float sensitivity)
+    {
+        settings.MicrophoneSensitivity = Mathf.Lerp(minimumMicrophoneVolume, maximumMicrophoneVolume, sensitivity);
+        SaveSettings();
+    }
+    public void SetMouseSensitivity(float sensitivity)
+    {
+        settings.MouseSensitivity = Mathf.Lerp(minimumMouseSensitivity, maximumMouseSensitivity, sensitivity);
+        SaveSettings();
+    }
+    public void ToggleSprintToggle() {
+        settings.SprintToggle = !settings.SprintToggle;
+        SaveSettings();
+    }
+    public void ResetControlsToDefaults()
+    {
+        settings.AudioInputDeviceName = "";
+        settings.AudioOutputDeviceIndex = 0;
+        settings.MicrophoneSensitivity = 100f;
+        settings.MouseSensitivity = 1.0f;
+        settings.SprintToggle = false;
+        SaveSettings();
+    }
     #endregion 
+
+
+    #region Audio Settings Methods
+
+    public void SetMusicVolume(float volume)
+    {
+        settings.MusicVolume = volume;
+        SaveSettings();
+    }
+    public void SetSoundEffectVolume(float volume)
+    {
+        settings.SoundEffectVolume = volume;
+        SaveSettings();
+    }
+    public void SetMobVolume(float volume)
+    {
+        settings.MobVolume = volume;
+        SaveSettings();
+    }
+    public void ResetAudioToDefaults()
+    {
+        settings.MusicVolume = 1.0f;
+        settings.SoundEffectVolume = 1.0f;
+        settings.MobVolume = 1.0f;
+        SaveSettings();
+    }
+    #endregion
+
+    #region Language Settings Methods
+    public void SetLanguage(int index)
+    {
+        settings.GameLanguage = (SettingData.Language)index;
+        SaveSettings();
+    }
+    public void ResetLanguageToDefault()
+    {
+        settings.GameLanguage = SettingData.Language.English;
+        SaveSettings();
+    }
+    #endregion
 }

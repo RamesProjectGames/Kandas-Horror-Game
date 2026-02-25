@@ -2,27 +2,26 @@ using UnityEngine;
 
 public class MicrophoneManager : MonoBehaviour
 {
+    public static MicrophoneManager Instance { get; private set; }
     [Header("Microphone Settings")]
     [SerializeField] private bool enableMicrophone = true;
-    [SerializeField] private int microphoneSampleRate = 44100;
-    [SerializeField] private float microphoneVolumeSensitivity = 1.0f;
     
     [Header("Loudness Calculation (PC-Quality)")]
-    [SerializeField] private int frequencyBands = 256;
+    [SerializeField] private int frequencyBands = 64;
     [SerializeField] private float loudnessSmoothing = 0.1f;
     [SerializeField] private float peakFrequencyWeight = 1.5f;
-    [SerializeField] private AnimationCurve loudnessResponseCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     
     [Header("Audio Source")]
     [SerializeField] private AudioSource microphoneSource;
     
     private AudioClip microphoneClip;
-    private float[] frequencySpectrumData;
-    private float[] smoothedFrequencyData;
-    private float previousLoudness = 0f;
-    private float currentMicrophoneLoudness = 0f;
     
     private bool isInitialized = false;
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -44,20 +43,22 @@ public class MicrophoneManager : MonoBehaviour
 
     void Update()
     {
-        if (isInitialized && Microphone.IsRecording(null))
+        
+    }
+    public void GetMicrophoneDevices()
+    {
+        foreach (var device in Microphone.devices)
         {
-            currentMicrophoneLoudness = CalculateMicrophoneLoudness();
+            Debug.Log($"Available microphone: {device}");
         }
     }
-
-    /// <summary>
-    /// Initializes microphone input for sound detection
-    /// </summary>
     private void InitializeMicrophone()
     {
-        string microphoneName = Microphone.devices.Length > 0 ? Microphone.devices[0] : null;
+        GetMicrophoneDevices();
 
-        if (string.IsNullOrEmpty(microphoneName))
+        SettingManager.Instance.settings.AudioInputDeviceName = Microphone.devices.Length > 0 ? Microphone.devices[0] : null;
+
+        if (string.IsNullOrEmpty(SettingManager.Instance.settings.AudioInputDeviceName))
         {
             Debug.LogWarning("No microphone device found!");
             enableMicrophone = false;
@@ -65,7 +66,7 @@ public class MicrophoneManager : MonoBehaviour
         }
 
         // Start recording from microphone
-        microphoneClip = Microphone.Start(microphoneName, true, 1, microphoneSampleRate);
+        microphoneClip = Microphone.Start(SettingManager.Instance.settings.AudioInputDeviceName, true, 20, AudioSettings.outputSampleRate);
 
         microphoneSource.clip = microphoneClip;
         microphoneSource.loop = true;
@@ -78,93 +79,27 @@ public class MicrophoneManager : MonoBehaviour
         else
         {
             isInitialized = true;
-            Debug.Log($"Microphone initialized: {microphoneName}");
+            Debug.Log($"Microphone initialized: {SettingManager.Instance.settings.AudioInputDeviceName}");
         }
     }
-
-    /// <summary>
-    /// Calculates sound level from microphone input with PC-quality spectrum analysis
-    /// </summary>
-    private float CalculateMicrophoneLoudness()
+    public float GetLoudnessFromAudioClip(int clipPosition, AudioClip audioClip)
     {
-        if (microphoneClip == null)
-        {
-            return 0f;
-        }
-
-        // Initialize spectrum data if needed
-        if (frequencySpectrumData == null || frequencySpectrumData.Length != frequencyBands)
-        {
-            frequencySpectrumData = new float[frequencyBands];
-            smoothedFrequencyData = new float[frequencyBands];
-        }
-
-        // Get spectrum data from audio listener with high-quality FFT
-        AudioListener.GetSpectrumData(frequencySpectrumData, 0, FFTWindow.Blackman);
-
-        // Calculate weighted loudness from microphone input
+        int startPosition = clipPosition - frequencyBands;
+        if (startPosition < 0) startPosition = 0;
+        float[] samples = new float[frequencyBands];
+        audioClip.GetData(samples, startPosition);
         float totalLoudness = 0f;
-        float peakMagnitude = 0f;
-
-        for (int i = 0; i < frequencySpectrumData.Length; i++)
+        for (int i = 0; i < samples.Length; i++)
         {
-            float magnitude = frequencySpectrumData[i];
-            
-            // Smooth frequency data over time
-            smoothedFrequencyData[i] = Mathf.Lerp(smoothedFrequencyData[i], magnitude, 0.3f);
-            
-            // Apply frequency weighting (human hearing perception)
-            float frequencyWeight = GetFrequencyWeight(i);
-            totalLoudness += smoothedFrequencyData[i] * frequencyWeight;
-
-            // Track peak magnitude
-            if (smoothedFrequencyData[i] > peakMagnitude)
-            {
-                peakMagnitude = smoothedFrequencyData[i];
-            }
+            totalLoudness += Mathf.Abs(samples[i]);
         }
+        return totalLoudness / samples.Length;
 
-        // Normalize loudness
-        float averageLoudness = totalLoudness / frequencyBands;
-        float peakLoudness = peakMagnitude * peakFrequencyWeight;
-        float microphoneLoudness = Mathf.Max(averageLoudness, peakLoudness * 0.5f);
-
-        // Apply sensitivity and response curve
-        float soundLevel = microphoneLoudness * microphoneVolumeSensitivity;
-        soundLevel = loudnessResponseCurve.Evaluate(soundLevel);
-        
-        // Smooth loudness over time
-        previousLoudness = Mathf.Lerp(previousLoudness, soundLevel, loudnessSmoothing);
-
-        return Mathf.Clamp01(previousLoudness);
     }
 
-    /// <summary>
-    /// Gets frequency weighting based on human hearing perception (A-weighting inspired)
-    /// </summary>
-    private float GetFrequencyWeight(int frequencyBandIndex)
-    {
-        float normalizedIndex = (float)frequencyBandIndex / frequencyBands;
-        
-        // A-weighting inspired curve: emphasis on speech/footstep frequencies (500Hz-4kHz)
-        if (normalizedIndex < 0.1f) // Sub-bass
-            return 0.3f;
-        else if (normalizedIndex < 0.3f) // Bass (typical footstep range)
-            return 1.3f;
-        else if (normalizedIndex < 0.6f) // Mid-range (speech range)
-            return 1.5f;
-        else if (normalizedIndex < 0.8f) // Upper-mid
-            return 1.2f;
-        else // Treble
-            return 0.9f;
-    }
-
-    /// <summary>
-    /// Gets the current microphone loudness (0-1)
-    /// </summary>
     public float GetMicrophoneLoudness()
     {
-        return currentMicrophoneLoudness;
+        return GetLoudnessFromAudioClip(Microphone.GetPosition(SettingManager.Instance.settings.AudioInputDeviceName), microphoneClip);
     }
 
     /// <summary>
@@ -172,15 +107,15 @@ public class MicrophoneManager : MonoBehaviour
     /// </summary>
     public bool IsMicrophoneActive()
     {
-        return isInitialized && Microphone.IsRecording(null);
+        return isInitialized && Microphone.IsRecording(SettingManager.Instance.settings.AudioInputDeviceName);
     }
 
     void OnDestroy()
     {
         // Stop microphone recording when object is destroyed
-        if (isInitialized && Microphone.IsRecording(null))
+        if (isInitialized && Microphone.IsRecording(SettingManager.Instance.settings.AudioInputDeviceName))
         {
-            Microphone.End(null);
+            Microphone.End(SettingManager.Instance.settings.AudioInputDeviceName);
         }
     }
 }

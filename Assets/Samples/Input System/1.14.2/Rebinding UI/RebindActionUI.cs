@@ -15,6 +15,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
     /// </summary>
     public class RebindActionUI : MonoBehaviour
     {
+        
         /// <summary>
         /// Reference to the action that is to be rebound.
         /// </summary>
