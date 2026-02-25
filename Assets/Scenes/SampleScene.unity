@@ -19662,7 +19662,7 @@ MonoBehaviour:
   jumpPow: 2
   gravity: 9.81
   groundDist: 0.1
-  speed: 150
+  speed: 12
   sprintMulti: 2
   jumpCd: 0
   maxStamina: 100
@@ -26738,8 +26738,8 @@ MonoBehaviour:
     GameLanguage: 0
   minimumMicrophoneVolume: 100
   maximumMicrophoneVolume: 500
-  minimumMouseSensitivity: 0.1
-  maximumMouseSensitivity: 1
+  minimumMouseSensitivity: 0.01
+  maximumMouseSensitivity: 0.25
 --- !u!4 &1926623162
 Transform:
   m_ObjectHideFlags: 0
