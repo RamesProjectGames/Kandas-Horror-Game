@@ -1215,7 +1215,7 @@ GameObject:
   - component: {fileID: 150622315}
   - component: {fileID: 150622314}
   m_Layer: 5
-  m_Name: Current Texture Qaulity
+  m_Name: Current Texture Quality
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20634,7 +20634,7 @@ MonoBehaviour:
   jumpPow: 2
   gravity: 9.81
   groundDist: 0.1
-  speed: 12
+  speed: 25
   sprintMulti: 2
   jumpCd: 0
   maxStamina: 100
@@ -20642,7 +20642,7 @@ MonoBehaviour:
   isExhausted: 0
   playerCam: {fileID: 2033489205}
   cam: {fileID: 2033489206}
-  mouseSensitivity: 0.5
+  lookSensitivity: 1.5
   smoothTime: 0.1
   minVerticalAngle: -40
   maxVerticalAngle: 20

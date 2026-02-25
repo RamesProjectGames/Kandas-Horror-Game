@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     [Header("Player Camera Settings")]
     [SerializeField] private Camera playerCam;
     [SerializeField] private Transform cam;
-    public float mouseSensitivity = .2f;
+    public float lookSensitivity = 1f;
     public float smoothTime = 0.1f;
     public float minVerticalAngle = -20f, maxVerticalAngle = 20f;
     public float interactionAngle = 20f, interactionDist = 5f;
@@ -192,9 +192,9 @@ public class PlayerController : MonoBehaviour
         //Rotation
         {
             Vector2 lookInput = lookAction != null ? lookAction.ReadValue<Vector2>() : Vector2.zero;
-            yaw = transform.localEulerAngles.y + lookInput.x * SettingManager.Instance.settings.MouseSensitivity;
+            yaw = transform.localEulerAngles.y + lookInput.x * SettingManager.Instance.settings.MouseSensitivity * lookSensitivity;
 
-            pitch -= SettingManager.Instance.settings.MouseSensitivity * lookInput.y;
+            pitch -= SettingManager.Instance.settings.MouseSensitivity * lookInput.y * lookSensitivity;
 
             // Clamp pitch between lookAngle
             pitch = Mathf.Clamp(pitch, minVerticalAngle, maxVerticalAngle);

@@ -308,7 +308,7 @@ public class SettingManager : MonoBehaviour
         settings.Dithering = true;
         settings.Bloom = vram >= 2000;
         settings.Grain = true;
-        settings.Fog = .01f;
+        settings.Fog = minimumFogDistance;
         settings.MotionBlur = vram >= 2000;
         settings.VertexJitter = true;
 
