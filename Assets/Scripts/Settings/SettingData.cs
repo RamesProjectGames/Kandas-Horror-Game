@@ -28,7 +28,7 @@ public class SettingData
 	public bool MotionBlur = false;
 	public bool VertexJitter = true;
 
-	public enum TextureQualityLevel { Low = 240, Medium = 360, High = 480 }
+	public enum TextureQualityLevel { Low = 0 , Medium = 1 , High = 2 }
 	public TextureQualityLevel TextureQuality = TextureQualityLevel.Low;
 
 	// Control Settings
