@@ -24,7 +24,7 @@ public class SettingData
 	public bool Dithering = true;
 	public bool Bloom = false;
 	public bool Grain = true;
-	public bool Fog = true;
+	public float Fog = .01f;
 	public bool MotionBlur = false;
 	public bool VertexJitter = true;
 

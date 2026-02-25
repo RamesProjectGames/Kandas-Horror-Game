@@ -46,6 +46,8 @@ public class SettingManager : MonoBehaviour
     public SettingData settings = new SettingData();
     private string savePath;
     int[] rates = new int[] { 24, 30, 60, 120 };
+    public float minimumFogDistance = .05f;
+    public float maximumFogDistance = .125f;
 
     public void NextResolution() {
         int max = System.Enum.GetValues(typeof(SettingData.Resolution)).Length;
@@ -97,8 +99,8 @@ public class SettingManager : MonoBehaviour
         ApplyGraphicsSettings();
         SaveSettings();
     }
-    public void ToggleFog() {
-        settings.Fog = !settings.Fog;
+    public void SetFogValue(float val) {
+        settings.Fog = Mathf.Lerp(minimumFogDistance, maximumFogDistance, val);
         ApplyGraphicsSettings();
         SaveSettings();
     }
@@ -220,7 +222,7 @@ public class SettingManager : MonoBehaviour
         postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().DitherThreshold.value = settings.Dithering ? 0.5f : 0f;
         postProcessVolume.profile.GetSetting<Bloom>().active = settings.Bloom;
         postProcessVolume.profile.GetSetting<Grain>().active = settings.Grain;
-        RenderSettings.fog = settings.Fog;
+        RenderSettings.fogDensity = settings.Fog;
         postProcessVolume.profile.GetSetting<MotionBlur>().active = settings.MotionBlur;
         MeshRenderer[] all = FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None);
 
@@ -303,7 +305,7 @@ public class SettingManager : MonoBehaviour
         settings.Dithering = true;
         settings.Bloom = vram >= 2000;
         settings.Grain = true;
-        settings.Fog = true;
+        settings.Fog = .01f;
         settings.MotionBlur = vram >= 2000;
         settings.VertexJitter = true;
 
@@ -318,10 +320,10 @@ public class SettingManager : MonoBehaviour
 
     #region Control Settings Methods
 
-    [SerializeField] private float minimumMicrophoneVolume = 100f;
-    [SerializeField] private float maximumMicrophoneVolume = 500f;
-    [SerializeField] private float minimumMouseSensitivity = 0.1f;
-    [SerializeField] private float maximumMouseSensitivity = 1f;
+    public float minimumMicrophoneVolume = 100f;
+    public float maximumMicrophoneVolume = 500f;
+    public float minimumMouseSensitivity = 0.1f;
+    public float maximumMouseSensitivity = 1f;
     
     public void SelectAudioInputDevice(int index)
     {
