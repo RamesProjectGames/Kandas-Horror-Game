@@ -277,7 +277,7 @@ public class SettingsUI : MonoBehaviour
         }
     }
     public void OpenSettings() { SettingPanel.SetActive(true); PausePanel.SetActive(false); }
-    public void CloseSettings() { SettingPanel.SetActive(false); PausePanelToggle(false); }
+    public void CloseSettings() { SettingPanel.SetActive(false); PausePanel.SetActive(true);}
     public void PausePanelToggle(bool state = false) 
     { 
         settingManager.isPaused = state;

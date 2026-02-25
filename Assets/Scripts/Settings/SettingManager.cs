@@ -29,7 +29,6 @@ public class SettingManager : MonoBehaviour
     void Start()
     {
         settingsUI = FindAnyObjectByType<SettingsUI>();
-        isPaused = false;
         settingsUI.PausePanelToggle();
         var inputActions = GetComponent<PlayerInput>();
         if (inputActions != null)
