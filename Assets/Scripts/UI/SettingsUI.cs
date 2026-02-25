@@ -266,6 +266,7 @@ public class SettingsUI : MonoBehaviour
     {
         for (int i = 0; i < sectionButtons.Count; i++)
         {
+            sectionButtons[i].interactable = i != index;
             sectionButtons[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().fontStyle = i == index ? FontStyles.Underline : FontStyles.Normal;
         }
     }
