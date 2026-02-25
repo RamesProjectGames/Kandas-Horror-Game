@@ -70,15 +70,22 @@ public class PlayerController : MonoBehaviour
         {
             if (unlockAction != null && unlockAction.IsPressed())
             {
-                Cursor.lockState = CursorLockMode.None;                
+                Cursor.lockState = CursorLockMode.None;
             }
             else
             {
-                Cursor.lockState = CursorLockMode.Locked;                
+                if(SettingManager.Instance.isSettingOpen)
+                {
+                    Cursor.lockState = CursorLockMode.None;                    
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.Locked;                                    
+                }
             }
         }
 
-        if(Cursor.lockState == CursorLockMode.Locked || SettingManager.Instance.isSettingOpen) return;
+        if(SettingManager.Instance.isSettingOpen) return;
 
         //Jump
         //{
@@ -181,13 +188,13 @@ public class PlayerController : MonoBehaviour
                 //anim.SetBool("isRunning", true);
             }
         }
-
+        if(Cursor.lockState == CursorLockMode.None) return;
         //Rotation
         {
             Vector2 lookInput = lookAction != null ? lookAction.ReadValue<Vector2>() : Vector2.zero;
-            yaw = transform.localEulerAngles.y + lookInput.x * mouseSensitivity;
+            yaw = transform.localEulerAngles.y + lookInput.x * SettingManager.Instance.settings.MouseSensitivity;
 
-            pitch -= mouseSensitivity * lookInput.y;
+            pitch -= SettingManager.Instance.settings.MouseSensitivity * lookInput.y;
 
             // Clamp pitch between lookAngle
             pitch = Mathf.Clamp(pitch, minVerticalAngle, maxVerticalAngle);
