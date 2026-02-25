@@ -6,6 +6,7 @@ using FMODUnity;
 using System.Collections.Generic;
 using System;
 using UnityEngine.InputSystem.Samples.RebindUI;
+using Unity.Mathematics;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -33,7 +34,7 @@ public class SettingsUI : MonoBehaviour
     public TextMeshProUGUI ditheringText;
     public TextMeshProUGUI bloomText;
     public TextMeshProUGUI grainText;
-    public TextMeshProUGUI fogText;
+    public Slider fogText;
     public TextMeshProUGUI motionBlurText;
     public TextMeshProUGUI vertexJitterText;
     public TextMeshProUGUI textureQualityText;
@@ -48,7 +49,7 @@ public class SettingsUI : MonoBehaviour
     public void ToggleDithering() { settingManager.ToggleDithering(); UpdateUI(); }
     public void ToggleBloom() { settingManager.ToggleBloom(); UpdateUI(); }
     public void ToggleGrain() { settingManager.ToggleGrain(); UpdateUI(); }
-    public void ToggleFog() { settingManager.ToggleFog(); UpdateUI(); }
+    public void SetFogDensity(float value) { settingManager.SetFogValue(value); UpdateUI(); }
     public void ToggleMotionBlur() { settingManager.ToggleMotionBlur(); UpdateUI(); }
     public void ToggleVertexJitter() { settingManager.ToggleVertexJitter(); UpdateUI(); }
     public void NextTextureQuality() { settingManager.NextTextureQuality(); UpdateUI(); }
@@ -63,14 +64,14 @@ public class SettingsUI : MonoBehaviour
         ditheringText.text = s.Dithering ? "On" : "Off";
         bloomText.text = s.Bloom ? "On" : "Off";
         grainText.text = s.Grain ? "On" : "Off";
-        fogText.text = s.Fog ? "On" : "Off";
+        fogText.value = Mathf.InverseLerp(settingManager.minimumFogDistance, settingManager.maximumFogDistance, s.Fog);
         motionBlurText.text = s.MotionBlur ? "On" : "Off";
         vertexJitterText.text = s.VertexJitter ? "On" : "Off";
         textureQualityText.text = TextureQualityToString(s.TextureQuality);
 
         // Control Settings
-        microphoneSensitivitySlider.value = s.MicrophoneSensitivity;
-        mouseSensitivitySlider.value = s.MouseSensitivity;
+        microphoneSensitivitySlider.value = Mathf.InverseLerp(settingManager.minimumMicrophoneVolume, settingManager.maximumMicrophoneVolume, s.MicrophoneSensitivity);
+        mouseSensitivitySlider.value = Mathf.InverseLerp(settingManager.minimumMouseSensitivity, settingManager.maximumMouseSensitivity, s.MouseSensitivity);
         sprintToggleText.text = s.SprintToggle ? "Toggle" : "Hold";
         // Set selected audio input device in dropdown
         int micIndex = System.Array.IndexOf(Microphone.devices, s.AudioInputDeviceName);
