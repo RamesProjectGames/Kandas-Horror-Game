@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                if(SettingManager.Instance.isSettingOpen)
+                if(SettingManager.Instance.isPaused)
                 {
                     Cursor.lockState = CursorLockMode.None;                    
                 }
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(SettingManager.Instance.isSettingOpen) return;
+        if(SettingManager.Instance.isPaused) return;
 
         //Jump
         //{

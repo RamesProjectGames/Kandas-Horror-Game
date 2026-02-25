@@ -23,7 +23,7 @@ public class SettingsUI : MonoBehaviour
     }
     void Update()
     {
-        SettingPanel.SetActive(settingManager.isSettingOpen); 
+        
     }
     #region Graphics Settings UI Elements
     [Header("Graphics Settings UI Elements")]
@@ -256,6 +256,7 @@ public class SettingsUI : MonoBehaviour
     #region UI Navigation
 
     [Header("UI Navigation")]
+    public GameObject PausePanel;
     public GameObject SettingPanel;
     public List<GameObject> scrollings = new List<GameObject>();
     public List<Button> sectionButtons = new List<Button>();
@@ -275,7 +276,12 @@ public class SettingsUI : MonoBehaviour
             sectionButtons[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().fontStyle = i == index ? FontStyles.Underline : FontStyles.Normal;
         }
     }
-    public void OpenSettings() { settingManager.isSettingOpen = true; }
-    public void CloseSettings() { settingManager.isSettingOpen = false; }
+    public void OpenSettings() { SettingPanel.SetActive(true); PausePanel.SetActive(false); }
+    public void CloseSettings() { SettingPanel.SetActive(false); PausePanelToggle(false); }
+    public void PausePanelToggle(bool state = false) 
+    { 
+        settingManager.isPaused = state;
+        PausePanel.SetActive(state);        
+    }
     #endregion
 }

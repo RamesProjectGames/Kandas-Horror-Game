@@ -9,7 +9,8 @@ public class SettingManager : MonoBehaviour
 {
     public static SettingManager Instance { get; private set; }
     private InputAction pauseAction;
-    public bool isSettingOpen = false;
+    private SettingsUI settingsUI;
+    public bool isPaused = false;
     void Awake()
     {
         if (Instance == null)
@@ -27,7 +28,9 @@ public class SettingManager : MonoBehaviour
     }
     void Start()
     {
-        
+        settingsUI = FindAnyObjectByType<SettingsUI>();
+        isPaused = false;
+        settingsUI.PausePanelToggle();
         var inputActions = GetComponent<PlayerInput>();
         if (inputActions != null)
         {            
@@ -38,7 +41,8 @@ public class SettingManager : MonoBehaviour
     {
         if (pauseAction != null && pauseAction.WasCompletedThisFrame())
         {
-            isSettingOpen = !isSettingOpen;
+            isPaused = !isPaused;
+            settingsUI.PausePanelToggle(isPaused);
         }
     }
     #region Graphics Settings Methods
