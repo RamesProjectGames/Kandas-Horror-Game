@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     [Header("Input Action")]
     private Vector3 input;
     private Vector3 up;
-    private InputAction moveAction, lookAction, jumpAction, sprintAction, unlockAction, pauseAction;
+    private InputAction moveAction, lookAction, jumpAction, sprintAction, unlockAction;
 
     [Header("Numeric Values")]
     [SerializeField] private float jumpPow;
@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isExhausted;
     private float xMove, pitch, yaw, upVel, stamina, moveSpd;
     private bool isGrounded;
+    private bool isSprinting;
 
     [Header("Player Camera Settings")]
     [SerializeField] private Camera playerCam;
@@ -52,10 +53,9 @@ public class PlayerController : MonoBehaviour
         {
             moveAction = inputActions.actions.FindAction("Move");
             lookAction = inputActions.actions.FindAction("Look");
-            jumpAction = inputActions.actions.FindAction("Jump");
+            // jumpAction = inputActions.actions.FindAction("Jump");
             sprintAction = inputActions.actions.FindAction("Sprint");
             unlockAction = inputActions.actions.FindAction("Unlock");
-            pauseAction = inputActions.actions.FindAction("Pause");
         }
         else
         {
@@ -66,12 +66,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        {
-            if(pauseAction != null && pauseAction.IsPressed())
-            {
-                SettingManager.Instance.isSettingOpen = !SettingManager.Instance.isSettingOpen;
-            }
-        }
         //Mouse Lock - Unlock when holding Alt
         {
             if (unlockAction != null && unlockAction.IsPressed())
@@ -88,16 +82,16 @@ public class PlayerController : MonoBehaviour
 
         //Jump
         //{
-        //    if (isGrounded && upVel < 0f)
-        //    {
-        //        upVel = 0f;
-        //        //anim.SetBool("isJumping", false);
-        //    }
-        //    else
-        //    {
-        //        upVel -= gravity * Time.deltaTime;
-        //        jumpCd -= Time.deltaTime;
-        //    }
+           if (isGrounded && upVel < 0f)
+           {
+               upVel = 0f;
+               //anim.SetBool("isJumping", false);
+           }
+           else
+           {
+               upVel -= gravity * Time.deltaTime;
+               jumpCd -= Time.deltaTime;
+           }
 
         //    if (isGrounded && jumpAction != null && jumpAction.WasPerformedThisFrame() && jumpCd <= 0f)
         //    {
@@ -110,30 +104,55 @@ public class PlayerController : MonoBehaviour
 
         //Movement
         {
-            if (sprintAction != null && sprintAction.IsPressed() && !isExhausted)
+            if(!SettingManager.Instance.settings.SprintToggle)
             {
-                stamina -= staminaDecayRate * Time.deltaTime;
-                if (stamina <= 0f)
+                if (sprintAction != null && sprintAction.IsPressed() && !isExhausted)
                 {
-                    isExhausted = true;
+                    isSprinting = true;
+                    stamina -= staminaDecayRate * Time.deltaTime;
+                    if (stamina <= 0f)
+                    {
+                        isExhausted = true;
+                    }
+                    moveSpd = speed * sprintMulti;
                 }
-                moveSpd = speed * sprintMulti;
+                else
+                {
+                    isSprinting = false;
+                }
             }
-            else if (isExhausted)
+            else
+            {
+                if (sprintAction != null && sprintAction.WasPressedThisFrame() && !isExhausted)
+                {
+                    isSprinting = true;
+                    stamina -= staminaDecayRate * Time.deltaTime;
+                    if (stamina <= 0f)
+                    {
+                        isExhausted = true;
+                    }
+                    moveSpd = speed * sprintMulti;
+                }
+                else
+                {
+                    isSprinting = false;
+                }
+            }
+            if (isExhausted)
             {
                 moveSpd = speed / sprintMulti;
                 if (stamina >= maxStamina)
                 {
                     isExhausted = false;
                 }
-                else
-                {
-                    stamina += (staminaDecayRate / 2f) * Time.deltaTime;
-                }
             }
             else
             {
                 moveSpd = speed;
+            }
+            if(!isSprinting)
+            {
+                stamina += staminaDecayRate / 2f * Time.deltaTime;
             }
 
             Vector2 moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;

@@ -4,10 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.InputSystem.Samples.RebindUI;
+using UnityEngine.InputSystem;
 public class SettingManager : MonoBehaviour
 {
     public static SettingManager Instance { get; private set; }
-    [HideInInspector]
+    private InputAction pauseAction;
     public bool isSettingOpen = false;
     void Awake()
     {
@@ -23,6 +24,22 @@ public class SettingManager : MonoBehaviour
         // rebindActions = new List<RebindActionUI>(FindObjectsByType<RebindActionUI>(sortMode: FindObjectsSortMode.None));
         savePath = Application.persistentDataPath + "/settings.json";
         LoadSettings();
+    }
+    void Start()
+    {
+        
+        var inputActions = GetComponent<PlayerInput>();
+        if (inputActions != null)
+        {            
+            pauseAction = inputActions.actions.FindAction("Pause");
+        }
+    }
+    void Update()
+    {
+        if (pauseAction != null && pauseAction.WasCompletedThisFrame())
+        {
+            isSettingOpen = !isSettingOpen;
+        }
     }
     #region Graphics Settings Methods
 
@@ -135,6 +152,7 @@ public class SettingManager : MonoBehaviour
 
     public void ApplyGraphicsSettings()
     {
+        var postProcessVolume = FindAnyObjectByType<PostProcessVolume>();
         // Resolution
         switch (settings.GameResolution)
         {
@@ -199,31 +217,31 @@ public class SettingManager : MonoBehaviour
         // Dithering, Bloom, Grain, Fog, Motion Blur, Vertex Jitter
         // Example: Enable/disable post-processing effects here
         // You will need to reference your post-processing volumes or custom scripts
-        FindAnyObjectByType<PostProcessVolume>().profile.GetSetting<RetroPostProcessEffect>().DitherThreshold.value = settings.Dithering ? 0.5f : 0f;
-        FindAnyObjectByType<PostProcessVolume>().profile.GetSetting<Bloom>().active = settings.Bloom;
-        FindAnyObjectByType<PostProcessVolume>().profile.GetSetting<Grain>().active = settings.Grain;
+        postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().DitherThreshold.value = settings.Dithering ? 0.5f : 0f;
+        postProcessVolume.profile.GetSetting<Bloom>().active = settings.Bloom;
+        postProcessVolume.profile.GetSetting<Grain>().active = settings.Grain;
         RenderSettings.fog = settings.Fog;
-        FindAnyObjectByType<PostProcessVolume>().profile.GetSetting<MotionBlur>().active = settings.MotionBlur;
+        postProcessVolume.profile.GetSetting<MotionBlur>().active = settings.MotionBlur;
         MeshRenderer[] all = FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None);
 
         foreach (var mr in all)
         {
             if (mr.CompareTag("Material Editable"))
             {
-                mr.material.SetFloat("_VertJitter", settings.VertexJitter ? 1f : 0f);
+                mr.material.SetFloat("_VertJitter", settings.VertexJitter ? .999f : 0f);
             }
         }
         // Vertex Jitter would require a custom shader or script to implement, so this is just a placeholder
         switch (settings.TextureQuality)
         {
             case SettingData.TextureQualityLevel.Low:
-                FindAnyObjectByType<PostProcessVolume>().profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 240;
+                postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 240;
                 break;
             case SettingData.TextureQualityLevel.Medium:
-                FindAnyObjectByType<PostProcessVolume>().profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 360;
+                postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 360;
                 break;
             case SettingData.TextureQualityLevel.High:
-                FindAnyObjectByType<PostProcessVolume>().profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 480;
+                postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 480;
                 break;
         }
     }
