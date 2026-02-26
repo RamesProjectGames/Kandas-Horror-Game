@@ -51,6 +51,8 @@ public class SettingManager : MonoBehaviour
     int[] rates = new int[] { 24, 30, 60, 120 };
     public float minimumFogDistance = .05f;
     public float maximumFogDistance = .125f;
+    public Material DefaultMat;
+    public Material VertexJitterMat;
 
     public void NextResolution() {
         int max = System.Enum.GetValues(typeof(SettingData.Resolution)).Length;
@@ -150,8 +152,8 @@ public class SettingManager : MonoBehaviour
         {
             settings = new SettingData();
             AutoAdjustGraphicsSettings();
-            ApplyGraphicsSettings();
         }
+        ApplyGraphicsSettings();
 
     }
 
@@ -231,9 +233,16 @@ public class SettingManager : MonoBehaviour
 
         foreach (var mr in all)
         {
-            if (mr.CompareTag("Material Editable"))
+            if (mr.CompareTag("Environment") || mr.CompareTag("Enemy"))
             {
-                mr.material.SetFloat("_VertJitter", settings.VertexJitter ? .999f : 0f);
+                if(settings.VertexJitter)
+                {
+                    mr.material = VertexJitterMat;
+                }
+                else
+                {
+                    mr.material = DefaultMat;
+                }
             }
         }
         // Vertex Jitter would require a custom shader or script to implement, so this is just a placeholder
