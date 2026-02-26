@@ -13,6 +13,8 @@ public class PlayerGrabInteraction : MonoBehaviour
 
     public LayerMask pickupLayer, interactableLayer;
     public Transform holdPoint;
+    [Tooltip("Optional camera whose forward vector will be used for throws. If not assigned the player transform is used.")]
+    public Camera playerCamera;
 
     private ItemInteraction currentItem;
     private ItemInteraction heldItem;
@@ -72,7 +74,9 @@ public class PlayerGrabInteraction : MonoBehaviour
                 {
                     float t = Mathf.Clamp01(throwCharge / maxThrowChargeTime);
                     float forceMag = Mathf.Lerp(throwForce.x, throwForce.y, t);
-                    heldItem.Throw(transform.forward * forceMag);
+                    // use camera forward direction if available, otherwise fall back to player forward
+                    Vector3 direction = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
+                    heldItem.Throw(direction * forceMag);
                     heldItem = null;
                 }
 

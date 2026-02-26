@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
         //anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         audioSrc = GetComponent<AudioSource>();
+        Cursor.lockState = CursorLockMode.Locked;
 
         stamina = maxStamina;
 

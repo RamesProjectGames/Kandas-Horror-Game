@@ -15,13 +15,13 @@ public class ItemInteraction : MonoBehaviour
     private Rigidbody rb;
     public Transform player;
     public bool IsHeld { get; private set; }
-    private TextMeshProUGUI pickupText;
+    public TextMeshPro pickupText;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        pickupText = pickupUI.GetComponent<TextMeshProUGUI>();
+        pickupText = pickupUI.GetComponent<TextMeshPro>();
         pickupUI.SetActive(false);
     }
 
@@ -29,21 +29,22 @@ public class ItemInteraction : MonoBehaviour
     {
         pickupUI.transform.LookAt(player.position);
         pickupUI.transform.Rotate(0, 180, 0);
+
+        if (pickupText != null && inputActions != null)
+        {
+            var interactAction = inputActions.FindAction("Interact");
+            if (interactAction != null)
+            {
+                string bindingDisplay = interactAction.GetBindingDisplayString(0);
+                pickupText.text = $"Press {bindingDisplay} {ItemInteractionText}";
+            }
+        }
     }
 
     public void ShowUI()
     {
         if (!IsHeld)
         {
-            if (pickupText != null && inputActions != null)
-            {
-                var interactAction = inputActions.FindAction("Interact");
-                if (interactAction != null)
-                {
-                    string bindingDisplay = interactAction.GetBindingDisplayString(0);
-                    pickupText.text = $"Press {bindingDisplay} {ItemInteractionText}";
-                }
-            }
             pickupUI.SetActive(true);
         }
     }
