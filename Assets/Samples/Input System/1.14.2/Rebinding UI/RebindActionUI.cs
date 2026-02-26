@@ -229,6 +229,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             {
                 action.RemoveBindingOverride(bindingIndex);
             }
+            SaveControlBinding();
             UpdateBindingDisplay();
         }
 
@@ -280,7 +281,8 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
             // Configure the rebind.
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
-            .WithCancelingThrough("<Keyboard>/~")
+            .WithControlsExcluding("<Mouse>")
+            .WithCancelingThrough("<Keyboard>/escape")
                 .OnCancel(
                     operation =>
                     {

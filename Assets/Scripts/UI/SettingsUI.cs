@@ -135,6 +135,7 @@ public class SettingsUI : MonoBehaviour
     public Slider mouseSensitivitySlider;
     public TextMeshProUGUI sprintToggleText;    
     [SerializeField] private List<RebindActionUI> rebindActions = new List<RebindActionUI>();
+    public void SetRebinding(bool isRebinding) => settingManager.SetRebind(isRebinding);
     public void PopulateAudioInputDevices()
     {
         var core = RuntimeManager.CoreSystem;
@@ -323,7 +324,14 @@ public class SettingsUI : MonoBehaviour
     public void PausePanelToggle(bool state = false) 
     { 
         settingManager.isPaused = state;
-        PausePanel.SetActive(state);        
+        if(!SettingPanel.activeInHierarchy)
+        {
+            PausePanel.SetActive(state);            
+        }
+        else
+        {
+            PausePanel.SetActive(false);
+        }
     }
     #endregion
 }

@@ -40,9 +40,9 @@ public class SettingManager : MonoBehaviour
     }
     void Update()
     {
-        if (pauseAction != null && pauseAction.WasCompletedThisFrame())
+        if (pauseAction != null && pauseAction.WasCompletedThisFrame() && !isRebinding)
         {
-            isPaused = !isPaused;
+            isPaused = true;
             settingsUI.PausePanelToggle(isPaused);
         }
     }
@@ -338,6 +338,8 @@ public class SettingManager : MonoBehaviour
     public float maximumMicrophoneVolume = 500f;
     public float minimumMouseSensitivity = 0.1f;
     public float maximumMouseSensitivity = 1f;
+    bool isRebinding = false;
+    public void SetRebind(bool isRebinding) => this.isRebinding = isRebinding;
     
     public void SelectAudioInputDevice(int index)
     {
