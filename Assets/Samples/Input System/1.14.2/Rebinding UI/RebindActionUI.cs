@@ -238,7 +238,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// </summary>
         public void StartInteractiveRebind()
         {
-            m_Action.action.Disable();
             if (!ResolveActionAndBinding(out var action, out var bindingIndex))
                 return;
 
@@ -264,10 +263,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 m_RebindOperation?.Dispose();
                 m_RebindOperation = null;
 
-                action.actionMap.Enable();
-                m_UIInputActionMap?.Enable();
-
-                SaveControlBinding();
             }
 
             // An "InvalidOperationException: Cannot rebind action x while it is enabled" will
@@ -280,14 +275,16 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             //
             // In this example, we explicitly disable both the UI input action map and
             // the action map containing the target action.
-            action.actionMap.Disable();
-            m_UIInputActionMap?.Disable();
+
+            action.Disable();
 
             // Configure the rebind.
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
+            .WithCancelingThrough("<Keyboard>/~")
                 .OnCancel(
                     operation =>
                     {
+                        action.Enable();
                         m_RebindStopEvent?.Invoke(this, operation);
                         if (m_RebindOverlay != null)
                             m_RebindOverlay.SetActive(false);
@@ -297,9 +294,20 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 .OnComplete(
                     operation =>
                     {
+                        action.Enable();
                         if (m_RebindOverlay != null)
                             m_RebindOverlay.SetActive(false);
                         m_RebindStopEvent?.Invoke(this, operation);
+
+                        if(CheckDuplicateBindings(action, bindingIndex, allCompositeParts))
+                        {
+                            action.RemoveBindingOverride(bindingIndex);
+                            CleanUp();
+                            PerformInteractiveRebind(action,bindingIndex, allCompositeParts);
+                            SaveControlBinding();
+                            return;
+                        }
+
                         UpdateBindingDisplay();
                         CleanUp();
 
@@ -311,6 +319,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                             if (nextBindingIndex < action.bindings.Count && action.bindings[nextBindingIndex].isPartOfComposite)
                                 PerformInteractiveRebind(action, nextBindingIndex, true);
                         }
+                        SaveControlBinding();
                     });
 
             // If it's a part binding, show the name of the part in the UI.
@@ -319,7 +328,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             //     partName = $"Binding '{action.bindings[bindingIndex].name}'. ";
 
             // Bring up rebind overlay, if we have one.
-            m_RebindOverlay?.SetActive(true);
+            // m_RebindOverlay?.SetActive(true);
             // if (m_RebindText != null)
             // {
             //     var text = !string.IsNullOrEmpty(m_RebindOperation.expectedControlType)
@@ -333,12 +342,44 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             // if (m_RebindOverlay == null && m_RebindText == null && m_RebindStartEvent == null && m_BindingText != null)
             //     m_BindingText.text = "<Waiting...>";
 
-            m_BindingText.text = "[Waiting For Input]";
+            m_BindingText.text = "<color=red>[Waiting For Input]</color>";
 
             // Give listeners a chance to act on the rebind starting.
             m_RebindStartEvent?.Invoke(this, m_RebindOperation);
 
             m_RebindOperation.Start();
+        }
+
+        public bool CheckDuplicateBindings(InputAction action, int bindingIndex, bool allComposite = false)
+        {
+            // Make sure we are checking the bindings of the action that is actually being
+            // rebounded and ignore the binding at the provided index itself. Using the
+            // index avoids problems with comparing copies of the struct.
+            var newBinding = action.bindings[bindingIndex];
+            var newPath = newBinding.effectivePath;
+
+            for (int i = 0; i < action.bindings.Count; ++i)
+            {
+                if (i == bindingIndex)
+                    continue;
+
+                if (action.bindings[i].effectivePath == newPath)
+                    return true;
+            }
+
+            // When rebinding composite parts, also ensure earlier parts don't already use the same
+            // control. This covers the case where multiple parts of the same composite might end up
+            // bound to the same button/axis after several rebinds.
+            if (allComposite)
+            {
+                for (int i = 0; i < bindingIndex; ++i)
+                {
+                    if (action.bindings[i].effectivePath == newPath)
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         protected void OnEnable()
