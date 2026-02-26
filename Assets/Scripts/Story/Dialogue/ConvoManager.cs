@@ -1,7 +1,7 @@
+using Dialogue.Functions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.HableCurve;
 
 namespace Dialogue
 {
@@ -54,18 +54,17 @@ namespace Dialogue
                     DialogueStructure line = DialogueParser.Parse(convo[i]);
 
                     if (line.hasDialogue)
-                    {
                         yield return RunDialogue(line);
-                    }
                     if (line.hasFunctions)
-                    {
                         yield return RunFunctions(line);
-                    }
+
+                    if (line.hasDialogue)
+                        yield return WaitForUserInput();
                 }
             }
         }
 
-        //Playing Convo
+        #region Handling Dialogues
         IEnumerator RunDialogue(DialogueStructure line)
         {
             if (line.hasSpeaker)
@@ -82,27 +81,25 @@ namespace Dialogue
 
             Debug.Log(line.dialogue.Count);
 
-            foreach (DialogueSegment segment in line.dialogue)
+            foreach (DialogueData segment in line.dialogue)
             {
                 yield return HandleSegmentSignal(segment);
                 yield return BuildDialogue(segment.dialogue, segment.append);
             }
-
-            yield return WaitForUserInput();
         }
 
-        IEnumerator HandleSegmentSignal(DialogueSegment segment)
+        IEnumerator HandleSegmentSignal(DialogueData segment)
         {
             Debug.Log(segment.segmentSignal);
             switch (segment.segmentSignal)
             {
-                case DialogueSegment.SegmentSignal.C:
-                case DialogueSegment.SegmentSignal.A:
+                case DialogueData.SegmentSignal.C:
+                case DialogueData.SegmentSignal.A:
                     Debug.Log($"Press to continue");
                     yield return WaitForUserInput();
                     break;
-                case DialogueSegment.SegmentSignal.WC:
-                case DialogueSegment.SegmentSignal.WA:
+                case DialogueData.SegmentSignal.WC:
+                case DialogueData.SegmentSignal.WA:
                     Debug.Log($"Waiting for {segment.signalDelay} seconds");
                     yield return new WaitForSeconds(segment.signalDelay);
                     break;
@@ -135,7 +132,7 @@ namespace Dialogue
                 yield return null;
             }
         }
-
+        #endregion
 
         IEnumerator WaitForUserInput()
         {
@@ -146,10 +143,21 @@ namespace Dialogue
             userPrompt = false;
         }
 
-        //Running Convo Functions
+        #region Handling Functions
         IEnumerator RunFunctions(DialogueStructure line)
         {
+            List<FunctionsData> functions = line.functions;
+
+            foreach (FunctionsData function in functions)
+            {
+                if(function.waitForCompletion)
+                    yield return DialogueFunctionManager.Instance.Execute(function.name, function.args);
+                else
+                    DialogueFunctionManager.Instance.Execute(function.name, function.args);
+            }
+
             yield return null;
         }
+        #endregion
     }
 }

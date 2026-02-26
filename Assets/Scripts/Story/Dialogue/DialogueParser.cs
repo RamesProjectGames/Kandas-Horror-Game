@@ -5,7 +5,7 @@ namespace Dialogue
 {
     public class DialogueParser
     {
-        private const string regexString = @"\w*[^\s]\(";
+        private const string functionRegexPattern = @"[\w\[\]]*[^\s]\(";
 
         //Creating Dialogue Structure from separated lines
         public static DialogueStructure Parse(string line)
@@ -48,15 +48,24 @@ namespace Dialogue
             }
 
             //Functions Segment
-            Regex funcRegex = new Regex(regexString);
-            Match match = funcRegex.Match(line);
+            Regex funcRegex = new Regex(functionRegexPattern);
+            MatchCollection matches = funcRegex.Matches(line);
             int functionsStart = -1;
-            if (match.Success)
+
+            foreach (Match match in matches)
             {
-                functionsStart = match.Index;
-                if(dialogueStart == -1 && dialogueEnd == -1)
-                    return ("", "", line.Trim());
+                if (match.Success)
+                {
+                    if(match.Index < dialogueStart || match.Index >= dialogueEnd)
+                    {
+                        functionsStart = match.Index;
+                        break;
+                    }
+                }
             }
+
+            if (functionsStart != -1 && dialogueStart == -1 && dialogueEnd == -1)
+                return ("", "", line.Trim());
 
             if (dialogueStart != -1 && dialogueEnd != -1 && (functionsStart == -1 || functionsStart > dialogueEnd))
             {
@@ -71,7 +80,7 @@ namespace Dialogue
             }
             else
             {
-                speaker = line.Trim();
+                dialogue = line.Trim();
             }
             return (speaker, dialogue, functions);
         }

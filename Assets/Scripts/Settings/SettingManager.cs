@@ -411,7 +411,6 @@ public class SettingManager : MonoBehaviour
     }
     #endregion 
 
-
     #region Audio Settings Methods
 
     public void SetMusicVolume(float volume)

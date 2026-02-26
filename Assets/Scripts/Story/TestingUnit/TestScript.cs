@@ -55,7 +55,7 @@ namespace TestingPurposes
             {
                 DialogueSystem.Instance.OnUserPrompt();
             }
-            else if(Input.GetKeyDown(KeyCode.A))
+            else if (Input.GetKeyDown(KeyCode.A))
             {
                 if (archi.isBuilding)
                 {
