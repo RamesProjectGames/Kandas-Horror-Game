@@ -5,12 +5,21 @@ public class PlayerGrabInteraction : MonoBehaviour
 {
     public float pickupRadius = 2f;
     public float frontDotThreshold = 0.5f;
+    [Tooltip("X = minimum force, Y = maximum force when fully charged.")]
+    public Vector2 throwForce;
+
+    [Tooltip("How long the player can hold the throw button to reach max force.")]
+    public float maxThrowChargeTime = 1f;
+
     public LayerMask pickupLayer, interactableLayer;
     public Transform holdPoint;
 
     private ItemInteraction currentItem;
     private ItemInteraction heldItem;
     private InputAction grabAction, throwAction, interAction;
+
+    // runtime state for charging a throw
+    private float throwCharge;
 
     void Start()
     {
@@ -42,13 +51,33 @@ public class PlayerGrabInteraction : MonoBehaviour
                         heldItem = currentItem;
                         heldItem.Pickup(holdPoint);
                     }
-                    else if (heldItem != null)
-                    {
-                        heldItem.Throw(transform.forward);
-                        heldItem = null;
-                        currentItem = null;
-                    }
                 }
+            }
+        }
+        // handle charging and releasing a throw
+        if (throwAction != null)
+        {
+            // accumulate charge while the button is held and we have an item
+            if (throwAction.IsPressed() && heldItem != null)
+            {
+                throwCharge += Time.deltaTime;
+                if (throwCharge > maxThrowChargeTime)
+                    throwCharge = maxThrowChargeTime;
+            }
+
+            // when the button is released, actually perform the throw
+            if (throwAction.WasReleasedThisFrame())
+            {
+                if (heldItem != null)
+                {
+                    float t = Mathf.Clamp01(throwCharge / maxThrowChargeTime);
+                    float forceMag = Mathf.Lerp(throwForce.x, throwForce.y, t);
+                    heldItem.Throw(transform.forward * forceMag);
+                    heldItem = null;
+                }
+
+                // reset charge no matter what
+                throwCharge = 0f;
             }
         }
     }

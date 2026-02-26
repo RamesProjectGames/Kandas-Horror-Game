@@ -613,7 +613,7 @@ GameObject:
   - component: {fileID: 76717634}
   m_Layer: 8
   m_Name: Wall
-  m_TagString: Material Editable
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1011,7 +1011,7 @@ GameObject:
   - component: {fileID: 147673206}
   m_Layer: 0
   m_Name: ===Environment===
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2169,7 +2169,7 @@ GameObject:
   - component: {fileID: 248444833}
   m_Layer: 0
   m_Name: Hiding Place
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3394,7 +3394,7 @@ GameObject:
   - component: {fileID: 343170963}
   m_Layer: 0
   m_Name: TV
-  m_TagString: Material Editable
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4573,7 +4573,7 @@ GameObject:
   - component: {fileID: 437112423}
   m_Layer: 8
   m_Name: Wall (1)
-  m_TagString: Material Editable
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5888,7 +5888,7 @@ GameObject:
   - component: {fileID: 572896783}
   m_Layer: 0
   m_Name: Face
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7366,7 +7366,7 @@ GameObject:
   - component: {fileID: 683745602}
   m_Layer: 8
   m_Name: Wall (2)
-  m_TagString: Material Editable
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11320,7 +11320,7 @@ GameObject:
   - component: {fileID: 934742813}
   m_Layer: 0
   m_Name: Bounds
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11665,7 +11665,7 @@ GameObject:
   - component: {fileID: 952238274}
   m_Layer: 8
   m_Name: Wall (3)
-  m_TagString: Material Editable
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12679,7 +12679,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hold or Press E
+  m_text: E
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a689d5f143bcc7d449b37f31cbd56b63, type: 2}
   m_sharedMaterial: {fileID: 7174644295773688519, guid: a689d5f143bcc7d449b37f31cbd56b63, type: 2}
@@ -15550,7 +15550,7 @@ GameObject:
   - component: {fileID: 1219594500}
   m_Layer: 11
   m_Name: Remote
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18099,7 +18099,7 @@ GameObject:
   - component: {fileID: 1389537823}
   m_Layer: 3
   m_Name: Floor
-  m_TagString: Material Editable
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19222,7 +19222,7 @@ GameObject:
   - component: {fileID: 1483814739}
   m_Layer: 8
   m_Name: Wall (3)
-  m_TagString: Material Editable
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20634,7 +20634,7 @@ MonoBehaviour:
   jumpPow: 2
   gravity: 9.81
   groundDist: 0.1
-  speed: 25
+  speed: 100
   sprintMulti: 2
   jumpCd: 0
   maxStamina: 100
@@ -21006,12 +21006,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupRadius: 2
   frontDotThreshold: 0.45
+  throwForce: {x: 1, y: 2}
+  maxThrowChargeTime: 3
   pickupLayer:
     serializedVersion: 2
     m_Bits: 512
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   holdPoint: {fileID: 161661405}
 --- !u!114 &1562211053
 MonoBehaviour:
@@ -21967,7 +21969,7 @@ GameObject:
   - component: {fileID: 1588634922}
   m_Layer: 8
   m_Name: Wall (2)
-  m_TagString: Material Editable
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25241,7 +25243,7 @@ GameObject:
   - component: {fileID: 1772177436}
   m_Layer: 6
   m_Name: Quad
-  m_TagString: Material Editable
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25484,7 +25486,7 @@ GameObject:
   - component: {fileID: 1775802859}
   m_Layer: 8
   m_Name: Wall (4)
-  m_TagString: Material Editable
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27966,7 +27968,7 @@ GameObject:
   - component: {fileID: 1914869468}
   m_Layer: 8
   m_Name: Wall (1)
-  m_TagString: Material Editable
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28153,6 +28155,8 @@ MonoBehaviour:
     GameLanguage: 0
   minimumFogDistance: 0.05
   maximumFogDistance: 0.125
+  DefaultMat: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  VertexJitterMat: {fileID: 2100000, guid: 48755e82535867e47bc1b1eff93f8886, type: 2}
   minimumMicrophoneVolume: 100
   maximumMicrophoneVolume: 500
   minimumMouseSensitivity: 0.01
@@ -29462,7 +29466,7 @@ GameObject:
   - component: {fileID: 1986009861}
   m_Layer: 9
   m_Name: Pick Up Item
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
