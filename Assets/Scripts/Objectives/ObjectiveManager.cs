@@ -7,7 +7,7 @@ public class ObjectiveManager : MonoBehaviour
     public List<ObjectiveData> objectiveDatas = new List<ObjectiveData>();
     public Objectives ObjectivePrefab;
     public Transform ObjectivesParent;
-    List<Objectives> Objectives;
+    List<Objectives> Objectives = new List<Objectives>();
 
     void Awake()
     {

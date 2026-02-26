@@ -40,11 +40,11 @@ public class PlayerGrabInteraction : MonoBehaviour
         {
             if (currentItem != null)
             {
-                if (1 << currentItem.gameObject.layer == interactableLayer)
+                if ((interactableLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
                     currentItem.onInteract.Invoke();
                 }
-                else if (1 << currentItem.gameObject.layer == pickupLayer)
+                else if ((pickupLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
                     if (currentItem != null && heldItem == null)
                     {

@@ -36,5 +36,6 @@ public class ObjectiveData
     public string Description;
     public bool IsCompleted;
     public bool isHidden;
+    public string nextObjective;
     public GameObject ObjectiveObject;
 }
