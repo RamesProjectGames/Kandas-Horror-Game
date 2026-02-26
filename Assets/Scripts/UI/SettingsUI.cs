@@ -119,7 +119,6 @@ public class SettingsUI : MonoBehaviour
             case SettingData.Resolution.R1280x800: return "1280 x 800";
             case SettingData.Resolution.R1024x768: return "1024 x 768";
             case SettingData.Resolution.R800x600: return "800 x 600";
-            case SettingData.Resolution.R640x480: return "640 x 480";
             default: return res.ToString();
         }
     }

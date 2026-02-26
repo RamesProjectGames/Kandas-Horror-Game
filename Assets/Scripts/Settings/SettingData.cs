@@ -13,8 +13,7 @@ public class SettingData
 		R1440x900,
 		R1280x800,
 		R1024x768,
-		R800x600,
-		R640x480
+		R800x600
 	}
 	public Resolution GameResolution = Resolution.R1920x1080;
 

@@ -1,5 +1,7 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerGrabInteraction : MonoBehaviour
 {
@@ -13,6 +15,10 @@ public class PlayerGrabInteraction : MonoBehaviour
 
     public LayerMask pickupLayer, interactableLayer;
     public Transform holdPoint;
+    [Tooltip("Optional camera whose forward vector will be used for throws. If not assigned the player transform is used.")]
+    public Camera playerCamera;
+    public TextMeshProUGUI throwInteractionText;
+    public Image throwthresholdImage;
 
     private ItemInteraction currentItem;
     private ItemInteraction heldItem;
@@ -54,15 +60,26 @@ public class PlayerGrabInteraction : MonoBehaviour
                 }
             }
         }
+        
         // handle charging and releasing a throw
         if (throwAction != null)
         {
+            if (heldItem != null)
+            {
+                string bindingDisplay = throwAction.GetBindingDisplayString(0);
+                throwInteractionText.text = $"Press {bindingDisplay} to throw";
+            }
+            else
+            {
+                throwInteractionText.text = "";
+            }
             // accumulate charge while the button is held and we have an item
             if (throwAction.IsPressed() && heldItem != null)
             {
                 throwCharge += Time.deltaTime;
                 if (throwCharge > maxThrowChargeTime)
                     throwCharge = maxThrowChargeTime;
+
             }
 
             // when the button is released, actually perform the throw
@@ -72,13 +89,16 @@ public class PlayerGrabInteraction : MonoBehaviour
                 {
                     float t = Mathf.Clamp01(throwCharge / maxThrowChargeTime);
                     float forceMag = Mathf.Lerp(throwForce.x, throwForce.y, t);
-                    heldItem.Throw(transform.forward * forceMag);
+                    // use camera forward direction if available, otherwise fall back to player forward
+                    Vector3 direction = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
+                    heldItem.Throw(direction * forceMag);
                     heldItem = null;
                 }
 
                 // reset charge no matter what
                 throwCharge = 0f;
             }
+            throwthresholdImage.fillAmount = throwCharge / maxThrowChargeTime;
         }
     }
 

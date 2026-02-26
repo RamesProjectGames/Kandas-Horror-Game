@@ -195,9 +195,6 @@ public class SettingManager : MonoBehaviour
             case SettingData.Resolution.R800x600:
                 Screen.SetResolution(800, 600, Screen.fullScreen);
                 break;
-            case SettingData.Resolution.R640x480:
-                Screen.SetResolution(640, 480, Screen.fullScreen);
-                break;
         }
 
         // Frame Rate
