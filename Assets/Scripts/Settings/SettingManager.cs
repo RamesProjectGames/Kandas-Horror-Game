@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.InputSystem.Samples.RebindUI;
 using UnityEngine.InputSystem;
+using System;
+using FMOD;
 public class SettingManager : MonoBehaviour
 {
     public static SettingManager Instance { get; private set; }
@@ -339,15 +341,40 @@ public class SettingManager : MonoBehaviour
     
     public void SelectAudioInputDevice(int index)
     {
-        if (index >= 0 && index < Microphone.devices.Length)
+        string micName = GetMicName(index);
+        if (!string.IsNullOrEmpty(micName))
         {
-            settings.AudioInputDeviceName = Microphone.devices[index];
+            settings.AudioInputDeviceName = GetMicName(index);
         }
         else
         {
             settings.AudioInputDeviceName = "";
         }
         SaveSettings();
+    }
+    public string GetMicName(int index)
+    {
+        var core = RuntimeManager.CoreSystem;
+
+        string name;
+        Guid guid;
+        int rate;
+        SPEAKERMODE mode;
+        int channels;
+        DRIVER_STATE state;
+
+        core.getRecordDriverInfo(
+            index,
+            out name,
+            256,
+            out guid,
+            out rate,
+            out mode,
+            out channels,
+            out state
+        );
+
+        return name;
     }
     public void SelectAudioOutputDevice(int index)
     {

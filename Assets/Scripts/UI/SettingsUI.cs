@@ -16,6 +16,7 @@ public class SettingsUI : MonoBehaviour
         settingManager = SettingManager.Instance;
         UpdateUI();
         PopulateAudioInputDevices();
+        PopulateAudioOutputDevices();
         PopulateLanguageOptions();
         ScrollToSection(0);
         HighlightSectionButton(0);
@@ -136,19 +137,60 @@ public class SettingsUI : MonoBehaviour
     [SerializeField] private List<RebindActionUI> rebindActions = new List<RebindActionUI>();
     public void PopulateAudioInputDevices()
     {
-        microphoneDropdown.ClearOptions();
-        if(Microphone.devices.Length == 0)
+        var core = RuntimeManager.CoreSystem;
+
+        int numDrivers = 0;
+        int numConnected = 0;
+        core.getRecordNumDrivers(out numDrivers, out numConnected);
+
+        if(numDrivers == 0)
         {
-            microphoneDropdown.options.Add(new TMP_Dropdown.OptionData("No Microphone Detected"));
+            microphoneDropdown.ClearOptions();
+            microphoneDropdown.options.Add(new TMP_Dropdown.OptionData("No Output Devices Detected"));
             microphoneDropdown.interactable = false;
+            return;
         }
-        else
+
+        List<string> options = new List<string>();
+
+        for (int i = 0; i < numDrivers; i++)
         {
-            foreach (var device in Microphone.devices)
-            {
-                microphoneDropdown.options.Add(new TMP_Dropdown.OptionData(device));
-            }
+            string name;
+            Guid guid;
+            int rate;
+            SPEAKERMODE mode;
+            int channels;
+            DRIVER_STATE state;
+
+            core.getRecordDriverInfo(
+                i,
+                out name,
+                256,
+                out guid,
+                out rate,
+                out mode,
+                out channels,
+                out state
+            );
+
+            options.Add(name);
         }
+
+        microphoneDropdown.ClearOptions();
+        microphoneDropdown.AddOptions(options);
+        
+        // if(Microphone.devices.Length == 0)
+        // {
+        //     microphoneDropdown.options.Add(new TMP_Dropdown.OptionData("No Microphone Detected"));
+        //     microphoneDropdown.interactable = false;
+        // }
+        // else
+        // {
+        //     foreach (var device in Microphone.devices)
+        //     {
+        //         microphoneDropdown.options.Add(new TMP_Dropdown.OptionData(device));
+        //     }
+        // }
            
     }
     public void PopulateAudioOutputDevices()
