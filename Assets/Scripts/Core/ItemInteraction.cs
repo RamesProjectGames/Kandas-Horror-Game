@@ -1,22 +1,27 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class ItemInteraction : MonoBehaviour
 {
     public float throwForce = 10f;
     public GameObject pickupUI;
+    public InputActionAsset inputActions;
+    public string ItemInteractionText;
 
     public UnityEvent onInteract;
 
     private Rigidbody rb;
     public Transform player;
     public bool IsHeld { get; private set; }
+    private TextMeshProUGUI pickupText;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        pickupText = pickupUI.GetComponent<TextMeshProUGUI>();
         pickupUI.SetActive(false);
     }
 
@@ -29,7 +34,18 @@ public class ItemInteraction : MonoBehaviour
     public void ShowUI()
     {
         if (!IsHeld)
+        {
+            if (pickupText != null && inputActions != null)
+            {
+                var interactAction = inputActions.FindAction("Interact");
+                if (interactAction != null)
+                {
+                    string bindingDisplay = interactAction.GetBindingDisplayString(0);
+                    pickupText.text = $"Press {bindingDisplay} {ItemInteractionText}";
+                }
+            }
             pickupUI.SetActive(true);
+        }
     }
 
     public void HideUI()
