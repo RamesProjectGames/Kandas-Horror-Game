@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -36,6 +37,7 @@ public class ObjectiveData
     public string Description;
     public bool IsCompleted;
     public bool isHidden;
-    public string nextObjective;
+    public List<string> requierements = new List<string>();
+    public string LimitedAfterObjective;
     public GameObject ObjectiveObject;
 }
