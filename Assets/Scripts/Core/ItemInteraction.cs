@@ -27,8 +27,6 @@ public class ItemInteraction : MonoBehaviour
 
     void Update()
     {
-        pickupUI.transform.LookAt(player.position);
-        pickupUI.transform.Rotate(0, 180, 0);
 
         if (pickupText != null && inputActions != null)
         {
