@@ -12,6 +12,8 @@ namespace Dialogue.Functions
 
         public void AddFunction(string functionName, Delegate function)
         {
+            functionName = functionName.ToLower();
+
             if (!database.ContainsKey(functionName))
             {
                 database.Add(functionName, function);
@@ -23,6 +25,8 @@ namespace Dialogue.Functions
         }
         public Delegate GetFunction(string functionName)
         {
+            functionName = functionName.ToLower();
+
             if (!database.ContainsKey(functionName))
             {
                 Debug.LogError($"Function {functionName} doesn't exist in the database");

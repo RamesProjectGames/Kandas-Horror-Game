@@ -55,20 +55,20 @@ namespace TestingPurposes
             {
                 DialogueSystem.Instance.OnUserPrompt();
             }
-            else if (Input.GetKeyDown(KeyCode.A))
-            {
-                if (archi.isBuilding)
-                {
-                    if (archi.speedUp)
-                        archi.ForceComplete();
-                    else
-                        archi.speedUp = true;
-                }
-                else
-                {
-                    archi.Append(testLines[Random.Range(0, testLines.Length)]);
-                }
-            }
+            //else if (Input.GetKeyDown(KeyCode.A))
+            //{
+            //    if (archi.isBuilding)
+            //    {
+            //        if (archi.speedUp)
+            //            archi.ForceComplete();
+            //        else
+            //            archi.speedUp = true;
+            //    }
+            //    else
+            //    {
+            //        archi.Append(testLines[Random.Range(0, testLines.Length)]);
+            //    }
+            //}
         }
     }
 }
