@@ -115,7 +115,8 @@ public class PlayerGrabInteraction : MonoBehaviour
                 continue;
 
             Vector3 toItem = (hit.transform.position - transform.position).normalized;
-            float dot = Vector3.Dot(transform.forward, toItem);
+            Vector3 detectionForward = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
+            float dot = Vector3.Dot(detectionForward, toItem);
 
             // Only detect front cone
             if (dot >= frontDotThreshold)
@@ -147,6 +148,7 @@ public class PlayerGrabInteraction : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, pickupRadius);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawRay(transform.position, transform.forward * pickupRadius);
+        Vector3 gizmoForward = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
+        Gizmos.DrawRay(transform.position, gizmoForward * pickupRadius);
     }
 }
