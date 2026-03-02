@@ -1,13 +1,14 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer))]
 [ExecuteAlways]
+[RequireComponent(typeof(Renderer))]
 public class URPAtlasOffsetRealtime : MonoBehaviour
 {
-    [Header("URP Settings")]
-    public string texturePropertyName = "_BaseMap";
+    [Header("Standard Pipeline Settings")]
+    [Tooltip("Default untuk Standard Shader adalah _MainTex")]
+    public string texturePropertyName = "_MainTex";
 
-    [Header("Offset Control")]
+    [Header("Offset & Tiling Control")]
     public Vector2 offset = Vector2.zero;
     public Vector2 tiling = Vector2.one;
 
@@ -22,39 +23,39 @@ public class URPAtlasOffsetRealtime : MonoBehaviour
 
     private void OnValidate()
     {
-        // OnValidate dipanggil saat nilai di inspector diubah
         ApplyOffset();
     }
 
+    // Update diaktifkan agar perubahan di Scene View terlihat instan
     private void Update()
     {
-        // Tetap panggil ApplyOffset agar perubahan terlihat realtime di Scene
+        // Pengecekan null tambahan untuk mencegah error 'dest' di editor
+        if (_renderer == null || _propBlock == null) Init();
+
         ApplyOffset();
     }
 
     private void Init()
     {
-        if (_renderer == null) _renderer = GetComponent<Renderer>();
-
-        // Inisialisasi PropertyBlock jika masih null
+        _renderer = GetComponent<Renderer>();
         if (_propBlock == null) _propBlock = new MaterialPropertyBlock();
 
+        // Di Standard Shader, Tiling & Offset digabung dalam properti _ST (Scale/Translate)
         _propID = Shader.PropertyToID(texturePropertyName + "_ST");
     }
 
     private void ApplyOffset()
     {
-        // Pastikan semua komponen sudah siap sebelum eksekusi
-        if (_renderer == null) _renderer = GetComponent<Renderer>();
+        if (_renderer == null) return;
         if (_propBlock == null) _propBlock = new MaterialPropertyBlock();
 
-        // Ambil data block saat ini (Ini baris yang tadi error)
+        // Mengambil data block agar tidak menimpa settingan shader lain
         _renderer.GetPropertyBlock(_propBlock);
 
-        // Set Tiling dan Offset: (TilingX, TilingY, OffsetX, OffsetY)
+        // Standard Shader Vector4: (Tiling X, Tiling Y, Offset X, Offset Y)
         _propBlock.SetVector(_propID, new Vector4(tiling.x, tiling.y, offset.x, offset.y));
 
-        // Terapkan kembali ke renderer
+        // Terapkan ke renderer secara individual
         _renderer.SetPropertyBlock(_propBlock);
     }
 }
