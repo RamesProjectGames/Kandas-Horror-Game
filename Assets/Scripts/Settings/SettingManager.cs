@@ -203,20 +203,6 @@ public class SettingManager : MonoBehaviour
         // V-Sync
         QualitySettings.vSyncCount = settings.VSync ? 1 : 0;
 
-        // Texture Quality
-        switch (settings.TextureQuality)
-        {
-            case SettingData.TextureQualityLevel.Low:
-                QualitySettings.globalTextureMipmapLimit = 2;
-                break;
-            case SettingData.TextureQualityLevel.Medium:
-                QualitySettings.globalTextureMipmapLimit = 1;
-                break;
-            case SettingData.TextureQualityLevel.High:
-                QualitySettings.globalTextureMipmapLimit = 0;
-                break;
-        }
-
         // The following settings require post-processing or custom shaders/scripts
         // These are placeholders for integration with your effects pipeline
 
@@ -224,10 +210,10 @@ public class SettingManager : MonoBehaviour
         // Example: Enable/disable post-processing effects here
         // You will need to reference your post-processing volumes or custom scripts
         postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().DitherThreshold.value = settings.Dithering ? 0.5f : 0f;
-        postProcessVolume.profile.GetSetting<Bloom>().active = settings.Bloom;
-        postProcessVolume.profile.GetSetting<Grain>().active = settings.Grain;
+        postProcessVolume.profile.GetSetting<Bloom>().intensity.value = settings.Bloom ? 5f : 0f;
+        postProcessVolume.profile.GetSetting<Grain>().intensity.value = settings.Grain ? .5f : 0f;
         RenderSettings.fogDensity = settings.Fog;
-        postProcessVolume.profile.GetSetting<MotionBlur>().active = settings.MotionBlur;
+        postProcessVolume.profile.GetSetting<MotionBlur>().sampleCount.value = settings.MotionBlur ? 10 : 0;
         MeshRenderer[] all = FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None);
 
         foreach (var mr in all)

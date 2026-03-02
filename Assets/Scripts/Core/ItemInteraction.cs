@@ -5,14 +5,25 @@ using UnityEngine.InputSystem;
 
 public class ItemInteraction : MonoBehaviour
 {
+    [Header("Throwing")]
     public float throwForce = 10f;
+
+    [Header("Pickup UI")]
     public GameObject pickupUI;
     public InputActionAsset inputActions;
     public string ItemInteractionText;
 
+    [Header("Landing / Alert")]
+    [Tooltip("Clip that plays when the object lands after being thrown.")]
+    public AudioClip landingSound;
+    [Tooltip("Enemies within this radius will be alerted when the item lands.")]
+    public float landingAlertRadius = 10f;
+
     public UnityEvent onInteract;
 
     private Rigidbody rb;
+    private bool hasBeenThrown;
+
     public Transform player;
     public bool IsHeld { get; private set; }
     public TextMeshPro pickupText;
@@ -23,6 +34,7 @@ public class ItemInteraction : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         pickupText = pickupUI.GetComponent<TextMeshPro>();
         pickupUI.SetActive(false);
+        hasBeenThrown = false;
     }
 
     void Update()
@@ -82,5 +94,47 @@ public class ItemInteraction : MonoBehaviour
     {
         Drop();
         rb.AddForce(direction * throwForce, ForceMode.Impulse);
+        hasBeenThrown = true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // if the object was just thrown and it hits something, assume it has landed
+        if (hasBeenThrown && !IsHeld)
+        {
+            hasBeenThrown = false;
+            HandleLanding();
+        }
+    }
+
+    private void HandleLanding()
+    {
+        // play landing sound if available
+        if (landingSound != null)
+        {
+            // Play one-shot at the impact position so that the sound can be picked up by
+            // the enemy sound detection system (which uses AudioSources) or just heard by
+            // the player.
+            AudioSource.PlayClipAtPoint(landingSound, transform.position);
+        }
+
+        // manually alert any nearby enemies so they start investigating the source
+        AlertNearbyEnemies();
+    }
+
+    private void AlertNearbyEnemies()
+    {
+        if (landingAlertRadius <= 0f) return;
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, landingAlertRadius, LayerMask.GetMask("Enemy"));
+        foreach (Collider hit in hits)
+        {
+            EnemyMovement em = hit.GetComponent<EnemyMovement>();
+            if (em != null)
+            {
+                // reuse the audio radius listener method to trigger pursuit
+                em.OnEnterAudioRadius(this.gameObject);
+            }
+        }
     }
 }
