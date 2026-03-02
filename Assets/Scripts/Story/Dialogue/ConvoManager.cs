@@ -150,7 +150,7 @@ namespace Dialogue
 
             foreach (FunctionsData function in functions)
             {
-                if(function.waitForCompletion)
+                if(function.waitForCompletion || function.name == "wait")
                     yield return DialogueFunctionManager.Instance.Execute(function.name, function.args);
                 else
                     DialogueFunctionManager.Instance.Execute(function.name, function.args);

@@ -1,12 +1,12 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
+public class EnemyMovement : MovableObjects, IAudioRadiusListener
 {
     [SerializeField] Waypoint[] point;
     [SerializeField] int idxPoint = 0;
     [SerializeField] EnemySightDetection fov;
-    NavMeshAgent agent;
     bool detectedSound;
     public Vector3 soundSource;
     public float speed = 3f;
@@ -165,8 +165,6 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
         reachPoint = false;
     }
 
-
-
     /// <summary>
     /// Handle the discovery process of opening a hiding spot.
     /// </summary>
@@ -219,6 +217,25 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
         }
     }
 
+    #region Agent Movement
+
+    public override IEnumerator Teleport(Vector3 pos)
+    {
+        agent.Warp(pos);
+        transform.LookAt(GameObject.Find("Player").transform.position);
+        agent.ResetPath();
+        ReturnToPatrol();
+        yield return new WaitForEndOfFrame();
+    }
+
+    public override IEnumerator Move(Vector3 pos)
+    {
+        agent.SetDestination(pos);
+        soundSource = pos;
+        StartAgentMovement();
+        yield return new WaitForEndOfFrame();
+    }
+
     /// <summary>
     /// Called when enemy gives up pursuit and returns to patrolling.
     /// </summary>
@@ -255,4 +272,6 @@ public class EnemyMovement : MonoBehaviour, IAudioRadiusListener
     {
         ReturnToPatrol();
     }
+
+    #endregion
 }

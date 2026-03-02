@@ -1,9 +1,11 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 //[RequireComponent (typeof(CharacterController), typeof(Animator))]
 [RequireComponent(typeof(CharacterController), typeof(AudioSource))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MovableObjects
 {
     [Header("Main Components")]
     [SerializeField] private CharacterController controller;
@@ -62,6 +64,15 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogWarning("PlayerInput component not found! Input will not work properly.");
         }
+
+        agent = GetComponent<NavMeshAgent>();
+        if (agent == null) agent = gameObject.AddComponent<NavMeshAgent>();
+
+        // Configure NavMeshAgent for auto movement
+        agent.angularSpeed = 300f;
+        agent.acceleration = 8f;
+        agent.stoppingDistance = 0.1f;
+        agent.isStopped = true;
     }
 
     // Update is called once per frame
@@ -111,6 +122,7 @@ public class PlayerController : MonoBehaviour
         //}
 
         //Movement
+        if(agent.isStopped)
         {
             if(!SettingManager.Instance.settings.SprintToggle)
             {
@@ -189,6 +201,15 @@ public class PlayerController : MonoBehaviour
                 //anim.SetBool("isRunning", true);
             }
         }
+        else
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                Vector3 posPoint = agent.destination - transform.position;
+                transform.rotation = Quaternion.LookRotation(posPoint);
+                agent.isStopped = true;
+            }
+        }
         if(Cursor.lockState == CursorLockMode.None) return;
         //Rotation
         {
@@ -209,8 +230,11 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(foot.position, groundDist, groundMask);
         //Debug.Log($"Player is Grounded: {isGrounded}");
-        controller.SimpleMove(moveSpd * Time.fixedDeltaTime * input);
-        controller.Move(Time.fixedDeltaTime * up);
+        if(controller.enabled)
+        {
+            controller.SimpleMove(moveSpd * Time.fixedDeltaTime * input);
+            controller.Move(Time.fixedDeltaTime * up);
+        }
     }
 
     private void LateUpdate()
@@ -229,4 +253,24 @@ public class PlayerController : MonoBehaviour
         audioSrc.clip = audioClip[Random.Range(0, audioClip.Length)];
         audioSrc.Play();
     }
+
+    #region Agent (auto) Movement
+    public override IEnumerator Teleport(Vector3 pos)
+    {
+        controller.enabled = false;
+        yield return new WaitForEndOfFrame();
+        agent.Warp(pos);
+        transform.LookAt(transform.forward);
+        agent.ResetPath();
+        yield return new WaitForEndOfFrame();
+        controller.enabled = true;
+    }
+
+    public override IEnumerator Move(Vector3 pos)
+    {
+        agent.SetDestination(pos);
+        agent.isStopped = false;
+        yield return new WaitForEndOfFrame();
+    }
+    #endregion
 }
