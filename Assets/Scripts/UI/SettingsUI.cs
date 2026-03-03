@@ -260,10 +260,15 @@ public class SettingsUI : MonoBehaviour
 
     #region Audio Settings UI Elements
 
+    public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
     public Slider soundEffectVolumeSlider;
     public Slider mobVolumeSlider;
 
+    public void SetMasterVolume(float value)
+    {
+        settingManager.SetMasterVolume(value);
+    }
     public void SetMusicVolume(float value)
     {
         settingManager.SetMusicVolume(value);

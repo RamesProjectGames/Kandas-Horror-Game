@@ -396,6 +396,11 @@ public class SettingManager : MonoBehaviour
 
     #region Audio Settings Methods
 
+    public void SetMasterVolume(float volume)
+    {
+        settings.MasterVolume = volume;
+        SaveSettings();
+    }
     public void SetMusicVolume(float volume)
     {
         settings.MusicVolume = volume;
@@ -413,6 +418,7 @@ public class SettingManager : MonoBehaviour
     }
     public void ResetAudioToDefaults()
     {
+        settings.MasterVolume = 1.0f;
         settings.MusicVolume = 1.0f;
         settings.SoundEffectVolume = 1.0f;
         settings.MobVolume = 1.0f;

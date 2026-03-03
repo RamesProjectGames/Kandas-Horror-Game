@@ -2,7 +2,7 @@ using Dialogue.Functions;
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
+using FMODUnity;
 
 namespace Dialogue.Functions
 {
@@ -28,6 +28,8 @@ namespace TestingPurposes
             db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
             db.AddFunction("Poultry", new Action(PrintPoultry));
             db.AddFunction("Objective", new Action<string>(CompleteObjective));
+            db.AddFunction("PlaySFX", new Action<string>(PlaySFX));
+            db.AddFunction("PlayBGM", new Action<string>(PlayBGM));
             //db.AddFunction("SetUpEnding", new Action());
 
         }
@@ -40,6 +42,7 @@ namespace TestingPurposes
             }
         }
 
+        #region Move Objects
         private static void TeleportObject(string[] args)
         {
             float x, y, z;
@@ -71,15 +74,31 @@ namespace TestingPurposes
                 mo.StartCoroutine(mo.Move(new Vector3(x, y, z)));
             }
         }
+        #endregion
 
         private static void PrintPoultry()
         {
             Debug.Log("Poultry printed from functions");
         }
 
+        #region Objective
         private static void CompleteObjective(string arg)
         {
             ObjectiveManager.Instance.CompleteObjective(arg);
         }
+        #endregion
+
+        #region Audio
+        private static void PlaySFX(string arg)
+        {
+            EventReference sfx = RuntimeManager.PathToEventReference(arg);
+            AudioManager.Instance.PlayOneShot(sfx, GameObject.Find("Player").transform.position);
+        }
+
+        private static void PlayBGM(string arg)
+        {
+
+        }
+        #endregion
     }
 }

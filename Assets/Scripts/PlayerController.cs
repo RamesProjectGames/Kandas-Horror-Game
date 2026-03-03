@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 //[RequireComponent (typeof(CharacterController), typeof(Animator))]
-[RequireComponent(typeof(CharacterController), typeof(AudioSource))]
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MovableObjects
 {
     [Header("Main Components")]

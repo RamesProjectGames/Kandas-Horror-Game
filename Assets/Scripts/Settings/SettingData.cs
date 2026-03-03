@@ -37,10 +37,15 @@ public class SettingData
 	public float MouseSensitivity = .5f; // 1.0 = default
 	public bool SprintToggle = false; // false = hold to sprint, true = toggle
 
-	// Audio Settings
-	public float MusicVolume = 1.0f;
-	public float SoundEffectVolume = 1.0f;
-	public float MobVolume = 1.0f;
+    // Audio Settings
+    [Range(0, 1)]
+    public float MasterVolume = 1.0f;
+    [Range(0, 1)]
+    public float MusicVolume = 1.0f;
+    [Range(0, 1)]
+    public float SoundEffectVolume = 1.0f;
+    [Range(0, 1)]
+    public float MobVolume = 1.0f;
 
 	//Language Settings
 	public enum Language { English, Indonesia }
