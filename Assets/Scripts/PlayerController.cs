@@ -110,12 +110,9 @@ public class PlayerController : MovableObjects
         }
         if (inputController != null)
         {
-            // Calculate your desired sensitivity
-            float minSens = 0.1f;
-            float maxSens = 50.0f;
 
-            float sliderValue = SettingManager.Instance.settings.MouseSensitivity * lookSensitivity;
-            float calculatedGain = Mathf.Lerp(minSens, maxSens, sliderValue);
+            float sliderValue = SettingManager.Instance.settings.MouseSensitivity ;
+            float calculatedGain = Mathf.Lerp(SettingManager.Instance.minimumMouseSensitivity, SettingManager.Instance.maximumMouseSensitivity, sliderValue) * lookSensitivity;
 
             // Controllers is a list. Usually: Index 0 = Pan, Index 1 = Tilt
             foreach (var controller in inputController.Controllers)
@@ -281,11 +278,12 @@ public class PlayerController : MovableObjects
         }
         
         
-        if (Cursor.lockState == CursorLockMode.Locked)
-        {
-            // Sync body to camera's horizontal direction
-            transform.rotation = Quaternion.Euler(0, playerCam.transform.eulerAngles.y, 0);
-        }
+        // Player body rotation is handled by Cinemachine camera - do not force rotation here
+        // Uncomment only if you need manual body rotation separate from camera
+        // if (Cursor.lockState == CursorLockMode.Locked)
+        // {
+        //     transform.rotation = Quaternion.Euler(0, playerCam.transform.eulerAngles.y, 0);
+        // }
         //Rotation
         // {
         //     Vector2 lookInput = lookAction != null ? lookAction.ReadValue<Vector2>() : Vector2.zero;
