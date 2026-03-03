@@ -9684,6 +9684,7 @@ GameObject:
   - component: {fileID: 803191351}
   - component: {fileID: 803191350}
   - component: {fileID: 803191349}
+  - component: {fileID: 803191353}
   - component: {fileID: 803191352}
   m_Layer: 7
   m_Name: Player Camera
@@ -9843,6 +9844,23 @@ MonoBehaviour:
         DecelTime: 0.2
   PlayerIndex: -1
   AutoEnableInputs: 1
+--- !u!114 &803191353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803191347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoiseProfile: {fileID: 11400000, guid: e9ce97b7a206dc64d90931ea044e0c72, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 1
+  FrequencyGain: 1
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &803790268
 GameObject:
   m_ObjectHideFlags: 0
@@ -18860,6 +18878,7 @@ GameObject:
   - component: {fileID: 1389537825}
   - component: {fileID: 1389537824}
   - component: {fileID: 1389537823}
+  - component: {fileID: 1389537826}
   m_Layer: 3
   m_Name: Floor
   m_TagString: Environment
@@ -18957,6 +18976,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1389537821}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1389537826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389537821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14c79a3f40ea7b4583c6cbf377b1e02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 0
 --- !u!1 &1396191537
 GameObject:
   m_ObjectHideFlags: 0
@@ -21389,6 +21421,7 @@ GameObject:
   - component: {fileID: 1562211052}
   - component: {fileID: 1562211053}
   - component: {fileID: 1562211054}
+  - component: {fileID: 1562211055}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -21440,6 +21473,8 @@ MonoBehaviour:
   walkBobAmplitude: 0.5
   walkBobFrequency: 1
   idleBobAmplitude: 0.05
+  footstepManager: {fileID: 0}
+  stepDistance: 2
 --- !u!95 &1562211044
 Animator:
   serializedVersion: 7
@@ -21847,6 +21882,40 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1562211055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562211042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 759662f1d67e40b4fa30a6dc01253e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FootstepAudioData:
+  - footStepSound:
+    - {fileID: 8300000, guid: a6897bb5ab7305d42b823b752f9addd1, type: 3}
+    - {fileID: 8300000, guid: aa22085a8ced27a44aaddc0ce51f42c2, type: 3}
+    - {fileID: 8300000, guid: c13449c018e0b134891be072a9c084e8, type: 3}
+    - {fileID: 8300000, guid: 644d77c254229264d84dcd8ce34cca49, type: 3}
+    - {fileID: 8300000, guid: 99b85b3f25c231448bec51ffb0a564d0, type: 3}
+    - {fileID: 8300000, guid: afee5096274f9b042a7ef34f1126a1a8, type: 3}
+    - {fileID: 8300000, guid: 204335f5a3bac584680b8fdb5ee5d98b, type: 3}
+    surfaceType: 0
+  - footStepSound:
+    - {fileID: 8300000, guid: f17e70a0fe51e5f41b01571b3c191806, type: 3}
+    - {fileID: 8300000, guid: ab66b02ee6840d94a992a0e82f82bf5f, type: 3}
+    - {fileID: 8300000, guid: 2ed371b1ecfe05640acaeb5bdade5241, type: 3}
+    - {fileID: 8300000, guid: 71a15bd38f99d614bbe2ab9d0cd2bd30, type: 3}
+    - {fileID: 8300000, guid: 7689f5d92acbf2b4e9bd0e73d21316b5, type: 3}
+    - {fileID: 8300000, guid: c4e0304beec89d2408a5dc9204eac1b4, type: 3}
+    surfaceType: 1
+  Animator: {fileID: 1562211044}
+  Enviroment:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &1564729385
 GameObject:
   m_ObjectHideFlags: 0
