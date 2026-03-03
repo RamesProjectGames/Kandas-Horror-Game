@@ -254,8 +254,8 @@ public class PlayerController : MovableObjects
             if (input == Vector3.zero)
             {
                 // Smoothly transition to subtle breathing/idle
-                _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, idleBobAmplitude, Time.deltaTime * 5f);
-                _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, 0.5f, Time.deltaTime * 5f);
+                // _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, idleBobAmplitude, Time.deltaTime * 5f);
+                // _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, 0.5f, Time.deltaTime * 5f);
             }
             else
             {
@@ -263,8 +263,8 @@ public class PlayerController : MovableObjects
                 float targetAmp = isSprinting ? walkBobAmplitude * 1.5f : walkBobAmplitude;
                 float targetFreq = isSprinting ? walkBobFrequency * 1.5f : walkBobFrequency;
 
-                _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, targetAmp, Time.deltaTime * 5f);
-                _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, targetFreq, Time.deltaTime * 5f);
+                // _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, targetAmp, Time.deltaTime * 5f);
+                // _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, targetFreq, Time.deltaTime * 5f);
             }
         }
         else

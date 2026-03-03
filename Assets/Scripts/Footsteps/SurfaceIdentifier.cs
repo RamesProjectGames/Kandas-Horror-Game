@@ -7,6 +7,7 @@ public class SurfaceIdentifier : MonoBehaviour
 
 public enum SurfaceType
 {
+    Default,
     Grass,
     Wood,
     Metal,
