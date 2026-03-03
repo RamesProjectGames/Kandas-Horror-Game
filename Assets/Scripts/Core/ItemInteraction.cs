@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
@@ -21,7 +22,9 @@ public class ItemInteraction : MonoBehaviour
 
     public UnityEvent onInteract;
 
+    private Collider col;
     private Rigidbody rb;
+    private NavMeshObstacle obstacle;
     private bool hasBeenThrown;
 
     public Transform player;
@@ -31,6 +34,8 @@ public class ItemInteraction : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        col = GetComponent<Collider>();
+        obstacle = TryGetComponent<NavMeshObstacle>(out obstacle) ? obstacle : null;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         pickupText = pickupUI.GetComponent<TextMeshPro>();
         pickupUI.SetActive(false);
@@ -68,6 +73,9 @@ public class ItemInteraction : MonoBehaviour
     {
         IsHeld = true;
 
+        col.enabled = false;
+        if(obstacle != null) obstacle.enabled = false;
+
         rb.isKinematic = true;
         rb.useGravity = false;
 
@@ -82,6 +90,8 @@ public class ItemInteraction : MonoBehaviour
     public void Drop()
     {
         IsHeld = false;
+        col.enabled = true;
+        if(obstacle != null) obstacle.enabled = true;
         
         transform.SetParent(null);
         

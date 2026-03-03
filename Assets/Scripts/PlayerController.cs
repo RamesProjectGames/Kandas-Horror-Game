@@ -47,6 +47,14 @@ public class PlayerController : MovableObjects
     public float walkBobFrequency = 1.0f;
     public float idleBobAmplitude = 0.05f; // Slight "breathing" effect
 
+    [Header("Footsteps")]
+    // reference to the centralized sound manager – typically on the same GameObject
+    public FootstepsSoundManager footstepManager;
+    // how far the player must move (world units) before emitting the next step sound
+    public float stepDistance = 2f;
+    private Vector3 _lastFootstepPosition;
+    private float _footstepDistanceAccum;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -78,6 +86,11 @@ public class PlayerController : MovableObjects
         }
 
         agent = GetComponent<NavMeshAgent>();
+
+        // footsteps helper
+        if (footstepManager == null)
+            footstepManager = GetComponent<FootstepsSoundManager>();
+        _lastFootstepPosition = transform.position;
         if (agent == null) agent = gameObject.AddComponent<NavMeshAgent>();
 
         // Configure NavMeshAgent for auto movement
@@ -254,8 +267,8 @@ public class PlayerController : MovableObjects
             if (input == Vector3.zero)
             {
                 // Smoothly transition to subtle breathing/idle
-                _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, idleBobAmplitude, Time.deltaTime * 5f);
-                _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, 0.5f, Time.deltaTime * 5f);
+                // _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, idleBobAmplitude, Time.deltaTime * 5f);
+                // _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, 0.5f, Time.deltaTime * 5f);
             }
             else
             {
@@ -263,8 +276,8 @@ public class PlayerController : MovableObjects
                 float targetAmp = isSprinting ? walkBobAmplitude * 1.5f : walkBobAmplitude;
                 float targetFreq = isSprinting ? walkBobFrequency * 1.5f : walkBobFrequency;
 
-                _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, targetAmp, Time.deltaTime * 5f);
-                _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, targetFreq, Time.deltaTime * 5f);
+                // _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, targetAmp, Time.deltaTime * 5f);
+                // _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, targetFreq, Time.deltaTime * 5f);
             }
         }
         else
@@ -308,6 +321,19 @@ public class PlayerController : MovableObjects
             controller.SimpleMove(moveSpd * Time.fixedDeltaTime * input);
             controller.Move(Time.fixedDeltaTime * up);
         }
+
+        // accumulate distance travelled this frame and trigger a step when we've covered enough ground
+        if (footstepManager != null && isGrounded && input.magnitude > 0.01f)
+        {
+            float dist = Vector3.Distance(transform.position, _lastFootstepPosition);
+            _footstepDistanceAccum += dist;
+            if (_footstepDistanceAccum >= stepDistance)
+            {
+                _footstepDistanceAccum -= stepDistance;
+                footstepManager.PlayFootstep();
+            }
+        }
+        _lastFootstepPosition = transform.position;
     }
 
     private void LateUpdate()
