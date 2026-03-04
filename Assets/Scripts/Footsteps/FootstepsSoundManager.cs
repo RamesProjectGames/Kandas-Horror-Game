@@ -5,7 +5,8 @@ using UnityEngine;
 [Serializable]
 public class FootstepAudioData
 {
-    public List<AudioClip> footStepSound = new List<AudioClip>();
+    public List<AudioClip> leftFootstepSound = new List<AudioClip>();
+    public List<AudioClip> rightFootstepSound = new List<AudioClip>();
     public SurfaceType surfaceType;
 }
 public class FootstepsSoundManager : MonoBehaviour
@@ -14,6 +15,13 @@ public class FootstepsSoundManager : MonoBehaviour
     public Animator Animator;
     public LayerMask Enviroment;
     private float _lastfootstep;
+    
+    // track which foot played last: true = right, false = left
+    private bool _lastFootWasRight = true;
+    
+    // minimum time (in seconds) between footsteps to prevent left/right from playing too close
+    public float minFootstepInterval = 0.3f;
+    private float _lastFootstepTime = -1f;
     void OnValidate()
     {
         if(!Animator)
@@ -40,15 +48,44 @@ public class FootstepsSoundManager : MonoBehaviour
     // internal helper used by animator‑based signaling and external callers
     public void PlayFootstep()
     {
-        var clips = GetClipsForSurface();
+        // enforce minimum interval between footsteps
+        if (Time.time - _lastFootstepTime < minFootstepInterval)
+            return;
+        
+        // alternate between left and right
+        if (_lastFootWasRight)
+        {
+            PlayLeftFootstep();
+        }
+        else
+        {
+            PlayRightFootstep();
+        }
+        _lastFootWasRight = !_lastFootWasRight;
+        _lastFootstepTime = Time.time;
+    }
+
+    public void PlayLeftFootstep()
+    {
+        var clips = GetClipsForSurface(isLeftFoot: true);
         if (clips == null || clips.Count == 0)
-            return; // no clips assigned for this surface
+            return;
 
         var randomIndex = UnityEngine.Random.Range(0, clips.Count);
         AudioSource.PlayClipAtPoint(clips[randomIndex], transform.position);
     }
 
-    public List<AudioClip> GetClipsForSurface()
+    public void PlayRightFootstep()
+    {
+        var clips = GetClipsForSurface(isLeftFoot: false);
+        if (clips == null || clips.Count == 0)
+            return;
+
+        var randomIndex = UnityEngine.Random.Range(0, clips.Count);
+        AudioSource.PlayClipAtPoint(clips[randomIndex], transform.position);
+    }
+
+    public List<AudioClip> GetClipsForSurface(bool isLeftFoot = true)
     {
         var clips = new List<AudioClip>();
         // Raycast downwards a short distance to determine what we're stepping on.
@@ -64,7 +101,11 @@ public class FootstepsSoundManager : MonoBehaviour
                 {
                     if (audioData.surfaceType == surfaceIdentifier.surfaceType)
                     {
-                        return audioData.footStepSound;
+                        // return left or right specific clips
+                        if (isLeftFoot && audioData.leftFootstepSound.Count > 0)
+                            return audioData.leftFootstepSound;
+                        if (!isLeftFoot && audioData.rightFootstepSound.Count > 0)
+                            return audioData.rightFootstepSound;
                     }
                 }
             }
@@ -82,7 +123,11 @@ public class FootstepsSoundManager : MonoBehaviour
                     {
                         if (audioData.surfaceType == terrainSurface)
                         {
-                            return audioData.footStepSound;
+                            // return left or right specific clips
+                            if (isLeftFoot && audioData.leftFootstepSound.Count > 0)
+                                return audioData.leftFootstepSound;
+                            if (!isLeftFoot && audioData.rightFootstepSound.Count > 0)
+                                return audioData.rightFootstepSound;
                         }
                     }
                 }

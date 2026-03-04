@@ -50,8 +50,8 @@ public class PlayerController : MovableObjects
     [Header("Footsteps")]
     // reference to the centralized sound manager – typically on the same GameObject
     public FootstepsSoundManager footstepManager;
-    // how far the player must move (world units) before emitting the next step sound
-    public float stepDistance = 2f;
+    // base step distance at normal walking speed; adjusted dynamically based on moveSpd
+    public float baseStepDistance = 2f;
     private Vector3 _lastFootstepPosition;
     private float _footstepDistanceAccum;
 
@@ -325,11 +325,17 @@ public class PlayerController : MovableObjects
         // accumulate distance travelled this frame and trigger a step when we've covered enough ground
         if (footstepManager != null && isGrounded && input.magnitude > 0.01f)
         {
+            // scale step distance inversely with speed: faster movement = more frequent steps
+            // use speed (normal walk speed, ~150) as baseline
+            float effectiveStepDistance = moveSpd > 0.1f 
+                ? baseStepDistance * (speed / moveSpd) 
+                : baseStepDistance;
+            
             float dist = Vector3.Distance(transform.position, _lastFootstepPosition);
             _footstepDistanceAccum += dist;
-            if (_footstepDistanceAccum >= stepDistance)
+            if (_footstepDistanceAccum >= effectiveStepDistance)
             {
-                _footstepDistanceAccum -= stepDistance;
+                _footstepDistanceAccum -= effectiveStepDistance;
                 footstepManager.PlayFootstep();
             }
         }
