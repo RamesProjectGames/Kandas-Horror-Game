@@ -1,3 +1,5 @@
+using FMOD.Studio;
+using FMODUnity;
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -11,6 +13,9 @@ public class FootstepAudioData
 }
 public class FootstepsSoundManager : MonoBehaviour
 {
+    [SerializeField] private EventReference footstepAudio;
+    private EventInstance playerFootsteps;
+
     public List<FootstepAudioData> FootstepAudioData = new List<FootstepAudioData>();
     public Animator Animator;
     public LayerMask Enviroment;
@@ -22,27 +27,32 @@ public class FootstepsSoundManager : MonoBehaviour
     // minimum time (in seconds) between footsteps to prevent left/right from playing too close
     public float minFootstepInterval = 0.3f;
     private float _lastFootstepTime = -1f;
+
+    private void Start()
+    {
+        playerFootsteps = AudioManager.Instance.CreateInstance(footstepAudio);
+    }
     void OnValidate()
     {
-        if(!Animator)
-        {
-            Animator = GetComponent<Animator>();
-        }
+        //if(!Animator)
+        //{
+        //    Animator = GetComponent<Animator>();
+        //}
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Animator != null)
-        {
-            var footstep = Animator.GetFloat("Footstep");
-            if (Math.Abs(footstep) < .000001f) footstep = 0f;
-            if (_lastfootstep > 0 && footstep < 0 || _lastfootstep < 0 && footstep > 0)
-            {
-                PlayFootstep();
-            }
-            _lastfootstep = footstep;
-        }
+        //if(Animator != null)
+        //{
+        //    var footstep = Animator.GetFloat("Footstep");
+        //    if (Math.Abs(footstep) < .000001f) footstep = 0f;
+        //    if (_lastfootstep > 0 && footstep < 0 || _lastfootstep < 0 && footstep > 0)
+        //    {
+        //        PlayFootstep();
+        //    }
+        //    _lastfootstep = footstep;
+        //}
     }
 
     // internal helper used by animator‑based signaling and external callers
@@ -51,18 +61,39 @@ public class FootstepsSoundManager : MonoBehaviour
         // enforce minimum interval between footsteps
         if (Time.time - _lastFootstepTime < minFootstepInterval)
             return;
+
+        PLAYBACK_STATE playbackState;
+        playerFootsteps.setParameterByName("Foot", _lastFootWasRight ? 1 : 0);
+        //playerFootsteps.setParameterByName("Surface", UnityEngine.Random.Range(0, 3));
+        playerFootsteps.setParameterByName("Surface", 0);
+        playerFootsteps.getPlaybackState(out playbackState);
+
+        if (playbackState == PLAYBACK_STATE.STOPPED)
+        {
+            RuntimeManager.AttachInstanceToGameObject(playerFootsteps, gameObject, false);
+            //playerFootsteps.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
+            playerFootsteps.getParameterByName("Foot", out float foot);
+            playerFootsteps.getParameterByName("Surface", out float surf);
+            Debug.Log($"Foot: {foot} || Surface: {surf}");
+            playerFootsteps.start();
+        }
         
         // alternate between left and right
-        if (_lastFootWasRight)
-        {
-            PlayLeftFootstep();
-        }
-        else
-        {
-            PlayRightFootstep();
-        }
+        //if (_lastFootWasRight)
+        //{
+        //    PlayLeftFootstep();
+        //}
+        //else
+        //{
+        //    PlayRightFootstep();
+        //}
         _lastFootWasRight = !_lastFootWasRight;
         _lastFootstepTime = Time.time;
+    }
+
+    public void StopFootstep()
+    {
+        playerFootsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
     public void PlayLeftFootstep()

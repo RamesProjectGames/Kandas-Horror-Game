@@ -86,6 +86,7 @@ public class SettingsUI : MonoBehaviour
         }
 
         // Audio Settings
+        masterVolumeSlider.value = s.MasterVolume;
         musicVolumeSlider.value = s.MusicVolume;
         soundEffectVolumeSlider.value = s.SoundEffectVolume;
         mobVolumeSlider.value = s.MobVolume;

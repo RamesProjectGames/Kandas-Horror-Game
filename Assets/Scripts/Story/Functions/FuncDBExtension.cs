@@ -92,7 +92,8 @@ namespace TestingPurposes
         private static void PlaySFX(string arg)
         {
             EventReference sfx = RuntimeManager.PathToEventReference(arg);
-            AudioManager.Instance.PlayOneShot(sfx, GameObject.Find("Player").transform.position);
+            Vector3 pos = GameObject.Find("Player").transform.position;
+            AudioManager.Instance.PlayOneShot(sfx, pos);
         }
 
         private static void PlayBGM(string arg)

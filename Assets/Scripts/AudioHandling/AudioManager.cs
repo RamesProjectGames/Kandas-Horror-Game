@@ -1,12 +1,11 @@
 using FMOD.Studio;
 using FMODUnity;
-using System.Xml.Linq;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
+    private List<EventInstance> eventInstances;
     public static AudioManager Instance;
     private Bus masterVolumeBus, bgmBus, sfxBus, voiceBus;
 
@@ -16,6 +15,8 @@ public class AudioManager : MonoBehaviour
             Destroy(Instance.gameObject);
         
         Instance = this;
+
+        eventInstances = new List<EventInstance>();
 
         masterVolumeBus = RuntimeManager.GetBus("bus:/");
         bgmBus = RuntimeManager.GetBus("bus:/BGM");
@@ -34,5 +35,26 @@ public class AudioManager : MonoBehaviour
     public void PlayOneShot(EventReference sound, Vector3 position = default)
     {
         RuntimeManager.PlayOneShot(sound);
+    }
+
+    public EventInstance CreateInstance(EventReference sound)
+    {
+        EventInstance eventInstance = RuntimeManager.CreateInstance(sound);
+        eventInstances.Add(eventInstance);
+        return eventInstance;
+    }
+
+    private void CleanupEventInstances()
+    {
+        foreach(EventInstance eventInstance in eventInstances)
+        {
+            eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            eventInstance.release();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        CleanupEventInstances();
     }
 }

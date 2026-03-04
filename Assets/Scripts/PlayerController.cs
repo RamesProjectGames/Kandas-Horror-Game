@@ -356,6 +356,10 @@ public class PlayerController : MovableObjects
                 footstepManager.PlayFootstep();
             }
         }
+        else if(footstepManager != null)
+        {
+            footstepManager.StopFootstep();
+        }
         _lastFootstepPosition = transform.position;
     }
 

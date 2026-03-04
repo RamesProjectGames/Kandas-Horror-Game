@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{ce141055-236d-49ac-bffa-7014dd83cd6a}">
+		<property name="name">
+			<value>Foot</value>
+		</property>
+		<relationship name="folder">
+			<destination>{369a592f-e00e-4013-8b3d-73ecd2170991}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{13d83d7b-5469-42d3-b5d1-72c7f94dd07b}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{13d83d7b-5469-42d3-b5d1-72c7f94dd07b}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>Left</value>
+			<value>Right</value>
+		</property>
+		<property name="isHeld">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
