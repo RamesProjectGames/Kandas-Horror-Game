@@ -11,6 +11,7 @@ public class HidingSpot : MonoBehaviour
     [SerializeField] private float interactionRadius = 2f;
     [SerializeField] private float hidingHeight = 1f; // Height offset for hiding position
     [SerializeField] private bool visualizationEnabled = true;
+    [SerializeField] private Transform hidingPosition;
 
     [Header("Spot Discovery")]
     [SerializeField] private float discoveryTime = 2f; // Time for enemy to fully discover/open the spot
@@ -21,7 +22,14 @@ public class HidingSpot : MonoBehaviour
     private bool isOccupied = false;
     private GameObject hiddenPlayer;
     private bool isDiscovered = false;
+    private Collider coll;
+    private Rigidbody rb;
 
+    void Start()
+    {
+        coll = GetComponent<Collider>();
+        rb = GetComponent<Rigidbody>();
+    }
     private void OnDrawGizmos()
     {
         if (!visualizationEnabled) return;
@@ -64,6 +72,9 @@ public class HidingSpot : MonoBehaviour
     /// </summary>
     public void HidePlayer(GameObject player)
     {
+        coll.enabled = false;
+        rb.useGravity = false;
+        rb.isKinematic = true;
         isOccupied = true;
         hiddenPlayer = player;
         currentDiscoveryProgress = 0f;
@@ -75,6 +86,9 @@ public class HidingSpot : MonoBehaviour
     /// </summary>
     public void UnhidePlayer()
     {
+        coll.enabled = true;
+        rb.useGravity = true;
+        rb.isKinematic = false;
         isOccupied = false;
         hiddenPlayer = null;
         currentDiscoveryProgress = 0f;
@@ -102,7 +116,7 @@ public class HidingSpot : MonoBehaviour
     /// </summary>
     public Vector3 GetHidingPosition()
     {
-        return transform.position + Vector3.up * hidingHeight;
+        return transform.localPosition + Vector3.up * hidingHeight;
     }
 
     /// <summary>

@@ -55,12 +55,16 @@ public class PlayerController : MovableObjects
     private Vector3 _lastFootstepPosition;
     private float _footstepDistanceAccum;
 
+    [Header("Hiding")]
+    public PlayerHiding Hiding;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
+        Hiding = GetComponent<PlayerHiding>();
         audioSrc = GetComponent<AudioSource>();
         _noise = playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>();
 
@@ -168,8 +172,12 @@ public class PlayerController : MovableObjects
         //    }
         //}
 
-        //Movement
-        if(agent.isStopped)
+        //Movement - skip input if player is hiding
+        if (Hiding != null && Hiding.Hiding)
+        {
+            // when hidden we don't process movement input or physics
+        }
+        else if(agent.isStopped)
         {
             if(!SettingManager.Instance.settings.SprintToggle)
             {
@@ -198,7 +206,6 @@ public class PlayerController : MovableObjects
                     {
                         isExhausted = true;
                     }
-                    moveSpd = speed * sprintMulti;
                 }
                 else
                 {
@@ -215,28 +222,38 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                moveSpd = speed;
+                if(isSprinting)
+                {
+                    moveSpd = speed * sprintMulti;                    
+                }
+                else
+                {
+                    moveSpd = speed;
+                }
             }
             if(!isSprinting)
             {
                 stamina += staminaDecayRate / 2f * Time.deltaTime;
             }
 
-            Vector2 moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
-            
-            // Use camera forward and right for movement relative to camera view
-            Vector3 camForward = playerCam.transform.forward;
-            Vector3 camRight = playerCam.transform.right;
-            
-            // Flatten camera forward to prevent upward/downward movement bias
-            camForward.y = 0;
-            camForward.Normalize();
-            
-            Vector3 hor = camRight * moveInput.x * moveSpd * Time.deltaTime;
-            Vector3 ver = camForward * moveInput.y * moveSpd * Time.deltaTime;
-            up = transform.up * upVel;
+            if(!Hiding.Hiding)
+            {
+                Vector2 moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
 
-            input = hor + ver;
+                // Use camera forward and right for movement relative to camera view
+                Vector3 camForward = playerCam.transform.forward;
+                Vector3 camRight = playerCam.transform.right;
+
+                // Flatten camera forward to prevent upward/downward movement bias
+                camForward.y = 0;
+                camForward.Normalize();
+
+                Vector3 hor = camRight * moveInput.x * moveSpd * Time.deltaTime;
+                Vector3 ver = camForward * moveInput.y * moveSpd * Time.deltaTime;
+                up = transform.up * upVel;
+
+                input = hor + ver;
+            }
 
             // if (input == Vector3.zero)
             // {
