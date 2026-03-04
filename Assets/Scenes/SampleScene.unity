@@ -2224,6 +2224,7 @@ MonoBehaviour:
   interactionRadius: 2
   hidingHeight: 1
   visualizationEnabled: 1
+  hidingPosition: {fileID: 0}
   discoveryTime: 2
 --- !u!65 &248444829
 BoxCollider:
@@ -21457,6 +21458,7 @@ MonoBehaviour:
   idleBobAmplitude: 0.05
   footstepManager: {fileID: 0}
   baseStepDistance: 2
+  Hiding: {fileID: 0}
 --- !u!95 &1562211044
 Animator:
   serializedVersion: 7
@@ -21821,7 +21823,7 @@ MonoBehaviour:
     m_Bits: 512
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 3072
   holdPoint: {fileID: 161661405}
   playerCamera: {fileID: 2033489205}
   throwInteractionText: {fileID: 515891364}
@@ -21842,6 +21844,8 @@ MonoBehaviour:
   hidingSpotLayer:
     serializedVersion: 2
     m_Bits: 1024
+  hidingAnimationDuration: 1.5
+  rotationSpeed: 5
 --- !u!195 &1562211054
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -33038,8 +33042,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1325954134}
-  - {fileID: 147673205}
   - {fileID: 1562211049}
+  - {fileID: 147673205}
   - {fileID: 1733759643}
   - {fileID: 1038799899}
   - {fileID: 796171848}
