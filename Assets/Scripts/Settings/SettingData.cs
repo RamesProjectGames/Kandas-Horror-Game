@@ -36,6 +36,7 @@ public class SettingData
 	public float MicrophoneSensitivity = 100f; // 1.0 = default
 	public float MouseSensitivity = .5f; // 1.0 = default
 	public bool SprintToggle = false; // false = hold to sprint, true = toggle
+	public bool CrouchToggle = false;
 
     // Audio Settings
     [Range(0, 1)]
