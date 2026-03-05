@@ -243,7 +243,7 @@ public class PlayerController : MovableObjects
             }
             if (isExhausted)
             {
-                moveSpd = speed / sprintMulti;
+                moveSpd = speed / (sprintMulti * sprintMulti);
                 if (stamina >= maxStamina)
                 {
                     stamina = maxStamina;
@@ -252,9 +252,9 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if(isSprinting)
+                if (isSprinting)
                 {
-                    moveSpd = speed * sprintMulti;                    
+                    moveSpd = speed * (!isCrouching ? sprintMulti : 1f);
                 }
                 else if(isCrouching)
                 {
