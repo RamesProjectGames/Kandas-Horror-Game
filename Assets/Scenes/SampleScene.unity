@@ -3614,7 +3614,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &343170957
 Transform:
   m_ObjectHideFlags: 0
@@ -25904,6 +25904,7 @@ GameObject:
   - component: {fileID: 1733759646}
   - component: {fileID: 1733759647}
   - component: {fileID: 1733759648}
+  - component: {fileID: 1733759649}
   m_Layer: 0
   m_Name: Mob
   m_TagString: Enemy
@@ -25923,7 +25924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9052cfb436ad9564daefcebb4ffb8b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
+  agent: {fileID: 1733759647}
   point:
   - {fileID: 300377032}
   - {fileID: 953750316}
@@ -25947,6 +25948,8 @@ MonoBehaviour:
   hidingSpotLayer:
     serializedVersion: 2
     m_Bits: 0
+  footstepManager: {fileID: 0}
+  baseStepDistance: 2
 --- !u!82 &1733759637
 AudioSource:
   m_ObjectHideFlags: 0
@@ -26299,11 +26302,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1682458565
+      Data2: 1074041995
+      Data3: 2010320037
+      Data4: 2080663012
+    Path: event:/ChaserFootsteps
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -26313,8 +26316,33 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: -1
-  OverrideMaxDistance: -1
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &1733759649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733759635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 759662f1d67e40b4fa30a6dc01253e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepAudio:
+    Guid:
+      Data1: -1682458565
+      Data2: 1074041995
+      Data3: 2010320037
+      Data4: 2080663012
+    Path: event:/ChaserFootsteps
+  FootstepAudioData: []
+  Animator: {fileID: 0}
+  Enviroment:
+    serializedVersion: 2
+    m_Bits: 8
+  minFootstepInterval: 0.3
 --- !u!1 &1737067719
 GameObject:
   m_ObjectHideFlags: 0

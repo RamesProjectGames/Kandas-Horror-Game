@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Windows;
 
 public class EnemyMovement : MovableObjects, IAudioRadiusListener
 {
@@ -25,7 +26,13 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     // Pause tracking: used to detect pause/unpause transitions
     private bool wasPausedLastFrame = false;
 
-
+    [Header("Footsteps")]
+    // reference to the centralized sound manager – typically on the same GameObject
+    public FootstepsSoundManager footstepManager;
+    // base step distance at normal walking speed; adjusted dynamically based on moveSpd
+    public float baseStepDistance = 2f;
+    private Vector3 _lastFootstepPosition;
+    private float _footstepDistanceAccum;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -45,6 +52,11 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         {
             agent.SetDestination(point[idxPoint].position);
         }
+
+        // footsteps helper
+        if (footstepManager == null)
+            footstepManager = GetComponent<FootstepsSoundManager>();
+        _lastFootstepPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -261,6 +273,32 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         //         this.transform.rotation = Quaternion.LookRotation(posPoint);
         //     }
         // }
+    }
+
+    private void FixedUpdate()
+    {
+        // accumulate distance travelled this frame and trigger a step when we've covered enough ground
+        if (footstepManager != null)
+        {
+            // scale step distance inversely with speed: faster movement = more frequent steps
+            // use speed (normal walk speed, ~150) as baseline
+            float effectiveStepDistance = !agent.isStopped
+                ? baseStepDistance * speed
+                : baseStepDistance;
+
+            float dist = Vector3.Distance(transform.position, _lastFootstepPosition);
+            _footstepDistanceAccum += dist;
+            if (_footstepDistanceAccum >= effectiveStepDistance)
+            {
+                _footstepDistanceAccum -= effectiveStepDistance;
+                footstepManager.PlayFootstep();
+            }
+        }
+        else if (footstepManager != null)
+        {
+            footstepManager.StopFootstep();
+        }
+        _lastFootstepPosition = transform.position;
     }
     private bool HandlePauseState()
     {

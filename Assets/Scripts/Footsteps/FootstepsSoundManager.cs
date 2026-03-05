@@ -72,9 +72,6 @@ public class FootstepsSoundManager : MonoBehaviour
         {
             RuntimeManager.AttachInstanceToGameObject(playerFootsteps, gameObject, false);
             //playerFootsteps.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
-            playerFootsteps.getParameterByName("Foot", out float foot);
-            playerFootsteps.getParameterByName("Surface", out float surf);
-            Debug.Log($"Foot: {foot} || Surface: {surf}");
             playerFootsteps.start();
         }
         
