@@ -74,6 +74,7 @@ public class SettingsUI : MonoBehaviour
         microphoneSensitivitySlider.value = Mathf.InverseLerp(settingManager.minimumMicrophoneVolume, settingManager.maximumMicrophoneVolume, s.MicrophoneSensitivity);
         mouseSensitivitySlider.value = Mathf.InverseLerp(settingManager.minimumMouseSensitivity, settingManager.maximumMouseSensitivity, s.MouseSensitivity);
         sprintToggleText.text = s.SprintToggle ? "Toggle" : "Hold";
+        crouchToggleText.text = s.CrouchToggle ? "Toggle" : "Hold";
         // Set selected audio input device in dropdown
         int micIndex = System.Array.IndexOf(Microphone.devices, s.AudioInputDeviceName);
         if (micIndex >= 0)
@@ -133,7 +134,8 @@ public class SettingsUI : MonoBehaviour
     public TMP_Dropdown outputDropdown;
     public Slider microphoneSensitivitySlider;
     public Slider mouseSensitivitySlider;
-    public TextMeshProUGUI sprintToggleText;    
+    public TextMeshProUGUI sprintToggleText;  
+    public TextMeshProUGUI crouchToggleText;  
     [SerializeField] private List<RebindActionUI> rebindActions = new List<RebindActionUI>();
     public void SetRebinding(bool isRebinding) => settingManager.SetRebind(isRebinding);
     public void PopulateAudioInputDevices()
@@ -252,6 +254,11 @@ public class SettingsUI : MonoBehaviour
     public void ToggleSprintMode() {
         settingManager.ToggleSprintToggle();
         sprintToggleText.text = settingManager.settings.SprintToggle ? "Toggle" : "Hold";
+    }
+    public void ToggleCrouchMode()
+    {
+        settingManager.ToggleCrouch();
+        crouchToggleText.text = settingManager.settings.CrouchToggle ? "Toggle" : "Hold";
     }
     public void ResetControlSettingsToDefaults() 
     { 

@@ -3,6 +3,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 //[RequireComponent (typeof(CharacterController), typeof(Animator))]
 [RequireComponent(typeof(CharacterController))]
@@ -22,7 +23,7 @@ public class PlayerController : MovableObjects
     [Header("Input Action")]
     private Vector3 input;
     private Vector3 up;
-    private InputAction moveAction, lookAction, jumpAction, sprintAction, unlockAction;
+    private InputAction moveAction, lookAction, jumpAction, sprintAction, crouchAction, unlockAction;
 
     [Header("Numeric Values")]
     [SerializeField] private float jumpPow;
@@ -31,6 +32,7 @@ public class PlayerController : MovableObjects
     private float xMove, pitch, yaw, upVel, stamina, moveSpd;
     private bool isGrounded;
     private bool isSprinting;
+    private bool isCrouching;
 
     [Header("Player Camera Settings")]
     [SerializeField] private CinemachineCamera playerCam;
@@ -58,6 +60,9 @@ public class PlayerController : MovableObjects
     [Header("Hiding")]
     public PlayerHiding Hiding;
 
+    [Header("Stamina")]
+    public Image staminaFillImage;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -73,6 +78,7 @@ public class PlayerController : MovableObjects
         Cursor.lockState = CursorLockMode.Locked;
 
         stamina = maxStamina;
+        staminaFillImage.gameObject.SetActive(false);
 
         // Initialize input actions from InputSystem_Actions
         var inputActions = GetComponent<PlayerInput>();
@@ -83,6 +89,7 @@ public class PlayerController : MovableObjects
             // jumpAction = inputActions.actions.FindAction("Jump");
             sprintAction = inputActions.actions.FindAction("Sprint");
             unlockAction = inputActions.actions.FindAction("Unlock");
+            crouchAction = inputActions.actions.FindAction("Crouch");
         }
         else
         {
@@ -184,12 +191,11 @@ public class PlayerController : MovableObjects
                 if (sprintAction != null && sprintAction.IsPressed() && !isExhausted)
                 {
                     isSprinting = true;
-                    stamina -= staminaDecayRate * Time.deltaTime;
                     if (stamina <= 0f)
                     {
+                        stamina= 0;
                         isExhausted = true;
                     }
-                    moveSpd = speed * sprintMulti;
                 }
                 else
                 {
@@ -201,9 +207,9 @@ public class PlayerController : MovableObjects
                 if (sprintAction != null && sprintAction.WasPressedThisFrame() && !isExhausted)
                 {
                     isSprinting = true;
-                    stamina -= staminaDecayRate * Time.deltaTime;
                     if (stamina <= 0f)
                     {
+                        stamina= 0;
                         isExhausted = true;
                     }
                 }
@@ -212,11 +218,35 @@ public class PlayerController : MovableObjects
                     isSprinting = false;
                 }
             }
+            if(!SettingManager.Instance.settings.CrouchToggle)
+            {
+                if (crouchAction != null && crouchAction.IsPressed())
+                {
+                    isCrouching = true;
+                    stamina += staminaDecayRate * Time.deltaTime * sprintMulti;
+                }
+                else
+                {
+                    isCrouching = false;
+                }
+            }
+            else
+            {
+                if (crouchAction != null && crouchAction.WasPressedThisFrame())
+                {
+                    isCrouching = true;
+                }
+                else
+                {
+                    isCrouching = false;
+                }
+            }
             if (isExhausted)
             {
                 moveSpd = speed / sprintMulti;
                 if (stamina >= maxStamina)
                 {
+                    stamina = maxStamina;
                     isExhausted = false;
                 }
             }
@@ -226,15 +256,16 @@ public class PlayerController : MovableObjects
                 {
                     moveSpd = speed * sprintMulti;                    
                 }
+                else if(isCrouching)
+                {
+                    moveSpd = speed / (sprintMulti * sprintMulti);
+                }
                 else
                 {
                     moveSpd = speed;
                 }
             }
-            if(!isSprinting)
-            {
-                stamina += staminaDecayRate / 2f * Time.deltaTime;
-            }
+            
 
             if(!Hiding.IsHiding())
             {
@@ -254,7 +285,20 @@ public class PlayerController : MovableObjects
 
                 input = hor + ver;
             }
-
+            if(!isSprinting)
+            {
+                stamina += staminaDecayRate * Time.deltaTime * (isCrouching ? sprintMulti : 1f);
+            }
+            if(stamina < maxStamina)
+            {
+                staminaFillImage.gameObject.SetActive(true);
+                staminaFillImage.fillAmount = stamina / maxStamina;
+            }
+            else
+            {
+                stamina = maxStamina;
+                staminaFillImage.gameObject.SetActive(false);
+            }
             // if (input == Vector3.zero)
             // {
             //     //anim.SetFloat("Speed", 0f);
@@ -292,10 +336,18 @@ public class PlayerController : MovableObjects
                 // Player is moving
                 float targetAmp = isSprinting ? walkBobAmplitude * 1.5f : walkBobAmplitude;
                 float targetFreq = isSprinting ? walkBobFrequency * 1.5f : walkBobFrequency;
-
+                if(isSprinting)
+                {
+                    stamina -= staminaDecayRate * Time.deltaTime;
+                    if(stamina <= 0)
+                    {
+                        stamina = 0;
+                    }
+                } 
                 // _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, targetAmp, Time.deltaTime * 5f);
                 // _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, targetFreq, Time.deltaTime * 5f);
             }
+            
         }
         else
         {

@@ -384,6 +384,11 @@ public class SettingManager : MonoBehaviour
         settings.SprintToggle = !settings.SprintToggle;
         SaveSettings();
     }
+    public void ToggleCrouch()
+    {
+        settings.CrouchToggle = !settings.CrouchToggle;
+        SaveSettings();    
+    }
     public void ResetControlsToDefaults()
     {
         settings.AudioInputDeviceName = "";
@@ -391,6 +396,7 @@ public class SettingManager : MonoBehaviour
         settings.MicrophoneSensitivity = 100f;
         settings.MouseSensitivity = 1.0f;
         settings.SprintToggle = false;
+        settings.CrouchToggle = false;
         SaveSettings();
     }
     #endregion 

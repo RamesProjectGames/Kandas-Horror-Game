@@ -18,7 +18,7 @@ public class PlayerGrabInteraction : MonoBehaviour
     [Tooltip("Optional camera whose forward vector will be used for throws. If not assigned the player transform is used.")]
     public Camera playerCamera;
     public TextMeshProUGUI throwInteractionText;
-    public Image throwthresholdImage;
+    public Slider throwpowerSlider;
 
     private ItemInteraction currentItem;
     private ItemInteraction heldItem;
@@ -36,6 +36,7 @@ public class PlayerGrabInteraction : MonoBehaviour
             throwAction = inputActions.actions.FindAction("Throw");
             interAction = inputActions.actions.FindAction("Interact");
         }
+        throwpowerSlider.gameObject.SetActive(false);
     }
 
     void Update()
@@ -76,6 +77,7 @@ public class PlayerGrabInteraction : MonoBehaviour
             // accumulate charge while the button is held and we have an item
             if (throwAction.IsPressed() && heldItem != null)
             {
+                throwpowerSlider.gameObject.SetActive(true);
                 throwCharge += Time.deltaTime;
                 if (throwCharge > maxThrowChargeTime)
                     throwCharge = maxThrowChargeTime;
@@ -87,6 +89,7 @@ public class PlayerGrabInteraction : MonoBehaviour
             {
                 if (heldItem != null)
                 {
+                    throwpowerSlider.gameObject.SetActive(false);
                     float t = Mathf.Clamp01(throwCharge / maxThrowChargeTime);
                     float forceMag = Mathf.Lerp(throwForce.x, throwForce.y, t);
                     // use camera forward direction if available, otherwise fall back to player forward
@@ -98,7 +101,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                 // reset charge no matter what
                 throwCharge = 0f;
             }
-            throwthresholdImage.fillAmount = throwCharge / maxThrowChargeTime;
+            throwpowerSlider.value = throwCharge / maxThrowChargeTime;
         }
     }
 
