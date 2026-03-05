@@ -12,6 +12,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     public float speed = 3f;
     public float pursueSpeed = 6f;
     public float idleTime = 5f, currIdleTime;
+    public bool agentStopped;
     bool comeback = false;
     bool reachPoint = false;
 
@@ -20,13 +21,15 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     [SerializeField] private LayerMask hidingSpotLayer;
     private HidingSpot targetHidingSpot;
     private bool isDiscoveringSpot = false;
-    private int initialPatrolIndex = 0; // Store initial patrol point to return to
+
+    // Pause tracking: used to detect pause/unpause transitions
+    private bool wasPausedLastFrame = false;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        initialPatrolIndex = idxPoint;
         agent = GetComponent<NavMeshAgent>();
         if (agent == null) agent = gameObject.AddComponent<NavMeshAgent>();
 
@@ -34,102 +37,294 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         agent.angularSpeed = 300f;
         agent.acceleration = 8f;
         agent.stoppingDistance = 0.1f;
-        agent.isStopped = true;
+        agent.isStopped = false;
+
         currIdleTime = idleTime;
+
+        if (point != null && point.Length > 0)
+        {
+            agent.SetDestination(point[idxPoint].position);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 posTarget = new Vector3(point[idxPoint].position.x, this.transform.position.y, point[idxPoint].position.z);
+        if (HandlePauseState()) return;
 
-        Vector3 posPlayer = new Vector3(fov.player.transform.position.x, this.transform.position.y, fov.player.transform.position.z);
+        // 1. Check if player is currently hiding
+        PlayerHiding checkHiding = fov.player.GetComponent<PlayerHiding>();
+        bool isPlayerHiding = checkHiding != null && checkHiding.IsHiding();
 
-        // If player was spotted while hiding, prioritize discovering the hiding spot
+        // 2. State Logic
         if (isDiscoveringSpot && targetHidingSpot != null)
         {
             HandleHidingSpotDiscovery();
         }
-        else if (!fov.canSeePlayer)
+        else if (fov.canSeePlayer && !isPlayerHiding)
         {
-            if (agent.isStopped && !comeback)
-            {
-                if (!reachPoint)
-                {
-                    if (Vector3.Distance(transform.position, posTarget) > 0.1f)
-                    {
-                        transform.position = Vector3.MoveTowards(transform.position, posTarget, speed * Time.deltaTime);
-                        Vector3 posPoint = posTarget - transform.position;
-                        transform.rotation = Quaternion.LookRotation(posPoint);
-                    }
-                    else
-                    {
-                        if (point[idxPoint].endPosition)
-                        {
-                            reachPoint = point[idxPoint].endPosition;
-                            currIdleTime = idleTime;
-                        }
-                        Debug.Log($"Player arrived at waypoint {idxPoint}, updating next waypoint {idxPoint++}");
-                        idxPoint = idxPoint % point.Length;
-                    }
-                }
-                else
-                {
-                    // Check for hidden players in nearby hiding spots
-                    CheckForHiddenPlayers();
-
-                    if (Vector3.Distance(this.transform.position, posTarget) > 0.1f)
-                        currIdleTime -= Time.deltaTime;
-                    if (currIdleTime <= 0)
-                    {
-                        reachPoint = false;
-                    }
-                }
-            }
-            else
-            {
-                if (agent.remainingDistance <= agent.stoppingDistance)
-                {
-                    if (detectedSound)
-                    {
-                        Vector3 posPoint = soundSource - transform.position;
-                        transform.rotation = Quaternion.LookRotation(posPoint);
-                        reachPoint = true;
-                        agent.SetDestination(posTarget);
-                        agent.isStopped = true;
-                    }
-                    else if (comeback)
-                    {
-                        reachPoint = point[idxPoint].endPosition;
-                        comeback = false;
-                        agent.isStopped = true;
-                    }
-                }
-            }
+            // PURSUIT: Follow player directly
+            detectedSound = false; 
+            agent.isStopped = false;
+            agent.speed = pursueSpeed;
+            agent.SetDestination(fov.player.transform.position);
+        }
+        else if (isPlayerHiding && fov.PlayerWasSpottedWhileHiding && !isDiscoveringSpot)
+        {
+            // TRANSITION TO DISCOVERY: Player hid while in view
+            HidingSpot spot = checkHiding.GetCurrentHidingSpot();
+            if (spot != null) StartDiscoveringHidingSpot(spot);
         }
         else
         {
-            // Player is visible - check if they're hiding in a spot
-            PlayerHiding playerHiding = fov.player.GetComponent<PlayerHiding>();
-            if (playerHiding != null && playerHiding.IsHiding())
+            // PATROL OR INVESTIGATION
+            HandleNavigation();
+        }
+
+
+        // bool isPaused = SettingManager.Instance.isPaused;
+        // agentStopped = agent.isStopped;
+
+        // // Handle pause/unpause transitions
+        // if (isPaused)
+        // {
+        //     if (!wasPausedLastFrame && agent != null)
+        //     {
+        //         // just paused: disable NavMeshAgent to freeze movement but keep state
+        //         agent.enabled = false;
+        //     }
+        //     wasPausedLastFrame = true;
+        //     return;
+        // }
+        // else if (wasPausedLastFrame)
+        // {
+        //     // just unpaused: re-enable agent and resume previous action
+        //     if (agent != null)
+        //     {
+        //         agent.enabled = true;
+
+        //         if (detectedSound && soundSource != Vector3.zero)
+        //         {
+        //             agent.SetDestination(soundSource);
+        //             agent.isStopped = false;
+        //         }
+        //         else if (isDiscoveringSpot && targetHidingSpot != null)
+        //         {
+        //             Vector3 hidingSpotPos = new Vector3(targetHidingSpot.transform.position.x, this.transform.position.y, targetHidingSpot.transform.position.z);
+        //             agent.SetDestination(hidingSpotPos);
+        //             agent.isStopped = false;
+        //         }
+        //         else
+        //         {
+        //             agent.SetDestination(new Vector3(point[idxPoint].position.x, this.transform.position.y, point[idxPoint].position.z));
+        //             agent.isStopped = false;
+        //         }
+        //     }
+        //     wasPausedLastFrame = false;
+        // }
+
+        // Vector3 posTarget = new Vector3(point[idxPoint].position.x, this.transform.position.y, point[idxPoint].position.z);
+
+        // Vector3 posPlayer = new Vector3(fov.player.transform.position.x, this.transform.position.y, fov.player.transform.position.z);
+
+        // // if player has hidden while we were investigating a noise, abort the
+        // // sound chase entirely unless they were already spotted while hiding
+        // PlayerHiding checkHiding = fov.player.GetComponent<PlayerHiding>();
+        // if (checkHiding != null && checkHiding.IsHiding() && detectedSound && !fov.PlayerWasSpottedWhileHiding)
+        // {
+        //     detectedSound = false;
+        // }
+
+        // // special case: the player just hid while in view, store the spot
+        // // and go into discovery even if canSeePlayer is false
+        // if (checkHiding != null && checkHiding.IsHiding() && fov.PlayerWasSpottedWhileHiding && !isDiscoveringSpot)
+        // {
+        //     HidingSpot hidingSpot = checkHiding.GetCurrentHidingSpot();
+        //     if (hidingSpot != null)
+        //     {
+        //         StartDiscoveringHidingSpot(hidingSpot);
+        //         fov.ResetSpottedFlag();
+        //     }
+        // }
+
+        // // If player was spotted while hiding, prioritize discovering the hiding spot
+        // if (isDiscoveringSpot && targetHidingSpot != null)
+        // {
+        //     HandleHidingSpotDiscovery();
+        // }
+        // else if (!fov.canSeePlayer)
+        // {
+        //     if (agent.isStopped && !comeback)
+        //     {
+        //         if (!reachPoint)
+        //         {
+        //             // if (Vector3.Distance(transform.position, posTarget) > 0.1f)
+        //             // {
+        //             //     transform.position = Vector3.MoveTowards(transform.position, posTarget, speed * Time.deltaTime);
+        //             //     Vector3 posPoint = posTarget - transform.position;
+        //             //     transform.rotation = Quaternion.LookRotation(posPoint);
+        //             // }
+        //             // else
+        //             // {
+        //             //     if (point[idxPoint].endPosition)
+        //             //     {
+        //             //         reachPoint = point[idxPoint].endPosition;
+        //             //         currIdleTime = idleTime;
+        //             //     }
+        //             //     Debug.Log($"Player arrived at waypoint {idxPoint}, updating next waypoint {idxPoint++}");
+        //             //     idxPoint = idxPoint % point.Length;
+        //             // }
+        //             if (point[idxPoint].endPosition)
+        //             {
+        //                 reachPoint = true;
+        //                 currIdleTime = idleTime;
+        //                 agent.isStopped = true; // Stop here to 'idle'
+        //             }
+        //             else
+        //             {
+        //                 // Move immediately to next point if not an endPosition
+        //                 idxPoint = (idxPoint + 1) % point.Length;
+        //                 Debug.Log($"Player arrived at waypoint {idxPoint}, updating next waypoint {idxPoint++}");
+        //                 agent.SetDestination(point[idxPoint].position);
+        //             }
+        //         }
+        //         else
+        //         {
+        //             // Check for hidden players in nearby hiding spots
+        //             CheckForHiddenPlayers();
+
+        //             // if (Vector3.Distance(this.transform.position, posTarget) > 0.1f)
+        //             //     currIdleTime -= Time.deltaTime;
+        //             // if (currIdleTime <= 0)
+        //             // {
+        //             //     reachPoint = false;
+        //             // }
+        //             currIdleTime -= Time.deltaTime;
+        //             if (currIdleTime <= 0)
+        //             {
+        //                 reachPoint = false;
+        //                 idxPoint = (idxPoint + 1) % point.Length;
+        //                 agent.isStopped = false;
+        //                 agent.SetDestination(point[idxPoint].position);
+        //             }
+        //         }
+        //     }
+        //     else
+        //     {
+        //         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        //         {
+        //             if (detectedSound)
+        //             {
+        //                 Vector3 posPoint = soundSource - transform.position;
+        //                 if (posPoint != Vector3.zero) transform.rotation = Quaternion.LookRotation(posPoint);
+
+        //                 detectedSound = false; // MUST reset this to allow patrol logic to run
+        //                 reachPoint = true;     // This triggers the idle timer
+        //                 currIdleTime = idleTime; // Give the enemy a moment to stay at the sound site
+
+        //                 agent.SetDestination(posTarget);
+        //                 agent.isStopped = true;
+        //             }
+        //             else if (comeback)
+        //             {
+        //                 reachPoint = point[idxPoint].endPosition;
+        //                 comeback = false;
+        //                 agent.isStopped = true;
+        //             }
+        //         }
+        //     }
+        // }
+        // else
+        // {
+        //     // Player is visible - check if they're hiding in a spot
+        //     PlayerHiding playerHiding = fov.player.GetComponent<PlayerHiding>();
+        //     if (playerHiding != null && playerHiding.IsHiding())
+        //     {
+        //         // only act on a hidden player if we actually saw them while they
+        //         // were concealed.  this prevents enemies from 'detecting' a
+        //         // player who was already in a hiding spot when the enemy arrived.
+        //         if (fov.PlayerWasSpottedWhileHiding)
+        //         {
+        //             HidingSpot hidingSpot = playerHiding.GetCurrentHidingSpot();
+        //             if (hidingSpot != null)
+        //             {
+        //                 StartDiscoveringHidingSpot(hidingSpot);
+        //                 fov.ResetSpottedFlag();
+        //             }
+        //         }
+        //     }
+        //     else
+        //     {
+        //         // Normal pursuit behavior
+        //         this.transform.position = Vector3.MoveTowards(this.transform.position, posPlayer, pursueSpeed * Time.deltaTime);
+        //         Vector3 posPoint = posPlayer - this.transform.position;
+        //         this.transform.rotation = Quaternion.LookRotation(posPoint);
+        //     }
+        // }
+    }
+    private bool HandlePauseState()
+    {
+        bool isPaused = SettingManager.Instance.isPaused;
+        if (isPaused)
+        {
+            if (!wasPausedLastFrame && agent != null) agent.enabled = false;
+            wasPausedLastFrame = true;
+            return true;
+        }
+        if (wasPausedLastFrame)
+        {
+            if (agent != null) agent.enabled = true;
+            wasPausedLastFrame = false;
+            // Force recalculate destination on unpause
+            if (detectedSound) agent.SetDestination(soundSource);
+            else agent.SetDestination(point[idxPoint].position);
+        }
+        return false;
+    }
+    private void FinishSoundInvestigation()
+    {
+        detectedSound = false; // Important: Reset so the next throw can be detected
+        agent.isStopped = true;
+        currIdleTime = idleTime; // Wait at the spot to "look around"
+        
+        // Queue up the next patrol point so it's ready when idle ends
+        if (point.Length > 0)
+        {
+            agent.SetDestination(point[idxPoint].position);
+        }
+    }
+    private void HandleNavigation()
+    {
+        // If the agent is stopped, it means we are in the "Idle" phase
+        if (agent.isStopped)
+        {
+            currIdleTime -= Time.deltaTime;
+            if (currIdleTime <= 0)
             {
-                // Player was spotted while hiding - start discovering their hiding spot
-                HidingSpot hidingSpot = playerHiding.GetCurrentHidingSpot();
-                if (hidingSpot != null)
-                {
-                    StartDiscoveringHidingSpot(hidingSpot);
-                }
+                // Transition from Idle to Moving
+                agent.isStopped = false;
+                agent.speed = speed;
+
+                idxPoint = (idxPoint + 1) % point.Length;
+                agent.SetDestination(point[idxPoint].position);
+            }
+            return; // Exit early while idling
+        }
+        // Only proceed if agent has finished calculating and reached destination
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            if (detectedSound)
+            {
+                // Arrived at the noise source
+                FinishSoundInvestigation();
             }
             else
             {
-                // Normal pursuit behavior
-                this.transform.position = Vector3.MoveTowards(this.transform.position, posPlayer, pursueSpeed * Time.deltaTime);
-                Vector3 posPoint = posPlayer - this.transform.position;
-                this.transform.rotation = Quaternion.LookRotation(posPoint);
+                agent.isStopped = true;
+                currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
             }
         }
     }
-
     /// <summary>
     /// Check for players hidden in nearby hiding spots during patrol.
     /// If no player is spotted yet, enemy passes by the spot.
@@ -155,65 +350,35 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     /// </summary>
     private void StartDiscoveringHidingSpot(HidingSpot hidingSpot)
     {
-        if (isDiscoveringSpot)
-            return; // Already discovering another spot
-
+        if (isDiscoveringSpot) return;
         targetHidingSpot = hidingSpot;
         isDiscoveringSpot = true;
         hidingSpot.StartDiscovery(this);
         detectedSound = false;
-        reachPoint = false;
     }
-
+    
     /// <summary>
     /// Handle the discovery process of opening a hiding spot.
     /// </summary>
     private void HandleHidingSpotDiscovery()
     {
-        if (targetHidingSpot == null)
+        if (targetHidingSpot == null) { isDiscoveringSpot = false; return; }
+
+        agent.isStopped = false;
+        agent.speed = pursueSpeed;
+        agent.SetDestination(targetHidingSpot.transform.position);
+
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
-            isDiscoveringSpot = false;
-            return;
-        }
-
-        Vector3 hidingSpotPos = new Vector3(targetHidingSpot.transform.position.x, this.transform.position.y, targetHidingSpot.transform.position.z);
-        float distanceToSpot = Vector3.Distance(this.transform.position, hidingSpotPos);
-
-        // Move to the hiding spot
-        if (distanceToSpot > 0.5f)
-        {
-            this.transform.position = Vector3.MoveTowards(this.transform.position, hidingSpotPos, pursueSpeed * Time.deltaTime);
-            Vector3 posPoint = hidingSpotPos - this.transform.position;
-            this.transform.rotation = Quaternion.LookRotation(posPoint);
-            Vector3 posPlayer = new Vector3(fov.player.transform.position.x, transform.position.y, fov.player.transform.position.z);
-
-            // transform.position = Vector3.MoveTowards(transform.position, posPlayer, pursueSpeed * Time.deltaTime);
-            // Vector3 posPoint = posPlayer - transform.position;
-            // transform.rotation = Quaternion.LookRotation(posPoint);
-            // Debug.Log($"Mob Chasing player");
-        }
-
-        // Advance discovery progress
-        if (targetHidingSpot.AdvanceDiscovery(Time.deltaTime))
-        {
-            // Discovery complete - open the hiding spot
-            targetHidingSpot.DiscoverSpot();
-
-            // Force the hidden player to unhide
-            GameObject hiddenPlayer = targetHidingSpot.GetHiddenPlayer();
-            if (hiddenPlayer != null)
+            if (targetHidingSpot.AdvanceDiscovery(Time.deltaTime))
             {
-                PlayerHiding playerHiding = hiddenPlayer.GetComponent<PlayerHiding>();
-                if (playerHiding != null)
-                {
-                    playerHiding.ForceUnhide();
-                    Debug.Log("Enemy discovered the hiding spot and exposed the player!");
-                }
+                targetHidingSpot.DiscoverSpot();
+                GameObject player = targetHidingSpot.GetHiddenPlayer();
+                if (player != null) player.GetComponent<PlayerHiding>().ForceUnhide();
+                
+                isDiscoveringSpot = false;
+                targetHidingSpot = null;
             }
-
-            // Now proceed to attack the exposed player
-            isDiscoveringSpot = false;
-            targetHidingSpot = null;
         }
     }
 
@@ -230,8 +395,10 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
     public override IEnumerator Move(Vector3 pos)
     {
-        agent.SetDestination(pos);
-        soundSource = pos;
+        // ensure we send the agent to a valid NavMesh position
+        Vector3 validPos = GetValidNavMeshPosition(pos);
+        agent.SetDestination(validPos);
+        soundSource = validPos;
         StartAgentMovement();
         yield return new WaitForEndOfFrame();
     }
@@ -241,17 +408,21 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     /// </summary>
     public void ReturnToPatrol()
     {
-        agent.speed = 3f;
         detectedSound = false;
-        agent.isStopped = false;
-        comeback = true;
         isDiscoveringSpot = false;
         targetHidingSpot = null;
-        reachPoint = false;
-        detectedSound = false;
 
-        Vector3 posTarget = new Vector3(point[idxPoint].position.x, transform.position.y, point[idxPoint].position.z);
-        agent.SetDestination(posTarget);
+        // 2. Reset Movement State
+        agent.isStopped = false; // Essential: Unpause the NavMeshAgent
+        reachPoint = false;      // Essential: Tell Update() we are no longer "at a point"
+        agent.speed = speed;     // Return to normal walking speed
+
+        // 3. Set Destination
+        if (point != null && point.Length > 0)
+        {
+            // Ensure we are targeting the current waypoint index
+            agent.SetDestination(point[idxPoint].position);
+        }
     }
 
     void StartAgentMovement()
@@ -262,15 +433,118 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     }
     public void OnEnterAudioRadius(GameObject audioSource)
     {
-        agent.speed = 6f;
+        // if the source belongs to the player and the player is currently hiding
+        // we should ignore the event completely – hidden players don't make noise
+        PlayerHiding ph = audioSource.GetComponentInParent<PlayerHiding>();
+        if (ph != null && ph.IsHiding()) return;
+
+        agent.isStopped = false;
+        agent.speed = pursueSpeed;
         detectedSound = true;
-        soundSource = new Vector3(audioSource.gameObject.transform.position.x, transform.position.y, audioSource.gameObject.transform.position.z - 5f);
-        StartAgentMovement();
+        reachPoint = false; 
+
+        // raw position received from the audio source (flattened to our y)
+        Vector3 rawPos = new Vector3(audioSource.transform.position.x, transform.position.y, audioSource.transform.position.z);
+
+        // If the notifier sits inside a NavMeshObstacle (carving collider) we
+        // should not try to navigate to its exact centre.  Prefer a nearby
+        // sampled NavMesh position that is reachable from the agent.
+        bool insideObstacle = false;
+        Collider[] nearby = Physics.OverlapSphere(rawPos, 0.5f);
+        foreach (var c in nearby)
+        {
+            if (c.GetComponent<NavMeshObstacle>() != null)
+            {
+                insideObstacle = true;
+                break;
+            }
+        }
+
+        // find a valid candidate on the NavMesh and ensure the agent can reach it
+        Vector3 candidate = GetValidNavMeshPosition(rawPos);
+        if (agent != null)
+        {
+            NavMeshPath path = new NavMeshPath();
+            agent.CalculatePath(candidate, path);
+            // if path is partial or invalid, try to broaden the search
+            if (path.status != NavMeshPathStatus.PathComplete || insideObstacle)
+            {
+                // attempt a slightly broader search around the raw source
+                candidate = GetValidNavMeshPosition(rawPos + (transform.position - rawPos).normalized * 1.5f);
+                agent.CalculatePath(candidate, path);
+                // if still not reachable, fall back to agent's current destination
+                if (path.status != NavMeshPathStatus.PathComplete)
+                {
+                    if (agent.hasPath)
+                        candidate = agent.destination;
+                    else
+                        candidate = transform.position;
+                }
+            }
+        }
+
+        soundSource = candidate;
+        agent.SetDestination(soundSource);
     }
 
     public void OnExitAudioRadius(GameObject audioSource)
     {
         ReturnToPatrol();
+    }
+
+    /// <summary>
+    /// Attempts to project a world position onto the NavMesh.  The 
+    /// supplied <paramref name="target"/> is sampled first with a small radius
+    /// and then with a broader radius before falling back to either the
+    /// agent's current destination or the enemy's own position.  This keeps
+    /// the AI from trying to walk to an unreachable point if the sound comes
+    /// from off the mesh.
+    /// </summary>
+    private Vector3 GetValidNavMeshPosition(Vector3 target)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(target, out hit, 2.0f, NavMesh.AllAreas)) return hit.position;
+        if (NavMesh.SamplePosition(target, out hit, 10.0f, NavMesh.AllAreas)) return hit.position;
+        return transform.position;
+    }
+    
+    #endregion
+
+    #region Gizmos
+
+    private void OnDrawGizmos()
+    {
+        // Draw alert indicator when enemy detected sound
+        if (detectedSound)
+        {
+            // Draw red sphere at enemy position when alerted
+            Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
+            Gizmos.DrawSphere(transform.position, 1f);
+
+            // Draw line from enemy to sound source
+            Gizmos.color = new Color(1f, 0f, 0f, 0.8f);
+            Gizmos.DrawLine(transform.position, soundSource);
+
+            // Draw sphere at sound source location
+            Gizmos.color = new Color(1f, 0.5f, 0f, 0.6f);
+            Gizmos.DrawWireSphere(soundSource, 1.5f);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // When selected, always show hiding spot detection radius
+        Gizmos.color = new Color(0.5f, 0.5f, 1f, 0.2f);
+        Gizmos.DrawWireSphere(transform.position, hidingSpotDetectionRadius);
+
+        // Show alert state more prominently when selected
+        if (detectedSound)
+        {
+            Gizmos.color = new Color(1f, 0f, 0f, 0.8f);
+            Gizmos.DrawSphere(transform.position, 1f);
+            Gizmos.DrawLine(transform.position, soundSource);
+            Gizmos.DrawWireSphere(soundSource, 1.5f);
+        }
     }
 
     #endregion

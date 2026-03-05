@@ -179,6 +179,11 @@ public class SettingsUI : MonoBehaviour
 
         microphoneDropdown.ClearOptions();
         microphoneDropdown.AddOptions(options);
+
+        if(string.IsNullOrEmpty(settingManager.settings.AudioInputDeviceName))
+        {
+            if(options.Count > 0) settingManager.settings.AudioInputDeviceName = options[0];
+        }
         
         // if(Microphone.devices.Length == 0)
         // {

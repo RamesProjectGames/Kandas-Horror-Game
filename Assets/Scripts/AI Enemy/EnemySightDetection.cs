@@ -29,6 +29,18 @@ public class EnemySightDetection : MonoBehaviour
     {
         Vector3 playerTarget = (player.transform.position - transform.position).normalized;
 
+        // don't try to see a player who is currently tucked away in a hiding spot;
+        // normal visibility checks are suspended until the 'spotted while hiding'
+        // flag is manually set (see NotifyPlayerHidWhileVisible).
+        PlayerHiding playerHiding = player.GetComponent<PlayerHiding>();
+        bool hiding = playerHiding != null && playerHiding.IsHiding();
+        if (hiding)
+        {
+            ChangePlayerMaterial(Color.white);
+            canSeePlayer = false;
+            return; // bail out early, actual alert happens elsewhere
+        }
+
         if(Vector3.Angle(transform.forward, playerTarget) < viewAngle / 2)
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
@@ -39,13 +51,6 @@ public class EnemySightDetection : MonoBehaviour
                 {
                     ChangePlayerMaterial(Color.green);
                     canSeePlayer = true;
-                    
-                    // Check if player is hiding
-                    PlayerHiding playerHiding = player.GetComponent<PlayerHiding>();
-                    if (playerHiding != null && playerHiding.IsHiding())
-                    {
-                        playerWasSpottedWhileHiding = true;
-                    }
                 }
                 else
                 {
@@ -77,5 +82,16 @@ public class EnemySightDetection : MonoBehaviour
     public void ResetSpottedFlag()
     {
         playerWasSpottedWhileHiding = false;
+    }
+
+    /// <summary>
+    /// Notify the detector that the player has just slipped into a hiding spot while
+    /// they were still within this enemy's view.  This is the moment we actually alert
+    /// the AI to a hiding attempt; the flag will be consumed by <see cref="EnemyMovement"/>.
+    /// </summary>
+    public void NotifyPlayerHidWhileVisible()
+    {
+        if (canSeePlayer)
+            playerWasSpottedWhileHiding = true;
     }
 }

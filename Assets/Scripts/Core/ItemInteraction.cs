@@ -136,7 +136,7 @@ public class ItemInteraction : MonoBehaviour
     {
         if (landingAlertRadius <= 0f) return;
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, landingAlertRadius, LayerMask.GetMask("Enemy"));
+        Collider[] hits = Physics.OverlapSphere(transform.position, landingAlertRadius);
         foreach (Collider hit in hits)
         {
             EnemyMovement em = hit.GetComponent<EnemyMovement>();
@@ -147,4 +147,28 @@ public class ItemInteraction : MonoBehaviour
             }
         }
     }
+
+    #region Gizmos
+
+    private void OnDrawGizmos()
+    {
+        // Draw alert radius when item lands and alerts enemies
+        if (landingAlertRadius > 0f)
+        {
+            Gizmos.color = new Color(1f, 1f, 0f, 0.2f);
+            Gizmos.DrawWireSphere(transform.position, landingAlertRadius);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // Draw filled sphere when selected for better visibility
+        if (landingAlertRadius > 0f)
+        {
+            Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
+            Gizmos.DrawSphere(transform.position, landingAlertRadius);
+        }
+    }
+
+    #endregion
 }

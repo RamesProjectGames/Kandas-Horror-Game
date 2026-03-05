@@ -87,18 +87,48 @@ public class MicrophoneManager : MonoBehaviour
             UnityEngine.Debug.Log($"  [{i}] {name}");
         }
     }
+    public int GetCurrentMicrophoneIndex()
+    {
+        int numDrivers = 0;
+        int numConnected = 0;
+        int microphoneIndex = -1;
+        coreSystem.getRecordNumDrivers(out numDrivers, out numConnected);
+
+        for (int i = 0; i < numDrivers; i++)
+        {
+            string name;
+            Guid guid;
+            int rate;
+            SPEAKERMODE mode;
+            int channels;
+            DRIVER_STATE state;
+
+            coreSystem.getRecordDriverInfo(
+                i,
+                out name,
+                256,
+                out guid,
+                out rate,
+                out mode,
+                out channels,
+                out state
+            );
+            if(name == recordingDeviceName) microphoneIndex = i;
+        }
+        return microphoneIndex;
+    }
 
     private void InitializeMicrophone()
-    {
-        GetMicrophoneDevices();
+    {        
+        recordingDeviceName = SettingManager.Instance.settings.AudioInputDeviceName;
 
         // Get default recording device (-1)
-        int recordingDevice = -1;
+        int recordingDevice = GetCurrentMicrophoneIndex();
         int numDrivers = 0;
         int numConnected = 0;
         coreSystem.getRecordNumDrivers(out numDrivers, out numConnected);
         
-        if (numDrivers <= 0)
+        if (numDrivers <= 0 || recordingDevice == -1)
         {
             UnityEngine.Debug.LogWarning("No microphone device found!");
             enableMicrophone = false;
