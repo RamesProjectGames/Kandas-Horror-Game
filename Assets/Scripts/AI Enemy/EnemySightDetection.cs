@@ -8,6 +8,8 @@ public class EnemySightDetection : MonoBehaviour
     [Range(0, 360)]
     public float viewAngle;
 
+    public Transform face;
+
     public LayerMask targetMask;
     public LayerMask obstacleMask;
 
@@ -27,7 +29,11 @@ public class EnemySightDetection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 playerTarget = (player.transform.position - transform.position).normalized;
+        Vector3 enemyPos = transform.position;
+        Vector3 playerPos = player.transform.position;
+
+        Vector3 playerTarget = (playerPos - enemyPos).normalized;
+        playerTarget.y = 0;
 
         // don't try to see a player who is currently tucked away in a hiding spot;
         // normal visibility checks are suspended until the 'spotted while hiding'
@@ -41,7 +47,12 @@ public class EnemySightDetection : MonoBehaviour
             return; // bail out early, actual alert happens elsewhere
         }
 
-        if(Vector3.Angle(transform.forward, playerTarget) < viewAngle / 2)
+        Vector3 currentForward = -transform.forward;
+        currentForward.y = 0;
+
+        float angle = Vector3.Angle(currentForward, playerTarget);
+
+        if (angle < viewAngle / 2)
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 

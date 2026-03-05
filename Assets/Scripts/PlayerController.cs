@@ -193,6 +193,7 @@ public class PlayerController : MovableObjects
                     isSprinting = true;
                     if (stamina <= 0f)
                     {
+                        stamina= 0;
                         isExhausted = true;
                     }
                 }
@@ -208,6 +209,7 @@ public class PlayerController : MovableObjects
                     isSprinting = true;
                     if (stamina <= 0f)
                     {
+                        stamina= 0;
                         isExhausted = true;
                     }
                 }
@@ -244,6 +246,7 @@ public class PlayerController : MovableObjects
                 moveSpd = speed / sprintMulti;
                 if (stamina >= maxStamina)
                 {
+                    stamina = maxStamina;
                     isExhausted = false;
                 }
             }
@@ -255,7 +258,7 @@ public class PlayerController : MovableObjects
                 }
                 else if(isCrouching)
                 {
-                    moveSpd = speed / sprintMulti;
+                    moveSpd = speed / (sprintMulti * sprintMulti);
                 }
                 else
                 {
@@ -282,7 +285,20 @@ public class PlayerController : MovableObjects
 
                 input = hor + ver;
             }
-
+            if(!isSprinting)
+            {
+                stamina += staminaDecayRate * Time.deltaTime * (isCrouching ? sprintMulti : 1f);
+            }
+            if(stamina < maxStamina)
+            {
+                staminaFillImage.gameObject.SetActive(true);
+                staminaFillImage.fillAmount = stamina / maxStamina;
+            }
+            else
+            {
+                stamina = maxStamina;
+                staminaFillImage.gameObject.SetActive(false);
+            }
             // if (input == Vector3.zero)
             // {
             //     //anim.SetFloat("Speed", 0f);
@@ -320,23 +336,18 @@ public class PlayerController : MovableObjects
                 // Player is moving
                 float targetAmp = isSprinting ? walkBobAmplitude * 1.5f : walkBobAmplitude;
                 float targetFreq = isSprinting ? walkBobFrequency * 1.5f : walkBobFrequency;
-                if(isSprinting) stamina -= staminaDecayRate * Time.deltaTime;
+                if(isSprinting)
+                {
+                    stamina -= staminaDecayRate * Time.deltaTime;
+                    if(stamina <= 0)
+                    {
+                        stamina = 0;
+                    }
+                } 
                 // _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, targetAmp, Time.deltaTime * 5f);
                 // _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, targetFreq, Time.deltaTime * 5f);
             }
-            if(!isSprinting)
-            {
-                stamina += staminaDecayRate / 2f * Time.deltaTime * (isCrouching ? sprintMulti : 1f);
-            }
-            if(stamina < maxStamina)
-            {
-                staminaFillImage.gameObject.SetActive(true);
-                staminaFillImage.fillAmount = stamina / maxStamina;
-            }
-            else
-            {
-                staminaFillImage.gameObject.SetActive(false);
-            }
+            
         }
         else
         {
