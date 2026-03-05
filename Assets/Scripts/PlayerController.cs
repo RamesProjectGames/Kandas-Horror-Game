@@ -173,7 +173,7 @@ public class PlayerController : MovableObjects
         //}
 
         //Movement - skip input if player is hiding
-        if (Hiding != null && Hiding.Hiding)
+        if (Hiding != null && Hiding.IsHiding())
         {
             // when hidden we don't process movement input or physics
         }
@@ -236,7 +236,7 @@ public class PlayerController : MovableObjects
                 stamina += staminaDecayRate / 2f * Time.deltaTime;
             }
 
-            if(!Hiding.Hiding)
+            if(!Hiding.IsHiding())
             {
                 Vector2 moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
 

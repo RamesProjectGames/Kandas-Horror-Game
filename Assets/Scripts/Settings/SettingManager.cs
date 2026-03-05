@@ -327,6 +327,7 @@ public class SettingManager : MonoBehaviour
     public void SelectAudioInputDevice(int index)
     {
         string micName = GetMicName(index);
+        UnityEngine.Debug.Log($"Mic Name : {micName}");
         if (!string.IsNullOrEmpty(micName))
         {
             settings.AudioInputDeviceName = GetMicName(index);

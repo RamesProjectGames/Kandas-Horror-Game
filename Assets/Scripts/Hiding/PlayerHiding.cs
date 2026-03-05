@@ -175,6 +175,20 @@ public class PlayerHiding : MonoBehaviour
         transform.position = hidingPosition; // use world position to avoid parent-relative offsets
         isHiding = true;
 
+        // inform any enemies that currently can see the player that the player
+        // has just slipped into a hiding spot; they will become alerted to the
+        // hiding attempt.  Clear all previous flags first so that only this event
+        // matters.
+        var allSight = FindObjectsByType<EnemySightDetection>(FindObjectsSortMode.None);
+        foreach (var sight in allSight)
+        {
+            sight.ResetSpottedFlag();
+        }
+        foreach (var sight in allSight)
+        {
+            sight.NotifyPlayerHidWhileVisible();
+        }
+
         // Debug.Log("Player is now hiding!");
     }
 
@@ -216,6 +230,14 @@ public class PlayerHiding : MonoBehaviour
         }
 
         currentHidingSpot = null;
+
+        // when the player leaves a hiding spot, enemies should forget that they
+        // once saw them concealed so they will resume normal vision behaviour
+        foreach (var sight in FindObjectsByType<EnemySightDetection>(FindObjectsSortMode.None))
+        {
+            sight.ResetSpottedFlag();
+        }
+
         // Debug.Log("Player is no longer hiding!");
     }
 
