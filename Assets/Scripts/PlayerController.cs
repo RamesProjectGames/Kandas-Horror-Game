@@ -223,7 +223,6 @@ public class PlayerController : MovableObjects
                 if (crouchAction != null && crouchAction.IsPressed())
                 {
                     isCrouching = true;
-                    stamina += staminaDecayRate * Time.deltaTime * sprintMulti;
                 }
                 else
                 {
