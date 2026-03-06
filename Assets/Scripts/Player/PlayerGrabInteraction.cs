@@ -43,6 +43,7 @@ public class PlayerGrabInteraction : MonoBehaviour
     void Update()
     {
         DetectItemInteraction();
+        DetectFragmentItem();
 
         if (interAction != null && interAction.WasPerformedThisFrame())
         {
