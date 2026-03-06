@@ -166,10 +166,10 @@ public class MicrophoneManager : MonoBehaviour
         isInitialized = true;
         UnityEngine.Debug.Log("Microphone initialized with FMOD");
         
-        if (SettingManager.Instance != null)
-        {
-            SettingManager.Instance.settings.AudioInputDeviceName = "FMOD_Default_Microphone";
-        }
+        // if (SettingManager.Instance != null)
+        // {
+        //     SettingManager.Instance.settings.AudioInputDeviceName = "FMOD_Default_Microphone";
+        // }
     }
     public float GetLoudnessFromAudioClip(int clipPosition, AudioClip audioClip)
     {
