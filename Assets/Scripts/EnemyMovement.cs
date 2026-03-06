@@ -16,6 +16,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     public bool agentStopped;
     bool comeback = false;
     bool reachPoint = false;
+    private bool isKilling = false;
 
     [Header("Hiding Spot Detection")]
     [SerializeField] private float hidingSpotDetectionRadius = 15f;
@@ -159,6 +160,57 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             agent.SetDestination(point[idxPoint].position);
         }
     }
+    public void TriggerKillPlayer(PlayerHiding player)
+    {
+        if (isKilling) return;
+        
+        isKilling = true;
+        isDiscoveringSpot = false;
+        StopAllCoroutines();
+
+        StartCoroutine(KillRoutine(player));
+    }
+
+    private IEnumerator KillRoutine(PlayerHiding player)
+    {
+        agent.isStopped = false;
+        agent.speed = pursueSpeed;
+        
+        // Move to the player's exact position
+        while (Vector3.Distance(transform.position, player.transform.position) > 1.2f)
+        {
+            agent.SetDestination(GetValidNavMeshPosition(player.transform.position));
+            yield return null;
+        }
+
+        agent.isStopped = true;
+        
+        // Play Kill Animation
+        // anim.SetTrigger("Attack"); 
+        
+        // Force the player out of the cupboard so they are visible during death
+        player.ForceUnhide();
+
+        // Rotate monster to face player for the kill
+        transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
+
+        yield return new WaitForSeconds(1.5f);
+        
+        // Call your Game Over / Scene Reload logic here
+        Debug.Log("GAME OVER: Player Eaten");
+    }
+    public void InvestigatePlayerSpot(HidingSpot spot)
+    {
+        if (isDiscoveringSpot || isKilling || spot == null) return;
+
+        isDiscoveringSpot = true;
+        targetHidingSpot = spot;
+        agent.isStopped = false;
+        agent.speed = pursueSpeed;
+        agent.SetDestination(GetValidNavMeshPosition(spot.transform.position));
+        
+        // Debug.Log("Enemy is suspicious of a hiding spot...");
+    }
     private void HandleNavigation()
     {
         // If the agent is stopped, it means we are in the "Idle" phase
@@ -191,25 +243,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             }
         }
     }
-    /// <summary>
-    /// Check for players hidden in nearby hiding spots during patrol.
-    /// If no player is spotted yet, enemy passes by the spot.
-    /// </summary>
-    private void CheckForHiddenPlayers()
-    {
-        Collider[] hidingSpots = Physics.OverlapSphere(transform.position, hidingSpotDetectionRadius, hidingSpotLayer);
-
-        foreach (Collider col in hidingSpots)
-        {
-            HidingSpot spot = col.GetComponent<HidingSpot>();
-            if (spot != null && spot.HasHiddenPlayer())
-            {
-                // There's a hidden player here, but we haven't spotted them yet
-                // Just pass by naturally during patrol
-                // The player remains hidden if they stay still
-            }
-        }
-    }
 
     /// <summary>
     /// Start the process of discovering and opening a hiding spot where the player is spotted.
@@ -232,7 +265,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
         agent.isStopped = false;
         agent.speed = pursueSpeed;
-        agent.SetDestination(targetHidingSpot.transform.position);
+        agent.SetDestination(GetValidNavMeshPosition(targetHidingSpot.transform.position));
 
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
