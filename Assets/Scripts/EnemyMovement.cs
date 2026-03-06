@@ -151,6 +151,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     private void FinishSoundInvestigation()
     {
         detectedSound = false; // Important: Reset so the next throw can be detected
+        isDiscoveringSpot = false; 
+        isKilling = false;
         agent.isStopped = true;
         currIdleTime = idleTime; // Wait at the spot to "look around"
         
@@ -206,6 +208,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         isDiscoveringSpot = true;
         targetHidingSpot = spot;
         agent.isStopped = false;
+        reachPoint = false; 
         agent.speed = pursueSpeed;
         agent.SetDestination(GetValidNavMeshPosition(spot.transform.position));
         
@@ -231,7 +234,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         // Only proceed if agent has finished calculating and reached destination
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
-            if (detectedSound)
+            if (detectedSound || isDiscoveringSpot || isKilling)
             {
                 // Arrived at the noise source
                 FinishSoundInvestigation();
