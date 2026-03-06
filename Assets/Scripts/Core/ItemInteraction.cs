@@ -20,6 +20,7 @@ public class ItemInteraction : MonoBehaviour
     [Tooltip("Enemies within this radius will be alerted when the item lands.")]
     public float landingAlertRadius = 10f;
 
+    public bool showTextOnPickup = true;
     public UnityEvent onInteract;
 
     private Collider col;
@@ -58,7 +59,7 @@ public class ItemInteraction : MonoBehaviour
 
     public void ShowUI()
     {
-        if (!IsHeld)
+        if (!IsHeld && showTextOnPickup)
         {
             pickupUI.SetActive(true);
         }
