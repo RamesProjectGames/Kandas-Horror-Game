@@ -13,7 +13,7 @@ public class PlayerGrabInteraction : MonoBehaviour
     [Tooltip("How long the player can hold the throw button to reach max force.")]
     public float maxThrowChargeTime = 1f;
 
-    public LayerMask pickupLayer, interactableLayer;
+    public LayerMask pickupLayer, interactableLayer, fragmentLayer;
     public Transform holdPoint;
     [Tooltip("Optional camera whose forward vector will be used for throws. If not assigned the player transform is used.")]
     public Camera playerCamera;
@@ -22,6 +22,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
     private ItemInteraction currentItem;
     private ItemInteraction heldItem;
+    private Fragment fragmentItem;
     private InputAction grabAction, throwAction, interAction;
 
     // runtime state for charging a throw
@@ -58,6 +59,13 @@ public class PlayerGrabInteraction : MonoBehaviour
                         heldItem = currentItem;
                         heldItem.Pickup(holdPoint);
                     }
+                }
+            }
+            if(fragmentItem != null)
+            {
+                if ((interactableLayer & (1 << fragmentItem.gameObject.layer)) != 0)
+                {
+                    fragmentItem.OnFragmentPickup();
                 }
             }
         }
@@ -114,7 +122,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            if (!hit.TryGetComponent(out ItemInteraction item) || item.IsHeld)
+            if (hit.TryGetComponent(out ItemInteraction item) || !item.IsHeld)
                 continue;
 
             Vector3 toItem = (hit.transform.position - transform.position).normalized;
@@ -143,6 +151,38 @@ public class PlayerGrabInteraction : MonoBehaviour
 
             if (currentItem != null)
                 currentItem.ShowUI();
+        }
+    }
+    void DetectFragmentItem()
+    {
+        Fragment bestItem = null;
+        float bestDistance = float.MaxValue;
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, fragmentLayer);
+        foreach (Collider hit in hits)
+        {
+            if (hit.TryGetComponent(out Fragment item))
+                continue;
+
+            Vector3 toItem = (hit.transform.position - transform.position).normalized;
+            Vector3 detectionForward = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
+            float dot = Vector3.Dot(detectionForward, toItem);
+
+            // Only detect front cone
+            if (dot >= frontDotThreshold)
+            {
+
+                float distance = Vector3.Distance(transform.position, hit.transform.position);
+                if (distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    bestItem = item;
+                }
+            }
+        }
+        if (bestItem != fragmentItem)
+        {
+            fragmentItem = bestItem;
         }
     }
     void OnDrawGizmosSelected()

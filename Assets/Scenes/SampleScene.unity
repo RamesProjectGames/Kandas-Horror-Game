@@ -1077,7 +1077,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00012207031}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 1052.53}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &107750267
@@ -2632,6 +2632,7 @@ MonoBehaviour:
   ItemInteractionText: 
   landingSound: {fileID: 0}
   landingAlertRadius: 0
+  showTextOnPickup: 1
   onInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -3484,7 +3485,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 718.22, y: -1112.905}
+  m_AnchoredPosition: {x: 718.22, y: -1207.158}
   m_SizeDelta: {x: 1436.44, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &298990714
@@ -5329,7 +5330,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 718.22, y: -400.4985}
+  m_AnchoredPosition: {x: 718.22, y: -494.7515}
   m_SizeDelta: {x: 1436.44, y: 94.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &482150312
@@ -5365,7 +5366,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 718.22, y: -477.625}
+  m_AnchoredPosition: {x: 718.22, y: -571.878}
   m_SizeDelta: {x: 1436.44, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &484113188
@@ -5934,8 +5935,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 748.3415, y: -530.575}
-  m_SizeDelta: {x: 1196.683, y: 69.41}
+  m_AnchoredPosition: {x: 748.3415, y: -534.43115}
+  m_SizeDelta: {x: 1196.683, y: 61.69778}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &528669647
 MonoBehaviour:
@@ -6653,8 +6654,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 748.3415, y: -252.93501}
-  m_SizeDelta: {x: 1196.683, y: 69.41}
+  m_AnchoredPosition: {x: 748.3415, y: -225.94225}
+  m_SizeDelta: {x: 1196.683, y: 61.69778}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &572011882
 MonoBehaviour:
@@ -7831,7 +7832,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38.05
+  m_fontSize: 34.45
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -11535,8 +11536,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 748.3415, y: -391.755}
-  m_SizeDelta: {x: 1196.683, y: 69.41}
+  m_AnchoredPosition: {x: 748.3415, y: -349.3378}
+  m_SizeDelta: {x: 1196.683, y: 61.69778}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &844112087
 MonoBehaviour:
@@ -14062,7 +14063,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38.15
+  m_fontSize: 32.2
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -15641,8 +15642,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 748.3415, y: -322.34503}
-  m_SizeDelta: {x: 1196.683, y: 69.41}
+  m_AnchoredPosition: {x: 748.3415, y: -287.64}
+  m_SizeDelta: {x: 1196.683, y: 61.69778}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1072919992
 MonoBehaviour:
@@ -17601,6 +17602,7 @@ MonoBehaviour:
   ItemInteractionText: To Turn Down TV Volume
   landingSound: {fileID: 0}
   landingAlertRadius: 0
+  showTextOnPickup: 1
   onInteract:
     m_PersistentCalls:
       m_Calls:
@@ -22696,8 +22698,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 748.3415, y: -114.115005}
-  m_SizeDelta: {x: 1196.683, y: 69.41}
+  m_AnchoredPosition: {x: 748.3415, y: -102.54668}
+  m_SizeDelta: {x: 1196.683, y: 61.69778}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1557955670
 MonoBehaviour:
@@ -23210,6 +23212,9 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 3072
+  fragmentLayer:
+    serializedVersion: 2
+    m_Bits: 8192
   holdPoint: {fileID: 161661405}
   playerCamera: {fileID: 2033489205}
   throwInteractionText: {fileID: 515891364}
@@ -24432,8 +24437,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 748.3415, y: -183.52501}
-  m_SizeDelta: {x: 1196.683, y: 69.41}
+  m_AnchoredPosition: {x: 748.3415, y: -164.24446}
+  m_SizeDelta: {x: 1196.683, y: 61.69778}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1589641760
 MonoBehaviour:
@@ -24563,8 +24568,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 748.3415, y: -391.755}
-  m_SizeDelta: {x: 1196.683, y: 69.41}
+  m_AnchoredPosition: {x: 748.3415, y: -411.03558}
+  m_SizeDelta: {x: 1196.683, y: 61.69778}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1595997376
 MonoBehaviour:
@@ -24700,8 +24705,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 364.92346}
-  m_SizeDelta: {x: 0, y: 364.92346}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 459.1764}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1597805626
 MonoBehaviour:
@@ -26803,8 +26808,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 748.3415, y: -461.16504}
-  m_SizeDelta: {x: 1196.683, y: 69.41}
+  m_AnchoredPosition: {x: 748.3415, y: -472.73337}
+  m_SizeDelta: {x: 1196.683, y: 61.69778}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1710142286
 MonoBehaviour:
@@ -31258,20 +31263,20 @@ MonoBehaviour:
   settings:
     GameResolution: 0
     FrameRate: 60
-    VSync: 0
+    VSync: 1
     Dithering: 1
-    Bloom: 0
+    Bloom: 1
     Grain: 1
     Fog: 0.01
-    MotionBlur: 0
+    MotionBlur: 1
     VertexJitter: 1
-    TextureQuality: 240
+    TextureQuality: 0
     AudioInputDeviceName: 
     AudioOutputDeviceIndex: 0
     MicrophoneSensitivity: 100
     MouseSensitivity: 0.5
-    SprintToggle: 0
-    CrouchToggle: 0
+    SprintToggle: 1
+    CrouchToggle: 1
     MasterVolume: 1
     MusicVolume: 1
     SoundEffectVolume: 1
@@ -32746,6 +32751,7 @@ MonoBehaviour:
   ItemInteractionText: to PickUp
   landingSound: {fileID: 8300000, guid: 4d8d2c1e095c5cb418db8654f81c67ee, type: 3}
   landingAlertRadius: 40
+  showTextOnPickup: 1
   onInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -33265,7 +33271,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.2
+  m_fontSize: 35.25
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -33475,7 +33481,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 718.22, y: -790.265}
+  m_AnchoredPosition: {x: 718.22, y: -884.518}
   m_SizeDelta: {x: 1436.44, y: 565.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2026050902
@@ -35169,8 +35175,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 748.3415, y: -44.705}
-  m_SizeDelta: {x: 1196.683, y: 69.41}
+  m_AnchoredPosition: {x: 748.3415, y: -40.848892}
+  m_SizeDelta: {x: 1196.683, y: 61.69778}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6680292650993860701
 MonoBehaviour:
