@@ -1,13 +1,16 @@
 using Dialogue.Functions;
+using FMODUnity;
 using System;
 using System.Collections;
 using UnityEngine;
-using FMODUnity;
+using static UnityEngine.Rendering.GPUSort;
 
 namespace Dialogue.Functions
 {
     public abstract class FuncDBExtension
     {
+        public static string sfxPath = "event:/SFX/";
+        public static string bgmPath = "event:/BGM/";
         public static void Extend(FunctionsDatabase db)
         {
 
@@ -28,8 +31,8 @@ namespace TestingPurposes
             db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
             db.AddFunction("Poultry", new Action(PrintPoultry));
             db.AddFunction("Objective", new Action<string>(CompleteObjective));
-            db.AddFunction("PlaySFX", new Action<string>(PlaySFX));
-            db.AddFunction("PlayBGM", new Action<string>(PlayBGM));
+            db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
+            db.AddFunction("PlayBGM", new Action<string[]>(PlayBGM));
             //db.AddFunction("SetUpEnding", new Action());
 
         }
@@ -89,16 +92,25 @@ namespace TestingPurposes
         #endregion
 
         #region Audio
-        private static void PlaySFX(string arg)
+        private static void PlaySFX(string[] args)
         {
-            EventReference sfx = RuntimeManager.PathToEventReference(arg);
+            var funcParams = ConvertArgsToParams(args);
+            EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + args[0]);
+            funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
+            funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
+
             Vector3 pos = GameObject.Find("Player").transform.position;
-            AudioManager.Instance.PlayOneShot(sfx, pos);
+            AudioManager.Instance.PlayOneShot(sfx, volume, pitch, pos);
         }
 
-        private static void PlayBGM(string arg)
+        private static void PlayBGM(string[] args)
         {
+            var funcParams = ConvertArgsToParams(args);
+            EventReference sfx = RuntimeManager.PathToEventReference(bgmPath + args[0]);
+            funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
+            funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
+            Vector3 pos = GameObject.Find("Player").transform.position;
         }
         #endregion
     }

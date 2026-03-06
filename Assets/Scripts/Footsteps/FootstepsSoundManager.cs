@@ -14,7 +14,7 @@ public class FootstepAudioData
 public class FootstepsSoundManager : MonoBehaviour
 {
     [SerializeField] private EventReference footstepAudio;
-    private EventInstance playerFootsteps;
+    private EventInstance footstepEvent;
 
     public List<FootstepAudioData> FootstepAudioData = new List<FootstepAudioData>();
     public Animator Animator;
@@ -30,7 +30,8 @@ public class FootstepsSoundManager : MonoBehaviour
 
     private void Start()
     {
-        playerFootsteps = AudioManager.Instance.CreateInstance(footstepAudio);
+        footstepEvent = AudioManager.Instance.CreateInstance(footstepAudio);
+        RuntimeManager.AttachInstanceToGameObject(footstepEvent, gameObject, false);
     }
     void OnValidate()
     {
@@ -63,16 +64,16 @@ public class FootstepsSoundManager : MonoBehaviour
             return;
 
         PLAYBACK_STATE playbackState;
-        playerFootsteps.setParameterByName("Foot", _lastFootWasRight ? 1 : 0);
+        footstepEvent.setParameterByName("Foot", _lastFootWasRight ? 1 : 0);
         //playerFootsteps.setParameterByName("Surface", UnityEngine.Random.Range(0, 3));
-        playerFootsteps.setParameterByName("Surface", 0);
-        playerFootsteps.getPlaybackState(out playbackState);
+        footstepEvent.setParameterByName("Surface", 0);
+        footstepEvent.getPlaybackState(out playbackState);
 
         if (playbackState == PLAYBACK_STATE.STOPPED)
         {
-            RuntimeManager.AttachInstanceToGameObject(playerFootsteps, gameObject, false);
+            RuntimeManager.AttachInstanceToGameObject(footstepEvent, gameObject, false);
             //playerFootsteps.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
-            playerFootsteps.start();
+            footstepEvent.start();
         }
         
         // alternate between left and right
@@ -90,7 +91,7 @@ public class FootstepsSoundManager : MonoBehaviour
 
     public void StopFootstep()
     {
-        playerFootsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        footstepEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
     public void PlayLeftFootstep()

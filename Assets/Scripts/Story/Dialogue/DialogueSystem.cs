@@ -14,6 +14,7 @@ namespace Dialogue
         //Dialogue System Trigger Events for Player Input (and others)
         public delegate void DialogueSystemEvent();
         public event DialogueSystemEvent onUserPrompt;
+        public DialoguePrompt dialoguePrompt;
 
         public static DialogueSystem Instance { get; private set; }
 

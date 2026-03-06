@@ -61,6 +61,7 @@ namespace Dialogue
                     if (line.hasDialogue)
                         yield return WaitForUserInput();
                 }
+                AudioManager.Instance.StopAllSfx();
             }
         }
 
@@ -101,7 +102,7 @@ namespace Dialogue
                 case DialogueData.SegmentSignal.WC:
                 case DialogueData.SegmentSignal.WA:
                     Debug.Log($"Waiting for {segment.signalDelay} seconds");
-                    yield return new WaitForSeconds(segment.signalDelay);
+                    yield return WaitForDelayOrInput(segment.signalDelay);
                     break;
                 default:
                     break;
@@ -136,7 +137,20 @@ namespace Dialogue
 
         IEnumerator WaitForUserInput()
         {
+            ds.dialoguePrompt.Show();
+
             while (!userPrompt)
+            {
+                yield return null;
+            }
+            userPrompt = false;
+            ds.dialoguePrompt.Hide();
+        }
+
+        IEnumerator WaitForDelayOrInput(float duration)
+        {
+            float start = Time.time;
+            while (!userPrompt && Time.time<start+duration)
             {
                 yield return null;
             }

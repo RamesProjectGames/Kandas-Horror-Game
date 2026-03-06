@@ -64,7 +64,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/BGM.bank
   Name: BGM
   StudioPath: bank:/BGM
-  lastModified: 639083067118920826
+  lastModified: 639082279543249882
   FileSizes:
   - Name: Desktop
     Value: 506
@@ -96,6 +96,32 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 500
+--- !u!114 &-6990102965945366684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/PlayerFootsteps/Foot
+  m_EditorClassIdentifier: 
+  Name: Foot
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 2767715751
+    data2: 3453199865
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Left
+  - Right
+  Exists: 1
 --- !u!114 &-6859977579660233128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,6 +142,34 @@ MonoBehaviour:
   - Name: Desktop
     Value: 506
   Exists: 1
+--- !u!114 &-5633297307830457483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/PlayerFootsteps/Surface
+  m_EditorClassIdentifier: 
+  Name: Surface
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 1719767727
+    data2: 2414014954
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Dress
+  - Floor
+  - Grass
+  - Glass
+  Exists: 1
 --- !u!114 &-4634749821997254833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +185,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639083067118930797
+  lastModified: 639083897463404670
   FileSizes:
   - Name: Desktop
     Value: 1524
@@ -229,35 +283,6 @@ MonoBehaviour:
   - Left
   - Right
   Exists: 1
---- !u!114 &-1106032773548158051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/PlayerFootsteps
-  m_EditorClassIdentifier: 
-  Path: event:/PlayerFootsteps
-  Guid:
-    Data1: 55876696
-    Data2: 1081161171
-    Data3: -1177958995
-    Data4: -687249498
-  Banks:
-  - {fileID: 3406518332576070875}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters:
-  - {fileID: 3835857809778596767}
-  - {fileID: 4633696762888381248}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,22 +302,22 @@ MonoBehaviour:
   - {fileID: 3406518332576070875}
   - {fileID: 3551023922120485847}
   EditorEvents:
-  - {fileID: 7656186863352967381}
-  - {fileID: 8569586318160495583}
-  - {fileID: -1106032773548158051}
+  - {fileID: 8863259646918854691}
+  - {fileID: 2010647933892701668}
+  - {fileID: 4454753689980159585}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4634749821997254833}
   StringsBanks:
   - {fileID: 2402750766380479616}
   cacheVersion: 131858
-  cacheTime: 639083131963419686
+  cacheTime: 639084133277123017
   SerializableEventsDict:
-  - key: event:/ChaserFootsteps
+  - key: event:/SFX/ChaserFootsteps
     index: 0
-  - key: event:/Cheer
+  - key: event:/SFX/Cheer
     index: 1
-  - key: event:/PlayerFootsteps
+  - key: event:/SFX/PlayerFootsteps
     index: 2
 --- !u!114 &1641087735518963789
 MonoBehaviour:
@@ -322,6 +347,33 @@ MonoBehaviour:
   - Grass
   - Glass
   Exists: 1
+--- !u!114 &2010647933892701668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Cheer
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Cheer
+  Guid:
+    Data1: 1518556481
+    Data2: 1216081865
+    Data3: 905261752
+    Data4: 1369548532
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &2402750766380479616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,10 +389,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639083067118941188
+  lastModified: 639084133277106284
   FileSizes:
   - Name: Desktop
-    Value: 1196
+    Value: 1200
   Exists: 1
 --- !u!114 &3406518332576070875
 MonoBehaviour:
@@ -357,7 +409,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639083131963419686
+  lastModified: 639084133277123017
   FileSizes:
   - Name: Desktop
     Value: 326048
@@ -377,12 +429,12 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Voice.bank
   Name: Voice
   StudioPath: bank:/Voice
-  lastModified: 639083067118976658
+  lastModified: 639082279546248497
   FileSizes:
   - Name: Desktop
     Value: 506
   Exists: 1
---- !u!114 &3835857809778596767
+--- !u!114 &4454753689980159585
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -391,51 +443,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/PlayerFootsteps/Foot
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/PlayerFootsteps
   m_EditorClassIdentifier: 
-  Name: Foot
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 2767715751
-    data2: 3453199865
-  Type: 2
-  IsGlobal: 0
-  Labels:
-  - Left
-  - Right
-  Exists: 1
---- !u!114 &4633696762888381248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/PlayerFootsteps/Surface
-  m_EditorClassIdentifier: 
-  Name: Surface
-  StudioPath: 
-  Min: 0
-  Max: 3
-  Default: 0
-  ID:
-    data1: 1719767727
-    data2: 2414014954
-  Type: 2
-  IsGlobal: 0
-  Labels:
-  - Dress
-  - Floor
-  - Grass
-  - Glass
-  Exists: 1
+  Path: event:/SFX/PlayerFootsteps
+  Guid:
+    Data1: 55876696
+    Data2: 1081161171
+    Data3: -1177958995
+    Data4: -687249498
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -6990102965945366684}
+  - {fileID: -5633297307830457483}
+  MinDistance: 1
+  MaxDistance: 30
+  Length: 0
 --- !u!114 &5861357476710844773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,7 +483,7 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1524
   Exists: 1
---- !u!114 &7656186863352967381
+--- !u!114 &8863259646918854691
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -466,9 +493,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/ChaserFootsteps
+  m_Name: event:/SFX/ChaserFootsteps
   m_EditorClassIdentifier: 
-  Path: event:/ChaserFootsteps
+  Path: event:/SFX/ChaserFootsteps
   Guid:
     Data1: -1682458565
     Data2: 1074041995
@@ -481,32 +508,5 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 610
---- !u!114 &8569586318160495583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Cheer
-  m_EditorClassIdentifier: 
-  Path: event:/Cheer
-  Guid:
-    Data1: 1518556481
-    Data2: 1216081865
-    Data3: 905261752
-    Data4: 1369548532
-  Banks:
-  - {fileID: 3406518332576070875}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0

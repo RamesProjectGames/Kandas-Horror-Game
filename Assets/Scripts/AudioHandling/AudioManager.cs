@@ -32,9 +32,20 @@ public class AudioManager : MonoBehaviour
         voiceBus.setVolume(SettingManager.Instance.settings.MobVolume);
     }
 
-    public void PlayOneShot(EventReference sound, Vector3 position = default)
+    public void PlayOneShot(EventReference sound, float volume, float pitch, Vector3 position = default)
     {
-        RuntimeManager.PlayOneShot(sound);
+        var instance = RuntimeManager.CreateInstance(sound);
+        instance.setVolume(volume);
+        instance.setPitch(pitch);
+        instance.set3DAttributes(RuntimeUtils.To3DAttributes(position));
+        instance.start();
+        instance.release();
+    }
+
+    public void StopAllSfx()
+    {
+        voiceBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        sfxBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
     public EventInstance CreateInstance(EventReference sound)

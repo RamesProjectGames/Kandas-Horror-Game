@@ -1,5 +1,5 @@
-Alyssa "I'm in the mood for some{wa 0.5}.{wa 0.5}.{wa 0.5}.{wa 1} \"poultry\"" Poultry()
-May "You mean Poutine?" PlaySFX(event:/Cheer)
+Alyssa "I'm in the mood for some{wa 5}.{wa 5}.{wa 5}.{wa 10} \"poultry\"" Poultry()
+May "You mean Poutine?" PlaySFX(Cheer ^v 0.1 ^p 1)
 Alyssa "Did I stutter? {c}I want poultry, like chickens? ducks?"
-Whatsapp "Address me" PlaySFX(event:/Cheer)
+Whatsapp "Address me" PlaySFX(Cheer)
 Narration "Whatsapp is, in fact, addressed" Teleport(Player ^x 20 ^z -10), Objective(Class)
