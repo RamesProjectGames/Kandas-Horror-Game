@@ -22,8 +22,8 @@ namespace TestingPurposes
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            ds = DialogueSystem.Instance;
-            archi = new TextArchitect(ds.dialogueContainer.dialogueText);
+            //ds = DialogueSystem.Instance;
+            //archi = new TextArchitect(ds.dialogueContainer.dialogueText);
             //archi.buildMethod = buildMethod;
             //archi.speed = .5f;
 
@@ -32,29 +32,37 @@ namespace TestingPurposes
 
 
             //Test with external txt file (resource asset)
-            List<string> lines = FileReader.ReadAsset("Dialogue");
 
             //Read each line and debug it
             //foreach (string line in lines)
             //{
             //    DialogueStructure dl = DialogueParser.Parse(line);
             //}
-
-            DialogueSystem.Instance.Say(lines);
+            //OpenDialogue("Dialogue");
         }
+
+        //public void OpenDialogue(string assetName)
+        //{
+        //    if (DialogueSystem.Instance.isRunningConvo)
+        //        return;
+        //    List<string> lines = FileReader.ReadAsset(assetName);
+        //    DialogueSystem.Instance.Say(lines);
+        //}
 
         // Update is called once per frame
         void Update()
         {
-            if (buildMethod != archi.buildMethod)
-            {
-                archi.buildMethod = buildMethod;
-                archi.StopBuildingText();
-            }
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z))
-            {
-                DialogueSystem.Instance.OnUserPrompt();
-            }
+            //if (!DialogueSystem.Instance.isRunningConvo)
+            //    return;
+            //if (buildMethod != archi.buildMethod)
+            //{
+            //    archi.buildMethod = buildMethod;
+            //    archi.StopBuildingText();
+            //}
+            //if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z))
+            //{
+            //    DialogueSystem.Instance.OnUserPrompt();
+            //}
             //else if (Input.GetKeyDown(KeyCode.A))
             //{
             //    if (archi.isBuilding)

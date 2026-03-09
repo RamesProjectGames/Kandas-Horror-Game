@@ -123,7 +123,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            if (hit.TryGetComponent(out ItemInteraction item) || !item.IsHeld)
+            if (!hit.TryGetComponent(out ItemInteraction item) || item.IsHeld)
                 continue;
 
             Vector3 toItem = (hit.transform.position - transform.position).normalized;
@@ -162,7 +162,7 @@ public class PlayerGrabInteraction : MonoBehaviour
         Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, fragmentLayer);
         foreach (Collider hit in hits)
         {
-            if (hit.TryGetComponent(out Fragment item))
+            if (!hit.TryGetComponent(out Fragment item))
                 continue;
 
             Vector3 toItem = (hit.transform.position - transform.position).normalized;

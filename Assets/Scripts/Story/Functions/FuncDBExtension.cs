@@ -1,9 +1,9 @@
+using Dialogue;
 using Dialogue.Functions;
 using FMODUnity;
 using System;
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.Rendering.GPUSort;
 
 namespace Dialogue.Functions
 {
@@ -33,6 +33,8 @@ namespace TestingPurposes
             db.AddFunction("Objective", new Action<string>(CompleteObjective));
             db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
             db.AddFunction("PlayBGM", new Action<string[]>(PlayBGM));
+            db.AddFunction("showDialogue", new Func<string, IEnumerator>(ShowDialogue));
+            db.AddFunction("hideDialogue", new Func<string, IEnumerator>(HideDialogue));
             //db.AddFunction("SetUpEnding", new Action());
 
         }
@@ -84,11 +86,22 @@ namespace TestingPurposes
             Debug.Log("Poultry printed from functions");
         }
 
-        #region Objective
+        #region Dialogue Progression
         private static void CompleteObjective(string arg)
         {
             ObjectiveManager.Instance.CompleteObjective(arg);
         }
+
+        private static IEnumerator ShowDialogue(string arg)
+        {
+            yield return DialogueSystem.Instance.dialogueContainer.ShowDialogue();
+        }
+
+        private static IEnumerator HideDialogue(string arg)
+        {
+            yield return DialogueSystem.Instance.dialogueContainer.HideDialogue();
+        }
+
         #endregion
 
         #region Audio

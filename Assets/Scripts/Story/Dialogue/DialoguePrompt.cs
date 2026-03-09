@@ -31,10 +31,9 @@ public class DialoguePrompt : MonoBehaviour
         root.transform.SetParent(dialogueText.transform);
 
         TMP_CharacterInfo finalChar = dialogueText.textInfo.characterInfo[dialogueText.textInfo.characterCount - 1];
-        Vector3 targetPos = finalChar.bottomRight;
         float charWidth = finalChar.pointSize * .5f;
 
-        targetPos = new Vector3(targetPos.x + charWidth, targetPos.y, 0);
+        Vector3 targetPos = new Vector3(finalChar.bottomRight.x + charWidth, (finalChar.bottomRight.y + finalChar.topRight.y)/2f, 0);
 
         root.localPosition = targetPos;
     }

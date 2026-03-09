@@ -31,6 +31,7 @@ namespace Dialogue
         {
             StopConvo();
 
+            ds.dialogueContainer.ShowDialogue();
             process = ds.StartCoroutine(RunningConvo(convo));
         }
 
@@ -42,6 +43,7 @@ namespace Dialogue
 
             ds.StopCoroutine(process);
             process = null;
+            ds.dialogueContainer.HideDialogue();
         }
 
         //Convo Parse and Run
@@ -63,6 +65,8 @@ namespace Dialogue
                 }
                 AudioManager.Instance.StopAllSfx();
             }
+
+            StopConvo();
         }
 
         #region Handling Dialogues

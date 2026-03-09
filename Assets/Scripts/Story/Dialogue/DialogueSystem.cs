@@ -9,7 +9,10 @@ namespace Dialogue
         public DialogueContainer dialogueContainer = new DialogueContainer();
         private ConvoManager convoManager;
         public BuildMethod buildMethod = BuildMethod.typewriter;
+        public bool isRunningConvo => convoManager.isRunning;
         public TextArchitect architect { get; private set; }
+
+
 
         //Dialogue System Trigger Events for Player Input (and others)
         public delegate void DialogueSystemEvent();
@@ -44,10 +47,24 @@ namespace Dialogue
             convoManager = new ConvoManager(architect);
         }
 
-        public void OnUserPrompt()
+        private void Update()
         {
-            onUserPrompt?.Invoke();
+
+            if (!isRunningConvo)
+                return;
+            if (buildMethod != architect.buildMethod)
+            {
+                architect.buildMethod = buildMethod;
+                architect.StopBuildingText();
+            }
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z))
+            {
+                OnUserPrompt();
+            }
         }
+
+
+        #region Conversation
 
         // Wrapper for Show/Hide Speaker Name
         public void ShowSpeakerName(string speakerName = "") => dialogueContainer.ShowName(speakerName);
@@ -66,5 +83,20 @@ namespace Dialogue
         {
             convoManager.StartConvo(dialogue);
         }
+        #endregion
+
+        #region Triggers
+        public void OpenDialogue(string assetName)
+        {
+            if (isRunningConvo)
+                return;
+            List<string> lines = FileReader.ReadAsset(assetName);
+            Say(lines);
+        }
+        public void OnUserPrompt()
+        {
+            onUserPrompt?.Invoke();
+        }
+        #endregion
     }
 }
