@@ -11186,7 +11186,7 @@ GameObject:
   - component: {fileID: 782622242}
   - component: {fileID: 782622241}
   - component: {fileID: 782622240}
-  - component: {fileID: 782622250}
+  - component: {fileID: 782622251}
   m_Layer: 11
   m_Name: NPC
   m_TagString: Untagged
@@ -11512,7 +11512,7 @@ Transform:
   - {fileID: 1953750585}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &782622250
+--- !u!114 &782622251
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11521,33 +11521,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 782622239}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa1d70568c5fb3c418e75cc2080d1e60, type: 3}
+  m_Script: {fileID: 11500000, guid: f30b67973c0d3204f8cc0bb54d03984e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 0
+  throwForce: 10
   pickupUI: {fileID: 1953750581}
   inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  ItemInteractionText: to talk with Alicia
+  ItemInteractionText: to talk with Alyssa
   landingSound: {fileID: 0}
-  landingAlertRadius: 0
+  landingAlertRadius: 10
   showTextOnPickup: 1
   onInteract:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 693274288}
-        m_TargetAssemblyTypeName: Dialogue.DialogueSystem, Assembly-CSharp
-        m_MethodName: OpenDialogue
-        m_Mode: 5
+      - m_Target: {fileID: 782622251}
+        m_TargetAssemblyTypeName: DialogueHandler, Assembly-CSharp
+        m_MethodName: TriggerDialogue
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Dialogue
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   player: {fileID: 0}
   pickupText: {fileID: 1953750583}
+  objectiveDialoguePair:
+  - objective: Class
+    dialogueAsset: Dialogue
+  - objective: Desk
+    dialogueAsset: Alyssa_Mini1
 --- !u!1 &783148619
 GameObject:
   m_ObjectHideFlags: 0
@@ -29285,7 +29290,7 @@ Transform:
   m_GameObject: {fileID: 1733759635}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15, y: 1, z: -10}
+  m_LocalPosition: {x: -15, y: 1.1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

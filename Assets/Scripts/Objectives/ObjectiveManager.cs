@@ -45,4 +45,30 @@ public class ObjectiveManager : MonoBehaviour
             obj.UpdateObjectiveText();
         }
     }
+
+    public List<string> CurrentObjectives()
+    {
+        List<string> objectiveNames = new List<string>();
+        List<Objectives> unfinished = Objectives.FindAll(x => !x.objectiveData.IsCompleted);
+
+        foreach (Objectives obj in unfinished)
+        {
+            bool isCurrent = true;
+            foreach(string req in obj.objectiveData.requierements)
+            {
+                if(!Objectives.Find(x => x.objectiveData.Name == req).objectiveData.IsCompleted)
+                {
+                    isCurrent = false;
+                    break;
+                }
+            }
+
+            if (isCurrent)
+            {
+                objectiveNames.Add(obj.objectiveData.Name);
+            }
+        }
+
+        return objectiveNames;
+    }
 }
