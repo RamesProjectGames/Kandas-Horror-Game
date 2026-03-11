@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using static Dialogue.TextArchitect;
 
 namespace Dialogue
@@ -12,7 +13,7 @@ namespace Dialogue
         public bool isRunningConvo => convoManager.isRunning;
         public TextArchitect architect { get; private set; }
 
-
+        [SerializeField] private PlayerInput input;
 
         //Dialogue System Trigger Events for Player Input (and others)
         public delegate void DialogueSystemEvent();
@@ -45,6 +46,8 @@ namespace Dialogue
             architect.speed = .5f;
 
             convoManager = new ConvoManager(architect);
+
+            input.actions["Next"].performed += OnUserPrompt;
         }
 
         private void Update()
@@ -57,12 +60,11 @@ namespace Dialogue
                 architect.buildMethod = buildMethod;
                 architect.StopBuildingText();
             }
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z))
-            {
-                OnUserPrompt();
-            }
+            //if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z))
+            //{
+            //    OnUserPrompt();
+            //}
         }
-
 
         #region Conversation
 
@@ -93,9 +95,14 @@ namespace Dialogue
             List<string> lines = FileReader.ReadAsset(assetName);
             Say(lines);
         }
-        public void OnUserPrompt()
+        //public void OnUserPrompt()
+        //{
+        //    onUserPrompt?.Invoke();
+        //}
+        public void OnUserPrompt(InputAction.CallbackContext ctx)
         {
-            onUserPrompt?.Invoke();
+            if(isRunningConvo)
+                onUserPrompt?.Invoke();
         }
         #endregion
     }

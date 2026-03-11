@@ -4657,7 +4657,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &343170957
 Transform:
   m_ObjectHideFlags: 0
@@ -10236,6 +10236,7 @@ MonoBehaviour:
     nameText: {fileID: 358699472}
     dialogueText: {fileID: 218125306}
   buildMethod: 1
+  input: {fileID: 1562211051}
   dialoguePrompt: {fileID: 1683570919}
 --- !u!114 &693274289
 MonoBehaviour:
@@ -12323,7 +12324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 782622242}
   point:
-  - {fileID: 0}
+  - {fileID: 439863225}
   idxPoint: 0
   speed: 3
   idleTime: 5

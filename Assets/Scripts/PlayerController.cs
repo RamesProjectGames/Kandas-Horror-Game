@@ -1,3 +1,4 @@
+using Dialogue;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -131,6 +132,16 @@ public class PlayerController : MovableObjects
                     Cursor.lockState = CursorLockMode.Locked;                                    
                 }
             }
+        }
+        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+        {
+            if(SettingManager.Instance.isPaused)
+                lookAction.Disable();
+            return;
+        }
+        else if(!lookAction.enabled)
+        {
+            lookAction.Enable();
         }
         if (inputController != null)
         {

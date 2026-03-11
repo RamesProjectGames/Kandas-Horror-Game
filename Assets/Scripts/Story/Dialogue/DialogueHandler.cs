@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Dialogue
 {
@@ -10,11 +11,43 @@ namespace Dialogue
     {
         [SerializeField] private List<ObjectiveDialoguePair> objectiveDialoguePair;
 
+        void Update()
+        {
+            if (pickupText != null && inputActions != null)
+            {
+                var interactAction = inputActions.FindAction("Interact");
+                if (interactAction != null && CheckCurrentObjectives())
+                {
+                    string bindingDisplay = interactAction.GetBindingDisplayString(0);
+                    pickupText.text = $"Press {bindingDisplay} {ItemInteractionText}";
+                }
+                else
+                {
+                    pickupText.gameObject.SetActive(false);
+                }
+            }
+        }
+
         public void TriggerDialogue()
         {
+            if (ObjectiveManager.Instance == null) return;
+            if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0) return;
+
             List<string> currObjectives = ObjectiveManager.Instance.CurrentObjectives();
 
-            DialogueSystem.Instance.OpenDialogue(objectiveDialoguePair.First(x => currObjectives.Contains(x.objective)).dialogueAsset);
+            DialogueSystem.Instance.OpenDialogue(objectiveDialoguePair.FirstOrDefault(x => currObjectives.Contains(x.objective)).dialogueAsset);
+        }
+
+        bool CheckCurrentObjectives()
+        {
+            if (ObjectiveManager.Instance == null) return false;
+            if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0) return false;
+
+            List<string> currObjectives = ObjectiveManager.Instance.CurrentObjectives();
+            // Use Any() - stops at first match
+            return currObjectives.Any(obj =>
+                objectiveDialoguePair.Any(pair => pair.objective == obj)
+            );
         }
     }
 

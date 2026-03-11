@@ -1,3 +1,4 @@
+using Dialogue;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,6 +30,8 @@ public class EnemySightDetection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+            return;
         Vector3 enemyPos = transform.position;
         Vector3 playerPos = player.transform.position;
 

@@ -1,3 +1,4 @@
+using Dialogue;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -216,6 +217,11 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     }
     private void HandleNavigation()
     {
+        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+        {
+            agent.isStopped = true;
+            return;
+        }
         // If the agent is stopped, it means we are in the "Idle" phase
         if (agent.isStopped)
         {

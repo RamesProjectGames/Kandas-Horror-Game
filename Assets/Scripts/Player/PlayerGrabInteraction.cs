@@ -1,3 +1,4 @@
+using Dialogue;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -52,6 +53,8 @@ public class PlayerGrabInteraction : MonoBehaviour
                 if ((interactableLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
                     currentItem.onInteract.Invoke();
+                    if (currentItem.GetComponent<DialogueHandler>() != null)
+                        transform.LookAt(currentItem.transform);
                 }
                 else if ((pickupLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
@@ -123,7 +126,6 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            Debug.LogWarning("Bruh");
             if (!hit.TryGetComponent(out ItemInteraction item) || item.IsHeld)
                 continue;
 

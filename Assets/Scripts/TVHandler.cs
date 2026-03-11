@@ -1,3 +1,4 @@
+using Dialogue;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -32,6 +33,16 @@ public class TVHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+        {
+            videoPlayer.Pause();
+            return;
+        }
+        else
+        {
+            if(videoPlayer.isPaused)
+                videoPlayer.Play();
+        }
         if (videoPlayer.isPlaying)
         {
             audioSrc.maxDistance += Time.deltaTime;
