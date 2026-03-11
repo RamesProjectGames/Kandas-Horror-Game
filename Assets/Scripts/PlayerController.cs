@@ -17,7 +17,7 @@ public class PlayerController : MovableObjects
 
     [Header("Ground Detection")]
     public Transform foot;
-    public LayerMask groundMask, interactableMask;
+    public LayerMask groundMask;
     public AudioClip[] audioClip;
 
     [Header("Input Action")]
@@ -384,11 +384,6 @@ public class PlayerController : MovableObjects
     {
         isGrounded = Physics.CheckSphere(foot.position, groundDist, groundMask);
         //Debug.Log($"Player is Grounded: {isGrounded}");
-        if(controller.enabled)
-        {
-            controller.SimpleMove(moveSpd * Time.fixedDeltaTime * input);
-            controller.Move(Time.fixedDeltaTime * up);
-        }
 
         // accumulate distance travelled this frame and trigger a step when we've covered enough ground
         if (footstepManager != null && isGrounded && input.magnitude > 0.01f)
@@ -418,6 +413,11 @@ public class PlayerController : MovableObjects
     {
         // cam.localRotation = Quaternion.Euler(pitch, 0, 0);
         // transform.Rotate(Vector3.up * xMove);
+        if (controller.enabled)
+        {
+            controller.SimpleMove(moveSpd * Time.fixedDeltaTime * input);
+            controller.Move(Time.fixedDeltaTime * up);
+        }
     }
 
     private void OnFootstep(AnimationEvent animEvent)
@@ -443,7 +443,7 @@ public class PlayerController : MovableObjects
         controller.enabled = true;
     }
 
-    public override IEnumerator Move(Vector3 pos)
+    public override IEnumerator Move(Vector3 pos, float speed = 150f)
     {
         agent.SetDestination(pos);
         agent.isStopped = false;

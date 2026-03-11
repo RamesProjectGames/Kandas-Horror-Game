@@ -1682,6 +1682,7 @@ Transform:
   - {fileID: 683745597}
   - {fileID: 1483814734}
   - {fileID: 2045274169}
+  - {fileID: 1274652894}
   - {fileID: 248444832}
   - {fileID: 570588027}
   m_Father: {fileID: 0}
@@ -5947,6 +5948,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 437112421}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &439863223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 439863224}
+  - component: {fileID: 439863225}
+  m_Layer: 0
+  m_Name: Patrol1
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &439863224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439863223}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 14, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1274652894}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &439863225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439863223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02cf1331f722f6d46b38b252cb071919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  endPosition: 0
 --- !u!1 &444748362
 GameObject:
   m_ObjectHideFlags: 0
@@ -6552,37 +6599,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 508440359}
   m_CullTransparentMesh: 1
---- !u!1 &511662751
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 511662752}
-  m_Layer: 11
-  m_Name: GroundDetection
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &511662752
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 511662751}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 782622249}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &515891362
 GameObject:
   m_ObjectHideFlags: 0
@@ -8513,9 +8529,9 @@ GameObject:
   - component: {fileID: 630458561}
   - component: {fileID: 630458563}
   - component: {fileID: 630458562}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Face
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10706,7 +10722,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 395.73535}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &754388750
@@ -10751,14 +10767,14 @@ MonoBehaviour:
     Nisl nibh ultrices duis netus quis posuere varius. Diam velit enim quisque urna
     urna est.
 
-    
+
 
     Dolor posuere eget nulla lacus etiam varius tortor. Lobortis
     quam blandit purus malesuada potenti erat nulla. Non sollicitudin cursus volutpat
     risus. Habitant eget mi ac maecenas augue. Tortor eu vulputate arcu tellus et
     leo. Cras dolor et augue sollicitudin dignissim eros lorem maecenas nullam.
 
-    
+
 
     Odio
     aliquet faucibus et vitae. Ante mattis morbi purus quis accumsan ultricies. Mi
@@ -12018,13 +12034,13 @@ GameObject:
   - component: {fileID: 782622248}
   - component: {fileID: 782622247}
   - component: {fileID: 782622246}
-  - component: {fileID: 782622245}
-  - component: {fileID: 782622244}
   - component: {fileID: 782622243}
+  - component: {fileID: 782622245}
   - component: {fileID: 782622242}
   - component: {fileID: 782622241}
   - component: {fileID: 782622240}
   - component: {fileID: 782622251}
+  - component: {fileID: 782622252}
   m_Layer: 11
   m_Name: NPC
   m_TagString: Untagged
@@ -12107,7 +12123,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 1
+  m_BaseOffset: 0.9
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!54 &782622243
@@ -12137,103 +12153,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!82 &782622244
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 782622239}
-  m_Enabled: 0
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 0.1
-  MaxDistance: 10
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!95 &782622245
 Animator:
   serializedVersion: 7
@@ -12269,7 +12188,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -12341,11 +12260,10 @@ Transform:
   m_GameObject: {fileID: 782622239}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 14.25, y: 1, z: -0.38}
+  m_LocalPosition: {x: 14.25, y: 1.1, z: -0.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 511662752}
   - {fileID: 630458561}
   - {fileID: 1953750585}
   m_Father: {fileID: 0}
@@ -12362,12 +12280,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f30b67973c0d3204f8cc0bb54d03984e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 10
+  throwForce: 0
   pickupUI: {fileID: 1953750581}
   inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   ItemInteractionText: to talk with Alyssa
   landingSound: {fileID: 0}
-  landingAlertRadius: 10
+  landingAlertRadius: 0
   showTextOnPickup: 1
   onInteract:
     m_PersistentCalls:
@@ -12391,6 +12309,25 @@ MonoBehaviour:
     dialogueAsset: Dialogue
   - objective: Desk
     dialogueAsset: Alyssa_Mini1
+--- !u!114 &782622252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782622239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4b544b9da5daf044a91f8a9d9147444, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 782622242}
+  point:
+  - {fileID: 0}
+  idxPoint: 0
+  speed: 3
+  idleTime: 5
+  currIdleTime: 0
 --- !u!1 &783148619
 GameObject:
   m_ObjectHideFlags: 0
@@ -21471,6 +21408,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1272382940}
   m_CullTransparentMesh: 1
+--- !u!1 &1274652893
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1274652894}
+  m_Layer: 0
+  m_Name: NPCPatrolPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1274652894
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274652893}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 439863224}
+  m_Father: {fileID: 147673205}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1288033518
 GameObject:
   m_ObjectHideFlags: 0
@@ -26235,9 +26204,6 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
-  interactableMask:
-    serializedVersion: 2
-    m_Bits: 3584
   audioClip: []
   jumpPow: 2
   gravity: 9.81
@@ -26373,7 +26339,7 @@ Transform:
   m_GameObject: {fileID: 1562211042}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15, y: 1, z: -5}
+  m_LocalPosition: {x: 15, y: 1.1, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -30895,7 +30861,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!195 &1733759647
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -30915,7 +30881,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 1
+  m_BaseOffset: 0.9
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1733759648
@@ -35952,7 +35918,7 @@ GameObject:
   - component: {fileID: 1953750584}
   - component: {fileID: 1953750583}
   - component: {fileID: 1953750582}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Interact Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38186,7 +38152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2045274169}
   m_Layer: 0
-  m_Name: PatrollingPoints
+  m_Name: MobPatrolPoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

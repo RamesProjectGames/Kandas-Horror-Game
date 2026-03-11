@@ -45,7 +45,6 @@ public class ItemInteraction : MonoBehaviour
 
     void Update()
     {
-
         if (pickupText != null && inputActions != null)
         {
             var interactAction = inputActions.FindAction("Interact");

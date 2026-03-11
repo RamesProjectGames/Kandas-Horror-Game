@@ -123,6 +123,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
+            Debug.LogWarning("Bruh");
             if (!hit.TryGetComponent(out ItemInteraction item) || item.IsHeld)
                 continue;
 

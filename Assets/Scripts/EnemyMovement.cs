@@ -295,7 +295,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         yield return new WaitForEndOfFrame();
     }
 
-    public override IEnumerator Move(Vector3 pos)
+    public override IEnumerator Move(Vector3 pos, float speed = 3f)
     {
         // ensure we send the agent to a valid NavMesh position
         Vector3 validPos = GetValidNavMeshPosition(pos);
