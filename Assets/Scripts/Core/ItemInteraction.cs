@@ -113,9 +113,27 @@ public class ItemInteraction : MonoBehaviour
         // if the object was just thrown and it hits something, assume it has landed
         if (hasBeenThrown && !IsHeld)
         {
-            hasBeenThrown = false;
-            HandleLanding();
+            if (rb.linearVelocity.magnitude == 0)
+            {
+                hasBeenThrown = false;
+                return;
+            }
+            // if object hits enemy, stun it
+            if (collision.gameObject.CompareTag("Enemy"))
+            {
+                hasBeenThrown = false;
+                AudioSource.PlayClipAtPoint(landingSound, transform.position);
+                collision.gameObject.GetComponent<EnemyMovement>().GetStunned();
+            }
+            else
+            {
+                HandleLanding();
+            }
         }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
     }
 
     private void HandleLanding()

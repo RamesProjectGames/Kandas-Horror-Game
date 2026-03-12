@@ -101,7 +101,7 @@ namespace Dialogue
         //}
         public void OnUserPrompt(InputAction.CallbackContext ctx)
         {
-            if(isRunningConvo)
+            if(isRunningConvo && !SettingManager.Instance.isPaused)
                 onUserPrompt?.Invoke();
         }
         #endregion

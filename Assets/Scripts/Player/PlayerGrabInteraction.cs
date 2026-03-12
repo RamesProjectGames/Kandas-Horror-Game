@@ -46,6 +46,8 @@ public class PlayerGrabInteraction : MonoBehaviour
         DetectItemInteraction();
         DetectFragmentItem();
 
+        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+            return;
         if (interAction != null && interAction.WasPerformedThisFrame())
         {
             if (currentItem != null)

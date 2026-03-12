@@ -3228,6 +3228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 1
+  faceTowards: {fileID: 0}
 --- !u!1 &248444827
 GameObject:
   m_ObjectHideFlags: 0
@@ -4251,6 +4252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 1
+  faceTowards: {fileID: 0}
 --- !u!1 &303155784
 GameObject:
   m_ObjectHideFlags: 0
@@ -4584,6 +4586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 0}
 --- !u!1 &330341071
 GameObject:
   m_ObjectHideFlags: 0
@@ -6091,6 +6094,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 1562211049}
 --- !u!1 &444748362
 GameObject:
   m_ObjectHideFlags: 0
@@ -6186,6 +6190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 0}
 --- !u!1 &465512551
 GameObject:
   m_ObjectHideFlags: 0
@@ -7890,6 +7895,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 1562211049}
 --- !u!1 &570588026
 GameObject:
   m_ObjectHideFlags: 0
@@ -10854,6 +10860,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 1
+  faceTowards: {fileID: 1562211049}
 --- !u!1 &721650330
 GameObject:
   m_ObjectHideFlags: 0
@@ -13075,7 +13082,6 @@ MonoBehaviour:
   - {fileID: 1154087171}
   - {fileID: 566236652}
   idxPoint: 0
-  speed: 2
 --- !u!1 &783148619
 GameObject:
   m_ObjectHideFlags: 0
@@ -13747,6 +13753,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 1562211049}
 --- !u!1 &805325440
 GameObject:
   m_ObjectHideFlags: 0
@@ -15714,6 +15721,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 0}
 --- !u!1 &904708683
 GameObject:
   m_ObjectHideFlags: 0
@@ -16783,6 +16791,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 0}
 --- !u!1 &971894129
 GameObject:
   m_ObjectHideFlags: 0
@@ -18857,6 +18866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 1562211049}
 --- !u!1 &1067720605
 GameObject:
   m_ObjectHideFlags: 0
@@ -20631,6 +20641,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 1562211049}
 --- !u!1 &1163635191
 GameObject:
   m_ObjectHideFlags: 0
@@ -25626,6 +25637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 0}
 --- !u!1 &1466104814
 GameObject:
   m_ObjectHideFlags: 0
@@ -25917,6 +25929,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 0}
 --- !u!1 &1483814733
 GameObject:
   m_ObjectHideFlags: 0
@@ -27330,6 +27343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 0}
 --- !u!1 &1553229173
 GameObject:
   m_ObjectHideFlags: 0
@@ -31195,6 +31209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 0}
 --- !u!1 &1683570917
 GameObject:
   m_ObjectHideFlags: 0
@@ -31567,6 +31582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 1562211049}
 --- !u!1 &1707333468
 GameObject:
   m_ObjectHideFlags: 0
@@ -31869,7 +31885,6 @@ MonoBehaviour:
   pursueSpeed: 6
   idleTime: 5
   currIdleTime: 0
-  agentStopped: 0
   hidingSpotDetectionRadius: 15
   hidingSpotLayer:
     serializedVersion: 2
@@ -32080,8 +32095,8 @@ Transform:
   m_GameObject: {fileID: 1733759635}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15, y: 1.1, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -15, y: 2.1, z: -10}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1114788961}
@@ -32707,6 +32722,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 1562211049}
 --- !u!1 &1757199298
 GameObject:
   m_ObjectHideFlags: 0
@@ -36787,6 +36803,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   endPosition: 0
+  faceTowards: {fileID: 1562211049}
 --- !u!1 &1926623160
 GameObject:
   m_ObjectHideFlags: 0

@@ -50,8 +50,16 @@ public class NpcMovement : MovableObjects
         if (point.Length == 0)
             return;
         else if (point.Length == 1)
-            if(transform.position == point[0].position)
+            if(Vector3.Distance(transform.position, point[0].position) < agent.stoppingDistance)
+            {
+                if (point[idxPoint].faceTowards != null)
+                {
+                    Vector3 targetPos = point[idxPoint].faceTowards.position;
+                    targetPos.y = transform.position.y; // Maintain same Y level
+                    transform.LookAt(targetPos);
+                }
                 return;
+            }
         if (agent.isStopped)
         {
             currIdleTime -= Time.deltaTime;
@@ -67,8 +75,14 @@ public class NpcMovement : MovableObjects
             return; // Exit early while idling
         }
 
-        if(agent.remainingDistance <= agent.stoppingDistance)
+        if(agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
         {
+            if (point[idxPoint].faceTowards != null)
+            {
+                Vector3 targetPos = point[idxPoint].faceTowards.position;
+                targetPos.y = transform.position.y; // Maintain same Y level
+                transform.LookAt(targetPos);
+            }
             agent.isStopped = true;
             currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
         }

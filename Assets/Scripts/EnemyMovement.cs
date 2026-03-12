@@ -14,10 +14,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     public float speed = 3f;
     public float pursueSpeed = 6f;
     public float idleTime = 5f, currIdleTime;
-    public bool agentStopped;
-    bool comeback = false;
-    bool reachPoint = false;
     private bool isKilling = false;
+    private bool isStunned = false;
 
     [Header("Hiding Spot Detection")]
     [SerializeField] private float hidingSpotDetectionRadius = 15f;
@@ -66,6 +64,20 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     void Update()
     {
         if (HandlePauseState()) return;
+
+        if(isStunned)
+        {
+            currIdleTime -= Time.deltaTime;
+            if (currIdleTime <= 0)
+            {
+                // Transition from Idle to Moving
+                agent.isStopped = false;
+                agent.speed = speed;
+
+                isStunned = false;
+            }
+            return; // Exit early while idling
+        }
 
         // 1. Check if player is currently hiding
         PlayerHiding checkHiding = fov.player.GetComponent<PlayerHiding>();
@@ -209,7 +221,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         isDiscoveringSpot = true;
         targetHidingSpot = spot;
         agent.isStopped = false;
-        reachPoint = false; 
         agent.speed = pursueSpeed;
         agent.SetDestination(GetValidNavMeshPosition(spot.transform.position));
         
@@ -247,12 +258,17 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             }
             else
             {
+                if (point[idxPoint].faceTowards != null)
+                {
+                    transform.LookAt(new Vector3(point[idxPoint].faceTowards.position.x, transform.forward.y, point[idxPoint].faceTowards.position.z));
+                }
                 agent.isStopped = true;
                 currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
             }
         }
     }
 
+    #region Player Hiding
     /// <summary>
     /// Start the process of discovering and opening a hiding spot where the player is spotted.
     /// </summary>
@@ -289,6 +305,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             }
         }
     }
+    #endregion
 
     #region Agent Movement
 
@@ -322,7 +339,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
         // 2. Reset Movement State
         agent.isStopped = false; // Essential: Unpause the NavMeshAgent
-        reachPoint = false;      // Essential: Tell Update() we are no longer "at a point"
         agent.speed = speed;     // Return to normal walking speed
 
         // 3. Set Destination
@@ -337,7 +353,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     {
         agent.isStopped = false;
         agent.SetDestination(soundSource);
-        reachPoint = false;
     }
     public void OnEnterAudioRadius(GameObject audioSource)
     {
@@ -349,7 +364,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         agent.isStopped = false;
         agent.speed = pursueSpeed;
         detectedSound = true;
-        reachPoint = false; 
 
         // raw position received from the audio source (flattened to our y)
         Vector3 rawPos = new Vector3(audioSource.transform.position.x, transform.position.y, audioSource.transform.position.z);
@@ -455,5 +469,14 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         }
     }
 
+    #endregion
+
+    #region Stun
+    public void GetStunned()
+    {
+        Debug.Log("Haha get stunned bozo");
+        agent.isStopped = true;
+        currIdleTime = idleTime;
+    }
     #endregion
 }
