@@ -20,7 +20,16 @@ public class FloatingText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = Quaternion.LookRotation(transform.position - mainCamera.position);
+        Vector3 direction = transform.position - mainCamera.position;
+
+        // 2. CRITICAL: Flatten the direction so there is no vertical tilt
+        direction.y = 0;
+
+        // 3. Create the rotation based on the flattened direction
+        if (direction != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
         transform.position = unit.position + offset;
     }
 }
