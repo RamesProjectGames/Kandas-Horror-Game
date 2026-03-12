@@ -25,23 +25,23 @@ public class InspectManagerUI : MonoBehaviour
     }
     public void OnItemSelected(GameObject itemPrefab)
     {
-        if (Instance.currentInpectObject != null)
+        if (currentInpectObject != null)
         {
-            Destroy(Instance.currentInpectObject.gameObject);
+            Destroy(currentInpectObject.gameObject);
         }
-        Instance.currentInpectObject = Instantiate(itemPrefab, new Vector3(1000, 1000, 1000), Quaternion.identity).transform;
-        itemTitle.text = Instance.currentInpectObject.GetComponent<InspectData>().itemTitle;
-        itemDescription.text = Instance.currentInpectObject.GetComponent<InspectData>().itemDescription;
-        currentInpectObject.LookAt(lookAtCamera.transform);
-        Instance.InspectUI(true);
+        currentInpectObject = Instantiate(itemPrefab, new Vector3(1000, 1000, 1000), Quaternion.identity).transform;
+        itemTitle.text = currentInpectObject.GetComponent<InspectData>().itemTitle;
+        itemDescription.text = currentInpectObject.GetComponent<InspectData>().itemDescription;
+        // currentInpectObject.LookAt(lookAtCamera.transform);
+        InspectUI(true);
     }
     public void OnItemDeselect()
     {
-        if (Instance.currentInpectObject != null)
+        if (currentInpectObject != null)
         {
-            Destroy(Instance.currentInpectObject.gameObject);
+            Destroy(currentInpectObject.gameObject);
         }
-        Instance.InspectUI(false);
+        InspectUI(false);
         itemTitle.text = "";
         itemDescription.text = "";
     }
