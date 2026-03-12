@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Drawing;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,8 +8,8 @@ public class NpcMovement : MovableObjects
 {
     [SerializeField] Waypoint[] point;
     [SerializeField] int idxPoint = 0;
-    public float speed = 3f;
-    public float idleTime = 5f, currIdleTime;
+    float speed = 1f;
+    float idleTime = 5f, currIdleTime;
     private Vector3 GetValidNavMeshPosition(Vector3 target)
     {
         NavMeshHit hit;
@@ -38,26 +39,38 @@ public class NpcMovement : MovableObjects
     {
         agent = GetComponent<NavMeshAgent>();
         if (agent == null) agent = gameObject.AddComponent<NavMeshAgent>();
+        if(point.Length > 0)
+            agent.SetDestination(point[idxPoint].position);
         currIdleTime = idleTime;
     }
 
     // Update is called once per frame
-    //void Update()
-    //{
-    //    if (agent.isStopped)
-    //    {
-    //        currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
-    //        currIdleTime -= Time.deltaTime;
-    //        if (currIdleTime <= 0)
-    //        {
-    //            // Transition from Idle to Moving
-    //            agent.isStopped = false;
-    //            agent.speed = speed;
+    void Update()
+    {
+        if (point.Length == 0)
+            return;
+        else if (point.Length == 1)
+            if(transform.position == point[0].position)
+                return;
+        if (agent.isStopped)
+        {
+            currIdleTime -= Time.deltaTime;
+            if (currIdleTime <= 0)
+            {
+                // Transition from Idle to Moving
+                agent.isStopped = false;
+                agent.speed = speed;
 
-    //            idxPoint = (idxPoint + 1) % point.Length;
-    //            agent.SetDestination(point[idxPoint].position);
-    //        }
-    //        return; // Exit early while idling
-    //    }
-    //}
+                idxPoint = (idxPoint + 1) % point.Length;
+                agent.SetDestination(point[idxPoint].position);
+            }
+            return; // Exit early while idling
+        }
+
+        if(agent.remainingDistance <= agent.stoppingDistance)
+        {
+            agent.isStopped = true;
+            currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+        }
+    }
 }
