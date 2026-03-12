@@ -39,7 +39,6 @@ public class ItemInteraction : MonoBehaviour
         col = GetComponent<Collider>();
         obstacle = TryGetComponent<NavMeshObstacle>(out obstacle) ? obstacle : null;
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        pickupText = pickupUI.GetComponent<TextMeshPro>();
         pickupUI.SetActive(false);
         hasBeenThrown = false;
     }
