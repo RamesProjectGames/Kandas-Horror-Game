@@ -30,7 +30,8 @@ public class ItemInteraction : MonoBehaviour
 
     public Transform player;
     public bool IsHeld { get; private set; }
-    public TextMeshPro pickupText;
+    public TMP_Text pickupText;
+    public TMP_Text ButtonInteractionText;
 
     void Awake()
     {
@@ -51,7 +52,8 @@ public class ItemInteraction : MonoBehaviour
             if (interactAction != null)
             {
                 string bindingDisplay = interactAction.GetBindingDisplayString(0);
-                pickupText.text = $"Press {bindingDisplay} {ItemInteractionText}";
+                ButtonInteractionText.text = $"{bindingDisplay}";
+                pickupText.text = $"{ItemInteractionText}";
             }
         }
     }

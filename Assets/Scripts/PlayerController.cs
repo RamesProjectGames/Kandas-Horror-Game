@@ -120,16 +120,19 @@ public class PlayerController : MovableObjects
             if (unlockAction != null && unlockAction.IsPressed())
             {
                 Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
             else
             {
                 if(SettingManager.Instance.isPaused)
                 {
-                    Cursor.lockState = CursorLockMode.None;                    
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
                 }
                 else
                 {
-                    Cursor.lockState = CursorLockMode.Locked;                                    
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
                 }
             }
         }
