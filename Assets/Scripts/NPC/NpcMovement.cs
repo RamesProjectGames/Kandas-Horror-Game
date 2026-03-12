@@ -75,12 +75,12 @@ public class NpcMovement : MovableObjects
             return; // Exit early while idling
         }
 
-        if(agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
+        if(agent.remainingDistance <= agent.stoppingDistance)
         {
             if (point[idxPoint].faceTowards != null)
             {
                 Vector3 targetPos = point[idxPoint].faceTowards.position;
-                targetPos.y = transform.position.y; // Maintain same Y level
+                targetPos.y = transform.position.y;
                 transform.LookAt(targetPos);
             }
             agent.isStopped = true;

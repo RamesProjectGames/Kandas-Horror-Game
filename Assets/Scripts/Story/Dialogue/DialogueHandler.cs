@@ -19,7 +19,7 @@ namespace Dialogue
                 if (interactAction != null && CheckCurrentObjectives())
                 {
                     string bindingDisplay = interactAction.GetBindingDisplayString(0);
-                    pickupText.text = $"Press {bindingDisplay} {ItemInteractionText}";
+                    pickupText.text = $"{ItemInteractionText}";
                 }
                 else
                 {

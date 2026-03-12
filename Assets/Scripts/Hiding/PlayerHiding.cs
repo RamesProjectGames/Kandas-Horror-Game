@@ -1,3 +1,4 @@
+using Dialogue;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,6 +46,8 @@ public class PlayerHiding : MonoBehaviour
 
     private void Update()
     {
+        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+            return;
         // Handle hiding animation timing
         if (isAnimatingHide)
         {
