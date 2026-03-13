@@ -150,10 +150,7 @@ public class QuizSystem : MonoBehaviour
         if (feedbackText != null)
             feedbackText.gameObject.SetActive(false);
 
-        if (currentQuestion == questions.Count - 1)
-        {
-            onFinalQuestion?.Invoke();
-        }
+        
     }
 
     IEnumerator NextQuestionRoutine()
@@ -212,6 +209,10 @@ public class QuizSystem : MonoBehaviour
 
         if (resultText != null)
             resultText.text = $"Quiz Finished!\nCorrect: {correctCount}/{questions.Count}";
+
+        ClearDrawing();
+
+        onFinalQuestion?.Invoke();
     }
 
     public void RestartQuiz()
