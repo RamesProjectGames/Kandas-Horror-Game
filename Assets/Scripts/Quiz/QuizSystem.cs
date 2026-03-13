@@ -1,48 +1,59 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class QuizSystem : MonoBehaviour
 {
+    [Header("Quiz Panel")]
+    public GameObject quizPanel;
+    [Header("Draw Area")]
+    public RectTransform drawArea;           // Your 1600 x 750 panel
+    public RectTransform dotsContainer;      // Usually same as drawArea
+    public Image dotPrefab;                  // UI Image prefab (round soft brush)
+
+    [Header("Brush Settings")]
+    public float dotSize = 40f;              // Good for your 50x50 style
+    public float dotSpacing = 8f;            // Smooth drawing
+    public float totalLengthRequired = 300f; // How much they must draw to count as correct
+
     [Header("Questions")]
     public List<string> questions = new List<string>();
     public TMP_Text questionText;
+    public TMP_Text progressText;
     private int currentQuestion = 0;
-    private List<bool> questionResults = new List<bool>();
-    public GameObject QuizPanel;
 
-    [Header("Drawing Area")]
-    public RectTransform drawArea;
-    public RectTransform strokeContainer;
-    public Camera uiCamera; // null if Screen Space Overlay
+    [Header("Result UI")]
+    public GameObject resultPanel;
+    public TMP_Text resultText;
 
-    [Header("Brush")]
-    public Image dotPrefab;
-    public float dotSpacing = 20f;   // better for big area
-    public float dotSize = 40f;      // good for your 1600x750 area
-
-    [Header("Quiz Validation")]
-    public float totalLengthRequired = 300f; // good for 1600x750
-    public UnityEvent onQuizFinished;
-    public UnityEvent onAllCorrect;
+    [Header("Optional Feedback")]
+    public TMP_Text feedbackText;
+    public float nextQuestionDelay = 0.5f;
 
     private bool isDrawing = false;
+    private bool isTransitioning = false;
+    private bool hasTriggeredCompletion = false;
+
     private Vector2 lastLocalPoint;
     private float accumulatedLength = 0f;
+
+    private List<RectTransform> spawnedDots = new List<RectTransform>();
+    private List<bool> questionResults = new List<bool>();
 
     public bool HasValidDrawing => accumulatedLength >= totalLengthRequired;
 
     void Start()
     {
-        if (questions.Count <= 0)
-        {
-            Debug.LogWarning("No questions assigned.");
-            return;
-        }
+        if (resultPanel != null)
+            resultPanel.SetActive(false);
 
-        // Prepare results list
+        if (feedbackText != null)
+            feedbackText.gameObject.SetActive(false);
+
         questionResults.Clear();
         for (int i = 0; i < questions.Count; i++)
         {
@@ -50,78 +61,26 @@ public class QuizSystem : MonoBehaviour
         }
 
         currentQuestion = 0;
-        ShowQuestion();
     }
+
     void Update()
     {
-        HandleMouse();
-        HandleTouch();
-    }
-    
-    public void OpenQuiz(bool open)
-    {
-        QuizPanel.SetActive(open);
-        SettingManager.Instance.isPaused = open;
-    } 
-    void ShowQuestion()
-    {
-        if (currentQuestion >= questions.Count)
-        {
-            FinishQuiz();
-            return;
-        }
+        if (isTransitioning) return;
 
-        questionText.text = questions[currentQuestion];
-        ClearDrawing();
-    }
-
-    public void NextQuestion()
-    {
-        if (questions.Count <= 0) return;
-        if (currentQuestion >= questions.Count) return;
-
-        // Save current question result
-        questionResults[currentQuestion] = HasValidDrawing;
-
-        currentQuestion++;
-
-        if (currentQuestion >= questions.Count)
-        {
-            FinishQuiz();
-        }
-        else
-        {
-            ShowQuestion();
-        }
-    }
-
-    void FinishQuiz()
-    {
-        int correctCount = 0;
-
-        for (int i = 0; i < questionResults.Count; i++)
-        {
-            if (questionResults[i])
-                correctCount++;
-        }
-
-        Debug.Log($"Quiz Finished! Correct: {correctCount}/{questions.Count}");
-
-        if (correctCount == questions.Count)
-        {
-            onAllCorrect?.Invoke();
-        }
-
-        onQuizFinished?.Invoke();
-    }
-
-    void HandleMouse()
-    {
-        if (Input.touchCount > 0) return;
-
+        // Mouse
         if (Input.GetMouseButtonDown(0))
         {
-            TryBeginDraw(Input.mousePosition);
+            // Prevent drawing if clicking UI outside draw area? Optional
+            // If you have buttons, this can help:
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                // Still allow drawing IF inside draw area
+                TryBeginDraw(Input.mousePosition);
+            }
+            else
+            {
+                TryBeginDraw(Input.mousePosition);
+            }
         }
 
         if (Input.GetMouseButton(0) && isDrawing)
@@ -133,121 +92,258 @@ public class QuizSystem : MonoBehaviour
         {
             EndDraw();
         }
-    }
 
-    void HandleTouch()
-    {
-        if (Input.touchCount == 0) return;
-
-        Touch touch = Input.GetTouch(0);
-
-        switch (touch.phase)
+        // Touch support (optional)
+        if (Input.touchCount > 0)
         {
-            case TouchPhase.Began:
-                TryBeginDraw(touch.position);
-                break;
+            Touch touch = Input.GetTouch(0);
 
-            case TouchPhase.Moved:
-            case TouchPhase.Stationary:
-                if (isDrawing)
-                    ContinueDraw(touch.position);
-                break;
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    TryBeginDraw(touch.position);
+                    break;
 
-            case TouchPhase.Ended:
-            case TouchPhase.Canceled:
-                EndDraw();
-                break;
+                case TouchPhase.Moved:
+                case TouchPhase.Stationary:
+                    if (isDrawing)
+                        ContinueDraw(touch.position);
+                    break;
+
+                case TouchPhase.Ended:
+                case TouchPhase.Canceled:
+                    EndDraw();
+                    break;
+            }
         }
     }
 
-    void TryBeginDraw(Vector2 screenPos)
+    // =========================
+    // Question Flow
+    // =========================
+    public void OpenQuiz(bool open)
     {
-        if (IsPointerOverUIButNotDrawArea(screenPos))
-            return;
-
-        if (ScreenPointToLocalPointInDrawArea(screenPos, out Vector2 localPoint))
-        {
-            isDrawing = true;
-            lastLocalPoint = localPoint;
-
-            SpawnDot(localPoint);
-        }
+        if (quizPanel != null)
+            quizPanel.SetActive(open);
+        SettingManager.Instance.isPaused = open;
+        ShowQuestion();
     }
-
-    void ContinueDraw(Vector2 screenPos)
+    void ShowQuestion()
     {
-        if (!ScreenPointToLocalPointInDrawArea(screenPos, out Vector2 localPoint))
+        if (currentQuestion >= questions.Count)
         {
-            EndDraw();
+            FinishQuiz();
             return;
         }
 
-        float distance = Vector2.Distance(lastLocalPoint, localPoint);
+        if (questionText != null)
+            questionText.text = questions[currentQuestion];
 
-        if (distance < dotSpacing)
-            return;
+        if (progressText != null)
+            progressText.text = $"Question {currentQuestion + 1}/{questions.Count}";
 
-        int steps = Mathf.FloorToInt(distance / dotSpacing);
+        ClearDrawing();
 
-        for (int i = 1; i <= steps; i++)
-        {
-            Vector2 point = Vector2.Lerp(lastLocalPoint, localPoint, (float)i / steps);
-            SpawnDot(point);
-        }
-
-        accumulatedLength += distance;
-        lastLocalPoint = localPoint;
+        if (feedbackText != null)
+            feedbackText.gameObject.SetActive(false);
     }
 
-    void EndDraw()
+    IEnumerator NextQuestionRoutine()
+    {
+        if (isTransitioning) yield break;
+        isTransitioning = true;
+
+        // Mark current as correct because enough drawing was completed
+        if (currentQuestion < questionResults.Count)
+            questionResults[currentQuestion] = true;
+
+        if (feedbackText != null)
+        {
+            feedbackText.gameObject.SetActive(true);
+            feedbackText.text = "Correct!";
+        }
+
+        yield return new WaitForSeconds(nextQuestionDelay);
+
+        currentQuestion++;
+
+        if (currentQuestion >= questions.Count)
+        {
+            FinishQuiz();
+        }
+        else
+        {
+            ShowQuestion();
+        }
+
+        isTransitioning = false;
+    }
+
+    void FinishQuiz()
     {
         isDrawing = false;
-    }
 
-    bool ScreenPointToLocalPointInDrawArea(Vector2 screenPos, out Vector2 localPoint)
-    {
-        localPoint = Vector2.zero;
-
-        if (!RectTransformUtility.RectangleContainsScreenPoint(drawArea, screenPos, uiCamera))
-            return false;
-
-        return RectTransformUtility.ScreenPointToLocalPointInRectangle(drawArea, screenPos, uiCamera, out localPoint);
-    }
-
-    void SpawnDot(Vector2 localPoint)
-    {
-        Image dot = Instantiate(dotPrefab, strokeContainer);
-        RectTransform rt = dot.rectTransform;
-        rt.anchoredPosition = localPoint;
-        rt.sizeDelta = new Vector2(dotSize, dotSize);
-    }
-
-    bool IsPointerOverUIButNotDrawArea(Vector2 screenPos)
-    {
-        return false;
-    }
-
-    public void ClearDrawing()
-    {
-        for (int i = strokeContainer.childCount - 1; i >= 0; i--)
-        {
-            Destroy(strokeContainer.GetChild(i).gameObject);
-        }
-
-        accumulatedLength = 0f;
-        isDrawing = false;
-    }
-
-    public int GetCorrectCount()
-    {
         int correctCount = 0;
-
         for (int i = 0; i < questionResults.Count; i++)
         {
             if (questionResults[i])
                 correctCount++;
         }
 
-        return correctCount;
+        if (questionText != null)
+            questionText.gameObject.SetActive(false);
+
+        if (progressText != null)
+            progressText.gameObject.SetActive(false);
+
+        if (feedbackText != null)
+            feedbackText.gameObject.SetActive(false);
+
+        if (resultPanel != null)
+            resultPanel.SetActive(true);
+
+        if (resultText != null)
+            resultText.text = $"Quiz Finished!\nCorrect: {correctCount}/{questions.Count}";
+    }
+
+    public void RestartQuiz()
+    {
+        currentQuestion = 0;
+
+        if (questionText != null)
+            questionText.gameObject.SetActive(true);
+
+        if (progressText != null)
+            progressText.gameObject.SetActive(true);
+
+        if (resultPanel != null)
+            resultPanel.SetActive(false);
+
+        if (feedbackText != null)
+            feedbackText.gameObject.SetActive(false);
+
+        questionResults.Clear();
+        for (int i = 0; i < questions.Count; i++)
+        {
+            questionResults.Add(false);
+        }
+
+        ShowQuestion();
+    }
+
+    // =========================
+    // Drawing Logic
+    // =========================
+
+    void TryBeginDraw(Vector2 screenPos)
+    {
+        if (isTransitioning) return;
+
+        if (!ScreenPointToLocalPointInDrawArea(screenPos, out Vector2 localPoint))
+            return;
+
+        isDrawing = true;
+        hasTriggeredCompletion = false;
+        lastLocalPoint = localPoint;
+
+        SpawnDot(localPoint);
+    }
+
+    void ContinueDraw(Vector2 screenPos)
+    {
+        if (!ScreenPointToLocalPointInDrawArea(screenPos, out Vector2 localPoint))
+        {
+            // EndDraw();
+            return;
+        }
+
+        float distance = Vector2.Distance(lastLocalPoint, localPoint);
+
+        if (distance <= 0.01f)
+            return;
+
+        int steps = Mathf.CeilToInt(distance / dotSpacing);
+
+        for (int i = 1; i <= steps; i++)
+        {
+            float t = (float)i / steps;
+            Vector2 point = Vector2.Lerp(lastLocalPoint, localPoint, t);
+            SpawnDot(point);
+        }
+
+        accumulatedLength += distance;
+        lastLocalPoint = localPoint;
+
+        
+    }
+
+    void EndDraw()
+    {
+        if (!isDrawing) return;
+
+        isDrawing = false;
+
+        // Player finished drawing and released mouse
+        if (accumulatedLength >= totalLengthRequired)
+        {
+            StartCoroutine(NextQuestionRoutine());
+        }
+        else
+        {
+            // Optional feedback if not enough drawing
+            if (feedbackText != null)
+            {
+                feedbackText.gameObject.SetActive(true);
+                feedbackText.text = "Draw more!";
+            }
+        }
+    }
+
+    void SpawnDot(Vector2 localPoint)
+    {
+        if (dotPrefab == null || dotsContainer == null)
+            return;
+
+        Image dot = Instantiate(dotPrefab, dotsContainer);
+        RectTransform rt = dot.rectTransform;
+
+        rt.anchoredPosition = localPoint;
+        rt.sizeDelta = new Vector2(dotSize, dotSize);
+
+        spawnedDots.Add(rt);
+    }
+
+    public void ClearDrawing()
+    {
+        for (int i = 0; i < spawnedDots.Count; i++)
+        {
+            if (spawnedDots[i] != null)
+                Destroy(spawnedDots[i].gameObject);
+        }
+
+        spawnedDots.Clear();
+        accumulatedLength = 0f;
+        hasTriggeredCompletion = false;
+        isDrawing = false;
+    }
+
+    // =========================
+    // Utility
+    // =========================
+
+    bool ScreenPointToLocalPointInDrawArea(Vector2 screenPos, out Vector2 localPoint)
+    {
+        Camera cam = null;
+
+        Canvas canvas = drawArea.GetComponentInParent<Canvas>();
+        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+        {
+            cam = canvas.worldCamera;
+        }
+
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(drawArea, screenPos, cam, out localPoint))
+            return false;
+
+        return drawArea.rect.Contains(localPoint);
     }
 }
