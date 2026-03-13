@@ -1,3 +1,4 @@
+using Dialogue;
 using System.Collections;
 using System.Drawing;
 using System.Linq;
@@ -47,6 +48,14 @@ public class NpcMovement : MovableObjects
     // Update is called once per frame
     void Update()
     {
+        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+        {
+            agent.isStopped = true;
+            return;
+        }
+        else if(agent.isStopped)
+            agent.isStopped = false;
+
         if (point.Length == 0)
             return;
         else if (point.Length == 1)

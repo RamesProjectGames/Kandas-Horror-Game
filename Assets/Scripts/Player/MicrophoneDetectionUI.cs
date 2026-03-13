@@ -1,3 +1,4 @@
+using Dialogue;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,8 @@ public class MicrophoneDetectionUI : MonoBehaviour
 
     private void Update()
     {
+        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+            return;
         if (playerHiding == null || !playerHiding.IsHiding())
         {
             // Optionally hide the UI when not hiding

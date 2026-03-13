@@ -111,6 +111,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
     private void FixedUpdate()
     {
+        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+            return;
         // accumulate distance travelled this frame and trigger a step when we've covered enough ground
         if (footstepManager != null)
         {
@@ -475,6 +477,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     public void GetStunned()
     {
         Debug.Log("Haha get stunned bozo");
+        isStunned = true;
         agent.isStopped = true;
         currIdleTime = idleTime;
     }

@@ -52,8 +52,7 @@ namespace Dialogue
 
         private void Update()
         {
-
-            if (!isRunningConvo)
+            if (Application.isPlaying && (SettingManager.Instance.isPaused || !isRunningConvo))
                 return;
             if (buildMethod != architect.buildMethod)
             {

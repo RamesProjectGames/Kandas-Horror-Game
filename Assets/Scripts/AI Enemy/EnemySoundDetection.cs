@@ -1,6 +1,7 @@
-using UnityEngine;
+using Dialogue;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class EnemySoundDetection : MonoBehaviour
 {
@@ -18,8 +19,10 @@ public class EnemySoundDetection : MonoBehaviour
     [SerializeField] private EnemyMovement enemyMovement;
     [SerializeField] private IEnemySoundReactive enemy; // Your interface for alerting the AI
 
-    private void Update()
+    void Update()
     {
+        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+            return;
         // Only process if the player is actually hiding
         if (playerHiding != null && playerHiding.IsHiding())
         {

@@ -1,8 +1,9 @@
-using UnityEngine;
+using Dialogue;
+using FMOD;
 using FMOD.Studio;
 using FMODUnity;
-using FMOD;
 using System;
+using UnityEngine;
 
 public class MicrophoneManager : MonoBehaviour
 {
@@ -51,6 +52,8 @@ public class MicrophoneManager : MonoBehaviour
 
     void Update()
     {
+        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+            return;
         if (isRecording && coreSystem.handle != System.IntPtr.Zero)
         {
             coreSystem.update();

@@ -1,3 +1,4 @@
+using Dialogue;
 using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
@@ -44,6 +45,8 @@ public class Manequin : MonoBehaviour
 
     void LateUpdate()
     {
+        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+            return;
         if (_poseHandler == null) return;
 
         _poseHandler.GetHumanPose(ref _currentPose);

@@ -1,3 +1,4 @@
+using Dialogue;
 using FMOD.Studio;
 using FMODUnity;
 using System;
@@ -44,6 +45,8 @@ public class FootstepsSoundManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+        //    return;
         //if(Animator != null)
         //{
         //    var footstep = Animator.GetFloat("Footstep");

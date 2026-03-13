@@ -119,7 +119,7 @@ public class ItemInteraction : MonoBehaviour
                 return;
             }
             // if object hits enemy, stun it
-            if (collision.gameObject.CompareTag("Enemy"))
+            else if (collision.gameObject.CompareTag("Enemy"))
             {
                 hasBeenThrown = false;
                 AudioSource.PlayClipAtPoint(landingSound, transform.position);
