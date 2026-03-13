@@ -91,10 +91,16 @@ public class NpcMovement : MovableObjects
 
                 if (transform.rotation == targetRotation)
                 {
-                    idxPoint = (idxPoint + 1) % point.Length;
+                    idxPoint = idxPoint++ % point.Length;
                     agent.isStopped = true;
                     currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
                 }
+            }
+            else
+            {
+                idxPoint = idxPoint++ % point.Length;
+                agent.isStopped = true;
+                currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
             }
         }
     }

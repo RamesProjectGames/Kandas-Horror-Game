@@ -268,6 +268,12 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                         currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
                     }
                 }
+                else
+                {
+                    idxPoint = idxPoint++ % point.Length;
+                    agent.isStopped = true;
+                    currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+                }
             }
         }
     }
