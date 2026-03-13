@@ -11,6 +11,7 @@ public class NpcMovement : MovableObjects
     [SerializeField] int idxPoint = 0;
     float speed = 1f;
     float idleTime = 5f, currIdleTime;
+    bool wasPausedLastFrame = false;
     private Vector3 GetValidNavMeshPosition(Vector3 target)
     {
         NavMeshHit hit;
@@ -48,18 +49,13 @@ public class NpcMovement : MovableObjects
     // Update is called once per frame
     void Update()
     {
-        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
-        {
-            agent.isStopped = true;
-            return;
-        }
-        else if(agent.isStopped)
-            agent.isStopped = false;
+        if (HandlePauseState()) return;
 
         if (point.Length == 0)
             return;
         else if (point.Length == 1)
-            if(Vector3.Distance(transform.position, point[0].position) < agent.stoppingDistance)
+        {
+            if (Vector3.Distance(transform.position, point[0].position) < agent.stoppingDistance)
             {
                 if (point[idxPoint].faceTowards != null)
                 {
@@ -67,8 +63,10 @@ public class NpcMovement : MovableObjects
                     targetPos.y = transform.position.y; // Maintain same Y level
                     transform.LookAt(targetPos);
                 }
-                return;
             }
+            return;
+        }
+
         if (agent.isStopped)
         {
             currIdleTime -= Time.deltaTime;
@@ -78,22 +76,44 @@ public class NpcMovement : MovableObjects
                 agent.isStopped = false;
                 agent.speed = speed;
 
-                idxPoint = (idxPoint + 1) % point.Length;
                 agent.SetDestination(point[idxPoint].position);
             }
             return; // Exit early while idling
         }
-
-        if(agent.remainingDistance <= agent.stoppingDistance)
+        else if(agent.remainingDistance <= agent.stoppingDistance)
         {
             if (point[idxPoint].faceTowards != null)
             {
                 Vector3 targetPos = point[idxPoint].faceTowards.position;
                 targetPos.y = transform.position.y;
-                transform.LookAt(targetPos);
+                Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
+
+                if (transform.rotation == targetRotation)
+                {
+                    idxPoint = (idxPoint + 1) % point.Length;
+                    agent.isStopped = true;
+                    currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+                }
             }
-            agent.isStopped = true;
-            currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
         }
+    }
+
+    private bool HandlePauseState()
+    {
+        bool isPaused = SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo;
+        if (isPaused)
+        {
+            if (!wasPausedLastFrame && agent != null) agent.enabled = false;
+            wasPausedLastFrame = true;
+            return true;
+        }
+        if (wasPausedLastFrame)
+        {
+            if (agent != null) agent.enabled = true;
+            wasPausedLastFrame = false;
+            agent.SetDestination(point[idxPoint].position);
+        }
+        return false;
     }
 }

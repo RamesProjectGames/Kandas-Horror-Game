@@ -146,7 +146,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     }
     private bool HandlePauseState()
     {
-        bool isPaused = SettingManager.Instance.isPaused;
+        bool isPaused = SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo;
         if (isPaused)
         {
             if (!wasPausedLastFrame && agent != null) agent.enabled = false;
@@ -230,11 +230,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     }
     private void HandleNavigation()
     {
-        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
-        {
-            agent.isStopped = true;
-            return;
-        }
         // If the agent is stopped, it means we are in the "Idle" phase
         if (agent.isStopped)
         {
@@ -245,7 +240,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                 agent.isStopped = false;
                 agent.speed = speed;
 
-                idxPoint = (idxPoint + 1) % point.Length;
                 agent.SetDestination(point[idxPoint].position);
             }
             return; // Exit early while idling
@@ -262,10 +256,18 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             {
                 if (point[idxPoint].faceTowards != null)
                 {
-                    transform.LookAt(new Vector3(point[idxPoint].faceTowards.position.x, transform.forward.y, point[idxPoint].faceTowards.position.z));
+                    Vector3 targetPos = point[idxPoint].faceTowards.position;
+                    targetPos.y = transform.position.y;
+                    Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
+
+                    if (transform.rotation == targetRotation)
+                    {
+                        idxPoint = idxPoint++ % point.Length;
+                        agent.isStopped = true;
+                        currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+                    }
                 }
-                agent.isStopped = true;
-                currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
             }
         }
     }
