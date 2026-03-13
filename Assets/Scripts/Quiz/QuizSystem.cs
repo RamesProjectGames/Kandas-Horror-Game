@@ -33,6 +33,9 @@ public class QuizSystem : MonoBehaviour
     [Header("Optional Feedback")]
     public TMP_Text feedbackText;
     public float nextQuestionDelay = 0.5f;
+    [Header("Optional Events")]
+    public UnityEvent onDrawComplete;
+    public UnityEvent onFinalQuestion;
 
     private bool isDrawing = false;
     private bool isTransitioning = false;
@@ -146,6 +149,11 @@ public class QuizSystem : MonoBehaviour
 
         if (feedbackText != null)
             feedbackText.gameObject.SetActive(false);
+
+        if (currentQuestion == questions.Count - 1)
+        {
+            onFinalQuestion?.Invoke();
+        }
     }
 
     IEnumerator NextQuestionRoutine()
@@ -286,6 +294,7 @@ public class QuizSystem : MonoBehaviour
         // Player finished drawing and released mouse
         if (accumulatedLength >= totalLengthRequired)
         {
+            onDrawComplete?.Invoke();
             StartCoroutine(NextQuestionRoutine());
         }
         else

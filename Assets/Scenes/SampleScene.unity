@@ -39575,6 +39575,24 @@ MonoBehaviour:
   resultText: {fileID: 0}
   feedbackText: {fileID: 0}
   nextQuestionDelay: 0.5
+  onDrawComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinalQuestion:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1977160134}
+        m_TargetAssemblyTypeName: QuizSystem, Assembly-CSharp
+        m_MethodName: OpenQuiz
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1977768476
 GameObject:
   m_ObjectHideFlags: 0
