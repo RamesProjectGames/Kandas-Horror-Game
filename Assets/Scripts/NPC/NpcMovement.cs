@@ -9,7 +9,7 @@ public class NpcMovement : MovableObjects
 {
     [SerializeField] Waypoint[] point;
     [SerializeField] int idxPoint = 0;
-    float speed = 1f;
+    float speed = 2f;
     float idleTime = 5f, currIdleTime;
     bool wasPausedLastFrame = false;
     private Vector3 GetValidNavMeshPosition(Vector3 target)
@@ -25,13 +25,18 @@ public class NpcMovement : MovableObjects
         // ensure we send the agent to a valid NavMesh position
         Vector3 validPos = GetValidNavMeshPosition(pos);
         agent.SetDestination(validPos);
-        yield return new WaitForEndOfFrame();
+        while (agent.remainingDistance >= agent.stoppingDistance)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        StartCoroutine(FacePlayer());
+        agent.ResetPath();
     }
 
     public override IEnumerator Teleport(Vector3 pos)
     {
         agent.Warp(pos);
-        transform.LookAt(GameObject.Find("Player").transform.position);
+        StartCoroutine(FacePlayer());
         agent.ResetPath();
         yield return new WaitForEndOfFrame();
     }
@@ -60,8 +65,15 @@ public class NpcMovement : MovableObjects
                 if (point[idxPoint].faceTowards != null)
                 {
                     Vector3 targetPos = point[idxPoint].faceTowards.position;
-                    targetPos.y = transform.position.y; // Maintain same Y level
-                    transform.LookAt(targetPos);
+                    targetPos.y = transform.position.y;
+                    Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
+
+                    if (Quaternion.Angle(transform.rotation, targetRotation) <= 5f)
+                    {
+                        transform.rotation = targetRotation;
+                        agent.isStopped = true;
+                    }
                 }
             }
             return;
@@ -73,14 +85,13 @@ public class NpcMovement : MovableObjects
             if (currIdleTime <= 0)
             {
                 // Transition from Idle to Moving
+
                 agent.isStopped = false;
                 agent.speed = speed;
-
-                agent.SetDestination(point[idxPoint].position);
             }
             return; // Exit early while idling
         }
-        else if(agent.remainingDistance <= agent.stoppingDistance)
+        else if(!agent.isStopped && agent.remainingDistance <= agent.stoppingDistance)
         {
             if (point[idxPoint].faceTowards != null)
             {
@@ -89,20 +100,37 @@ public class NpcMovement : MovableObjects
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
 
-                if (transform.rotation == targetRotation)
+                if (Quaternion.Angle(transform.rotation, targetRotation) <= 5f)
                 {
-                    idxPoint = idxPoint++ % point.Length;
-                    agent.isStopped = true;
                     currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+                    idxPoint = ++idxPoint % point.Length;
+                    agent.SetDestination(point[idxPoint].position);
+                    transform.rotation = targetRotation;
+                    agent.isStopped = true;
                 }
             }
             else
             {
-                idxPoint = idxPoint++ % point.Length;
-                agent.isStopped = true;
                 currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+                idxPoint = ++idxPoint % point.Length;
+                agent.SetDestination(point[idxPoint].position);
+                agent.isStopped = true;
             }
         }
+    }
+
+    public IEnumerator FacePlayer()
+    {
+        Vector3 targetPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+        targetPos.y = transform.position.y;
+        Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+
+        while (Quaternion.Angle(transform.rotation, targetRotation) >= 1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 3 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+        transform.rotation = targetRotation;
     }
 
     private bool HandlePauseState()

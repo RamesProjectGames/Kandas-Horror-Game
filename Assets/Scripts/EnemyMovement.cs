@@ -239,8 +239,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                 // Transition from Idle to Moving
                 agent.isStopped = false;
                 agent.speed = speed;
-
-                agent.SetDestination(point[idxPoint].position);
             }
             return; // Exit early while idling
         }
@@ -261,18 +259,20 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                     Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
                     transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
 
-                    if (transform.rotation == targetRotation)
+                    if (Quaternion.Angle(transform.rotation, targetRotation) <= 5f)
                     {
-                        idxPoint = idxPoint++ % point.Length;
-                        agent.isStopped = true;
                         currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+                        idxPoint = ++idxPoint % point.Length;
+                        agent.SetDestination(point[idxPoint].position);
+                        agent.isStopped = true;
                     }
                 }
                 else
                 {
-                    idxPoint = idxPoint++ % point.Length;
-                    agent.isStopped = true;
                     currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+                    idxPoint = ++idxPoint % point.Length;
+                    agent.SetDestination(point[idxPoint].position);
+                    agent.isStopped = true;
                 }
             }
         }
@@ -319,10 +319,23 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
     #region Agent Movement
 
+    public IEnumerator FacePlayer()
+    {
+        Vector3 targetPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+        targetPos.y = transform.position.y;
+        Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+
+        while (Quaternion.Angle(transform.rotation, targetRotation) >= 1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 3 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
     public override IEnumerator Teleport(Vector3 pos)
     {
         agent.Warp(pos);
-        transform.LookAt(GameObject.Find("Player").transform.position);
+        StartCoroutine(FacePlayer());
         agent.ResetPath();
         ReturnToPatrol();
         yield return new WaitForEndOfFrame();
@@ -335,7 +348,13 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         agent.SetDestination(validPos);
         soundSource = validPos;
         StartAgentMovement();
-        yield return new WaitForEndOfFrame();
+        while (agent.remainingDistance >= agent.stoppingDistance)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        StartCoroutine(FacePlayer());
+        agent.ResetPath();
+        ReturnToPatrol();
     }
 
     /// <summary>

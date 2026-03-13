@@ -1,5 +1,6 @@
 using Dialogue;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -33,6 +34,8 @@ namespace Dialogue
             if (ObjectiveManager.Instance == null) return;
             if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0) return;
 
+            if(GetComponent<NpcMovement>() != null)
+                GetComponent<NpcMovement>().StartCoroutine(GetComponent<NpcMovement>().FacePlayer());
             List<string> currObjectives = ObjectiveManager.Instance.CurrentObjectives();
 
             DialogueSystem.Instance.OpenDialogue(objectiveDialoguePair.FirstOrDefault(x => currObjectives.Contains(x.objective)).dialogueAsset);
