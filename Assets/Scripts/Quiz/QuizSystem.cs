@@ -58,7 +58,11 @@ public class QuizSystem : MonoBehaviour
         HandleTouch();
     }
     
-    public void OpenQuiz(bool open) => QuizPanel.SetActive(open);
+    public void OpenQuiz(bool open)
+    {
+        QuizPanel.SetActive(open);
+        SettingManager.Instance.isPaused = open;
+    } 
     void ShowQuestion()
     {
         if (currentQuestion >= questions.Count)
