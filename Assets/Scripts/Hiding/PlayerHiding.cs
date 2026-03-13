@@ -1,4 +1,5 @@
 using Dialogue;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,8 +22,7 @@ public class PlayerHiding : MonoBehaviour
     private bool isAnimatingHide = false;
     private HidingSpot currentHidingSpot;
     private Vector3 hidingPosition;
-    private Vector3 originalPosition;
-    private Quaternion originalRotation;
+    private CinemachineCamera originCamera;
     private Rigidbody playerRigidbody;
     private Collider playerCollider;
     private CharacterController characterController;
@@ -141,17 +141,18 @@ public class PlayerHiding : MonoBehaviour
         isAnimatingHide = true;
         hidingAnimationTimer = 0f;
         currentHidingSpot = hidingSpot;
-        originalPosition = transform.position;
-        originalRotation = transform.rotation;
-        hidingPosition = hidingSpot.GetHidingPosition();
+        CameraManager.SwitchCamera(hidingSpot.GetHidingCamera());
+        // originalPosition = transform.position;
+        // originalRotation = transform.rotation;
+        // hidingPosition = hidingSpot.GetHidingPosition();
 
-        // Notify the hiding spot
-        hidingSpot.HidePlayer(gameObject);
+        // // Notify the hiding spot
+        // hidingSpot.HidePlayer(gameObject);
 
-        // Rotate player to look away from the cupboard (player faces opposite direction)
-        Vector3 directionToCupboard = (hidingPosition - transform.position).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(-directionToCupboard);
-        transform.rotation = targetRotation;
+        // // Rotate player to look away from the cupboard (player faces opposite direction)
+        // Vector3 directionToCupboard = (hidingPosition - transform.position).normalized;
+        // Quaternion targetRotation = Quaternion.LookRotation(-directionToCupboard);
+        // transform.rotation = targetRotation;
 
         // Trigger entering animation
         if (animator != null)
@@ -215,9 +216,7 @@ public class PlayerHiding : MonoBehaviour
         // Notify the hiding spot
         currentHidingSpot.UnhidePlayer();
 
-        // Restore player position, rotation and physics
-        transform.position = originalPosition;
-        transform.rotation = originalRotation;
+        CameraManager.SwitchCamera(originCamera);
 
         if (playerRigidbody != null)
         {
@@ -266,10 +265,8 @@ public class PlayerHiding : MonoBehaviour
             currentHidingSpot.UnhidePlayer();
             currentHidingSpot = null;
         }
-
-        // Restore player position, rotation and physics
-        transform.position = originalPosition;
-        transform.rotation = originalRotation;
+        
+        CameraManager.SwitchCamera(originCamera);
 
         if (playerRigidbody != null)
         {

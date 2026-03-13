@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 /// <summary>
@@ -11,7 +12,7 @@ public class HidingSpot : MonoBehaviour
     [SerializeField] private float interactionRadius = 2f;
     [SerializeField] private float hidingHeight = 1f; // Height offset for hiding position
     [SerializeField] private bool visualizationEnabled = true;
-    [SerializeField] private Transform hidingPosition;
+    [SerializeField] private CinemachineCamera hidingCamera;
 
     [Header("Spot Discovery")]
     [SerializeField] private float discoveryTime = 2f; // Time for enemy to fully discover/open the spot
@@ -58,6 +59,7 @@ public class HidingSpot : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, interactionRadius);
         }
     }
+    public CinemachineCamera GetHidingCamera() => hidingCamera;
 
     /// <summary>
     /// Check if a player can hide in this spot.
