@@ -31,6 +31,7 @@ public class MicrophoneDetectionUI : MonoBehaviour
 
     private void Update()
     {
+        enemyDetection = EnemySoundDetection.Instance;
         if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
             return;
         if (playerHiding == null || !playerHiding.IsHiding())
