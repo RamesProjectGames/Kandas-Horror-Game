@@ -13410,7 +13410,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890258804}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -27814,6 +27814,7 @@ MonoBehaviour:
     m_Bits: 1024
   hidingAnimationDuration: 1.5
   rotationSpeed: 5
+  originCamera: {fileID: 1252175986}
 --- !u!114 &1761790453
 MonoBehaviour:
   m_ObjectHideFlags: 0

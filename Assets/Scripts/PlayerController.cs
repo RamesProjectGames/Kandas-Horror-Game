@@ -110,7 +110,7 @@ public class PlayerController : MovableObjects
         agent.angularSpeed = 300f;
         agent.acceleration = 8f;
         agent.stoppingDistance = 0.1f;
-        agent.isStopped = true;
+        if(CanUseAgent()) agent.isStopped = true;
     }
 
     // Update is called once per frame
@@ -193,7 +193,7 @@ public class PlayerController : MovableObjects
         //        jumpCd = 1f;
         //    }
         //}
-
+        if(!CanUseAgent()) return;
         //Movement - skip input if player is hiding
         if (Hiding != null && Hiding.IsHiding())
         {
@@ -365,6 +365,7 @@ public class PlayerController : MovableObjects
         }
         else
         {
+            if(!CanUseAgent()) return;
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
                 Vector3 posPoint = agent.destination - transform.position;
@@ -463,6 +464,10 @@ public class PlayerController : MovableObjects
         agent.SetDestination(pos);
         agent.isStopped = false;
         yield return new WaitForEndOfFrame();
+    }
+    public bool CanUseAgent()
+    {
+        return agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh;
     }
     #endregion
 }

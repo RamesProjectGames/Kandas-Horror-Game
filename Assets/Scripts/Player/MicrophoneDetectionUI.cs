@@ -31,7 +31,7 @@ public class MicrophoneDetectionUI : MonoBehaviour
 
     private void Update()
     {
-        if(enemyDetection == null) enemyDetection = FindAnyObjectByType<EnemySoundDetection>();
+        enemyDetection = EnemySoundDetection.Instance;
         if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
             return;
         if (playerHiding == null || !playerHiding.IsHiding())
@@ -42,7 +42,7 @@ public class MicrophoneDetectionUI : MonoBehaviour
         }
 
         float currentLoudness = micManager.GetMicrophoneLoudness();
-        float threshold = enemyDetection.GetCurrentRequiredThreshold();
+        float threshold = EnemySoundDetection.Instance.GetCurrentRequiredThreshold();
 
         // 1. Update Slider and Threshold Line Position
         loudnessSlider.value = currentLoudness;
