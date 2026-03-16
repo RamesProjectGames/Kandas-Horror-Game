@@ -2,6 +2,7 @@ using Dialogue;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.PostProcessing;
 
 /// <summary>
 /// Manages the player's ability to hide in hiding spots.
@@ -17,12 +18,12 @@ public class PlayerHiding : MonoBehaviour
     [SerializeField] private float hidingAnimationDuration = 1.5f;
     [SerializeField] private float rotationSpeed = 5f;
 
+    public CinemachineCamera originCamera;
     private bool isHiding = false;
     public bool Hiding => isHiding;
     private bool isAnimatingHide = false;
     private HidingSpot currentHidingSpot;
     private Vector3 hidingPosition;
-    private CinemachineCamera originCamera;
     private Rigidbody playerRigidbody;
     private Collider playerCollider;
     private CharacterController characterController;
@@ -142,6 +143,11 @@ public class PlayerHiding : MonoBehaviour
         hidingAnimationTimer = 0f;
         currentHidingSpot = hidingSpot;
         CameraManager.SwitchCamera(hidingSpot.GetHidingCamera());
+        var postProcessVolume = FindAnyObjectByType<PostProcessVolume>();
+        if (postProcessVolume != null)
+        {
+            postProcessVolume.profile.GetSetting<Vignette>().enabled.value = true;
+        }
         // originalPosition = transform.position;
         // originalRotation = transform.rotation;
         // hidingPosition = hidingSpot.GetHidingPosition();
@@ -176,7 +182,7 @@ public class PlayerHiding : MonoBehaviour
         }
 
         // Move player to hiding position (can be done instantly or smoothly depending on animation)
-        transform.position = hidingPosition; // use world position to avoid parent-relative offsets
+        // transform.position = hidingPosition; // use world position to avoid parent-relative offsets
         isHiding = true;
 
         // inform any enemies that currently can see the player that the player
@@ -217,6 +223,12 @@ public class PlayerHiding : MonoBehaviour
         currentHidingSpot.UnhidePlayer();
 
         CameraManager.SwitchCamera(originCamera);
+
+        var postProcessVolume = FindAnyObjectByType<PostProcessVolume>();
+        if (postProcessVolume != null)
+        {
+            postProcessVolume.profile.GetSetting<Vignette>().enabled.value = false;
+        }
 
         if (playerRigidbody != null)
         {

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class EnemySoundDetection : MonoBehaviour
 {
+    public static EnemySoundDetection Instance { get; private set; }
     [Header("Detection Range")]
     [SerializeField] private float maxHearingRange = 25f; // The fixed "Ear" size
     [SerializeField] private LayerMask playerLayer;
@@ -18,6 +19,10 @@ public class EnemySoundDetection : MonoBehaviour
     [SerializeField] private PlayerHiding playerHiding;
     [SerializeField] private EnemyMovement enemyMovement;
     [SerializeField] private IEnemySoundReactive enemy; // Your interface for alerting the AI
+    void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
        if(micManager == null) micManager = FindAnyObjectByType<MicrophoneManager>();
