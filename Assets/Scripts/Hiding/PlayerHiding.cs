@@ -240,7 +240,7 @@ public class PlayerHiding : MonoBehaviour
             sight.ResetSpottedFlag();
         }
 
-        // Debug.Log("Player is no longer hiding!");
+        Debug.Log("Player is no longer hiding!");
     }
 
     /// <summary>

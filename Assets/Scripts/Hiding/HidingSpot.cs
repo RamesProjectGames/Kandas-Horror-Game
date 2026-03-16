@@ -13,7 +13,8 @@ public class HidingSpot : MonoBehaviour
     [SerializeField] private float hidingHeight = 1f; // Height offset for hiding position
     [SerializeField] private bool visualizationEnabled = true;
     [SerializeField] private CinemachineCamera hidingCamera;
-
+    private CinemachineInputAxisController inputController;
+    
     [Header("Spot Discovery")]
     [SerializeField] private float discoveryTime = 2f; // Time for enemy to fully discover/open the spot
     private float currentDiscoveryProgress = 0f;
@@ -25,11 +26,38 @@ public class HidingSpot : MonoBehaviour
     private bool isDiscovered = false;
     private Collider coll;
     private Rigidbody rb;
+    private PlayerController playerController;
 
     void Start()
     {
         coll = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
+        inputController = hidingCamera.GetComponent<CinemachineInputAxisController>();
+        playerController = FindAnyObjectByType<PlayerController>();
+    }
+    void Update()
+    {
+        if (inputController != null)
+        {
+            float sliderValue = SettingManager.Instance.settings.MouseSensitivity ;
+            float calculatedGain = Mathf.Lerp(SettingManager.Instance.minimumMouseSensitivity, SettingManager.Instance.maximumMouseSensitivity, sliderValue) * playerController.lookSensitivity;
+
+            // Controllers is a list. Usually: Index 0 = Pan, Index 1 = Tilt
+            foreach (var controller in inputController.Controllers)
+            {
+                if (controller.Name.Contains("Tilt") )
+                {
+                    // Multiplying by -1 flips the direction
+                    controller.Input.Gain = -calculatedGain;
+                }
+                else
+                {
+                    controller.Input.Gain = calculatedGain;
+                }
+                controller.Driver.AccelTime = 0f;
+                controller.Driver.DecelTime = 0f;
+            }
+        }
     }
     private void OnDrawGizmos()
     {
