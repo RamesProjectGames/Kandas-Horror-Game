@@ -18,6 +18,11 @@ public class EnemySoundDetection : MonoBehaviour
     [SerializeField] private PlayerHiding playerHiding;
     [SerializeField] private EnemyMovement enemyMovement;
     [SerializeField] private IEnemySoundReactive enemy; // Your interface for alerting the AI
+    void Start()
+    {
+       if(micManager == null) micManager = FindAnyObjectByType<MicrophoneManager>();
+        if(playerHiding == null) playerHiding = FindAnyObjectByType<PlayerHiding>();
+    }
 
     void Update()
     {

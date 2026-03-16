@@ -23,15 +23,15 @@ public class MicrophoneDetectionUI : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float warningBuffer = 0.2f; // Trigger warning at 80% of threshold
 
-    void Awake()
+    void Start()
     {
         if(micManager == null) micManager = FindAnyObjectByType<MicrophoneManager>();
         if(playerHiding == null) playerHiding = FindAnyObjectByType<PlayerHiding>();
-        if(enemyDetection == null) enemyDetection = FindAnyObjectByType<EnemySoundDetection>();
     }
 
     private void Update()
     {
+        if(enemyDetection == null) enemyDetection = FindAnyObjectByType<EnemySoundDetection>();
         if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
             return;
         if (playerHiding == null || !playerHiding.IsHiding())

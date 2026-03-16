@@ -72,6 +72,7 @@ public class PlayerController : MovableObjects
         controller = GetComponent<CharacterController>();
         Hiding = GetComponent<PlayerHiding>();
         audioSrc = GetComponent<AudioSource>();
+        CameraManager.SwitchCamera(playerCam);
         _noise = playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>();
 
         inputController = playerCam.GetComponent<CinemachineInputAxisController>();
