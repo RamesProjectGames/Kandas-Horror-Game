@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Dialogue.TextArchitect;
@@ -14,6 +15,7 @@ namespace Dialogue
         public TextArchitect architect { get; private set; }
 
         [SerializeField] private PlayerInput input;
+        public List<MiniConvo> allMiniConvos;
 
         //Dialogue System Trigger Events for Player Input (and others)
         public delegate void DialogueSystemEvent();
@@ -40,6 +42,9 @@ namespace Dialogue
         private void Init()
         {
             if(initialized) return;
+
+            allMiniConvos = Resources.FindObjectsOfTypeAll<MiniConvo>().ToList();
+
 
             architect = new TextArchitect(dialogueContainer.dialogueText);
             architect.buildMethod = buildMethod;
@@ -76,13 +81,7 @@ namespace Dialogue
         public void Say(string speaker, string dialogue)
         {
             List<string> convo = new List<string> { $"{speaker} \"{dialogue}\""};
-            Say(convo);
-        }
-
-        //Say for conversations
-        public void Say(List<string> dialogue)
-        {
-            convoManager.StartConvo(dialogue);
+            convoManager.StartConvo(convo);
         }
         #endregion
 
@@ -91,13 +90,12 @@ namespace Dialogue
         {
             if (isRunningConvo)
                 return;
-            List<string> lines = FileReader.ReadAsset(assetName);
-            Say(lines);
+            if(assetName.StartsWith("Mini"))
+                convoManager.StartConvo(allMiniConvos.Find(x => x.convoName == assetName).dialogues);
+            else
+                convoManager.StartConvo(FileReader.ReadAsset(assetName));
         }
-        //public void OnUserPrompt()
-        //{
-        //    onUserPrompt?.Invoke();
-        //}
+
         public void OnUserPrompt(InputAction.CallbackContext ctx)
         {
             if(isRunningConvo && !SettingManager.Instance.isPaused)

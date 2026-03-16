@@ -3669,9 +3669,13 @@ MonoBehaviour:
   pickupText: {fileID: 1797886089}
   ButtonInteractionText: {fileID: 759110987}
   objectiveDialoguePair:
-  - objective: Class
+  - objective:
+    - Class
+    - Desk
+    - Inspect
     dialogueAsset: Dialogue
-  - objective: Desk
+  - objective:
+    - Desk
     dialogueAsset: Alyssa_Mini1
 --- !u!114 &782622252
 MonoBehaviour:

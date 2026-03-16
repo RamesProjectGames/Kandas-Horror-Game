@@ -9,7 +9,7 @@ public class NpcMovement : MovableObjects
 {
     [SerializeField] Waypoint[] point;
     [SerializeField] int idxPoint = 0;
-    float speed = 2f;
+    float speed = 1f;
     float idleTime = 5f, currIdleTime;
     bool wasPausedLastFrame = false;
     private Vector3 GetValidNavMeshPosition(Vector3 target)

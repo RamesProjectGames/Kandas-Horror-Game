@@ -34,6 +34,13 @@ namespace Dialogue
             ds.dialogueContainer.ShowDialogue();
             process = ds.StartCoroutine(RunningConvo(convo));
         }
+        public void StartConvo(List<DialogueStructure> convo)
+        {
+            StopConvo();
+
+            ds.dialogueContainer.ShowDialogue();
+            process = ds.StartCoroutine(RunningConvo(convo));
+        }
 
         //Stopping a Conversation
         public void StopConvo()
@@ -63,6 +70,24 @@ namespace Dialogue
                     if (line.hasDialogue)
                         yield return WaitForUserInput();
                 }
+                AudioManager.Instance.StopAllSfx();
+            }
+
+            StopConvo();
+        }
+
+        //Convo Parse and Run
+        IEnumerator RunningConvo(List<DialogueStructure> convo)
+        {
+            for (int i = 0; i < convo.Count; i++)
+            {
+                if (convo[i].hasDialogue)
+                    yield return RunDialogue(convo[i]);
+                if (convo[i].hasFunctions)
+                    yield return RunFunctions(convo[i]);
+
+                if (convo[i].hasDialogue)
+                    yield return WaitForUserInput();
                 AudioManager.Instance.StopAllSfx();
             }
 

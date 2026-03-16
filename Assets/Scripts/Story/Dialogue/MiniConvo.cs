@@ -1,10 +1,21 @@
+using Dialogue;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace Dialogue
 {
+
+    [CreateAssetMenu(fileName = "NewMiniConvo", menuName = "Story/MiniConvo")]
+    public class MiniConvo : ScriptableObject
+    {
+        public string convoName;
+        public List<DialogueStructure> dialogues;
+    }
+
+    [Serializable]
     public class DialogueStructure
     {
         public string speaker;
@@ -131,16 +142,19 @@ namespace Dialogue
         }
     }
 
+    [Serializable]
     public struct DialogueData
     {
         public string dialogue;
         public SegmentSignal segmentSignal;
         public float signalDelay;
+        [Serializable]
         public enum SegmentSignal { None, C, A, WC, WA }
 
         public bool append => (segmentSignal == SegmentSignal.A || segmentSignal == SegmentSignal.WA);
     }
 
+    [Serializable]
     public struct FunctionsData
     {
         public string name;
