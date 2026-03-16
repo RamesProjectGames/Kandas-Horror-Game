@@ -337,17 +337,17 @@ public class SettingsUI : MonoBehaviour
         }
     }
     public void OpenSettings() { SettingPanel.SetActive(true); PausePanel.SetActive(false); }
-    public void CloseSettings() { SettingPanel.SetActive(false); PausePanel.SetActive(true);}
+    public void CloseSettings() { SettingPanel.SetActive(false); if(PausePanel != null) PausePanel.SetActive(true);}
     public void PausePanelToggle(bool state = false) 
     { 
         settingManager.isPaused = state;
         if(!SettingPanel.activeInHierarchy)
         {
-            PausePanel.SetActive(state);            
+            if(PausePanel != null) PausePanel.SetActive(state);            
         }
         else
         {
-            PausePanel.SetActive(false);
+            if(PausePanel != null) PausePanel.SetActive(false);
         }
     }
     #endregion

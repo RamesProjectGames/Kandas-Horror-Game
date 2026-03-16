@@ -209,11 +209,27 @@ public class SettingManager : MonoBehaviour
         // Dithering, Bloom, Grain, Fog, Motion Blur, Vertex Jitter
         // Example: Enable/disable post-processing effects here
         // You will need to reference your post-processing volumes or custom scripts
-        postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().DitherThreshold.value = settings.Dithering ? 0.5f : 0f;
-        postProcessVolume.profile.GetSetting<Bloom>().intensity.value = settings.Bloom ? 5f : 0f;
-        postProcessVolume.profile.GetSetting<Grain>().intensity.value = settings.Grain ? .5f : 0f;
+        if(postProcessVolume != null)
+        {
+            postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().DitherThreshold.value = settings.Dithering ? 0.5f : 0f;
+            postProcessVolume.profile.GetSetting<Bloom>().intensity.value = settings.Bloom ? 5f : 0f;
+            postProcessVolume.profile.GetSetting<Grain>().intensity.value = settings.Grain ? .5f : 0f;
+            postProcessVolume.profile.GetSetting<MotionBlur>().sampleCount.value = settings.MotionBlur ? 10 : 0;
+            // Vertex Jitter would require a custom shader or script to implement, so this is just a placeholder
+            switch (settings.TextureQuality)
+            {
+                case SettingData.TextureQualityLevel.Low:
+                    postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 240;
+                    break;
+                case SettingData.TextureQualityLevel.Medium:
+                    postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 360;
+                    break;
+                case SettingData.TextureQualityLevel.High:
+                    postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 480;
+                    break;
+            }
+        }
         RenderSettings.fogDensity = settings.Fog;
-        postProcessVolume.profile.GetSetting<MotionBlur>().sampleCount.value = settings.MotionBlur ? 10 : 0;
         MeshRenderer[] all = FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None);
 
         foreach (var mr in all)
@@ -230,19 +246,7 @@ public class SettingManager : MonoBehaviour
                 }
             }
         }
-        // Vertex Jitter would require a custom shader or script to implement, so this is just a placeholder
-        switch (settings.TextureQuality)
-        {
-            case SettingData.TextureQualityLevel.Low:
-                postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 240;
-                break;
-            case SettingData.TextureQualityLevel.Medium:
-                postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 360;
-                break;
-            case SettingData.TextureQualityLevel.High:
-                postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 480;
-                break;
-        }
+        
     }
 
     public void ChangeResolution(int index)

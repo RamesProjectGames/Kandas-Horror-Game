@@ -13,7 +13,11 @@ public class ChapterManager : MonoBehaviour
     public TextMeshProUGUI desc;
     public Image content;
 
-    string chapterSceneName = "";
+    SceneField chapterSceneName ;
+    void Start()
+    {
+        ChapterSelect(0);
+    }
 
     public void ChangePanelState(bool state) { chapterPanel.SetActive(state); }
     public void ChapterSelect(int index)
@@ -23,25 +27,14 @@ public class ChapterManager : MonoBehaviour
             chapters[i].interactable = i != index;
             chapters[i].gameObject.GetComponent<TextMeshProUGUI>().fontStyle = i == index ? FontStyles.Underline : FontStyles.Normal; 
         }
-
         title.text = chaptersData[index].chapterTitle;
         desc.text = chaptersData[index].chapterDesc;
         content.sprite = chaptersData[index].chapterContent;
         chapterSceneName = chaptersData[index].chapterScene;
+        MainMenuManager.Instance.ChapterSelect(chapterSceneName);
     }
 
-    public void StartGame()
-    {
-        if(string.IsNullOrEmpty(chapterSceneName)) return;
-        try
-        {
-            SceneManager.LoadScene(chapterSceneName);
-        }
-        catch 
-        {
-            Debug.Log("Scene doesn't exist");            
-        }
-    }
+    
 }
 [System.Serializable]
 public class ChapterData
@@ -49,5 +42,5 @@ public class ChapterData
     public string chapterTitle;
     public string chapterDesc;
     public Sprite chapterContent;
-    public string chapterScene;
+    public SceneField chapterScene;
 }
