@@ -15,6 +15,7 @@ public class EnemySightDetection : MonoBehaviour
     public LayerMask obstacleMask;
 
     public GameObject player;
+    public GameObject playerMesh;
 
     public bool canSeePlayer;
     
@@ -25,6 +26,7 @@ public class EnemySightDetection : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        playerMesh = player.transform.Find("Capsule Mesh").gameObject;
     }
 
     // Update is called once per frame
@@ -86,7 +88,7 @@ public class EnemySightDetection : MonoBehaviour
     }
     public void ChangePlayerMaterial(Color newColor)
     {
-        player.GetComponent<Renderer>().material.color = newColor;
+        playerMesh.GetComponent<Renderer>().material.color = newColor;
     }
 
     /// <summary>

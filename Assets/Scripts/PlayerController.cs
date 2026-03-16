@@ -46,9 +46,11 @@ public class PlayerController : MovableObjects
     private CinemachineInputAxisController inputController;
 
     [Header("Bob Settings")]
-    public float walkBobAmplitude = 0.5f;
-    public float walkBobFrequency = 1.0f;
-    public float idleBobAmplitude = 0.05f; // Slight "breathing" effect
+    public float headBobAmplitude = 0.5f;
+    public float headBobFrequency = 1.0f;
+    public float walkBobMultiplier = 1.5f; 
+    public float sprintBobMultiplier = 2.0f;
+    public float crouchBobMultiplier = 0.5f;
 
     [Header("Footsteps")]
     // reference to the centralized sound manager – typically on the same GameObject
@@ -123,6 +125,7 @@ public class PlayerController : MovableObjects
         }
         if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
         {
+            ResetMovementState();
             if(SettingManager.Instance.isPaused)
                 lookAction.action.Disable();
             return;
@@ -299,30 +302,31 @@ public class PlayerController : MovableObjects
             //     //anim.SetBool("isWalking", false);
             //     //anim.SetBool("isRunning", true);
             // }
-
-            // Adjustments for cinemachine
+            float headBobMultiplier = 1f;
             if (input == Vector3.zero)
             {
-                // Smoothly transition to subtle breathing/idle
-                // _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, idleBobAmplitude, Time.deltaTime * 5f);
-                // _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, 0.5f, Time.deltaTime * 5f);
+                
             }
             else
             {
                 // Player is moving
-                float targetAmp = isSprinting ? walkBobAmplitude * 1.5f : walkBobAmplitude;
-                float targetFreq = isSprinting ? walkBobFrequency * 1.5f : walkBobFrequency;
+                if(isCrouching)
+                {
+                    headBobMultiplier = crouchBobMultiplier;
+                }
                 if(isSprinting)
                 {
+                    headBobMultiplier = sprintBobMultiplier;
                     stamina -= staminaDecayRate * Time.deltaTime;
                     if(stamina <= 0)
                     {
                         stamina = 0;
                     }
                 } 
-                // _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, targetAmp, Time.deltaTime * 5f);
-                // _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, targetFreq, Time.deltaTime * 5f);
             }
+            
+                _noise.AmplitudeGain = headBobAmplitude * headBobMultiplier;
+                _noise.FrequencyGain = headBobFrequency * headBobMultiplier;
             
         }
         else
@@ -429,6 +433,13 @@ public class PlayerController : MovableObjects
     public bool CanUseAgent()
     {
         return agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh;
+    }
+    public void ResetMovementState()
+    {
+        isSprinting = false;
+        isCrouching = false;
+        stamina = maxStamina;
+        staminaFillImage.gameObject.SetActive(false);
     }
     #endregion
 }

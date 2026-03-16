@@ -1016,7 +1016,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 0
   pickupUI: {fileID: 1829123914}
-  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   ItemInteractionText: Hide
   landingSound: {fileID: 0}
   landingAlertRadius: 0
@@ -2041,7 +2040,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 0
   pickupUI: {fileID: 1389561726}
-  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   ItemInteractionText: Inspect Item
   landingSound: {fileID: 0}
   landingAlertRadius: 0
@@ -3647,7 +3645,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 0
   pickupUI: {fileID: 477152008}
-  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   ItemInteractionText: Talk with Alyssa
   landingSound: {fileID: 0}
   landingAlertRadius: 0
@@ -6008,7 +6005,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 0
   pickupUI: {fileID: 638706846}
-  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   ItemInteractionText: Turn Down TV Volume
   landingSound: {fileID: 0}
   landingAlertRadius: 0
@@ -6252,7 +6248,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 0
   pickupUI: {fileID: 1262345579}
-  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   ItemInteractionText: Answer Quiz
   landingSound: {fileID: 0}
   landingAlertRadius: 0
@@ -6387,7 +6382,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1299231388}
   - component: {fileID: 1299231389}
-  - component: {fileID: 1299231392}
   - component: {fileID: 1299231394}
   - component: {fileID: 1299231390}
   - component: {fileID: 1299231393}
@@ -6468,19 +6462,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f03a06e4af3e7b4cb9b2d0f5da3b480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1299231392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299231387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36d1163fa822e8b418a0a603ec078d5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damping: 0
 --- !u!114 &1299231393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6502,7 +6483,7 @@ MonoBehaviour:
       Owner: {fileID: 1299231394}
       Enabled: 1
       Input:
-        InputAction: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+        InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: 1
         LegacyInput: 
         LegacyGain: 1
@@ -6515,7 +6496,7 @@ MonoBehaviour:
       Owner: {fileID: 1299231394}
       Enabled: 1
       Input:
-        InputAction: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+        InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: -1
         LegacyInput: 
         LegacyGain: 1
@@ -6538,8 +6519,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d54399b04b4fa48a73e121d4937dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReferenceFrame: 3
-  RecenterTarget: 2
+  ReferenceFrame: 0
+  RecenterTarget: 0
   PanAxis:
     Value: 0
     Center: 0
@@ -9950,7 +9931,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 5
   pickupUI: {fileID: 877552186}
-  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   ItemInteractionText: PickUp
   landingSound: {fileID: 8300000, guid: 4d8d2c1e095c5cb418db8654f81c67ee, type: 3}
   landingAlertRadius: 40
