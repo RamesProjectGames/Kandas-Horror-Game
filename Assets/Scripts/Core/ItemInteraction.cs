@@ -11,7 +11,6 @@ public class ItemInteraction : MonoBehaviour
 
     [Header("Pickup UI")]
     public GameObject pickupUI;
-    public InputActionAsset inputActions;
     public string ItemInteractionText;
 
     [Header("Landing / Alert")]
@@ -27,6 +26,7 @@ public class ItemInteraction : MonoBehaviour
     private Rigidbody rb;
     private NavMeshObstacle obstacle;
     private bool hasBeenThrown;
+    public InputActionReference interactAction;
 
     public Transform player;
     public bool IsHeld { get; private set; }
@@ -45,15 +45,11 @@ public class ItemInteraction : MonoBehaviour
 
     void Update()
     {
-        if (pickupText != null && inputActions != null)
+        if (pickupText != null)
         {
-            var interactAction = inputActions.FindAction("Interact");
-            if (interactAction != null)
-            {
-                string bindingDisplay = interactAction.GetBindingDisplayString(0);
-                ButtonInteractionText.text = $"{bindingDisplay}";
-                pickupText.text = $"{ItemInteractionText}";
-            }
+            string bindingDisplay = interactAction.action.GetBindingDisplayString(0);
+            ButtonInteractionText.text = $"{bindingDisplay}";
+            pickupText.text = $"{ItemInteractionText}";
         }
     }
 

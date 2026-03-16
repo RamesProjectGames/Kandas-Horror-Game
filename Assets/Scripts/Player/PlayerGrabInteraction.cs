@@ -24,20 +24,13 @@ public class PlayerGrabInteraction : MonoBehaviour
     private ItemInteraction currentItem;
     private ItemInteraction heldItem;
     private Fragment fragmentItem;
-    private InputAction grabAction, throwAction, interAction;
+    [SerializeField] private InputActionReference throwAction, interAction;
 
     // runtime state for charging a throw
     private float throwCharge;
 
     void Start()
     {
-        var inputActions = GetComponent<PlayerInput>();
-        if (inputActions != null)
-        {
-            grabAction = inputActions.actions.FindAction("Grab");
-            throwAction = inputActions.actions.FindAction("Throw");
-            interAction = inputActions.actions.FindAction("Interact");
-        }
         throwpowerSlider.gameObject.SetActive(false);
     }
 
@@ -48,7 +41,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
             return;
-        if (interAction != null && interAction.WasPerformedThisFrame())
+        if (interAction != null && interAction.action.WasPerformedThisFrame())
         {
             if (currentItem != null)
             {
@@ -81,7 +74,7 @@ public class PlayerGrabInteraction : MonoBehaviour
         {
             if (heldItem != null)
             {
-                string bindingDisplay = throwAction.GetBindingDisplayString(0);
+                string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
                 throwInteractionText.text = $"Press {bindingDisplay} to throw";
             }
             else
@@ -89,7 +82,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                 throwInteractionText.text = "";
             }
             // accumulate charge while the button is held and we have an item
-            if (throwAction.IsPressed() && heldItem != null)
+            if (throwAction.action.IsPressed() && heldItem != null)
             {
                 throwpowerSlider.gameObject.SetActive(true);
                 throwCharge += Time.deltaTime;
@@ -99,7 +92,7 @@ public class PlayerGrabInteraction : MonoBehaviour
             }
 
             // when the button is released, actually perform the throw
-            if (throwAction.WasReleasedThisFrame())
+            if (throwAction.action.WasReleasedThisFrame())
             {
                 if (heldItem != null)
                 {

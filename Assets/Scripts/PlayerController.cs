@@ -24,7 +24,7 @@ public class PlayerController : MovableObjects
     [Header("Input Action")]
     private Vector3 input;
     private Vector3 up;
-    private InputAction moveAction, lookAction, jumpAction, sprintAction, crouchAction, unlockAction;
+    [SerializeField] private InputActionReference moveAction, lookAction, sprintAction, crouchAction, unlockAction;
 
     [Header("Numeric Values")]
     [SerializeField] private float jumpPow;
@@ -82,22 +82,6 @@ public class PlayerController : MovableObjects
         stamina = maxStamina;
         staminaFillImage.gameObject.SetActive(false);
 
-        // Initialize input actions from InputSystem_Actions
-        var inputActions = GetComponent<PlayerInput>();
-        if (inputActions != null)
-        {
-            moveAction = inputActions.actions.FindAction("Move");
-            lookAction = inputActions.actions.FindAction("Look");
-            // jumpAction = inputActions.actions.FindAction("Jump");
-            sprintAction = inputActions.actions.FindAction("Sprint");
-            unlockAction = inputActions.actions.FindAction("Unlock");
-            crouchAction = inputActions.actions.FindAction("Crouch");
-        }
-        else
-        {
-            Debug.LogWarning("PlayerInput component not found! Input will not work properly.");
-        }
-
         agent = GetComponent<NavMeshAgent>();
 
         // footsteps helper
@@ -118,7 +102,7 @@ public class PlayerController : MovableObjects
     {
         //Mouse Lock - Unlock when holding Alt
         {
-            if (unlockAction != null && unlockAction.IsPressed())
+            if (unlockAction != null && unlockAction.action.IsPressed())
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
@@ -140,12 +124,12 @@ public class PlayerController : MovableObjects
         if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
         {
             if(SettingManager.Instance.isPaused)
-                lookAction.Disable();
+                lookAction.action.Disable();
             return;
         }
-        else if(!lookAction.enabled)
+        else if(!lookAction.action.enabled)
         {
-            lookAction.Enable();
+            lookAction.action.Enable();
         }
         if (inputController != null)
         {
@@ -172,27 +156,6 @@ public class PlayerController : MovableObjects
         inputController.enabled = Cursor.lockState == CursorLockMode.Locked;
         if(SettingManager.Instance.isPaused) return;
 
-        //Jump
-        //{
-           if (isGrounded && upVel < 0f)
-           {
-               upVel = 0f;
-               //anim.SetBool("isJumping", false);
-           }
-           else
-           {
-               upVel -= gravity * Time.deltaTime;
-               jumpCd -= Time.deltaTime;
-           }
-
-        //    if (isGrounded && jumpAction != null && jumpAction.WasPerformedThisFrame() && jumpCd <= 0f)
-        //    {
-        //        //anim.SetBool("isJumping", true);
-        //        upVel = Mathf.Sqrt(jumpPow * 2f * gravity);
-        //        isGrounded = false;
-        //        jumpCd = 1f;
-        //    }
-        //}
         if(!CanUseAgent()) return;
         //Movement - skip input if player is hiding
         if (Hiding != null && Hiding.IsHiding())
@@ -203,7 +166,7 @@ public class PlayerController : MovableObjects
         {
             if(!SettingManager.Instance.settings.SprintToggle)
             {
-                if (sprintAction != null && sprintAction.IsPressed() && !isExhausted)
+                if (sprintAction != null && sprintAction.action.IsPressed() && !isExhausted)
                 {
                     isSprinting = true;
                     if (stamina <= 0f)
@@ -219,7 +182,7 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if (sprintAction != null && sprintAction.WasPressedThisFrame() && !isExhausted)
+                if (sprintAction != null && sprintAction.action.WasPressedThisFrame() && !isExhausted)
                 {
                     isSprinting = true;
                     if (stamina <= 0f)
@@ -235,7 +198,7 @@ public class PlayerController : MovableObjects
             }
             if(!SettingManager.Instance.settings.CrouchToggle)
             {
-                if (crouchAction != null && crouchAction.IsPressed())
+                if (crouchAction != null && crouchAction.action.IsPressed())
                 {
                     isCrouching = true;
                 }
@@ -246,7 +209,7 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if (crouchAction != null && crouchAction.WasPressedThisFrame())
+                if (crouchAction != null && crouchAction.action.WasPressedThisFrame())
                 {
                     isCrouching = true;
                 }
@@ -283,7 +246,7 @@ public class PlayerController : MovableObjects
 
             if(!Hiding.IsHiding())
             {
-                Vector2 moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
+                Vector2 moveInput = moveAction != null ? moveAction.action.ReadValue<Vector2>() : Vector2.zero;
 
                 // Use camera forward and right for movement relative to camera view
                 Vector3 camForward = playerCam.transform.forward;
@@ -295,7 +258,6 @@ public class PlayerController : MovableObjects
 
                 Vector3 hor = camRight * moveInput.x * moveSpd * Time.deltaTime;
                 Vector3 ver = camForward * moveInput.y * moveSpd * Time.deltaTime;
-                up = transform.up * upVel;
 
                 input = hor + ver;
             }
@@ -432,7 +394,6 @@ public class PlayerController : MovableObjects
         if (controller.enabled)
         {
             controller.SimpleMove(moveSpd * Time.fixedDeltaTime * input);
-            controller.Move(Time.fixedDeltaTime * up);
         }
     }
 

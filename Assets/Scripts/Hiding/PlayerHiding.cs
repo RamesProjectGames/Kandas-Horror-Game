@@ -28,7 +28,7 @@ public class PlayerHiding : MonoBehaviour
     private Collider playerCollider;
     private CharacterController characterController;
     private Animator animator;
-    private InputAction interactAction;
+    [SerializeField] private InputActionReference interactAction;
     private float hidingAnimationTimer = 0f;
 
     private void Start()
@@ -37,12 +37,6 @@ public class PlayerHiding : MonoBehaviour
         playerCollider = GetComponent<Collider>();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        
-        var inputActions = GetComponent<PlayerInput>();
-        if (inputActions != null)
-        {
-            interactAction = inputActions.actions.FindAction("Interact");
-        }
     }
 
     private void Update()
@@ -68,7 +62,7 @@ public class PlayerHiding : MonoBehaviour
         }
 
         // Handle hiding input
-        if (interactAction != null && interactAction.WasPerformedThisFrame())
+        if (interactAction != null && interactAction.action.WasPerformedThisFrame())
         {
             if (isHiding)
             {

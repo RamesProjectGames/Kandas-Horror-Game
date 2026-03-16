@@ -14,6 +14,7 @@ namespace Dialogue
         public bool isRunningConvo => convoManager.isRunning;
         public TextArchitect architect { get; private set; }
 
+        [SerializeField] private InputActionReference nextInput;
         public List<MiniConvo> allMiniConvos;
 
         //Dialogue System Trigger Events for Player Input (and others)
@@ -51,7 +52,7 @@ namespace Dialogue
 
             convoManager = new ConvoManager(architect);
 
-            InputSystem.actions.FindAction("Next").performed += OnUserPrompt;
+            nextInput.action.performed += OnUserPrompt;
         }
 
         private void Update()

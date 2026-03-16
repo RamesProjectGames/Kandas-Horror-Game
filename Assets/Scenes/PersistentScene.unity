@@ -4919,7 +4919,7 @@ MonoBehaviour:
     nameText: {fileID: 1814450982}
     dialogueText: {fileID: 803263036}
   buildMethod: 1
-  input: {fileID: 1761790446}
+  nextInput: {fileID: -9077876474924563115, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   allMiniConvos: []
   dialoguePrompt: {fileID: 267598599}
 --- !u!114 &333569209
@@ -27682,7 +27682,7 @@ MonoBehaviour:
     m_Bits: 1024
   hidingAnimationDuration: 1.5
   rotationSpeed: 5
-  originCamera: {fileID: 1252175986}
+  originCamera: {fileID: 0}
 --- !u!114 &1761790453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27712,6 +27712,9 @@ MonoBehaviour:
   playerCamera: {fileID: 1010298958}
   throwInteractionText: {fileID: 338259099}
   throwpowerSlider: {fileID: 401826553}
+  grabAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  throwAction: {fileID: -2799977855788558582, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  interAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!82 &1761790454
 AudioSource:
   m_ObjectHideFlags: 0
@@ -27830,6 +27833,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   audioClip: []
+  moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  lookAction: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  sprintAction: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  crouchAction: {fileID: 7040659881675835329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  unlockAction: {fileID: 3787204763737618428, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   jumpPow: 2
   gravity: 9.81
   groundDist: 0.1

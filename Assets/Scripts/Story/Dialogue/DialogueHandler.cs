@@ -14,12 +14,12 @@ namespace Dialogue
 
         void Update()
         {
-            if (pickupText != null && inputActions != null)
+            if (pickupText != null)
             {
-                var interactAction = inputActions.FindAction("Interact");
                 if (interactAction != null && CheckCurrentObjectives())
                 {
-                    string bindingDisplay = interactAction.GetBindingDisplayString(0);
+                    string bindingDisplay = interactAction.action.GetBindingDisplayString(0);
+                    ButtonInteractionText.text = $"{bindingDisplay}";
                     pickupText.text = $"{ItemInteractionText}";
                 }
                 else
