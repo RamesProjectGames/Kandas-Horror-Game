@@ -2,7 +2,7 @@ using Dialogue;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[ExecuteInEditMode]
+// [ExecuteInEditMode]
 public class EnemySightDetection : MonoBehaviour
 {
     public float viewRadius;

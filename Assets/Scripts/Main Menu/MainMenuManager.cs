@@ -5,18 +5,24 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
+    public static MainMenuManager Instance { get; private set; }
     [SerializeField] private GameObject loadingPanel;
     [SerializeField] private Image loadingBar;
     [SerializeField] private List<GameObject> gameObjectsToHide;
 
     [Header("Scenes to load")]
     [SerializeField] private SceneField persistentScene;
-    [SerializeField] private SceneField gameScene;
+    private SceneField currentChapter;
 
     private List<AsyncOperation> loadOperations = new List<AsyncOperation>();
     void Awake()
     {
         loadingPanel.SetActive(false);
+        Instance = this;
+    }
+    public void ChapterSelect(SceneField sceneName)
+    {        
+        currentChapter = sceneName;
     }
     public void StartGame()
     {
@@ -25,7 +31,7 @@ public class MainMenuManager : MonoBehaviour
         loadingPanel.SetActive(true);
 
         loadOperations.Add(SceneManager.LoadSceneAsync(persistentScene));
-        loadOperations.Add(SceneManager.LoadSceneAsync(gameScene, LoadSceneMode.Additive));
+        loadOperations.Add(SceneManager.LoadSceneAsync(currentChapter, LoadSceneMode.Additive));
 
         StartCoroutine(ProgressLoadingBar());
     }
@@ -34,6 +40,13 @@ public class MainMenuManager : MonoBehaviour
         foreach (GameObject gameObject in gameObjectsToHide)
         {
             gameObject.SetActive(false);
+        }
+    }
+    private void ShowMenu()
+    {
+        foreach (GameObject gameObject in gameObjectsToHide)
+        {
+            gameObject.SetActive(true);
         }
     }
     private IEnumerator ProgressLoadingBar()
@@ -48,5 +61,9 @@ public class MainMenuManager : MonoBehaviour
                 yield return null;
             }
         }
-    } 
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
