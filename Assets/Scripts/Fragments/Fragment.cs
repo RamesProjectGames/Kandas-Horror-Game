@@ -1,17 +1,25 @@
+using Dialogue;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class Fragment : MonoBehaviour
 {
-    public string fragmentName;
+    FragmentData fragmentData;
     public Transform itemParent;
     public Color fragmentColor = new Color(1f,1f,1f,1f);
     public UnityEvent onFragmentPickup;
-    public void SetItemObject(GameObject itemPrefab)
+    public void SetFragment(FragmentData fragData)
     {
-        var itemSpawnPrefab = Instantiate(itemPrefab, itemParent);
+        fragmentData = fragData;
     }
+
+    public string GetFragmentName()
+    {
+        return fragmentData.name;
+    }
+
     void OnEnable()
     {
         FragmentManager.Instance.RemoveFragment(this);
@@ -22,5 +30,13 @@ public class Fragment : MonoBehaviour
         FragmentManager.Instance.AddFragment(this);
         onFragmentPickup?.Invoke();
         gameObject.SetActive(false);
+    }
+
+    public void Cutscene()
+    {
+        if (ObjectiveManager.Instance == null) return;
+
+        ObjectiveManager.Instance.CompleteObjective(fragmentData.fragmentName);
+        DialogueSystem.Instance.OpenDialogue(fragmentData.fragmentName);
     }
 }

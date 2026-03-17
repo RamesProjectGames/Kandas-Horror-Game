@@ -21,13 +21,13 @@ public class FragmentManager : MonoBehaviour
         }
     }
 
-    public void Start()
+    public void SpawnFragmentInScene()
     {
         foreach (FragmentData fragment in allFragments)
         {
             GameObject fragmentObject = Instantiate(fragmentPrefab, Vector3.zero, Quaternion.identity, transform);
             Fragment fragmentComponent = fragmentObject.GetComponent<Fragment>();
-            fragmentComponent.SetItemObject(fragment.itemPrefab);
+            fragmentComponent.SetFragment(fragment);
         }
     }
 
@@ -47,7 +47,7 @@ public class FragmentManager : MonoBehaviour
     {
         for (int i = 0; i < allFragments.Count; i++)
         {
-            if(currentFragments.Find(x=>x.fragmentName == allFragments[i].fragmentName) == null) return false;
+            if(currentFragments.Find(x => x.GetFragmentName() == allFragments[i].fragmentName) == null) return false;
         }
         return true;
     }

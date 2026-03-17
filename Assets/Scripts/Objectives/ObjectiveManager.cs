@@ -8,6 +8,7 @@ public class ObjectiveManager : MonoBehaviour
     public Objectives ObjectivePrefab;
     public Transform ObjectivesParent;
     List<Objectives> Objectives = new List<Objectives>();
+    public List<string> currentObjectives = new List<string>();
 
     void Awake()
     {
@@ -24,51 +25,88 @@ public class ObjectiveManager : MonoBehaviour
     {
         foreach (var objData in objectiveDatas)
         {
-            AddObjective(objData.Name, objData.Description);
+            AddObjective(objData);
         }
+        UpdateCurrentObjectives();
     }
-    public void AddObjective(string name, string description, bool isHidden = false)
+    public void AddObjective(ObjectiveData objData)
     {
-        ObjectiveData newObjectiveData = new ObjectiveData { Name = name, Description = description, IsCompleted = false, isHidden = isHidden };
         Objectives newObjective = Instantiate(ObjectivePrefab, ObjectivesParent);
-        newObjective.gameObject.SetActive(!isHidden);
-        newObjective.objectiveData = newObjectiveData;
+        newObjective.objectiveData = objData;
         newObjective.UpdateObjectiveText();
         Objectives.Add(newObjective);
     }
+
     public void CompleteObjective(string objectiveName)
     {
         Objectives obj = Objectives.Find(o => o.objectiveData.Name == objectiveName);
-        if (obj != null)
+        if (obj != null && (string.IsNullOrEmpty(obj.objectiveData.LimitedAfterObjective) || !Objectives.Find(x => x.objectiveData.Name == obj.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted))
         {
             obj.objectiveData.IsCompleted = true;
             obj.UpdateObjectiveText();
         }
+        UpdateCurrentObjectives();
     }
 
-    public List<string> CurrentObjectives()
+    public void UpdateCurrentObjectives()
     {
-        List<string> objectiveNames = new List<string>();
-        List<Objectives> unfinished = Objectives.FindAll(x => !x.objectiveData.IsCompleted);
+        List<Objectives> openObjectives = Objectives.FindAll(x => string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) || !Objectives.Find(y => y.objectiveData.Name == x.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted);
 
-        foreach (Objectives obj in unfinished)
+        foreach (Objectives obj in openObjectives)
         {
             bool isCurrent = true;
-            foreach(string req in obj.objectiveData.requierements)
+            foreach(string req in obj.objectiveData.requirements)
             {
+                //Remove open objectives where the requirements aren't completed
                 if(!Objectives.Find(x => x.objectiveData.Name == req).objectiveData.IsCompleted)
                 {
                     isCurrent = false;
+                    if (currentObjectives.Contains(obj.objectiveData.Name))
+                    {
+                        currentObjectives.Remove(obj.objectiveData.Name);
+                    }
                     break;
                 }
             }
 
-            if (isCurrent)
+            //Add open objectives where requirements are completed
+            if (isCurrent && !currentObjectives.Contains(obj.objectiveData.Name))
             {
-                objectiveNames.Add(obj.objectiveData.Name);
+                currentObjectives.Add(obj.objectiveData.Name);
             }
         }
 
-        return objectiveNames;
+        //Remove all locked objectives
+        List<Objectives> closedObjectives = Objectives.FindAll(x => !string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) && Objectives.Find(y => y.objectiveData.Name == x.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted);
+
+        foreach (Objectives obj in closedObjectives)
+        {
+            if (currentObjectives.Contains(obj.objectiveData.Name))
+            {
+                currentObjectives.Remove(obj.objectiveData.Name);
+            }
+        }
+
+        UpdateObjectiveViewList();
+    }
+
+    public void UpdateObjectiveViewList()
+    {
+        foreach (var obj in Objectives)
+        {
+            if(currentObjectives.Contains(obj.objectiveData.Name) && !obj.objectiveData.isHidden)
+            {
+                obj.gameObject.SetActive(true);
+            }
+            else
+            {
+                obj.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public bool isCurrentAndNotCompleted(string objName)
+    {
+        return currentObjectives.Contains(objName) && !Objectives.Find(x => x.objectiveData.Name == objName).objectiveData.IsCompleted;
     }
 }

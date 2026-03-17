@@ -4,7 +4,6 @@ using UnityEngine.Events;
 public class FragmentData : ScriptableObject
 {
     public string fragmentName;
-    public GameObject itemPrefab;
     public UnityEvent onFragmentPickup;
 
 }
