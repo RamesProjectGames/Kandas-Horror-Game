@@ -27887,13 +27887,15 @@ MonoBehaviour:
   unlockAction: {fileID: 3787204763737618428, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   jumpPow: 2
   gravity: 9.81
-  groundDist: 0.1
-  speed: 75
+  groundDist: 0.25
+  speed: 5
   sprintMulti: 1.25
   jumpCd: 0
   maxStamina: 25
   staminaDecayRate: 1.5
   isExhausted: 0
+  isSprinting: 0
+  isCrouching: 0
   playerCam: {fileID: 1252175986}
   cam: {fileID: 1010298964}
   lookSensitivity: 1.5
@@ -27902,11 +27904,23 @@ MonoBehaviour:
   maxVerticalAngle: 20
   interactionAngle: 20
   interactionDist: 2
-  headBobAmplitude: 0.4
-  headBobFrequency: 0.8
+  headBobAmplitude: 0.1
+  headBobFrequency: 0.3
   walkBobMultiplier: 1.5
   sprintBobMultiplier: 2
-  crouchBobMultiplier: 0.5
+  crouchBobMultiplier: 0.25
+  standingHeight: 1.8
+  crouchHeight: 0.9
+  crouchSpeedMultiplier: 0.45
+  crouchTransitionSpeed: 6
+  cameraHeightTarget: {fileID: 1533978693}
+  standingCameraY: 0
+  crouchCameraY: -0.25
+  ceilingMask:
+    serializedVersion: 2
+    m_Bits: 0
+  ceilingCheckRadius: 0.25
+  ceilingCheckOffset: 0.1
   footstepManager: {fileID: 1761790450}
   baseStepDistance: 2
   Hiding: {fileID: 1761790452}
@@ -27929,7 +27943,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 1.8
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3

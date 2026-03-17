@@ -32,8 +32,8 @@ public class PlayerController : MovableObjects
     [SerializeField] private bool isExhausted;
     private float xMove, pitch, yaw, upVel, stamina, moveSpd;
     private bool isGrounded;
-    private bool isSprinting;
-    private bool isCrouching;
+    public bool isSprinting;
+    public bool isCrouching;
 
     [Header("Player Camera Settings")]
     [SerializeField] private CinemachineCamera playerCam;
@@ -58,7 +58,7 @@ public class PlayerController : MovableObjects
     [SerializeField] private float crouchSpeedMultiplier = 0.45f;
     [SerializeField] private float crouchTransitionSpeed = 10f;
 
-    [SerializeField] private Transform cameraRoot; // assign your face or camera pivot
+    [SerializeField] private Transform cameraHeightTarget; // assign your face or camera pivot
     [SerializeField] private float standingCameraY = 1.6f;
     [SerializeField] private float crouchCameraY = 1.0f;
 
@@ -68,6 +68,7 @@ public class PlayerController : MovableObjects
     private float targetControllerHeight;
     private Vector3 targetControllerCenter;
     private float targetCameraY;
+    
 
     [Header("Footsteps")]
     // reference to the centralized sound manager – typically on the same GameObject
@@ -123,14 +124,11 @@ public class PlayerController : MovableObjects
         controller.height = standingHeight;
         controller.center = targetControllerCenter;
 
-        if (cameraRoot == null && face != null)
-            cameraRoot = face.transform;
-
-        if (cameraRoot != null)
+        if (cameraHeightTarget != null)
         {
-            Vector3 camLocal = cameraRoot.localPosition;
+            Vector3 camLocal = cameraHeightTarget.localPosition;
             camLocal.y = standingCameraY;
-            cameraRoot.localPosition = camLocal;
+            cameraHeightTarget.localPosition = camLocal;
         }
     }
 
@@ -273,7 +271,6 @@ public class PlayerController : MovableObjects
                 }
                 else if(isCrouching)
                 {
-                    HandleCrouch();
                     moveSpd = speed * crouchSpeedMultiplier;
                 }
                 else
@@ -338,32 +335,35 @@ public class PlayerController : MovableObjects
             //     //anim.SetBool("isWalking", false);
             //     //anim.SetBool("isRunning", true);
             // }
-            float headBobMultiplier = 1f;
-            if (input == Vector3.zero)
+            float targetAmplitude = 0f;
+            float targetFrequency = 0f;
+
+            bool crouchTransitioning = IsCrouchTransitioning();
+
+            if (input != Vector3.zero && !crouchTransitioning)
             {
-                
-            }
-            else
-            {
-                // Player is moving
-                if(isCrouching)
-                {
+                float headBobMultiplier = 1f;
+
+                if (isCrouching)
                     headBobMultiplier = crouchBobMultiplier;
-                }
-                if(isSprinting)
+
+                if (isSprinting && !isCrouching)
                 {
                     headBobMultiplier = sprintBobMultiplier;
+
                     stamina -= staminaDecayRate * Time.deltaTime;
-                    if(stamina <= 0)
-                    {
-                        stamina = 0;
-                    }
-                } 
+                    if (stamina <= 0f)
+                        stamina = 0f;
+                }
+
+                targetAmplitude = headBobAmplitude * headBobMultiplier;
+                targetFrequency = headBobFrequency * headBobMultiplier;
             }
-            
-                _noise.AmplitudeGain = headBobAmplitude * headBobMultiplier;
-                _noise.FrequencyGain = headBobFrequency * headBobMultiplier;
-            
+
+            // Smoothly apply noise instead of snapping
+            _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, targetAmplitude, Time.deltaTime * 8f);
+            _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, targetFrequency, Time.deltaTime * 8f);
+
         }
         else
         {
@@ -433,6 +433,7 @@ public class PlayerController : MovableObjects
         // transform.Rotate(Vector3.up * xMove);
         if (controller.enabled)
         {
+            HandleCrouch();
             controller.SimpleMove(moveSpd * input);
         }
     }
@@ -457,34 +458,34 @@ public class PlayerController : MovableObjects
                 isCrouching = true;
         }
 
-        float desiredHeight = isCrouching ? crouchHeight : standingHeight;
         float desiredCameraY = isCrouching ? crouchCameraY : standingCameraY;
 
-        // Smooth controller height
-        controller.height = Mathf.Lerp(controller.height, desiredHeight, Time.deltaTime * crouchTransitionSpeed);
-
-        // Keep bottom of capsule grounded by adjusting center
-        float centerY = controller.height * 0.5f;
-        Vector3 desiredCenter = new Vector3(0f, centerY, 0f);
-        controller.center = Vector3.Lerp(controller.center, desiredCenter, Time.deltaTime * crouchTransitionSpeed);
-
-        // Smooth camera/head drop
-        if (cameraRoot != null)
+        // ONLY move Follow (camera target)
+        if (cameraHeightTarget != null)
         {
-            Vector3 localPos = cameraRoot.localPosition;
-            localPos.y = Mathf.Lerp(localPos.y, desiredCameraY, Time.deltaTime * crouchTransitionSpeed);
-            cameraRoot.localPosition = localPos;
+            Vector3 localPos = cameraHeightTarget.localPosition;
+            localPos.y = Mathf.MoveTowards(localPos.y, desiredCameraY, crouchTransitionSpeed * Time.deltaTime);
+            cameraHeightTarget.localPosition = localPos;
         }
     }
     private bool CanStandUp()
     {
-        float checkHeight = standingHeight - controller.height;
-        if (checkHeight <= 0.01f) return true;
+        if (cameraHeightTarget == null) return true;
 
-        Vector3 origin = transform.position + Vector3.up * (controller.height - controller.radius);
-        Vector3 checkPos = origin + Vector3.up * (checkHeight + ceilingCheckOffset);
+        float extraHeightNeeded = standingCameraY - crouchCameraY;
+        if (extraHeightNeeded <= 0.01f) return true;
 
-        return !Physics.CheckSphere(checkPos, ceilingCheckRadius, ceilingMask, QueryTriggerInteraction.Ignore);
+        Vector3 origin = cameraHeightTarget.position;
+        Vector3 target = origin + Vector3.up * extraHeightNeeded;
+
+        return !Physics.CheckSphere(target, ceilingCheckRadius, ceilingMask, QueryTriggerInteraction.Ignore);
+    }
+    private bool IsCrouchTransitioning()
+    {
+        if (cameraHeightTarget == null) return false;
+
+        float desiredY = isCrouching ? crouchCameraY : standingCameraY;
+        return Mathf.Abs(cameraHeightTarget.localPosition.y - desiredY) > 0.02f;
     }
 
     #region Agent (auto) Movement
@@ -515,6 +516,16 @@ public class PlayerController : MovableObjects
         isCrouching = false;
         stamina = maxStamina;
         staminaFillImage.gameObject.SetActive(false);
+
+        controller.height = standingHeight;
+        controller.center = new Vector3(0f, standingHeight * 0.5f, 0f);
+
+        if (cameraHeightTarget != null)
+        {
+            Vector3 localPos = cameraHeightTarget.localPosition;
+            localPos.y = standingCameraY;
+            cameraHeightTarget.localPosition = localPos;
+        }
     }
     #endregion
 }
