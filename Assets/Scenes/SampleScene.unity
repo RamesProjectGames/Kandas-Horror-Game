@@ -151,10 +151,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 440754712}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 293}
-  m_SizeDelta: {x: -320, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -50}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &41595148
 MonoBehaviour:
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: what 2 + 1
+  m_text: Draw anything Here
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a689d5f143bcc7d449b37f31cbd56b63, type: 2}
   m_sharedMaterial: {fileID: 7174644295773688519, guid: a689d5f143bcc7d449b37f31cbd56b63, type: 2}
@@ -185,8 +185,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1572,8 +1572,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1799965511}
-  - {fileID: 41595147}
   - {fileID: 1990901140}
+  - {fileID: 41595147}
   - {fileID: 1144100478}
   m_Father: {fileID: 1141059021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7984,6 +7984,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   player: {fileID: 0}
+  playerMesh: {fileID: 0}
   canSeePlayer: 0
   playerWasSpottedWhileHiding: 0
 --- !u!54 &1733759646
@@ -9298,8 +9299,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -9732,9 +9733,9 @@ MonoBehaviour:
   dotSpacing: 10
   totalLengthRequired: 300
   questions:
-  - What is 2+2
-  - What is 6 + 7
-  - Yes We know it, carry on (Just Write Okay on to the board)
+  - Draw The Answer Here
+  - Draw The Answer Here
+  - Draw The Answer Here
   questionText: {fileID: 41595148}
   progressText: {fileID: 0}
   resultPanel: {fileID: 0}
@@ -10108,10 +10109,10 @@ RectTransform:
   - {fileID: 1198965106}
   m_Father: {fileID: 440754712}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 1600, y: 600}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1990901141
 MonoBehaviour:

@@ -52,6 +52,23 @@ public class PlayerController : MovableObjects
     public float sprintBobMultiplier = 2.0f;
     public float crouchBobMultiplier = 0.5f;
 
+    [Header("Crouch Settings")]
+    [SerializeField] private float standingHeight = 2f;
+    [SerializeField] private float crouchHeight = 1.2f;
+    [SerializeField] private float crouchSpeedMultiplier = 0.45f;
+    [SerializeField] private float crouchTransitionSpeed = 10f;
+
+    [SerializeField] private Transform cameraRoot; // assign your face or camera pivot
+    [SerializeField] private float standingCameraY = 1.6f;
+    [SerializeField] private float crouchCameraY = 1.0f;
+
+    [SerializeField] private LayerMask ceilingMask;
+    [SerializeField] private float ceilingCheckRadius = 0.25f;
+    [SerializeField] private float ceilingCheckOffset = 0.1f;
+    private float targetControllerHeight;
+    private Vector3 targetControllerCenter;
+    private float targetCameraY;
+
     [Header("Footsteps")]
     // reference to the centralized sound manager – typically on the same GameObject
     public FootstepsSoundManager footstepManager;
@@ -97,6 +114,24 @@ public class PlayerController : MovableObjects
         agent.acceleration = 8f;
         agent.stoppingDistance = 0.1f;
         if(CanUseAgent()) agent.isStopped = true;
+
+        targetControllerHeight = standingHeight;
+        targetControllerCenter = new Vector3(0f, standingHeight * 0.5f, 0f);
+        targetCameraY = standingCameraY;
+
+        // Force initial values
+        controller.height = standingHeight;
+        controller.center = targetControllerCenter;
+
+        if (cameraRoot == null && face != null)
+            cameraRoot = face.transform;
+
+        if (cameraRoot != null)
+        {
+            Vector3 camLocal = cameraRoot.localPosition;
+            camLocal.y = standingCameraY;
+            cameraRoot.localPosition = camLocal;
+        }
     }
 
     // Update is called once per frame
@@ -199,26 +234,26 @@ public class PlayerController : MovableObjects
                     isSprinting = false;
                 }
             }
-            if(!SettingManager.Instance.settings.CrouchToggle)
+            if (!SettingManager.Instance.settings.CrouchToggle)
             {
-                if (crouchAction != null && crouchAction.action.IsPressed())
-                {
-                    isCrouching = true;
-                }
-                else
-                {
-                    isCrouching = false;
-                }
+                // Hold crouch
+                isCrouching = crouchAction != null && crouchAction.action.IsPressed();
             }
             else
             {
+                // Toggle crouch
                 if (crouchAction != null && crouchAction.action.WasPressedThisFrame())
                 {
-                    isCrouching = true;
-                }
-                else
-                {
-                    isCrouching = false;
+                    if (isCrouching)
+                    {
+                        // Try to stand up only if there is room
+                        if (CanStandUp())
+                            isCrouching = false;
+                    }
+                    else
+                    {
+                        isCrouching = true;
+                    }
                 }
             }
             if (isExhausted)
@@ -232,13 +267,14 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if (isSprinting)
+                if (isSprinting && !isCrouching)
                 {
-                    moveSpd = speed * (!isCrouching ? sprintMulti : 1f);
+                    moveSpd = speed * sprintMulti;
                 }
                 else if(isCrouching)
                 {
-                    moveSpd = speed / (sprintMulti * sprintMulti);
+                    HandleCrouch();
+                    moveSpd = speed * crouchSpeedMultiplier;
                 }
                 else
                 {
@@ -259,10 +295,10 @@ public class PlayerController : MovableObjects
                 camForward.y = 0;
                 camForward.Normalize();
 
-                Vector3 hor = camRight * moveInput.x * moveSpd * Time.deltaTime;
-                Vector3 ver = camForward * moveInput.y * moveSpd * Time.deltaTime;
+                Vector3 hor = camRight * moveInput.x ;
+                Vector3 ver = camForward * moveInput.y;
 
-                input = hor + ver;
+                input = (hor + ver).normalized;
             }
             if(!isSprinting)
             {
@@ -397,7 +433,7 @@ public class PlayerController : MovableObjects
         // transform.Rotate(Vector3.up * xMove);
         if (controller.enabled)
         {
-            controller.SimpleMove(moveSpd * Time.fixedDeltaTime * input);
+            controller.SimpleMove(moveSpd * input);
         }
     }
 
@@ -410,6 +446,45 @@ public class PlayerController : MovableObjects
     {
         audioSrc.clip = audioClip[Random.Range(0, audioClip.Length)];
         audioSrc.Play();
+    }
+
+    private void HandleCrouch()
+    {
+        // Prevent standing up if blocked by ceiling
+        if (!SettingManager.Instance.settings.CrouchToggle && !isCrouching)
+        {
+            if (!CanStandUp())
+                isCrouching = true;
+        }
+
+        float desiredHeight = isCrouching ? crouchHeight : standingHeight;
+        float desiredCameraY = isCrouching ? crouchCameraY : standingCameraY;
+
+        // Smooth controller height
+        controller.height = Mathf.Lerp(controller.height, desiredHeight, Time.deltaTime * crouchTransitionSpeed);
+
+        // Keep bottom of capsule grounded by adjusting center
+        float centerY = controller.height * 0.5f;
+        Vector3 desiredCenter = new Vector3(0f, centerY, 0f);
+        controller.center = Vector3.Lerp(controller.center, desiredCenter, Time.deltaTime * crouchTransitionSpeed);
+
+        // Smooth camera/head drop
+        if (cameraRoot != null)
+        {
+            Vector3 localPos = cameraRoot.localPosition;
+            localPos.y = Mathf.Lerp(localPos.y, desiredCameraY, Time.deltaTime * crouchTransitionSpeed);
+            cameraRoot.localPosition = localPos;
+        }
+    }
+    private bool CanStandUp()
+    {
+        float checkHeight = standingHeight - controller.height;
+        if (checkHeight <= 0.01f) return true;
+
+        Vector3 origin = transform.position + Vector3.up * (controller.height - controller.radius);
+        Vector3 checkPos = origin + Vector3.up * (checkHeight + ceilingCheckOffset);
+
+        return !Physics.CheckSphere(checkPos, ceilingCheckRadius, ceilingMask, QueryTriggerInteraction.Ignore);
     }
 
     #region Agent (auto) Movement
