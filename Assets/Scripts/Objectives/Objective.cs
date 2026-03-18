@@ -3,7 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class Objectives : MonoBehaviour
+public class Objective : MonoBehaviour
 {
     public ObjectiveData objectiveData;
     public TextMeshProUGUI objectiveText;
@@ -38,6 +38,7 @@ public class ObjectiveData
     public string Description;
     public bool IsCompleted;
     public bool isHidden;
+    public FragmentData fragmentData;
     [Tooltip("These objectives must be cleared to access this objective")]
     public List<string> requirements = new List<string>();
     [Tooltip("This objective no longer doable if the following objective is completed, regardless of completion status")]

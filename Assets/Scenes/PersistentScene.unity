@@ -17216,6 +17216,7 @@ MonoBehaviour:
     Description: Go to the class
     IsCompleted: 0
     isHidden: 0
+    fragmentData: {fileID: 0}
     requirements: []
     LimitedAfterObjective: Desk
     ObjectiveObject: {fileID: 0}
@@ -17223,6 +17224,7 @@ MonoBehaviour:
     Description: Sit on your desk.
     IsCompleted: 0
     isHidden: 0
+    fragmentData: {fileID: 0}
     requirements: []
     LimitedAfterObjective: 
     ObjectiveObject: {fileID: 0}
@@ -17230,9 +17232,19 @@ MonoBehaviour:
     Description: Inspect the note on your desk.
     IsCompleted: 0
     isHidden: 0
+    fragmentData: {fileID: 0}
     requirements:
     - Class
     LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+  - Name: Fragment1
+    Description: 
+    IsCompleted: 0
+    isHidden: 0
+    fragmentData: {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
+    requirements:
+    - Class
+    LimitedAfterObjective: Inspect
     ObjectiveObject: {fileID: 0}
   ObjectivePrefab: {fileID: 4575612503608170280, guid: d23d41e198abf6d4bafe61812b8a5261, type: 3}
   ObjectivesParent: {fileID: 415318066}
@@ -23165,11 +23177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fragmentPrefab: {fileID: 6180898111845516536, guid: 1b8b5633bbec7694ca7ce3e199386c13, type: 3}
-  allFragments:
-  - {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
-  - {fileID: 11400000, guid: a38d5a6c17cb5b34cade80cd80d4ae66, type: 2}
-  - {fileID: 11400000, guid: abfe91f60fc72df4fbc01a0bd933ce14, type: 2}
-  - {fileID: 11400000, guid: f590a47f372062347994eb2a6733876d, type: 2}
+  allFragments: []
 --- !u!1 &1524700077
 GameObject:
   m_ObjectHideFlags: 0
@@ -27966,7 +27974,7 @@ MonoBehaviour:
   crouchHeight: 1.2
   crouchSpeedMultiplier: 0.45
   crouchTransitionSpeed: 10
-  cameraRoot: {fileID: 0}
+  cameraHeightTarget: {fileID: 0}
   standingCameraY: 1.6
   crouchCameraY: 1
   ceilingMask:

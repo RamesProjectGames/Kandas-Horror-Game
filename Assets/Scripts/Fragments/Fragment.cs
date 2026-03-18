@@ -1,15 +1,11 @@
 using Dialogue;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
 public class Fragment : MonoBehaviour
 {
     FragmentData fragmentData;
     public Transform itemParent;
     public Color fragmentColor = new Color(1f,1f,1f,1f);
-    public UnityEvent onFragmentPickup;
     public void SetFragment(FragmentData fragData)
     {
         fragmentData = fragData;
@@ -27,8 +23,9 @@ public class Fragment : MonoBehaviour
     }
     public void OnFragmentPickup()
     {
-        FragmentManager.Instance.AddFragment(this);
-        onFragmentPickup?.Invoke();
+        if(!FragmentManager.Instance.FragmentOwned(this))
+            FragmentManager.Instance.AddFragment(this);
+        Cutscene();
         gameObject.SetActive(false);
     }
 

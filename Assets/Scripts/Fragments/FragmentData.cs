@@ -4,6 +4,5 @@ using UnityEngine.Events;
 public class FragmentData : ScriptableObject
 {
     public string fragmentName;
-    public UnityEvent onFragmentPickup;
-
+    public Vector3 fragmentPosition;
 }

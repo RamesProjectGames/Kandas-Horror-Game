@@ -5,9 +5,9 @@ public class ObjectiveManager : MonoBehaviour
 {
     public static ObjectiveManager Instance;
     public List<ObjectiveData> objectiveDatas = new List<ObjectiveData>();
-    public Objectives ObjectivePrefab;
+    public Objective ObjectivePrefab;
     public Transform ObjectivesParent;
-    List<Objectives> Objectives = new List<Objectives>();
+    List<Objective> Objectives = new List<Objective>();
     public List<string> currentObjectives = new List<string>();
 
     void Awake()
@@ -31,7 +31,11 @@ public class ObjectiveManager : MonoBehaviour
     }
     public void AddObjective(ObjectiveData objData)
     {
-        Objectives newObjective = Instantiate(ObjectivePrefab, ObjectivesParent);
+        Objective newObjective = Instantiate(ObjectivePrefab, ObjectivesParent);
+        if (objData.fragmentData != null)
+        {
+            objData.isHidden = true;
+        }
         newObjective.objectiveData = objData;
         newObjective.UpdateObjectiveText();
         Objectives.Add(newObjective);
@@ -39,7 +43,7 @@ public class ObjectiveManager : MonoBehaviour
 
     public void CompleteObjective(string objectiveName)
     {
-        Objectives obj = Objectives.Find(o => o.objectiveData.Name == objectiveName);
+        Objective obj = Objectives.Find(o => o.objectiveData.Name == objectiveName);
         if (obj != null && (string.IsNullOrEmpty(obj.objectiveData.LimitedAfterObjective) || !Objectives.Find(x => x.objectiveData.Name == obj.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted))
         {
             obj.objectiveData.IsCompleted = true;
@@ -50,9 +54,9 @@ public class ObjectiveManager : MonoBehaviour
 
     public void UpdateCurrentObjectives()
     {
-        List<Objectives> openObjectives = Objectives.FindAll(x => string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) || !Objectives.Find(y => y.objectiveData.Name == x.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted);
+        List<Objective> openObjectives = Objectives.FindAll(x => string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) || !Objectives.Find(y => y.objectiveData.Name == x.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted);
 
-        foreach (Objectives obj in openObjectives)
+        foreach (Objective obj in openObjectives)
         {
             bool isCurrent = true;
             foreach(string req in obj.objectiveData.requirements)
@@ -73,13 +77,17 @@ public class ObjectiveManager : MonoBehaviour
             if (isCurrent && !currentObjectives.Contains(obj.objectiveData.Name))
             {
                 currentObjectives.Add(obj.objectiveData.Name);
+                if(obj.objectiveData.fragmentData != null && !FragmentManager.Instance.allFragments.Contains(obj.objectiveData.fragmentData))
+                {
+                    FragmentManager.Instance.SpawnFragmentInScene(obj.objectiveData.fragmentData);
+                }
             }
         }
 
         //Remove all locked objectives
-        List<Objectives> closedObjectives = Objectives.FindAll(x => !string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) && Objectives.Find(y => y.objectiveData.Name == x.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted);
+        List<Objective> closedObjectives = Objectives.FindAll(x => !string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) && Objectives.Find(y => y.objectiveData.Name == x.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted);
 
-        foreach (Objectives obj in closedObjectives)
+        foreach (Objective obj in closedObjectives)
         {
             if (currentObjectives.Contains(obj.objectiveData.Name))
             {
