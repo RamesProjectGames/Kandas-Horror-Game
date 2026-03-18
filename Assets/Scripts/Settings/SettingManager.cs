@@ -46,6 +46,10 @@ public class SettingManager : MonoBehaviour
             settingsUI.PausePanelToggle(isPaused);
         }
     }
+    void OnDestroy()
+    {
+        Instance = null;
+    }
     #region Graphics Settings Methods
 
     public SettingData settings = new SettingData();
