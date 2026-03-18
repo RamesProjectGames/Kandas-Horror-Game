@@ -1,7 +1,10 @@
 using Dialogue;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
-public class Fragment : MonoBehaviour
+public class Fragment : ItemInteraction
 {
     FragmentData fragmentData;
     public Transform itemParent;
@@ -26,7 +29,6 @@ public class Fragment : MonoBehaviour
         if(!FragmentManager.Instance.FragmentOwned(this))
             FragmentManager.Instance.AddFragment(this);
         Cutscene();
-        gameObject.SetActive(false);
     }
 
     public void Cutscene()
