@@ -35,6 +35,10 @@ public class MainMenuManager : MonoBehaviour
     {        
         currentChapter = sceneName;
     }
+    public void ConfirmStartGame()
+    {
+        ConfirmationUI.Instance.SetConfirmationUI("Enter Chapter?", () => StartGame());
+    }
     public void StartGame()
     {
         HideMenu();
@@ -109,6 +113,7 @@ public class MainMenuManager : MonoBehaviour
             }
         }
     }
+    public void ConfirmQuitGame() => ConfirmationUI.Instance.SetConfirmationUI("Are you sure you want to quit?", () => QuitGame());
     public void QuitGame()
     {
         Application.Quit();
