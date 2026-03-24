@@ -13,11 +13,19 @@ public class ConfirmationUI : MonoBehaviour
     {
         Instance = this;
     }
+    void Start()
+    {
+        Cancel();
+    }
     public void SetConfirmationUI(string text, Action confirmed)
     {
         TitleText.text = text;
         confirmButton.onClick.RemoveAllListeners();
-        confirmButton.onClick.AddListener(() => confirmed());
+        confirmButton.onClick.AddListener(() =>
+        {
+            confirmed.Invoke();
+            Cancel();
+        });
         IsShowed(true);
     }
     public void Cancel()

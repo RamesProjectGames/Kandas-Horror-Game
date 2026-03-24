@@ -9,6 +9,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     [SerializeField] Waypoint[] point;
     [SerializeField] int idxPoint = 0;
     [SerializeField] EnemySightDetection fov;
+    [SerializeField] Animator animator;
     bool detectedSound;
     public Vector3 soundSource;
     public float speed = 3f;
@@ -33,6 +34,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     public float baseStepDistance = 2f;
     private Vector3 _lastFootstepPosition;
     private float _footstepDistanceAccum;
+    private Vector2 Velocity;
+    private Vector2 smoothDeltaPosition;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -58,6 +61,21 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         if (footstepManager == null)
             footstepManager = GetComponent<FootstepsSoundManager>();
         _lastFootstepPosition = transform.position;
+
+        if(animator != null)
+        {
+            animator.applyRootMotion = true;
+            agent.updatePosition = false;
+            agent.updateRotation = true;
+        }
+    }
+    void OnAnimatorMove()
+    {
+        if(animator == null) return;
+        Vector3 rootPosition = animator.rootPosition;
+        rootPosition.y = agent.nextPosition.y;
+        transform.position = rootPosition;
+        agent.nextPosition = rootPosition;
     }
 
     // Update is called once per frame
@@ -274,8 +292,39 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                     agent.SetDestination(point[idxPoint].position);
                     agent.isStopped = true;
                 }
+                SynchronizeAnimatorAndAgent();
             }
         }
+    }
+    public void SynchronizeAnimatorAndAgent()
+    {
+        if(animator == null) return;
+
+        Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
+        worldDeltaPosition.y = 0f;
+
+        float dx = Vector3.Dot(transform.right, worldDeltaPosition);
+        float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
+        Vector2 deltaPosition = new Vector2(dx, dy);
+
+        float smooth = Mathf.Min(1, Time.deltaTime / .1f);
+        smoothDeltaPosition = Vector2.Lerp(smoothDeltaPosition, deltaPosition, smooth);
+
+        Velocity = smoothDeltaPosition / Time.deltaTime;
+        if(agent.remainingDistance <= agent.stoppingDistance)
+        {
+            Velocity = Vector2.Lerp(Velocity, 
+            Vector2.zero, 
+            agent.remainingDistance/ agent.stoppingDistance
+            );
+        }
+
+        bool shouldMove = Velocity.magnitude > 0.5f 
+            && agent.remainingDistance > agent.stoppingDistance;
+
+
+        animator.SetBool("move", shouldMove);
+        animator.SetFloat("velocity", Velocity.magnitude);
     }
 
     #region Player Hiding
