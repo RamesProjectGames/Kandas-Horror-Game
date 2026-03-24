@@ -6,7 +6,8 @@ public class FragmentManager : MonoBehaviour
     public static FragmentManager Instance;
     public GameObject fragmentPrefab;
     public List<FragmentData> allFragments = new List<FragmentData>();
-    List<Fragment> currentFragments = new List<Fragment>();
+    List<FragmentData> currentFragments = new List<FragmentData>();
+    List<Fragment> fragmentGOs = new List<Fragment>();
 
     private void Awake()
     {
@@ -27,33 +28,48 @@ public class FragmentManager : MonoBehaviour
         GameObject fragmentObject = Instantiate(fragmentPrefab, fragment.fragmentPosition, Quaternion.identity, GameObject.Find("===Environment===").transform);
         fragmentObject.name = fragment.fragmentName;
         Fragment fragmentComponent = fragmentObject.GetComponent<Fragment>();
-        fragmentComponent.SetFragment(fragment);
+        fragmentComponent.SetFragmentData(fragment);
         allFragments.Add(fragment);
+        fragmentGOs.Add(fragmentComponent);
     }
 
     public void AddFragment(Fragment fragment)
     {
-        currentFragments.Add(fragment);
+        if (!FragmentOwned(fragment))
+            currentFragments.Add(fragment.GetFragmentData());
     }
     public void RemoveFragment(Fragment fragment)
     {
-        currentFragments.Remove(fragment);
+        if (FragmentOwned(fragment))
+            currentFragments.Remove(fragment.GetFragmentData());
     }
+
     public void ClearFragment()
     {
         currentFragments.Clear();
     }
+
     public bool CheckCompletedFragments()
     {
+        List<string> allFragments = ObjectiveManager.Instance.objectiveDatas.FindAll(x => x.fragmentData != null).Select(x => x.fragmentData.fragmentName).ToList();
         for (int i = 0; i < allFragments.Count; i++)
         {
-            if(currentFragments.Find(x => x.GetFragmentName() == allFragments[i].fragmentName) == null) return false;
+            if(currentFragments.Find(x => x.fragmentName == allFragments[i]) == null) return false;
         }
         return true;
     }
 
     public bool FragmentOwned(Fragment fragment)
     {
-        return currentFragments.Contains(fragment);
+        return currentFragments.Contains(fragment.GetFragmentData());
+    }
+
+    public void UpdateFragmentState(FragmentData fragData)
+    {
+        Fragment fragmentGO = fragmentGOs.Find(x => x.GetFragmentData() == fragData);
+        if (fragmentGO != null)
+        {
+            fragmentGO.gameObject.SetActive(ObjectiveManager.Instance.CheckIfFragmentValid(fragData));
+        }
     }
 }

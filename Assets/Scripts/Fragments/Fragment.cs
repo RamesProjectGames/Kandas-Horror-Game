@@ -9,14 +9,19 @@ public class Fragment : ItemInteraction
     FragmentData fragmentData;
     public Transform itemParent;
     public Color fragmentColor = new Color(1f,1f,1f,1f);
-    public void SetFragment(FragmentData fragData)
+    public void SetFragmentData(FragmentData fragData)
     {
         fragmentData = fragData;
     }
 
+    public FragmentData GetFragmentData()
+    {
+        return fragmentData;
+    }    
+
     public string GetFragmentName()
     {
-        return fragmentData.name;
+        return fragmentData.fragmentName;
     }
 
     void OnEnable()

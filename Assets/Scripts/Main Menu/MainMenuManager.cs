@@ -1,3 +1,4 @@
+using Dialogue;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private SceneField persistentScene;
     [SerializeField] private SceneField mainMenuScene;
     private SceneField currentChapter;
+    public int currentChapterIndex;
 
     private List<AsyncOperation> loadOperations = new List<AsyncOperation>();
     void Awake()
@@ -31,9 +33,10 @@ public class MainMenuManager : MonoBehaviour
         loadingPanel.SetActive(false);
         Instance = this;
     }
-    public void ChapterSelect(SceneField sceneName)
+    public void ChapterSelect(SceneField sceneName, int chapIndex)
     {        
         currentChapter = sceneName;
+        currentChapterIndex = ++chapIndex;
     }
     public void ConfirmStartGame()
     {
@@ -101,6 +104,7 @@ public class MainMenuManager : MonoBehaviour
 
             yield return null;
         }
+        DialogueSystem.Instance.OpenDialogue($"Chapter{currentChapterIndex}");
 
     }
     private void UpdateLoadingSprite()

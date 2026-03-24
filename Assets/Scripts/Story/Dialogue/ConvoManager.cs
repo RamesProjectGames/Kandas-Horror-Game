@@ -29,6 +29,8 @@ namespace Dialogue
         //Starting a new Dialogue
         public void StartConvo(List<string> convo)
         {
+            if(convo == null)
+                return;
             StopConvo();
 
             ds.dialogueContainer.ShowDialogue();

@@ -159,8 +159,7 @@ public class PlayerController : MovableObjects
         if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
         {
             ResetMovementState();
-            if(SettingManager.Instance.isPaused)
-                lookAction.action.Disable();
+            lookAction.action.Disable();
             return;
         }
         else if(!lookAction.action.enabled)

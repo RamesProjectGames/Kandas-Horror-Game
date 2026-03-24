@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ObjectiveManager : MonoBehaviour
@@ -110,11 +111,20 @@ public class ObjectiveManager : MonoBehaviour
             {
                 obj.gameObject.SetActive(false);
             }
+            if (obj.objectiveData.fragmentData != null)
+            {
+                FragmentManager.Instance.UpdateFragmentState(obj.objectiveData.fragmentData);
+            }
         }
     }
 
     public bool isCurrentAndNotCompleted(string objName)
     {
         return currentObjectives.Contains(objName) && !Objectives.Find(x => x.objectiveData.Name == objName).objectiveData.IsCompleted;
+    }
+
+    public bool CheckIfFragmentValid(FragmentData fragData)
+    {
+        return currentObjectives.Contains(objectiveDatas.Find(x => x.fragmentData == fragData).Name);
     }
 }

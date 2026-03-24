@@ -13,7 +13,7 @@ public class ChapterManager : MonoBehaviour
     public TextMeshProUGUI desc;
     public Image content;
 
-    SceneField chapterSceneName ;
+    SceneField chapterSceneName;
     void Start()
     {
         ChapterSelect(0);
@@ -31,7 +31,7 @@ public class ChapterManager : MonoBehaviour
         desc.text = chaptersData[index].chapterDesc;
         content.sprite = chaptersData[index].chapterContent;
         chapterSceneName = chaptersData[index].chapterScene;
-        MainMenuManager.Instance.ChapterSelect(chapterSceneName);
+        MainMenuManager.Instance.ChapterSelect(chapterSceneName, index);
     }
 
     

@@ -43,8 +43,7 @@ namespace Dialogue
         {
             if(initialized) return;
 
-            allMiniConvos = Resources.FindObjectsOfTypeAll<MiniConvo>().ToList();
-
+            allMiniConvos = Resources.LoadAll<MiniConvo>("").ToList();
 
             architect = new TextArchitect(dialogueContainer.dialogueText);
             architect.buildMethod = buildMethod;
@@ -90,7 +89,7 @@ namespace Dialogue
         {
             if (isRunningConvo)
                 return;
-            if(assetName.StartsWith("Mini"))
+            if(assetName.StartsWith("Mini_"))
                 convoManager.StartConvo(allMiniConvos.Find(x => x.convoName == assetName).dialogues);
             else
                 convoManager.StartConvo(FileReader.ReadAsset(assetName));
