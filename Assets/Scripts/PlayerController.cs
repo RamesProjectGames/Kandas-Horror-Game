@@ -430,7 +430,7 @@ public class PlayerController : MovableObjects
     {
         // cam.localRotation = Quaternion.Euler(pitch, 0, 0);
         // transform.Rotate(Vector3.up * xMove);
-        if (controller.enabled)
+        if (controller.enabled && !SettingManager.Instance.isPaused && !DialogueSystem.Instance.isRunningConvo)
         {
             HandleCrouch();
             controller.SimpleMove(moveSpd * input);
