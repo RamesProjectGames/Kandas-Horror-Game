@@ -330,7 +330,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             //     partName = $"Binding '{action.bindings[bindingIndex].name}'. ";
 
             // Bring up rebind overlay, if we have one.
-            // m_RebindOverlay?.SetActive(true);
+            m_RebindOverlay?.SetActive(true);
             // if (m_RebindText != null)
             // {
             //     var text = !string.IsNullOrEmpty(m_RebindOperation.expectedControlType)
@@ -344,7 +344,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             // if (m_RebindOverlay == null && m_RebindText == null && m_RebindStartEvent == null && m_BindingText != null)
             //     m_BindingText.text = "<Waiting...>";
 
-            m_BindingText.text = "<color=red>[Waiting For Input]</color>";
+            m_BindingText.text = "<color=white>[Waiting For Input]</color>";
 
             // Give listeners a chance to act on the rebind starting.
             m_RebindStartEvent?.Invoke(this, m_RebindOperation);

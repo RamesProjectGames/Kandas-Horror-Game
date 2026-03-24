@@ -125,6 +125,7 @@ public class SettingsUI : MonoBehaviour
         }
     }
     public void ResetToDefaults() { settingManager.ResetGrapichsToDefaults(); UpdateUI(); }
+    public void ConfirmResetSettings() {ConfirmationUI.Instance.SetConfirmationUI("Reset Setting to defaults?", () => ResetToDefaults());}
     #endregion
 
     #region Control Settings UI Elements
@@ -269,6 +270,10 @@ public class SettingsUI : MonoBehaviour
         }
         UpdateUI(); 
     }
+    public void ConfirmResetControls()
+    {
+        ConfirmationUI.Instance.SetConfirmationUI("Are you sure you want to reset your controls?", () => ResetControlSettingsToDefaults());
+    }
     #endregion
 
     #region Audio Settings UI Elements
@@ -295,6 +300,7 @@ public class SettingsUI : MonoBehaviour
         settingManager.SetMobVolume(value);
     }
     public void ResetAudioSettingsToDefaults() { settingManager.ResetAudioToDefaults(); UpdateUI(); }
+    public void ConfirmResetAudio() { ConfirmationUI.Instance.SetConfirmationUI("Reset audio to defaults?", () => ResetAudioSettingsToDefaults()); }
 
     #endregion
 
@@ -311,6 +317,7 @@ public class SettingsUI : MonoBehaviour
     }
     public void SetLanguage(int index) { settingManager.SetLanguage(index); }
     public void ResetLanguageToDefault() { settingManager.ResetLanguageToDefault(); UpdateUI(); }
+    public void ConfirmResetLanguage() { ConfirmationUI.Instance.SetConfirmationUI("Reset language to default?", () => ResetLanguageToDefault()); }
     #endregion
 
     #region UI Navigation
