@@ -44,4 +44,5 @@ public class ObjectiveData
     [Tooltip("This objective no longer doable if the following objective is completed, regardless of completion status")]
     public string LimitedAfterObjective;
     public GameObject ObjectiveObject;
+    public int Chapter;
 }
