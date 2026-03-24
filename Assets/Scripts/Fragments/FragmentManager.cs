@@ -19,16 +19,16 @@ public class FragmentManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        allFragments.Clear();
     }
 
-    public void SpawnFragmentInScene()
+    public void SpawnFragmentInScene(FragmentData fragment)
     {
-        foreach (FragmentData fragment in allFragments)
-        {
-            GameObject fragmentObject = Instantiate(fragmentPrefab, Vector3.zero, Quaternion.identity, transform);
-            Fragment fragmentComponent = fragmentObject.GetComponent<Fragment>();
-            fragmentComponent.SetFragment(fragment);
-        }
+        GameObject fragmentObject = Instantiate(fragmentPrefab, fragment.fragmentPosition, Quaternion.identity, GameObject.Find("===Environment===").transform);
+        fragmentObject.name = fragment.fragmentName;
+        Fragment fragmentComponent = fragmentObject.GetComponent<Fragment>();
+        fragmentComponent.SetFragment(fragment);
+        allFragments.Add(fragment);
     }
 
     public void AddFragment(Fragment fragment)
@@ -50,5 +50,10 @@ public class FragmentManager : MonoBehaviour
             if(currentFragments.Find(x => x.GetFragmentName() == allFragments[i].fragmentName) == null) return false;
         }
         return true;
+    }
+
+    public bool FragmentOwned(Fragment fragment)
+    {
+        return currentFragments.Contains(fragment);
     }
 }

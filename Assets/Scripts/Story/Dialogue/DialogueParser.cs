@@ -12,8 +12,6 @@ namespace Dialogue
         {
             var (speaker, dialogue, functions) = SegmentLines(line);
 
-            Debug.Log($"Speaker: {speaker}\nDialogue: {dialogue}\nFunctions: {functions}");
-
             return new DialogueStructure(speaker, dialogue, functions);
         }
 

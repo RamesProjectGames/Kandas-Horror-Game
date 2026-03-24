@@ -109,8 +109,6 @@ namespace Dialogue
                 }
             }
 
-            Debug.Log(line.dialogue.Count);
-
             foreach (DialogueData segment in line.dialogue)
             {
                 yield return HandleSegmentSignal(segment);
@@ -120,17 +118,14 @@ namespace Dialogue
 
         IEnumerator HandleSegmentSignal(DialogueData segment)
         {
-            Debug.Log(segment.segmentSignal);
             switch (segment.segmentSignal)
             {
                 case DialogueData.SegmentSignal.C:
                 case DialogueData.SegmentSignal.A:
-                    Debug.Log($"Press to continue");
                     yield return WaitForUserInput();
                     break;
                 case DialogueData.SegmentSignal.WC:
                 case DialogueData.SegmentSignal.WA:
-                    Debug.Log($"Waiting for {segment.signalDelay} seconds");
                     yield return WaitForDelayOrInput(segment.signalDelay);
                     break;
                 default:

@@ -23,7 +23,6 @@ public class PlayerGrabInteraction : MonoBehaviour
 
     private ItemInteraction currentItem;
     private ItemInteraction heldItem;
-    private Fragment fragmentItem;
     [SerializeField] private InputActionReference throwAction, interAction;
 
     // runtime state for charging a throw
@@ -37,7 +36,7 @@ public class PlayerGrabInteraction : MonoBehaviour
     void Update()
     {
         DetectItemInteraction();
-        DetectFragmentItem();
+        //DetectFragmentItem();
 
         if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
             return;
@@ -45,10 +44,10 @@ public class PlayerGrabInteraction : MonoBehaviour
         {
             if (currentItem != null)
             {
-                if ((interactableLayer & (1 << currentItem.gameObject.layer)) != 0)
+                if ((interactableLayer & (1 << currentItem.gameObject.layer)) != 0 || (fragmentLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
                     currentItem.onInteract.Invoke();
-                    if (currentItem.GetComponent<DialogueHandler>() != null)
+                    if (currentItem is DialogueHandler)
                         transform.LookAt(currentItem.transform);
                 }
                 else if ((pickupLayer & (1 << currentItem.gameObject.layer)) != 0)
@@ -58,13 +57,6 @@ public class PlayerGrabInteraction : MonoBehaviour
                         heldItem = currentItem;
                         heldItem.Pickup(holdPoint);
                     }
-                }
-            }
-            if(fragmentItem != null)
-            {
-                if ((interactableLayer & (1 << fragmentItem.gameObject.layer)) != 0)
-                {
-                    fragmentItem.OnFragmentPickup();
                 }
             }
         }
@@ -117,7 +109,7 @@ public class PlayerGrabInteraction : MonoBehaviour
         ItemInteraction bestItem = null;
         float bestDistance = float.MaxValue;
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, pickupLayer | interactableLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, pickupLayer | interactableLayer | fragmentLayer);
 
         foreach (Collider hit in hits)
         {
@@ -152,38 +144,44 @@ public class PlayerGrabInteraction : MonoBehaviour
                 currentItem.ShowUI();
         }
     }
-    void DetectFragmentItem()
-    {
-        Fragment bestItem = null;
-        float bestDistance = float.MaxValue;
+    //void DetectFragmentItem()
+    //{
+    //    Fragment bestItem = null;
+    //    float bestDistance = float.MaxValue;
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, fragmentLayer);
-        foreach (Collider hit in hits)
-        {
-            if (!hit.TryGetComponent(out Fragment item))
-                continue;
+    //    Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, fragmentLayer);
+    //    foreach (Collider hit in hits)
+    //    {
+    //        if (!hit.TryGetComponent(out Fragment item))
+    //            continue;
 
-            Vector3 toItem = (hit.transform.position - transform.position).normalized;
-            Vector3 detectionForward = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
-            float dot = Vector3.Dot(detectionForward, toItem);
+    //        Vector3 toItem = (hit.transform.position - transform.position).normalized;
+    //        Vector3 detectionForward = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
+    //        float dot = Vector3.Dot(detectionForward, toItem);
 
-            // Only detect front cone
-            if (dot >= frontDotThreshold)
-            {
+    //        // Only detect front cone
+    //        if (dot >= frontDotThreshold)
+    //        {
 
-                float distance = Vector3.Distance(transform.position, hit.transform.position);
-                if (distance < bestDistance)
-                {
-                    bestDistance = distance;
-                    bestItem = item;
-                }
-            }
-        }
-        if (bestItem != fragmentItem)
-        {
-            fragmentItem = bestItem;
-        }
-    }
+    //            float distance = Vector3.Distance(transform.position, hit.transform.position);
+    //            if (distance < bestDistance)
+    //            {
+    //                bestDistance = distance;
+    //                bestItem = item;
+    //            }
+    //        }
+    //    }
+
+    //    if (bestItem != fragmentItem)
+    //    {
+    //        fragmentItem = bestItem;
+    //        if (fragmentItem != null)
+    //            fragmentItem.HideUI();
+
+    //        if (fragmentItem != null)
+    //            fragmentItem.ShowUI();
+    //    }
+    //}
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
