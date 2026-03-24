@@ -89,7 +89,7 @@ public class MainMenuManager : MonoBehaviour
 
             // Smoothly move displayed progress toward target
             totalProgress = Mathf.MoveTowards(totalProgress, targetProgress, progressSpeed * Time.deltaTime);
-            Debug.Log($"Actual: {actualProgress:F3} | Display: {totalProgress:F3} | Done: {isDone}");
+            //Debug.Log($"Actual: {actualProgress:F3} | Display: {totalProgress:F3} | Done: {isDone}");
 
             UpdateLoadingSprite();
 

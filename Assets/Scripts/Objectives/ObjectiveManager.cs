@@ -125,6 +125,6 @@ public class ObjectiveManager : MonoBehaviour
 
     public bool CheckIfFragmentValid(FragmentData fragData)
     {
-        return currentObjectives.Contains(objectiveDatas.Find(x => x.fragmentData == fragData).Name);
+        return currentObjectives.Contains(objectiveDatas.Find(x => x.fragmentData == fragData).Name) && !objectiveDatas.Find(x => x.fragmentData == fragData).IsCompleted;
     }
 }
