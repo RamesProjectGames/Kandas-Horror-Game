@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using NUnit.Framework.Constraints;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,10 +17,20 @@ public class ItemInteraction : MonoBehaviour
     public string ItemInteractionText;
 
     [Header("Landing / Alert")]
+    public bool globalAlert = false;
     [Tooltip("Clip that plays when the object lands after being thrown.")]
     public AudioClip landingSound;
     [Tooltip("Enemies within this radius will be alerted when the item lands.")]
     public float landingAlertRadius = 10f;
+
+    [Header("Destructible")]
+    public bool isDestructible = false;
+    public GameObject destructiblePrefab;
+    public float explosionForce = 1000f;
+    public float explosionRadius = 2f;
+    public float piecefadeSpeed = 1f;
+    public float pieceDestroyDelay = 2f;
+    public float pieceSleepCheckDelay = .1f;
 
     public bool showTextOnPickup = true;
     public UnityEvent onInteract;
@@ -146,19 +159,92 @@ public class ItemInteraction : MonoBehaviour
         // manually alert any nearby enemies so they start investigating the source
         AlertNearbyEnemies();
     }
+    public void SpawnBrokenObject()
+    {
+        if(!isDestructible || destructiblePrefab == null) return;
+        GameObject brokenInstance = Instantiate(destructiblePrefab, transform.position, transform.rotation);
+        Rigidbody[] rigidbodies = brokenInstance.GetComponentsInChildren<Rigidbody>();
+        foreach (var body in rigidbodies)
+        {
+            if(rb != null)
+            {
+                body.linearVelocity = rb.linearVelocity;
+            }
+            body.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+        }
+        StartCoroutine(FadeOutRigidbodies(rigidbodies));
+    }
+    IEnumerator FadeOutRigidbodies(Rigidbody[] Rigidbodies)
+    {
+        WaitForSeconds waitForSeconds = new WaitForSeconds(pieceSleepCheckDelay);
+        int activeRigidbodyCount = Rigidbodies.Length;
+
+        while(activeRigidbodyCount > 0)
+        {
+            yield return waitForSeconds;
+            foreach (var body in Rigidbodies)
+            {
+                if(body.IsSleeping())
+                {
+                    activeRigidbodyCount--;
+                }
+            }
+        }
+
+        yield return new WaitForSeconds(pieceDestroyDelay);
+
+        float time = 0;
+        Renderer[] renderers = Array.ConvertAll(Rigidbodies, GetRendererFromRigidbodies);
+
+        foreach (var body in Rigidbodies)
+        {
+            Destroy(body.GetComponent<Collider>());
+            Destroy(body);
+        }
+        while(time < 1)
+        {
+            float step = Time.deltaTime * piecefadeSpeed;
+            foreach (var renderer in renderers)
+            {
+                renderer.transform.Translate(Vector3.down * (step / renderer.bounds.size.y), Space.World);
+            }
+            time += step;
+            yield return null;
+        }
+        foreach (var renderer in renderers)
+        {
+            Destroy(renderer.gameObject);
+        }
+        Destroy(gameObject);
+    }
+    private Renderer GetRendererFromRigidbodies(Rigidbody rigidbody)
+    {
+        return rigidbody.GetComponent<Renderer>();
+    }
 
     private void AlertNearbyEnemies()
     {
-        if (landingAlertRadius <= 0f) return;
-
-        Collider[] hits = Physics.OverlapSphere(transform.position, landingAlertRadius);
-        foreach (Collider hit in hits)
+        if(globalAlert)
         {
-            EnemyMovement em = hit.GetComponent<EnemyMovement>();
-            if (em != null)
+            EnemyMovement[] ems = FindObjectsByType<EnemyMovement>(FindObjectsSortMode.None); 
+            foreach (EnemyMovement em in ems)
             {
-                // reuse the audio radius listener method to trigger pursuit
                 em.OnEnterAudioRadius(this.gameObject);
+            }
+        }
+        else
+        {
+            if (landingAlertRadius <= 0f) return;
+
+            Collider[] hits = Physics.OverlapSphere(transform.position, landingAlertRadius);
+            foreach (Collider hit in hits)
+            {
+                EnemyMovement em = hit.GetComponent<EnemyMovement>();
+                if (em != null)
+                {
+                    // reuse the audio radius listener method to trigger pursuit
+                    em.OnEnterAudioRadius(this.gameObject);
+                }
             }
         }
     }
