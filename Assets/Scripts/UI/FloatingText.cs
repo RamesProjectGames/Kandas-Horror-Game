@@ -15,6 +15,7 @@ public class FloatingText : MonoBehaviour
         worldSpaceCanvas = GameObject.Find("WorldCanvas").transform;
 
         transform.SetParent(worldSpaceCanvas);
+        
     }
 
     // Update is called once per frame
@@ -31,5 +32,6 @@ public class FloatingText : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(direction);
         }
         transform.position = unit.position + offset;
+        transform.localScale = Vector3.one;
     }
 }
