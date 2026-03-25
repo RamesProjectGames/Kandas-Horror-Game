@@ -358,6 +358,8 @@ public class ItemInteraction : MonoBehaviour
             pieceRb.AddExplosionForce(explosionForce, transform.position, explosionRadius, 0f, ForceMode.Impulse);
         }
 
+        AlertNearbyEnemies();
+
         // Hide / disable original object immediately
         DisableOriginalObjectVisualsAndPhysics();
 
