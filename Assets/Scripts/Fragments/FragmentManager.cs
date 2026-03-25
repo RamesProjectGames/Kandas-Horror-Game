@@ -72,4 +72,9 @@ public class FragmentManager : MonoBehaviour
             fragmentGO.gameObject.SetActive(ObjectiveManager.Instance.CheckIfFragmentValid(fragData));
         }
     }
+
+    public GameObject GetFragmentGO(int fragIdx)
+    {
+        return fragmentGOs[fragIdx].gameObject;
+    }
 }

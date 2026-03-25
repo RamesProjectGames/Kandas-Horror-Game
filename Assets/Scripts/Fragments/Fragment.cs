@@ -8,10 +8,13 @@ public class Fragment : ItemInteraction
 {
     FragmentData fragmentData;
     public Transform itemParent;
+    public InspectData inspectDetails;
     public Color fragmentColor = new Color(1f,1f,1f,1f);
     public void SetFragmentData(FragmentData fragData)
     {
         fragmentData = fragData;
+        inspectDetails.itemTitle = fragData.fragmentItemName;
+        inspectDetails.itemDescription = fragData.fragmentItemDetails;
     }
 
     public FragmentData GetFragmentData()
@@ -40,7 +43,6 @@ public class Fragment : ItemInteraction
     {
         if (ObjectiveManager.Instance == null) return;
 
-        ObjectiveManager.Instance.CompleteObjective(fragmentData.fragmentName);
         DialogueSystem.Instance.OpenDialogue(fragmentData.fragmentName);
     }
 }

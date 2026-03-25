@@ -56,7 +56,7 @@ namespace Dialogue
 
         private void Update()
         {
-            if (Application.isPlaying && (SettingManager.Instance.isPaused || !isRunningConvo))
+            if (Application.isPlaying && (SettingManager.Instance.isPaused || !isRunningConvo) && !dialogueContainer.active)
                 return;
             if (buildMethod != architect.buildMethod)
             {
@@ -97,8 +97,9 @@ namespace Dialogue
 
         public void OnUserPrompt(InputAction.CallbackContext ctx)
         {
-            if(isRunningConvo && !SettingManager.Instance.isPaused)
-                onUserPrompt?.Invoke();
+            if (!isRunningConvo || SettingManager.Instance.isPaused)
+                return;
+            onUserPrompt?.Invoke();
         }
         #endregion
     }

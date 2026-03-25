@@ -443,10 +443,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 0
   pickupUI: {fileID: 5968629769403216111}
-  ItemInteractionText: Inspect Item
+  itemInteractionText: Pick Up
+  globalAlert: 0
   landingSound: {fileID: 0}
   landingAlertRadius: 10
+  objectiveDialoguePair: []
+  isDestructible: 0
+  destructiblePrefab: {fileID: 0}
+  breakImpactThreshold: 6
+  explosionForce: 10
+  explosionRadius: 2
+  pieceFadeSpeed: 1
+  pieceDestroyDelay: 2
+  pieceSleepCheckDelay: 0.1
+  maxPhysicsLifetime: 3
+  disableDebrisDebrisCollision: 0
+  debrisLayerName: Debris
+  breakSound: {fileID: 0}
   showTextOnPickup: 1
+  interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   onInteract:
     m_PersistentCalls:
       m_Calls:
@@ -462,11 +477,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  player: {fileID: 0}
   pickupText: {fileID: 6815327678406222477}
-  ButtonInteractionText: {fileID: 1923493618616385988}
+  buttonInteractionText: {fileID: 0}
+  player: {fileID: 0}
   itemParent: {fileID: 2723972639185345407}
+  inspectDetails: {fileID: 4654349256959530130}
   fragmentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!33 &2768563609048985900
 MeshFilter:
@@ -533,8 +548,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9e4c4f8dd2537f4ab59e213328979e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemTitle: Highschooler found dead in a school warehouse
-  itemDescription: Just a box nothing special
+  itemTitle: 
+  itemDescription: 
 --- !u!1 &6673985120369179830
 GameObject:
   m_ObjectHideFlags: 0

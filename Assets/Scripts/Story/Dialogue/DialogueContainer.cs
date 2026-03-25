@@ -19,6 +19,7 @@ namespace Dialogue
         private Coroutine showingCo = null;
         private Coroutine hidingCo = null;
 
+        public bool active = false;
         public bool isShowing => showingCo != null;
         public bool isHiding => hidingCo != null;
         public bool isFading => isShowing || isHiding;
@@ -49,6 +50,7 @@ namespace Dialogue
             }
 
             showingCo = DialogueSystem.Instance.StartCoroutine(Fading(1));
+            active = true;
 
             return showingCo;
         }
@@ -64,6 +66,7 @@ namespace Dialogue
             }
 
             hidingCo = DialogueSystem.Instance.StartCoroutine(Fading(0));
+            active = false;
 
             return hidingCo;
         }

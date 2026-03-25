@@ -4,6 +4,7 @@ using FMODUnity;
 using System;
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.Rendering.GPUSort;
 
 namespace Dialogue.Functions
 {
@@ -36,7 +37,7 @@ namespace TestingPurposes
             db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
             db.AddFunction("HideDialogue", new Func<string, IEnumerator>(HideDialogue));
             db.AddFunction("PlayCutsceneVideo", new Action<string[]>(PlayCutscene));
-            db.AddFunction("InspectFragment", new Action<string>(InspectFragment));
+            db.AddFunction("InspectFragment", new Action<string[]>(InspectFragment));
             //db.AddFunction("SetUpEnding", new Action());
 
         }
@@ -105,9 +106,13 @@ namespace TestingPurposes
         }
         #endregion
 
-        private static void InspectFragment(string arg)
+        private static void InspectFragment(string[] args)
         {
-
+            int fragment;
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^f" }, out fragment);
+            DialogueSystem.Instance.dialogueContainer.HideDialogue();
+            InspectManagerUI.Instance.OnItemSelected(FragmentManager.Instance.GetFragmentGO(fragment));
         }
         #region Audio
         private static void PlaySFX(string[] args)
