@@ -291,7 +291,7 @@ public class PlayerController : MovableObjects
                 camForward.y = 0;
                 camForward.Normalize();
 
-                Vector3 hor = camRight * moveInput.x ;
+                Vector3 hor = camRight * moveInput.x;
                 Vector3 ver = camForward * moveInput.y;
 
                 input = (hor + ver).normalized;
@@ -370,7 +370,7 @@ public class PlayerController : MovableObjects
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
                 Vector3 posPoint = agent.destination - transform.position;
-                transform.rotation = Quaternion.LookRotation(posPoint);
+                playerCam.transform.rotation = Quaternion.LookRotation(posPoint);
                 agent.isStopped = true;
             }
         }
@@ -485,6 +485,11 @@ public class PlayerController : MovableObjects
 
         float desiredY = isCrouching ? crouchCameraY : standingCameraY;
         return Mathf.Abs(cameraHeightTarget.localPosition.y - desiredY) > 0.02f;
+    }
+
+    public void FaceObject(Transform targetObject)
+    {
+        playerCam.transform.LookAt(targetObject);
     }
 
     #region Agent (auto) Movement

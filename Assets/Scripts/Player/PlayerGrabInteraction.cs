@@ -35,11 +35,11 @@ public class PlayerGrabInteraction : MonoBehaviour
 
     void Update()
     {
+        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+            return;
         DetectItemInteraction();
         //DetectFragmentItem();
 
-        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
-            return;
         if (interAction != null && interAction.action.WasPerformedThisFrame())
         {
             if (currentItem != null)
@@ -47,7 +47,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                 if ((interactableLayer & (1 << currentItem.gameObject.layer)) != 0 || (fragmentLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
                     currentItem.onInteract.Invoke();
-                    transform.LookAt(currentItem.transform);
+                    GetComponent<PlayerController>().FaceObject(currentItem.transform);
                 }
                 else if ((pickupLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
