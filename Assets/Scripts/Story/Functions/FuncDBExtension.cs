@@ -33,8 +33,10 @@ namespace TestingPurposes
             db.AddFunction("Objective", new Action<string>(CompleteObjective));
             db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
             db.AddFunction("PlayBGM", new Action<string[]>(PlayBGM));
-            db.AddFunction("showDialogue", new Func<string, IEnumerator>(ShowDialogue));
-            db.AddFunction("hideDialogue", new Func<string, IEnumerator>(HideDialogue));
+            db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
+            db.AddFunction("HideDialogue", new Func<string, IEnumerator>(HideDialogue));
+            db.AddFunction("PlayCutsceneVideo", new Action<string[]>(PlayCutscene));
+            db.AddFunction("InspectFragment", new Action<string>(InspectFragment));
             //db.AddFunction("SetUpEnding", new Action());
 
         }
@@ -101,9 +103,12 @@ namespace TestingPurposes
         {
             yield return DialogueSystem.Instance.dialogueContainer.HideDialogue();
         }
-
         #endregion
 
+        private static void InspectFragment(string arg)
+        {
+
+        }
         #region Audio
         private static void PlaySFX(string[] args)
         {
@@ -124,6 +129,13 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
             Vector3 pos = GameObject.Find("Player").transform.position;
+        }
+        #endregion
+
+        #region Cutscene
+        private static void PlayCutscene(string[] args)
+        {
+
         }
         #endregion
     }

@@ -47,7 +47,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                 if ((interactableLayer & (1 << currentItem.gameObject.layer)) != 0 || (fragmentLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
                     currentItem.onInteract.Invoke();
-                    if (currentItem is DialogueHandler)
+                    if (currentItem is ObjectiveDialoguePair)
                         transform.LookAt(currentItem.transform);
                 }
                 else if ((pickupLayer & (1 << currentItem.gameObject.layer)) != 0)

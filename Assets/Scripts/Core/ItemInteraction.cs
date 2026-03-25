@@ -1,6 +1,8 @@
+using Dialogue;
 using System;
 using System.Collections;
-using NUnit.Framework.Constraints;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -22,6 +24,9 @@ public class ItemInteraction : MonoBehaviour
     public AudioClip landingSound;
     [Tooltip("Enemies within this radius will be alerted when the item lands.")]
     public float landingAlertRadius = 10f;
+
+    [Header("Dialogue")]
+    [SerializeField] private List<ObjectiveDialoguePair> objectiveDialoguePair;
 
     [Header("Destructible")]
     public bool isDestructible = false;
@@ -55,6 +60,22 @@ public class ItemInteraction : MonoBehaviour
         pickupUI.SetActive(false);
         hasBeenThrown = false;
     }
+    //void Update()
+    //{
+    //    if (pickupText != null)
+    //    {
+    //        if (interactAction != null)
+    //        {
+    //            string bindingDisplay = interactAction.action.GetBindingDisplayString(0);
+    //            ButtonInteractionText.text = $"{bindingDisplay}";
+    //            pickupText.text = $"{ItemInteractionText}";
+    //        }
+    //        else
+    //        {
+    //            pickupText.gameObject.SetActive(false);
+    //        }
+    //    }
+    //}
 
     void Update()
     {
@@ -141,8 +162,38 @@ public class ItemInteraction : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay(Collision collision)
+    public void TriggerDialogue()
     {
+        //Check if Objective and Dialogue Pair Exists
+        if (ObjectiveManager.Instance == null) return;
+        if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0) return;
+
+        //NPC faces player
+        if (GetComponent<NpcMovement>() != null)
+            GetComponent<NpcMovement>().StartCoroutine(GetComponent<NpcMovement>().FacePlayer());
+
+        //Find the best matching dialogue pair
+        var bestMatch = objectiveDialoguePair.Select(pair => new
+        {
+            Pair = pair,
+            MatchCount = pair.objective.Count(obj => ObjectiveManager.Instance.isCurrentAndNotCompleted(obj)),
+            //MatchCount and EarliestMatchIndex might be interchangeable if needed, currently brain fried to consider
+            EarliestMatchIndex = pair.objective.Where(obj => ObjectiveManager.Instance.currentObjectives.Contains(obj))
+                .Select(obj => ObjectiveManager.Instance.currentObjectives.IndexOf(obj))
+                .DefaultIfEmpty(int.MaxValue).Min()
+        })
+        .Where(x => x.MatchCount > 0).OrderByDescending(x => x.MatchCount)
+        .ThenBy(x => x.EarliestMatchIndex)
+        .FirstOrDefault();
+
+        if (bestMatch != null)
+        {
+            DialogueSystem.Instance.OpenDialogue(bestMatch.Pair.dialogueAsset);
+        }
+        else
+        {
+            DialogueSystem.Instance.OpenDialogue(objectiveDialoguePair.Find(x => x.objective.Length == 0).dialogueAsset);
+        }
     }
 
     private void HandleLanding()
