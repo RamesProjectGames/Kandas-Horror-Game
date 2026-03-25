@@ -12,179 +12,513 @@ using UnityEngine.InputSystem;
 public class ItemInteraction : MonoBehaviour
 {
     [Header("Throwing")]
-    public float throwForce = 10f;
+    [SerializeField] private float throwForce = 10f;
 
     [Header("Pickup UI")]
-    public GameObject pickupUI;
-    public string ItemInteractionText;
+    [SerializeField] private GameObject pickupUI;
+    [SerializeField] private string itemInteractionText = "Pick Up";
 
     [Header("Landing / Alert")]
-    public bool globalAlert = false;
+    [SerializeField] private bool globalAlert = false;
     [Tooltip("Clip that plays when the object lands after being thrown.")]
-    public AudioClip landingSound;
+    [SerializeField] private AudioClip landingSound;
     [Tooltip("Enemies within this radius will be alerted when the item lands.")]
-    public float landingAlertRadius = 10f;
+    [SerializeField] private float landingAlertRadius = 10f;
 
     [Header("Dialogue")]
     [SerializeField] private List<ObjectiveDialoguePair> objectiveDialoguePair;
 
     [Header("Destructible")]
-    public bool isDestructible = false;
-    public GameObject destructiblePrefab;
-    public float explosionForce = 1000f;
-    public float explosionRadius = 2f;
-    public float piecefadeSpeed = 1f;
-    public float pieceDestroyDelay = 2f;
-    public float pieceSleepCheckDelay = .1f;
+    [SerializeField] private bool isDestructible = false;
+    [SerializeField] private GameObject destructiblePrefab;
+    [SerializeField] private float breakImpactThreshold = 6f;
+    [SerializeField] private float explosionForce = 10f;
+    [SerializeField] private float explosionRadius = 2f;
+    [SerializeField] private float pieceFadeSpeed = 1f;
+    [SerializeField] private float pieceDestroyDelay = 2f;
+    [SerializeField] private float pieceSleepCheckDelay = 0.1f;
+    [SerializeField] private float maxPhysicsLifetime = 3f;
+    [SerializeField] private bool disableDebrisDebrisCollision = false;
+    [SerializeField] private string debrisLayerName = "Debris";
+    [SerializeField] private AudioClip breakSound;
 
-    public bool showTextOnPickup = true;
+    [Header("Interaction")]
+    [SerializeField] private bool showTextOnPickup = true;
+    [SerializeField] private InputActionReference interactAction;
     public UnityEvent onInteract;
 
+    [Header("UI References")]
+    [SerializeField] private TMP_Text pickupText;
+    [SerializeField] private TMP_Text buttonInteractionText;
+
+    [Header("Optional References")]
+    [SerializeField] private Transform player;
+
+    // Components
     private Collider col;
     private Rigidbody rb;
     private NavMeshObstacle obstacle;
+    private Renderer[] originalRenderers;
+    private AudioSource cachedAudioSource;
+
+    // State
     private bool hasBeenThrown;
-    public InputActionReference interactAction;
+    private bool isBroken;
+    private bool uiInitialized;
+    private bool bindingTextInitialized;
 
-    public Transform player;
     public bool IsHeld { get; private set; }
-    public TMP_Text pickupText;
-    public TMP_Text ButtonInteractionText;
 
-    void Awake()
+    // Reusable non-alloc buffer
+    private static readonly Collider[] alertHitsBuffer = new Collider[32];
+
+    #region Unity Lifecycle
+
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
-        obstacle = TryGetComponent<NavMeshObstacle>(out obstacle) ? obstacle : null;
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        pickupUI.SetActive(false);
-        hasBeenThrown = false;
-    }
-    //void Update()
-    //{
-    //    if (pickupText != null)
-    //    {
-    //        if (interactAction != null)
-    //        {
-    //            string bindingDisplay = interactAction.action.GetBindingDisplayString(0);
-    //            ButtonInteractionText.text = $"{bindingDisplay}";
-    //            pickupText.text = $"{ItemInteractionText}";
-    //        }
-    //        else
-    //        {
-    //            pickupText.gameObject.SetActive(false);
-    //        }
-    //    }
-    //}
+        obstacle = TryGetComponent(out NavMeshObstacle navObstacle) ? navObstacle : null;
+        originalRenderers = GetComponentsInChildren<Renderer>(true);
+        cachedAudioSource = GetComponent<AudioSource>();
 
-    void Update()
-    {
-        if (pickupText != null)
+        if (player == null)
         {
-            string bindingDisplay = interactAction.action.GetBindingDisplayString(0);
-            ButtonInteractionText.text = $"{bindingDisplay}";
-            pickupText.text = $"{ItemInteractionText}";
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+                player = playerObj.transform;
         }
+
+        if (pickupUI != null)
+            pickupUI.SetActive(false);
+
+        hasBeenThrown = false;
+        isBroken = false;
+        IsHeld = false;
+    }
+
+    #endregion
+
+    #region UI
+
+    /// <summary>
+    /// Updates interaction UI text only when needed, not every frame.
+    /// </summary>
+    private void InitializePickupUI()
+    {
+        if (uiInitialized) return;
+
+        if (pickupText != null)
+            pickupText.text = itemInteractionText;
+
+        if (buttonInteractionText != null)
+        {
+            if (interactAction != null && interactAction.action != null)
+            {
+                buttonInteractionText.text = interactAction.action.GetBindingDisplayString(0);
+            }
+            else
+            {
+                buttonInteractionText.text = string.Empty;
+            }
+        }
+
+        uiInitialized = true;
+        bindingTextInitialized = true;
+    }
+
+    public void RefreshBindingText()
+    {
+        if (buttonInteractionText == null) return;
+
+        if (interactAction != null && interactAction.action != null)
+        {
+            buttonInteractionText.text = interactAction.action.GetBindingDisplayString(0);
+        }
+        else
+        {
+            buttonInteractionText.text = string.Empty;
+        }
+
+        bindingTextInitialized = true;
     }
 
     public void ShowUI()
     {
-        if (!IsHeld && showTextOnPickup)
-        {
-            pickupUI.SetActive(true);
-        }
+        if (isBroken) return;
+        if (IsHeld) return;
+        if (!showTextOnPickup) return;
+        if (pickupUI == null) return;
+
+        if (!uiInitialized || !bindingTextInitialized)
+            InitializePickupUI();
+
+        pickupUI.SetActive(true);
     }
 
     public void HideUI()
     {
-        pickupUI.SetActive(false);
+        if (pickupUI != null)
+            pickupUI.SetActive(false);
+    }
+
+    #endregion
+
+    #region Interaction
+
+    public void InvokeInteract()
+    {
+        onInteract?.Invoke();
     }
 
     public void Pickup(Transform holdPoint)
     {
+        if (isBroken) return;
+        if (holdPoint == null) return;
+
         IsHeld = true;
+        hasBeenThrown = false;
 
-        col.enabled = false;
-        if(obstacle != null) obstacle.enabled = false;
+        if (col != null)
+            col.enabled = false;
 
-        rb.isKinematic = true;
-        rb.useGravity = false;
+        if (obstacle != null)
+            obstacle.enabled = false;
+
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
 
         transform.SetParent(holdPoint);
         transform.localPosition = Vector3.zero;
-        transform.localScale = new Vector3(.5f, .5f, .5f);
         transform.localRotation = Quaternion.identity;
+
+        // Optional: keep your original scale logic if needed
+        transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
         HideUI();
     }
 
     public void Drop()
     {
+        if (isBroken) return;
+
         IsHeld = false;
-        col.enabled = true;
-        if(obstacle != null) obstacle.enabled = true;
-        
+
+        if (col != null)
+            col.enabled = true;
+
+        if (obstacle != null)
+            obstacle.enabled = true;
+
         transform.SetParent(null);
-        
         transform.localScale = Vector3.one;
-        rb.isKinematic = false;
-        rb.useGravity = true;
+
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
+        }
     }
 
     public void Throw(Vector3 direction)
     {
+        if (isBroken) return;
+        if (rb == null) return;
+
         Drop();
+
         rb.AddForce(direction * throwForce, ForceMode.Impulse);
         hasBeenThrown = true;
     }
 
+    #endregion
+
+    #region Collision / Landing / Break
+
     private void OnCollisionEnter(Collision collision)
     {
-        // if the object was just thrown and it hits something, assume it has landed
-        if (hasBeenThrown && !IsHeld)
+        if (isBroken) return;
+
+        HandleThrownCollision(collision);
+        TryBreak(collision);
+    }
+
+    private void HandleThrownCollision(Collision collision)
+    {
+        if (!hasBeenThrown || IsHeld)
+            return;
+
+        // Ignore tiny "settle" bumps
+        if (rb != null && rb.linearVelocity.magnitude <= 0.05f)
         {
-            if (rb.linearVelocity.magnitude == 0)
+            hasBeenThrown = false;
+            return;
+        }
+
+        // Hit enemy
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            hasBeenThrown = false;
+
+            PlayLandingSound();
+
+            EnemyMovement enemy = collision.gameObject.GetComponent<EnemyMovement>();
+            if (enemy != null)
             {
-                hasBeenThrown = false;
-                return;
+                enemy.GetStunned();
             }
-            // if object hits enemy, stun it
-            else if (collision.gameObject.CompareTag("Enemy"))
+
+            return;
+        }
+
+        // Normal landing
+        HandleLanding();
+        hasBeenThrown = false;
+    }
+
+    private void HandleLanding()
+    {
+        PlayLandingSound();
+        AlertNearbyEnemies();
+    }
+
+    private void PlayLandingSound()
+    {
+        if (landingSound == null) return;
+
+        // Prefer local audio source if available to avoid PlayClipAtPoint temp object allocation
+        if (cachedAudioSource != null)
+        {
+            cachedAudioSource.PlayOneShot(landingSound);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(landingSound, transform.position);
+        }
+    }
+
+    private void TryBreak(Collision collision)
+    {
+        if (!isDestructible) return;
+        if (destructiblePrefab == null) return;
+        if (isBroken) return;
+
+        float impact = collision.relativeVelocity.magnitude;
+        if (impact < breakImpactThreshold) return;
+
+        BreakObject();
+    }
+
+    private void BreakObject()
+    {
+        isBroken = true;
+        HideUI();
+
+        PlayBreakingSound();
+
+        GameObject brokenInstance = Instantiate(destructiblePrefab, transform.position, transform.rotation);
+
+        Rigidbody[] pieceRigidbodies = brokenInstance.GetComponentsInChildren<Rigidbody>(true);
+        Renderer[] pieceRenderers = brokenInstance.GetComponentsInChildren<Renderer>(true);
+
+        Vector3 inheritedVelocity = rb != null ? rb.linearVelocity : Vector3.zero;
+
+        int debrisLayer = -1;
+        if (disableDebrisDebrisCollision && !string.IsNullOrEmpty(debrisLayerName))
+        {
+            debrisLayer = LayerMask.NameToLayer(debrisLayerName);
+        }
+
+        for (int i = 0; i < pieceRigidbodies.Length; i++)
+        {
+            Rigidbody pieceRb = pieceRigidbodies[i];
+            if (pieceRb == null) continue;
+
+            // Inherit velocity
+            pieceRb.linearVelocity = inheritedVelocity;
+
+            // Cheaper debris physics defaults
+            pieceRb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            pieceRb.interpolation = RigidbodyInterpolation.None;
+            pieceRb.solverIterations = 4;
+            pieceRb.solverVelocityIterations = 1;
+
+            // Optional debris layer
+            if (debrisLayer >= 0)
             {
-                hasBeenThrown = false;
-                AudioSource.PlayClipAtPoint(landingSound, transform.position);
-                collision.gameObject.GetComponent<EnemyMovement>().GetStunned();
+                pieceRb.gameObject.layer = debrisLayer;
             }
-            else
+
+            // Explosion
+            pieceRb.AddExplosionForce(explosionForce, transform.position, explosionRadius, 0f, ForceMode.Impulse);
+        }
+
+        // Hide / disable original object immediately
+        DisableOriginalObjectVisualsAndPhysics();
+
+        // Start optimized debris cleanup
+        StartCoroutine(FadeOutBrokenObject(brokenInstance, pieceRigidbodies, pieceRenderers));
+    }
+    private void PlayBreakingSound()
+    {
+        if (breakSound == null) return;
+
+        // Prefer local audio source if available to avoid PlayClipAtPoint temp object allocation
+        if (cachedAudioSource != null)
+        {
+            cachedAudioSource.PlayOneShot(breakSound);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(breakSound, transform.position);
+        }
+    }
+
+
+    private void DisableOriginalObjectVisualsAndPhysics()
+    {
+        if (col != null)
+            col.enabled = false;
+
+        if (obstacle != null)
+            obstacle.enabled = false;
+
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        if (originalRenderers != null)
+        {
+            for (int i = 0; i < originalRenderers.Length; i++)
             {
-                HandleLanding();
+                if (originalRenderers[i] != null)
+                    originalRenderers[i].enabled = false;
             }
         }
     }
 
+    private IEnumerator FadeOutBrokenObject(GameObject brokenRoot, Rigidbody[] pieceRigidbodies, Renderer[] pieceRenderers)
+    {
+        WaitForSeconds sleepCheckWait = new WaitForSeconds(pieceSleepCheckDelay);
+
+        float elapsed = 0f;
+
+        // Wait until all pieces are sleeping OR timeout
+        while (elapsed < maxPhysicsLifetime)
+        {
+            bool allSleeping = true;
+
+            for (int i = 0; i < pieceRigidbodies.Length; i++)
+            {
+                Rigidbody pieceRb = pieceRigidbodies[i];
+                if (pieceRb != null && !pieceRb.IsSleeping())
+                {
+                    allSleeping = false;
+                    break;
+                }
+            }
+
+            if (allSleeping)
+                break;
+
+            elapsed += pieceSleepCheckDelay;
+            yield return sleepCheckWait;
+        }
+
+        // Extra delay before sinking
+        if (pieceDestroyDelay > 0f)
+            yield return new WaitForSeconds(pieceDestroyDelay);
+
+        // Cache heights ONCE
+        float[] rendererHeights = new float[pieceRenderers.Length];
+        for (int i = 0; i < pieceRenderers.Length; i++)
+        {
+            if (pieceRenderers[i] != null)
+                rendererHeights[i] = Mathf.Max(0.01f, pieceRenderers[i].bounds.size.y);
+            else
+                rendererHeights[i] = 0.01f;
+        }
+
+        // Disable physics instead of destroying each component one by one
+        for (int i = 0; i < pieceRigidbodies.Length; i++)
+        {
+            Rigidbody pieceRb = pieceRigidbodies[i];
+            if (pieceRb == null) continue;
+
+            Collider pieceCol = pieceRb.GetComponent<Collider>();
+            if (pieceCol != null)
+                pieceCol.enabled = false;
+
+            pieceRb.isKinematic = true;
+            pieceRb.useGravity = false;
+            pieceRb.linearVelocity = Vector3.zero;
+            pieceRb.angularVelocity = Vector3.zero;
+        }
+
+        // Sink effect
+        float t = 0f;
+        while (t < 1f)
+        {
+            float step = Time.deltaTime * pieceFadeSpeed;
+
+            for (int i = 0; i < pieceRenderers.Length; i++)
+            {
+                Renderer renderer = pieceRenderers[i];
+                if (renderer == null) continue;
+
+                renderer.transform.Translate(
+                    Vector3.down * (step / rendererHeights[i]),
+                    Space.World
+                );
+            }
+
+            t += step;
+            yield return null;
+        }
+
+        Destroy(brokenRoot);
+        Destroy(gameObject);
+    }
+
+    #endregion
+
+    #region Dialogue
+    
     public void TriggerDialogue()
     {
-        //Check if Objective and Dialogue Pair Exists
         if (ObjectiveManager.Instance == null) return;
         if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0) return;
 
-        //NPC faces player
-        if (GetComponent<NpcMovement>() != null)
-            GetComponent<NpcMovement>().StartCoroutine(GetComponent<NpcMovement>().FacePlayer());
-
-        //Find the best matching dialogue pair
-        var bestMatch = objectiveDialoguePair.Select(pair => new
+        NpcMovement npcMovement = GetComponent<NpcMovement>();
+        if (npcMovement != null)
         {
-            Pair = pair,
-            MatchCount = pair.objective.Count(obj => ObjectiveManager.Instance.isCurrentAndNotCompleted(obj)),
-            //MatchCount and EarliestMatchIndex might be interchangeable if needed, currently brain fried to consider
-            EarliestMatchIndex = pair.objective.Where(obj => ObjectiveManager.Instance.currentObjectives.Contains(obj))
-                .Select(obj => ObjectiveManager.Instance.currentObjectives.IndexOf(obj))
-                .DefaultIfEmpty(int.MaxValue).Min()
-        })
-        .Where(x => x.MatchCount > 0).OrderByDescending(x => x.MatchCount)
-        .ThenBy(x => x.EarliestMatchIndex)
-        .FirstOrDefault();
+            npcMovement.StartCoroutine(npcMovement.FacePlayer());
+        }
+
+        var bestMatch = objectiveDialoguePair
+            .Select(pair => new
+            {
+                Pair = pair,
+                MatchCount = pair.objective.Count(obj => ObjectiveManager.Instance.isCurrentAndNotCompleted(obj)),
+                EarliestMatchIndex = pair.objective
+                    .Where(obj => ObjectiveManager.Instance.currentObjectives.Contains(obj))
+                    .Select(obj => ObjectiveManager.Instance.currentObjectives.IndexOf(obj))
+                    .DefaultIfEmpty(int.MaxValue)
+                    .Min()
+            })
+            .Where(x => x.MatchCount > 0)
+            .OrderByDescending(x => x.MatchCount)
+            .ThenBy(x => x.EarliestMatchIndex)
+            .FirstOrDefault();
 
         if (bestMatch != null)
         {
@@ -192,119 +526,63 @@ public class ItemInteraction : MonoBehaviour
         }
         else
         {
-            DialogueSystem.Instance.OpenDialogue(objectiveDialoguePair.Find(x => x.objective.Length == 0).dialogueAsset);
-        }
-    }
-
-    private void HandleLanding()
-    {
-        // play landing sound if available
-        if (landingSound != null)
-        {
-            // Play one-shot at the impact position so that the sound can be picked up by
-            // the enemy sound detection system (which uses AudioSources) or just heard by
-            // the player.
-            AudioSource.PlayClipAtPoint(landingSound, transform.position);
-        }
-
-        // manually alert any nearby enemies so they start investigating the source
-        AlertNearbyEnemies();
-    }
-    public void SpawnBrokenObject()
-    {
-        if(!isDestructible || destructiblePrefab == null) return;
-        GameObject brokenInstance = Instantiate(destructiblePrefab, transform.position, transform.rotation);
-        Rigidbody[] rigidbodies = brokenInstance.GetComponentsInChildren<Rigidbody>();
-        foreach (var body in rigidbodies)
-        {
-            if(rb != null)
+            ObjectiveDialoguePair fallback = objectiveDialoguePair.Find(x => x.objective.Length == 0);
+            if (fallback != null)
             {
-                body.linearVelocity = rb.linearVelocity;
-            }
-            body.AddExplosionForce(explosionForce, transform.position, explosionRadius);
-        }
-        StartCoroutine(FadeOutRigidbodies(rigidbodies));
-    }
-    IEnumerator FadeOutRigidbodies(Rigidbody[] Rigidbodies)
-    {
-        WaitForSeconds waitForSeconds = new WaitForSeconds(pieceSleepCheckDelay);
-        int activeRigidbodyCount = Rigidbodies.Length;
-
-        while(activeRigidbodyCount > 0)
-        {
-            yield return waitForSeconds;
-            foreach (var body in Rigidbodies)
-            {
-                if(body.IsSleeping())
-                {
-                    activeRigidbodyCount--;
-                }
+                DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset);
             }
         }
-
-        yield return new WaitForSeconds(pieceDestroyDelay);
-
-        float time = 0;
-        Renderer[] renderers = Array.ConvertAll(Rigidbodies, GetRendererFromRigidbodies);
-
-        foreach (var body in Rigidbodies)
-        {
-            Destroy(body.GetComponent<Collider>());
-            Destroy(body);
-        }
-        while(time < 1)
-        {
-            float step = Time.deltaTime * piecefadeSpeed;
-            foreach (var renderer in renderers)
-            {
-                renderer.transform.Translate(Vector3.down * (step / renderer.bounds.size.y), Space.World);
-            }
-            time += step;
-            yield return null;
-        }
-        foreach (var renderer in renderers)
-        {
-            Destroy(renderer.gameObject);
-        }
-        Destroy(gameObject);
     }
-    private Renderer GetRendererFromRigidbodies(Rigidbody rigidbody)
-    {
-        return rigidbody.GetComponent<Renderer>();
-    }
+
+    #endregion
+
+    #region Enemy Alert
 
     private void AlertNearbyEnemies()
     {
-        if(globalAlert)
+        if (globalAlert)
         {
-            EnemyMovement[] ems = FindObjectsByType<EnemyMovement>(FindObjectsSortMode.None); 
-            foreach (EnemyMovement em in ems)
+            EnemyMovement[] enemies = FindObjectsByType<EnemyMovement>(FindObjectsSortMode.None);
+            for (int i = 0; i < enemies.Length; i++)
             {
-                em.OnEnterAudioRadius(this.gameObject);
+                if (enemies[i] != null)
+                    enemies[i].OnEnterAudioRadius(gameObject);
             }
-        }
-        else
-        {
-            if (landingAlertRadius <= 0f) return;
 
-            Collider[] hits = Physics.OverlapSphere(transform.position, landingAlertRadius);
-            foreach (Collider hit in hits)
+            return;
+        }
+
+        if (landingAlertRadius <= 0f)
+            return;
+
+        int hitCount = Physics.OverlapSphereNonAlloc(
+            transform.position,
+            landingAlertRadius,
+            alertHitsBuffer
+        );
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            Collider hit = alertHitsBuffer[i];
+            if (hit == null) continue;
+
+            EnemyMovement enemy = hit.GetComponent<EnemyMovement>();
+            if (enemy != null)
             {
-                EnemyMovement em = hit.GetComponent<EnemyMovement>();
-                if (em != null)
-                {
-                    // reuse the audio radius listener method to trigger pursuit
-                    em.OnEnterAudioRadius(this.gameObject);
-                }
+                enemy.OnEnterAudioRadius(gameObject);
             }
+
+            // Clear buffer slot for cleanliness (optional)
+            alertHitsBuffer[i] = null;
         }
     }
+
+    #endregion
 
     #region Gizmos
 
     private void OnDrawGizmos()
     {
-        // Draw alert radius when item lands and alerts enemies
         if (landingAlertRadius > 0f)
         {
             Gizmos.color = new Color(1f, 1f, 0f, 0.2f);
@@ -314,7 +592,6 @@ public class ItemInteraction : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        // Draw filled sphere when selected for better visibility
         if (landingAlertRadius > 0f)
         {
             Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
