@@ -94,8 +94,21 @@ namespace Dialogue
             else
                 convoManager.StartConvo(FileReader.ReadAsset(assetName));
         }
+        public void StopDialogue()
+        {
+            if (!isRunningConvo)
+                return;
+            convoManager.StopConvo();
+        }
 
         public void OnUserPrompt(InputAction.CallbackContext ctx)
+        {
+            if (!isRunningConvo || SettingManager.Instance.isPaused)
+                return;
+            onUserPrompt?.Invoke();
+        }
+
+        public void OnUserPrompt()
         {
             if (!isRunningConvo || SettingManager.Instance.isPaused)
                 return;

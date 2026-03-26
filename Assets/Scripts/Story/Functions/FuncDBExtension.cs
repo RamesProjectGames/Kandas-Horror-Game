@@ -38,17 +38,12 @@ namespace TestingPurposes
             db.AddFunction("HideDialogue", new Func<string, IEnumerator>(HideDialogue));
             db.AddFunction("PlayCutsceneVideo", new Action<string[]>(PlayCutscene));
             db.AddFunction("InspectFragment", new Action<string[]>(InspectFragment));
+            db.AddFunction("StartQuiz", new Action(StartQuiz));
+            db.AddFunction("StopDialogue", new Action(StopDialogue));
             //db.AddFunction("SetUpEnding", new Action());
 
         }
 
-        private static IEnumerator Wait(string arg)
-        {
-            if(float.TryParse(arg, out float duration))
-            {
-                yield return new WaitForSeconds(duration);
-            }
-        }
 
         #region Move Objects
         private static void TeleportObject(string[] args)
@@ -84,12 +79,15 @@ namespace TestingPurposes
         }
         #endregion
 
-        private static void PrintPoultry()
+        #region Dialogue Progression
+        private static IEnumerator Wait(string arg)
         {
-            Debug.Log("Poultry printed from functions");
+            if (float.TryParse(arg, out float duration))
+            {
+                yield return new WaitForSeconds(duration);
+            }
         }
 
-        #region Dialogue Progression
         private static void CompleteObjective(string arg)
         {
             ObjectiveManager.Instance.CompleteObjective(arg);
@@ -104,16 +102,13 @@ namespace TestingPurposes
         {
             yield return DialogueSystem.Instance.dialogueContainer.HideDialogue();
         }
+
+        private static void StopDialogue()
+        {
+            DialogueSystem.Instance.StopDialogue();
+        }
         #endregion
 
-        private static void InspectFragment(string[] args)
-        {
-            int fragment;
-            var funcParams = ConvertArgsToParams(args);
-            funcParams.TryGetValue(new string[] { "^f" }, out fragment);
-            DialogueSystem.Instance.dialogueContainer.HideDialogue();
-            InspectManagerUI.Instance.OnItemSelected(FragmentManager.Instance.GetFragmentGO(fragment));
-        }
         #region Audio
         private static void PlaySFX(string[] args)
         {
@@ -137,10 +132,29 @@ namespace TestingPurposes
         }
         #endregion
 
-        #region Cutscene
+        #region Dialogue Events
         private static void PlayCutscene(string[] args)
         {
 
+        }
+
+        private static void PrintPoultry()
+        {
+            Debug.Log("Poultry printed from functions");
+        }
+
+        private static void StartQuiz()
+        {
+            UnityEngine.Object.FindAnyObjectByType<QuizSystem>(FindObjectsInactive.Include).OpenQuiz(true);
+        }
+
+        private static void InspectFragment(string[] args)
+        {
+            int fragment;
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^f" }, out fragment);
+            DialogueSystem.Instance.dialogueContainer.HideDialogue();
+            InspectManagerUI.Instance.OnItemSelected(FragmentManager.Instance.GetFragmentGO(fragment));
         }
         #endregion
     }

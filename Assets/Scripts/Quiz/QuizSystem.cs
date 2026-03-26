@@ -212,7 +212,7 @@ public class QuizSystem : MonoBehaviour
 
         ClearDrawing();
 
-        ObjectiveManager.Instance.CompleteObjective("Tugas MTK");
+        ObjectiveManager.Instance.CompleteObjective("DoQuiz");
 
         onFinalQuestion?.Invoke();
     }

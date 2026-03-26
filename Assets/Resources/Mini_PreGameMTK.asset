@@ -24,8 +24,30 @@ MonoBehaviour:
       signalDelay: 0.5
     functions: []
   - speaker: Teacher
-    dialogue: []
+    dialogue:
+    - dialogue: You have to finish it in 3 minutes.
+      segmentSignal: 0
+      signalDelay: 0
     functions: []
   - speaker: Teacher
-    dialogue: []
+    dialogue:
+    - dialogue: This quiz will contribute to 50% of your final grade for this semester.
+      segmentSignal: 0
+      signalDelay: 0
+    - dialogue: \nSo, take it seriously.
+      segmentSignal: 2
+      signalDelay: 0
     functions: []
+  - speaker: 
+    dialogue: []
+    functions:
+    - name: StopDialogue
+      args: []
+      waitForCompletion: 0
+    - name: StartQuiz
+      args: []
+      waitForCompletion: 0
+    - name: Objective
+      args:
+      - Desk
+      waitForCompletion: 0
