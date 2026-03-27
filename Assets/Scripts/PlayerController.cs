@@ -370,7 +370,7 @@ public class PlayerController : MovableObjects
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
                 Vector3 posPoint = agent.destination - transform.position;
-                playerCam.transform.rotation = Quaternion.LookRotation(posPoint);
+                playerCam.ForceCameraPosition(posPoint, Quaternion.identity);
                 agent.isStopped = true;
             }
         }
@@ -489,7 +489,12 @@ public class PlayerController : MovableObjects
 
     public void FaceObject(Transform targetObject)
     {
-        playerCam.transform.LookAt(targetObject);
+        playerCam.ForceCameraPosition(targetObject.position, Quaternion.identity);
+    }
+
+    public void FaceFront()
+    {
+        playerCam.ForceCameraPosition(up, Quaternion.identity);
     }
 
     #region Agent (auto) Movement

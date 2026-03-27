@@ -33,6 +33,7 @@ namespace TestingPurposes
             db.AddFunction("Poultry", new Action(PrintPoultry));
             db.AddFunction("Objective", new Action<string>(CompleteObjective));
             db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
+            db.AddFunction("StopSFX", new Action(StopSFX));
             db.AddFunction("PlayBGM", new Action<string[]>(PlayBGM));
             db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
             db.AddFunction("HideDialogue", new Func<string, IEnumerator>(HideDialogue));
@@ -42,6 +43,7 @@ namespace TestingPurposes
             db.AddFunction("EndQuiz", new Action(EndQuiz));
             db.AddFunction("StopDialogue", new Action(StopDialogue));
             db.AddFunction("NextDialogue", new Action(NextDialogue));
+            db.AddFunction("PlayerFaceFront", new Action(PlayerFaceFront));
             //db.AddFunction("SetUpEnding", new Action());
 
         }
@@ -78,6 +80,12 @@ namespace TestingPurposes
             {
                 mo.StartCoroutine(mo.Move(new Vector3(x, y, z)));
             }
+        }
+
+        private static void PlayerFaceFront()
+        {
+            Debug.Log("Finding Player");
+            GameObject.Find("Player").GetComponent<PlayerController>().FaceFront();
         }
         #endregion
 
@@ -128,6 +136,11 @@ namespace TestingPurposes
             AudioManager.Instance.PlayOneShot(sfx, volume, pitch, pos);
         }
 
+        private static void StopSFX()
+        {
+            AudioManager.Instance.StopAllSfx();
+        }
+
         private static void PlayBGM(string[] args)
         {
             var funcParams = ConvertArgsToParams(args);
@@ -148,6 +161,11 @@ namespace TestingPurposes
         private static void PrintPoultry()
         {
             Debug.Log("Poultry printed from functions");
+        }
+
+        private static void SpawnMannequins()
+        {
+
         }
 
         private static void StartQuiz()

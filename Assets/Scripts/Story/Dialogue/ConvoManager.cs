@@ -72,7 +72,6 @@ namespace Dialogue
                     if (line.hasDialogue)
                         yield return WaitForUserInput();
                 }
-                AudioManager.Instance.StopAllSfx();
             }
 
             StopConvo();
@@ -90,7 +89,6 @@ namespace Dialogue
 
                 if (convo[i].hasDialogue)
                     yield return WaitForUserInput();
-                AudioManager.Instance.StopAllSfx();
             }
 
             StopConvo();
