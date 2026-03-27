@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -86,7 +87,8 @@ public class ObjectiveManager : MonoBehaviour
         }
 
         //Remove all locked objectives
-        List<Objective> closedObjectives = Objectives.FindAll(x => !string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) && Objectives.Find(y => y.objectiveData.Name == x.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted);
+        List<string> completedObjectives = Objectives.FindAll(y => y.objectiveData.IsCompleted).Select(x =>  x.objectiveData.Name).ToList();
+        List<Objective> closedObjectives = Objectives.FindAll(x => !string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) && completedObjectives.Contains(x.objectiveData.LimitedAfterObjective));
 
         foreach (Objective obj in closedObjectives)
         {

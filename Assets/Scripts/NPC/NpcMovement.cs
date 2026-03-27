@@ -10,6 +10,8 @@ public class NpcMovement : MovableObjects
     [SerializeField] Waypoint[] point;
     [SerializeField] int idxPoint = 0;
     [SerializeField] Animator animator;
+
+    public static bool allowMovement = false;
     float speed = 1f;
     float idleTime = 5f, currIdleTime;
     bool wasPausedLastFrame = false;
@@ -72,7 +74,7 @@ public class NpcMovement : MovableObjects
     // Update is called once per frame
     void Update()
     {
-        if (HandlePauseState()) return;
+        if (HandlePauseState() || !allowMovement) return;
 
         if (point.Length == 0)
             return;

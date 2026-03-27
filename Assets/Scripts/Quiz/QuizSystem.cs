@@ -129,7 +129,8 @@ public class QuizSystem : MonoBehaviour
         if (quizPanel != null)
             quizPanel.SetActive(open);
         SettingManager.Instance.isPaused = open;
-        ShowQuestion();
+        if(open)
+            ShowQuestion();
     }
     void ShowQuestion()
     {
@@ -211,8 +212,6 @@ public class QuizSystem : MonoBehaviour
             resultText.text = $"Quiz Finished!\nCorrect: {correctCount}/{questions.Count}";
 
         ClearDrawing();
-
-        ObjectiveManager.Instance.CompleteObjective("DoQuiz");
 
         onFinalQuestion?.Invoke();
     }

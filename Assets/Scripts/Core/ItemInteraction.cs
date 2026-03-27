@@ -165,12 +165,6 @@ public class ItemInteraction : MonoBehaviour
     #endregion
 
     #region Interaction
-
-    public void InvokeInteract()
-    {
-        onInteract?.Invoke();
-    }
-
     public void Pickup(Transform holdPoint)
     {
         if (isBroken) return;
@@ -494,7 +488,49 @@ public class ItemInteraction : MonoBehaviour
     #endregion
 
     #region Dialogue
-    
+    public bool IsDialogueRelevant()
+    {
+        bool isDialogueEvent = false;
+        for(int i = 0; i < onInteract.GetPersistentEventCount(); i++)
+        {
+            if(onInteract.GetPersistentMethodName(i) == nameof(TriggerDialogue))
+            {
+                isDialogueEvent = true;
+            }
+        }
+
+        if(!isDialogueEvent) return true;
+
+        if (ObjectiveManager.Instance == null) return false;
+        if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0) return false;
+        var bestMatch = objectiveDialoguePair
+            .Select(pair => new
+            {
+                Pair = pair,
+                MatchCount = pair.objective.Count(obj => ObjectiveManager.Instance.isCurrentAndNotCompleted(obj)),
+                EarliestMatchIndex = pair.objective
+                    .Where(obj => ObjectiveManager.Instance.currentObjectives.Contains(obj))
+                    .Select(obj => ObjectiveManager.Instance.currentObjectives.IndexOf(obj))
+                    .DefaultIfEmpty(int.MaxValue)
+                    .Min()
+            })
+            .Where(x => x.MatchCount > 0)
+            .OrderByDescending(x => x.MatchCount)
+            .ThenBy(x => x.EarliestMatchIndex)
+            .FirstOrDefault();
+
+        ObjectiveDialoguePair fallback = objectiveDialoguePair.Find(x => x.objective.Length == 0);
+
+        if (bestMatch != null || fallback != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public void TriggerDialogue()
     {
         if (ObjectiveManager.Instance == null) return;

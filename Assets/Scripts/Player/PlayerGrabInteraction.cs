@@ -79,7 +79,6 @@ public class PlayerGrabInteraction : MonoBehaviour
                 throwCharge += Time.deltaTime;
                 if (throwCharge > maxThrowChargeTime)
                     throwCharge = maxThrowChargeTime;
-
             }
 
             // when the button is released, actually perform the throw
@@ -126,8 +125,19 @@ public class PlayerGrabInteraction : MonoBehaviour
                 float distance = Vector3.Distance(transform.position, hit.transform.position);
                 if (distance < bestDistance)
                 {
-                    bestDistance = distance;
-                    bestItem = item;
+                    if ((interactableLayer & (1 << item.gameObject.layer)) != 0 || (fragmentLayer & (1 << item.gameObject.layer)) != 0)
+                    {
+                        if(item.IsDialogueRelevant())
+                        {
+                            bestDistance = distance;
+                            bestItem = item;
+                        }
+                    }
+                    else if ((pickupLayer & (1 << currentItem.gameObject.layer)) != 0)
+                    {
+                        bestDistance = distance;
+                        bestItem = item;
+                    }
                 }
             }
         }

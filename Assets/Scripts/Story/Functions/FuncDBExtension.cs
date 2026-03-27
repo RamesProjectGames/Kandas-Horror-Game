@@ -39,7 +39,9 @@ namespace TestingPurposes
             db.AddFunction("PlayCutsceneVideo", new Action<string[]>(PlayCutscene));
             db.AddFunction("InspectFragment", new Action<string[]>(InspectFragment));
             db.AddFunction("StartQuiz", new Action(StartQuiz));
+            db.AddFunction("EndQuiz", new Action(EndQuiz));
             db.AddFunction("StopDialogue", new Action(StopDialogue));
+            db.AddFunction("NextDialogue", new Action(NextDialogue));
             //db.AddFunction("SetUpEnding", new Action());
 
         }
@@ -107,6 +109,11 @@ namespace TestingPurposes
         {
             DialogueSystem.Instance.StopDialogue();
         }
+
+        private static void NextDialogue()
+        {
+            DialogueSystem.Instance.OnUserPrompt();
+        }
         #endregion
 
         #region Audio
@@ -146,6 +153,10 @@ namespace TestingPurposes
         private static void StartQuiz()
         {
             UnityEngine.Object.FindAnyObjectByType<QuizSystem>(FindObjectsInactive.Include).OpenQuiz(true);
+        }
+        private static void EndQuiz()
+        {
+            UnityEngine.Object.FindAnyObjectByType<QuizSystem>(FindObjectsInactive.Include).OpenQuiz(false);
         }
 
         private static void InspectFragment(string[] args)

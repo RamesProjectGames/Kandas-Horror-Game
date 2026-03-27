@@ -31,33 +31,6 @@ MonoBehaviour:
     - dialogue: Submit your papers to my desk.
       segmentSignal: 0
       signalDelay: 0
-    functions: []
-  - speaker: Student B
-    dialogue:
-    - dialogue: "(Whispering) Aww man, I didn\u2019t get to finish"
-      segmentSignal: 0
-      signalDelay: 0
-    functions: []
-  - speaker: Student E
-    dialogue:
-    - dialogue: 'Forget it, '
-      segmentSignal: 0
-      signalDelay: 0
-    - dialogue: "you\u2019d get a low score no matter how hard you try anyway."
-      segmentSignal: 2
-      signalDelay: 0
-    functions: []
-  - speaker: Teacher
-    dialogue:
-    - dialogue: "We\u2019re just on time. "
-      segmentSignal: 0
-      signalDelay: 0
-    - dialogue: ' Tomorrow, I will announce the scores.'
-      segmentSignal: 2
-      signalDelay: 0
-    - dialogue: '\nYou are all dismissed. '
-      segmentSignal: 2
-      signalDelay: 0
     functions:
     - name: Objective
       args:

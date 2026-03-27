@@ -37,7 +37,11 @@ MonoBehaviour:
     - dialogue: \nSo, take it seriously.
       segmentSignal: 2
       signalDelay: 0
-    functions: []
+    functions:
+    - name: Objective
+      args:
+      - Desk
+      waitForCompletion: 0
   - speaker: 
     dialogue: []
     functions:
@@ -46,8 +50,4 @@ MonoBehaviour:
       waitForCompletion: 0
     - name: StartQuiz
       args: []
-      waitForCompletion: 0
-    - name: Objective
-      args:
-      - Desk
       waitForCompletion: 0
