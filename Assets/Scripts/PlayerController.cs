@@ -506,7 +506,11 @@ public class PlayerController : MovableObjects
 
     public void FaceFront()
     {
-        playerCam.ForceCameraPosition(transform.forward, Quaternion.identity);
+        CinemachinePanTilt panTilt = playerCam.GetComponent<CinemachinePanTilt>();
+
+        panTilt.PanAxis.Value = 0;
+        panTilt.TiltAxis.Value = 0;
+        //playerCam.ForceCameraPosition(transform.forward, Quaternion.identity);
     }
 
     #region Agent (auto) Movement
