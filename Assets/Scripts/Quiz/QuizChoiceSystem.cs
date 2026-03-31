@@ -27,24 +27,33 @@ public class QuizChoiceSystem : MonoBehaviour
     public UnityEvent onQuizCompleted;
     public UnityEvent onQuestionChanged;
 
+    [SerializeField]List<string> answers = new List<string>();
     List<string> correctAnswers = new List<string>();
     List<string> wrongAnswers = new List<string>();
-    int currentQuestionIndex = 0;
+    [SerializeField] int currentQuestionIndex = 0;
     float currentTimer = 0f;
+    bool isQuizActive = false;
     void Awake()
     {
         Instance = this;
     }
+    void Start()
+    {
+        isQuizActive = false;
+    }
     void Update()
     {
-        if (currentTimer > 0 && currentQuestionIndex < quizQuestions.Count - 1)
+        if(isQuizActive)
         {
-            currentTimer -= Time.deltaTime;
-            if(timerText != null) timerText.text = "Time: " + currentTimer.ToString("F0");
-        }
-        else
-        {
-            NextQuestion();
+            if (currentTimer > 0 && currentQuestionIndex < quizQuestions.Count - 1)
+            {
+                currentTimer -= Time.deltaTime;
+                if (timerText != null) timerText.text = "Time: " + currentTimer.ToString("F0");
+            }
+            else
+            {
+                NextQuestion();
+            }
         }
     }
     public void OpenQuiz(bool open)
@@ -57,12 +66,16 @@ public class QuizChoiceSystem : MonoBehaviour
     }
     void PopulateQuizUI()
     {
-        currentQuestionIndex = 0;
         if (quizQuestions.Count == 0)
         {
             Debug.LogError("No quiz questions assigned!");
             return;
         }
+        
+        currentQuestionIndex = 0;
+        currentTimer = quizTimer;
+        isQuizActive = true;
+
         correctAnswers.Clear();
         wrongAnswers.Clear();
 
@@ -78,27 +91,30 @@ public class QuizChoiceSystem : MonoBehaviour
         currentTimer = quizTimer;
         QuizChoiceData currentQuestion = quizQuestions[currentQuestionIndex];
         questionText.text = currentQuestion.questionText;
-        List<string> answers = currentQuestion.GetAnswers();
+        answers = currentQuestion.GetAnswers();
         for (int i = 0; i < answers.Count; i++)
         {
-            if (i < currentQuestion.answers.Count())
+            if (i < answers.Count())
             {
-                choiceTexts[i].quizButton.image.color = Color.white;
-                choiceTexts[i].quizAnswerText.text = answers[i];
-                choiceTexts[i].quizButton.onClick.RemoveAllListeners();
-                choiceTexts[i].quizButton.onClick.AddListener(() =>
+                QuizButton quizButton = choiceTexts[i];
+                quizButton.quizButton.image.color = Color.white;
+                string answer = answers[i]; // Capture the current answer in a local variable for the lambda
+                bool isCorrect = currentQuestion.IsCorrect(answer);
+                quizButton.quizAnswerText.text = answers[i];
+                quizButton.quizButton.onClick.RemoveAllListeners();
+                quizButton.quizButton.onClick.AddListener(() =>
                 {
-                    if(currentQuestion.correctAnswer == answers[i])
-                    {
-                        choiceTexts[i].quizButton.image.color = Color.green;
-                        correctAnswers.Add(answers[i]);
+                    if(isCorrect)
+                    {    
+                        quizButton.quizButton.image.color = Color.green;
+                        correctAnswers.Add(answer);
                     }
                     else
-                    {
-                        choiceTexts[i].quizButton.image.color = Color.red;
-                        wrongAnswers.Add(answers[i]);
+                    {    
+                        quizButton.quizButton.image.color = Color.red;
+                        wrongAnswers.Add(answer);
                     }
-                    StartCoroutine(WaitForQuizCompletion(1.5f));
+                    StartCoroutine(WaitForQuizCompletion(0.5f));
                 });
                 choiceTexts[i].quizButton.gameObject.SetActive(true);
             }

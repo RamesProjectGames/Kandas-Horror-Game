@@ -9690,9 +9690,6 @@ MonoBehaviour:
     quizButton: {fileID: 643481133}
   onQuizCompleted:
     m_PersistentCalls:
-      m_Calls: []
-  onQuestionChanged:
-    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1290578297}
         m_TargetAssemblyTypeName: ItemInteraction, Assembly-CSharp
@@ -9718,6 +9715,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onQuestionChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  answers: []
+  currentQuestionIndex: 0
 --- !u!1 &1183329232
 GameObject:
   m_ObjectHideFlags: 0
