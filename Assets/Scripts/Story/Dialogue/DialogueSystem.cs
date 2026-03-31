@@ -103,14 +103,14 @@ namespace Dialogue
 
         public void OnUserPrompt(InputAction.CallbackContext ctx)
         {
-            if (!isRunningConvo || SettingManager.Instance.isPaused)
+            if (!isRunningConvo || !dialogueContainer.active || SettingManager.Instance.isPaused)
                 return;
             onUserPrompt?.Invoke();
         }
 
         public void OnUserPrompt()
         {
-            if (!isRunningConvo || SettingManager.Instance.isPaused)
+            if (!isRunningConvo || !dialogueContainer.active || SettingManager.Instance.isPaused)
                 return;
             onUserPrompt?.Invoke();
         }

@@ -3,6 +3,7 @@ using Dialogue.Functions;
 using FMODUnity;
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using static UnityEngine.Rendering.GPUSort;
 
@@ -44,6 +45,7 @@ namespace TestingPurposes
             db.AddFunction("StopDialogue", new Action(StopDialogue));
             db.AddFunction("NextDialogue", new Action(NextDialogue));
             db.AddFunction("PlayerFaceFront", new Action(PlayerFaceFront));
+            db.AddFunction("AllowNPCMovement", new Action<string>(AllowNPCMovement));
             //db.AddFunction("SetUpEnding", new Action());
 
         }
@@ -53,39 +55,47 @@ namespace TestingPurposes
         private static void TeleportObject(string[] args)
         {
             float x, y, z;
+            GameObject movableObject = GameObject.Find(args[0]);
             var funcParams = ConvertArgsToParams(args);
-            funcParams.TryGetValue(new string[] { "^x" }, out x, defaultValue: GameObject.Find("Player").transform.position.x);
-            funcParams.TryGetValue(new string[] { "^y" }, out y, defaultValue: GameObject.Find("Player").transform.position.y);
-            funcParams.TryGetValue(new string[] { "^z" }, out z, defaultValue: GameObject.Find("Player").transform.position.z);
-            GameObject.Find(args[0]).TryGetComponent(out MovableObjects mo);
-            if (mo != null)
+            funcParams.TryGetValue(new string[] { "^x" }, out x, defaultValue: movableObject.transform.position.x);
+            funcParams.TryGetValue(new string[] { "^y" }, out y, defaultValue: movableObject.transform.position.y);
+            funcParams.TryGetValue(new string[] { "^z" }, out z, defaultValue: movableObject.transform.position.z);
+            movableObject.TryGetComponent(out MovableObjects moveScript);
+            if (moveScript != null)
             {
-                mo.StartCoroutine(mo.Teleport(new Vector3(x, y, z)));
+                moveScript.StartCoroutine(moveScript.Teleport(new Vector3(x, y, z)));
             }
             else
             {
-                GameObject.Find(args[0]).transform.position = new Vector3(x, y, z);
+                movableObject.transform.position = new Vector3(x, y, z);
             }
         }
 
         private static void MoveObject(string[] args)
         {
             float x, y, z;
-            var funcParams = ConvertArgsToParams(args);
-            funcParams.TryGetValue(new string[] { "^x" }, out x, defaultValue: GameObject.Find("Player").transform.position.x);
-            funcParams.TryGetValue(new string[] { "^y" }, out y, defaultValue: GameObject.Find("Player").transform.position.y);
-            funcParams.TryGetValue(new string[] { "^z" }, out z, defaultValue: GameObject.Find("Player").transform.position.z);
-            GameObject.Find(args[0]).TryGetComponent(out MovableObjects mo);
-            if (mo != null)
+            GameObject movableObject = GameObject.Find(args[0]);
+            FunctionParams funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^x" }, out x, defaultValue: movableObject.transform.position.x);
+            funcParams.TryGetValue(new string[] { "^y" }, out y, defaultValue: movableObject.transform.position.y);
+            funcParams.TryGetValue(new string[] { "^z" }, out z, defaultValue: movableObject.transform.position.z);
+            movableObject.TryGetComponent(out MovableObjects moveScript);
+            if (moveScript != null)
             {
-                mo.StartCoroutine(mo.Move(new Vector3(x, y, z)));
+                moveScript.StartCoroutine(moveScript.Move(new Vector3(x, y, z)));
             }
         }
 
         private static void PlayerFaceFront()
         {
-            Debug.Log("Finding Player");
             GameObject.Find("Player").GetComponent<PlayerController>().FaceFront();
+        }
+
+        private static void AllowNPCMovement(string arg)
+        {
+            bool allow = false;
+            bool.TryParse(arg, out allow);
+            NpcMovement.allowMovement = allow;
         }
         #endregion
 

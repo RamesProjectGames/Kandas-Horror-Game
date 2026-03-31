@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Dialogue
 {
 
-    [CreateAssetMenu(fileName = "NewMiniConvo", menuName = "Story/MiniConvo")]
+    [CreateAssetMenu(fileName = "Mini_", menuName = "Story/MiniConvo")]
     public class MiniConvo : ScriptableObject
     {
         public string convoName;

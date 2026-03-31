@@ -10,5 +10,6 @@ Student D "Jessica, you wanna have lunch together?"
 Jessica "Oh, uhh... You guys go ahead, I'll catch up later"
 Student E "Okay then, don't forget to get ur lunch. Let's go, ■■■"
 Student D "Alright, catch you later Jess~"
+[w]FadeOut(), [w]FadeIn()
 Jessica "Hmm, maybe I do need to catch a grub, Thankfully lunch is far from over. Gotta head to the canteen downstairs"
-Objective(SubmitQuiz), SpawnMannequins(), AllowNPCMovement()
+Objective(SubmitQuiz), SpawnMannequins(), AllowNPCMovement(true)

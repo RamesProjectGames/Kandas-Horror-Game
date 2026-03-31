@@ -105,6 +105,7 @@ public class MainMenuManager : MonoBehaviour
             yield return null;
         }
         DialogueSystem.Instance.OpenDialogue($"Chapter{currentChapterIndex}");
+        //DialogueSystem.Instance.OpenDialogue("Mini_Lovestruck");
 
     }
     private void UpdateLoadingSprite()
