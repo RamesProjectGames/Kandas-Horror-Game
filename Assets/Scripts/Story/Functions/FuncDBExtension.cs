@@ -180,7 +180,7 @@ namespace TestingPurposes
 
         private static void StartQuiz()
         {
-            UnityEngine.Object.FindAnyObjectByType<QuizSystem>(FindObjectsInactive.Include).OpenQuiz(true);
+            UnityEngine.Object.FindAnyObjectByType<QuizChoiceSystem>(FindObjectsInactive.Include).OpenQuiz(true);
         }
         private static void EndQuiz()
         {
