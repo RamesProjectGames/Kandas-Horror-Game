@@ -45,14 +45,14 @@ public class QuizChoiceSystem : MonoBehaviour
     {
         if(isQuizActive)
         {
-            if (currentTimer > 0 && currentQuestionIndex < quizQuestions.Count - 1)
+            if (currentTimer > 0 )
             {
                 currentTimer -= Time.deltaTime;
                 if (timerText != null) timerText.text = "Time: " + currentTimer.ToString("F0");
             }
             else
             {
-                NextQuestion();
+                SkipQuestion();
             }
         }
     }
@@ -60,6 +60,7 @@ public class QuizChoiceSystem : MonoBehaviour
     {
         if (quizPanel != null)
             quizPanel.SetActive(open);
+        isQuizActive = open;
         SettingManager.Instance.isPaused = open;
         if(open)
             PopulateQuizUI();
@@ -94,7 +95,7 @@ public class QuizChoiceSystem : MonoBehaviour
         answers = currentQuestion.GetAnswers();
         for (int i = 0; i < answers.Count; i++)
         {
-            if (i < answers.Count())
+            if (i < answers.Count && i < choiceTexts.Count)
             {
                 QuizButton quizButton = choiceTexts[i];
                 quizButton.quizButton.image.color = Color.white;
@@ -107,12 +108,12 @@ public class QuizChoiceSystem : MonoBehaviour
                     if(isCorrect)
                     {    
                         quizButton.quizButton.image.color = Color.green;
-                        correctAnswers.Add(answer);
+                        correctAnswers.Add(currentQuestion.questionText);
                     }
                     else
                     {    
                         quizButton.quizButton.image.color = Color.red;
-                        wrongAnswers.Add(answer);
+                        wrongAnswers.Add(currentQuestion.questionText);
                     }
                     StartCoroutine(WaitForQuizCompletion(0.5f));
                 });
@@ -127,15 +128,24 @@ public class QuizChoiceSystem : MonoBehaviour
 
     void NextQuestion()
     {
-        if(currentQuestionIndex >= quizQuestions.Count - 1)
+        currentQuestionIndex++;
+        if(currentQuestionIndex > quizQuestions.Count - 1)
         {
-            Debug.Log("Quiz Completed!");
-            Debug.Log("Correct Answers: " + correctAnswers.Count);
-            Debug.Log("Wrong Answers: " + wrongAnswers.Count);
             onQuizCompleted?.Invoke();
             return;
         }
+        ChangeQuestion();
+    }
+    void SkipQuestion()
+    {
         currentQuestionIndex++;
+        QuizChoiceData currentQuestion = quizQuestions[currentQuestionIndex];
+        wrongAnswers.Add(currentQuestion.questionText);
+        if (currentQuestionIndex > quizQuestions.Count -1 )
+        {
+            onQuizCompleted?.Invoke();
+            return;
+        }
         ChangeQuestion();
     }
     public IEnumerator WaitForQuizCompletion(float delay)

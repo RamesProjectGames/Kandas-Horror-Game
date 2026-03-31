@@ -31,22 +31,8 @@ public class QuizChoiceData : ScriptableObject {
         if (string.IsNullOrWhiteSpace(userInput))
             return false;
 
-        var validAnswers = GetAnswers();
+        StringComparison comparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+        return string.Equals(userInput.Trim(), correctAnswer.Trim(), comparison);
 
-        foreach (var valid in validAnswers)
-        {
-            if (ignoreCase)
-            {
-                if (string.Equals(userInput.Trim(), valid, StringComparison.OrdinalIgnoreCase))
-                    return true;
-            }
-            else
-            {
-                if (userInput.Trim() == valid)
-                    return true;
-            }
-        }
-
-        return false;
     }
 }
