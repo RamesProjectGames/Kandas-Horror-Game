@@ -144,7 +144,7 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if(SettingManager.Instance.isPaused)
+                if(SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
                 {
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -489,12 +489,24 @@ public class PlayerController : MovableObjects
 
     public void FaceObject(Transform targetObject)
     {
-        playerCam.ForceCameraPosition(targetObject.position, Quaternion.identity);
+        CinemachinePanTilt panTilt = playerCam.GetComponent<CinemachinePanTilt>();
+
+        Vector3 direction = targetObject.position - playerCam.transform.position;
+
+        // Yaw (horizontal rotation)
+        float yaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+        // Pitch (vertical rotation)
+        float pitch = -Mathf.Asin(direction.normalized.y) * Mathf.Rad2Deg;
+
+        panTilt.PanAxis.Value = yaw;
+        panTilt.TiltAxis.Value = pitch;
+        playerCam.LookAt = targetObject;
     }
 
     public void FaceFront()
     {
-        playerCam.ForceCameraPosition(up, Quaternion.identity);
+        playerCam.ForceCameraPosition(transform.forward, Quaternion.identity);
     }
 
     #region Agent (auto) Movement
