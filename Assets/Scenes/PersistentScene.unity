@@ -27602,6 +27602,7 @@ GameObject:
   - component: {fileID: 1761790449}
   - component: {fileID: 1761790448}
   - component: {fileID: 1761790447}
+  - component: {fileID: 1761790461}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -28132,6 +28133,24 @@ Transform:
   - {fileID: 890258805}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1761790461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761790445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c7ea24b1b42c9147b57d90b8ba1d13e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sightRange: 30
+  fieldOfViewAngle: 60
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 12041
+  enemyTag: Enemy
 --- !u!1 &1761978679
 GameObject:
   m_ObjectHideFlags: 0
