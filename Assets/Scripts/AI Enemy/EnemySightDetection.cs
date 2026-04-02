@@ -52,7 +52,7 @@ public class EnemySightDetection : MonoBehaviour
             return; // bail out early, actual alert happens elsewhere
         }
 
-        Vector3 currentForward = -transform.forward;
+        Vector3 currentForward = transform.forward;
         currentForward.y = 0;
 
         float angle = Vector3.Angle(currentForward, playerTarget);

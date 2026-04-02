@@ -108,11 +108,14 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         }
         else if (fov.canSeePlayer && !isPlayerHiding)
         {
-            // PURSUIT: Follow player directly
+            // PURSUIT: Follow player directly without SetDestination
+            isDiscoveringSpot = false; // Ensure we exit discovery if we see the player again
+            Vector3 directionToPlayer = (GetValidNavMeshPosition(fov.player.transform.position) - transform.position).normalized;
+            transform.LookAt(new Vector3(fov.player.transform.position.x, transform.position.y, fov.player.transform.position.z));
             detectedSound = false; 
-            agent.isStopped = false;
-            agent.speed = pursueSpeed;
-            agent.SetDestination(fov.player.transform.position);
+            agent.isStopped = true;            
+            // Move directly towards player
+            transform.position += directionToPlayer * pursueSpeed * Time.deltaTime;
         }
         else if (isPlayerHiding && fov.PlayerWasSpottedWhileHiding && !isDiscoveringSpot)
         {

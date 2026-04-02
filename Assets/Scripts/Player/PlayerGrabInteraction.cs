@@ -133,7 +133,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                             bestItem = item;
                         }
                     }
-                    else if ((pickupLayer & (1 << currentItem.gameObject.layer)) != 0)
+                    else if ((pickupLayer & (1 << item.gameObject.layer)) != 0)
                     {
                         bestDistance = distance;
                         bestItem = item;
