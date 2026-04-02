@@ -9,8 +9,9 @@ public class PlayerSightInteraction : MonoBehaviour
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private string enemyTag = "Enemy";
 
-    private List<Transform> visibleEnemies = new List<Transform>();
-    private bool canSeeAnyEnemy = false;
+    [SerializeField]private List<Transform> visibleEnemies = new List<Transform>();
+    [SerializeField]private bool canSeeAnyEnemy = false;
+    [SerializeField]private Camera playerCamera;
     private Vector3 startingPosition;
 
     // Events
@@ -102,7 +103,8 @@ public class PlayerSightInteraction : MonoBehaviour
     /// </summary>
     private bool IsInFieldOfView(Vector3 directionToTarget)
     {
-        float angleToTarget = Vector3.Angle(transform.forward, directionToTarget);
+        Vector3 viewDirection = playerCamera != null ? playerCamera.transform.forward : transform.forward;
+        float angleToTarget = Vector3.Angle(viewDirection, directionToTarget);
         return angleToTarget <= fieldOfViewAngle / 2f;
     }
 
@@ -188,14 +190,18 @@ public class PlayerSightInteraction : MonoBehaviour
     {
         if (!enabled) return;
 
+        // Use camera forward if available, otherwise use transform forward
+        Camera cam = Camera.main;
+        Vector3 viewDirection = cam != null ? cam.transform.forward : transform.forward;
+
         // Draw sight range circle
         Gizmos.color = Color.yellow;
         DrawCircle(transform.position, sightRange, 32);
 
-        // Draw field of view cone
+        // Draw field of view cone based on camera direction
         Gizmos.color = Color.cyan;
-        Vector3 leftBound = Quaternion.Euler(0, -fieldOfViewAngle / 2f, 0) * transform.forward * sightRange;
-        Vector3 rightBound = Quaternion.Euler(0, fieldOfViewAngle / 2f, 0) * transform.forward * sightRange;
+        Vector3 leftBound = Quaternion.Euler(0, -fieldOfViewAngle / 2f, 0) * viewDirection * sightRange;
+        Vector3 rightBound = Quaternion.Euler(0, fieldOfViewAngle / 2f, 0) * viewDirection * sightRange;
         
         Gizmos.DrawLine(transform.position, transform.position + leftBound);
         Gizmos.DrawLine(transform.position, transform.position + rightBound);

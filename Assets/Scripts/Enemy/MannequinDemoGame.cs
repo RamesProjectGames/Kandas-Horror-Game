@@ -18,7 +18,9 @@ public class MannequinDemoGame : MonoBehaviour
     public event MannequinEvent OnCatchAnimationStart;
     public event MannequinEvent OnCatchAnimationComplete;
     [Header("Detection")]
-    [SerializeField] private float detectionRange = 20f;
+    [SerializeField] private Vector3 detectionBoxSize = new Vector3(20f, 5f, 20f);
+    [SerializeField] private Vector3 detectionBoxOffset = Vector3.zero;
+    [SerializeField] private LayerMask obstacleMask;
     private PlayerSightInteraction playerSight;
     private Transform playerTransform;
 
@@ -39,6 +41,7 @@ public class MannequinDemoGame : MonoBehaviour
     private bool isMovingTowardPlayer = false;
     private bool isAnimatingCatch = false;
     private bool wasMovingLastFrame = false;
+    private bool isReturningToOrigin = false;
 
     void Start()
     {
@@ -64,15 +67,17 @@ public class MannequinDemoGame : MonoBehaviour
         if (playerSight == null || playerTransform == null)
             return;
 
-        // Check if player can see this enemy
+        // Check if player can see this enemy (Weeping Angel behavior: moves when NOT observed)
         bool isPlayerLooking = IsPlayerLooking();
 
         if (!isPlayerLooking)
         {
-            // Check if player is within detection range
-            float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-            if (distanceToPlayer <= detectionRange)
+            // Player is NOT looking - move toward player like a Weeping Angel
+            if (IsPlayerInDetectionBox())
             {
+                // In range - moving toward player
+                isReturningToOrigin = false;
+                
                 // Trigger player detected event
                 if (!isMovingTowardPlayer)
                 {
@@ -92,22 +97,26 @@ public class MannequinDemoGame : MonoBehaviour
             }
             else
             {
-                // Player out of range
+                // Player out of range - return to original position
                 if (isMovingTowardPlayer && !isAnimatingCatch)
                 {
                     isMovingTowardPlayer = false;
-                    StopMovement();
+                    OnStoppedMoving?.Invoke();
                 }
+                wasMovingLastFrame = false;
+                isReturningToOrigin = true;
+                ReturnToOriginalPosition();
             }
         }
         else
         {
-            // Stop moving when player sees this enemy
+            // Player IS looking - freeze in place (Weeping Angel style)
             if (isMovingTowardPlayer)
             {
                 OnStoppedMoving?.Invoke();
             }
             isMovingTowardPlayer = false;
+            isReturningToOrigin = false;
             wasMovingLastFrame = false;
             StopMovement();
         }
@@ -126,10 +135,49 @@ public class MannequinDemoGame : MonoBehaviour
         return false;
     }
 
+    private bool IsPlayerInDetectionBox()
+    {
+        if (playerTransform == null)
+            return false;
+
+        // Check if player position is within detection box bounds (with offset)
+        Vector3 boxCenter = transform.position + detectionBoxOffset;
+        Vector3 relativePlayerPos = playerTransform.position - boxCenter;
+        
+        return Mathf.Abs(relativePlayerPos.x) <= detectionBoxSize.x / 2f &&
+               Mathf.Abs(relativePlayerPos.y) <= detectionBoxSize.y / 2f &&
+               Mathf.Abs(relativePlayerPos.z) <= detectionBoxSize.z / 2f;
+    }
+
+    private bool IsPathObstructed()
+    {
+        if (playerTransform == null)
+            return false;
+
+        // Cast a ray from enemy to player to check for obstructions
+        Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
+        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+
+        // Use obstacleMask to detect obstructions
+        if (Physics.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleMask))
+        {
+            return true; // Path is obstructed
+        }
+
+        return false; // Path is clear
+    }
+
     private void MoveTowardPlayer()
     {
         if (playerTransform == null || isAnimatingCatch)
             return;
+
+        // Check if path to player is obstructed
+        if (IsPathObstructed())
+        {
+            StopMovement();
+            return; // Cannot move - path is blocked
+        }
 
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
@@ -152,6 +200,26 @@ public class MannequinDemoGame : MonoBehaviour
         {
             navMeshAgent.velocity = Vector3.zero;
             navMeshAgent.ResetPath();
+        }
+    }
+
+    private void ReturnToOriginalPosition()
+    {
+        if (isAnimatingCatch)
+            return;
+
+        float distanceToOrigin = Vector3.Distance(transform.position, originalPosition);
+
+        // If not at original position, navigate back
+        if (distanceToOrigin > stoppingDistance)
+        {
+            navMeshAgent.SetDestination(originalPosition);
+        }
+        else
+        {
+            // Reached original position
+            isReturningToOrigin = false;
+            StopMovement();
         }
     }
 
@@ -221,6 +289,7 @@ public class MannequinDemoGame : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        // Draw detection box with offset
         if (isMovingTowardPlayer)
         {
             Gizmos.color = Color.red;
@@ -229,7 +298,29 @@ public class MannequinDemoGame : MonoBehaviour
         {
             Gizmos.color = Color.yellow;
         }
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
+        Vector3 boxCenter = transform.position + detectionBoxOffset;
+        Gizmos.DrawWireCube(boxCenter, detectionBoxSize);
+        
+        // Draw offset indicator line
+        if (detectionBoxOffset != Vector3.zero)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(transform.position, boxCenter);
+        }
+
+        // Draw line to player if in range (for debugging obstruction)
+        if (Application.isPlaying && playerTransform != null)
+        {
+            if (IsPathObstructed())
+            {
+                Gizmos.color = Color.red; // Path blocked
+            }
+            else
+            {
+                Gizmos.color = Color.green; // Path clear
+            }
+            Gizmos.DrawLine(transform.position, playerTransform.position);
+        }
 
         // Draw original position
         if (Application.isPlaying)
