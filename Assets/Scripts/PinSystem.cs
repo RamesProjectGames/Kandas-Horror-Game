@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using FMOD.Studio;
+using FMODUnity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,11 +12,18 @@ public class PinSystem : MonoBehaviour
     public GameObject SafePinPanel;
     public List<string> pinTexts = new List<string>();
     public List<string> correctPins = new List<string>();
-    public List<TextMeshProUGUI> textOnPins = new List<TextMeshProUGUI>();
+    public TMP_Text textOnPins;
     public UnityEvent OnCorrectPins;
+    public UnityEvent OnIncorrectPins;
+
+    [Header("Audio")]
+    [SerializeField] private EventReference inputPinSound;
+    private EventInstance inputPinSoundEvent;
 
     void Start()
     {
+        inputPinSoundEvent = AudioManager.Instance.CreateInstance(inputPinSound);
+        RuntimeManager.AttachInstanceToGameObject(inputPinSoundEvent, gameObject, false);
         for (int i = 0; i < maxPins; i++)
         {
             pinTexts.Add("");
@@ -23,6 +32,7 @@ public class PinSystem : MonoBehaviour
     }
     public void AddPin(string pinText)
     {
+        PlayInputPinSound();
         for (int i = 0; i < maxPins; i++)
         {
             if(string.IsNullOrEmpty(pinTexts[i]))
@@ -44,10 +54,12 @@ public class PinSystem : MonoBehaviour
     }
     public void UpdatePinsUI()
     {
-        for (int i = 0; i < pinTexts.Count; i++)
+       textOnPins.text = "";
+        for (int i = 0; i < maxPins; i++)
         {
-            string pin = pinTexts[i];
-            textOnPins[i].text = pin;
+            textOnPins.text += string.IsNullOrEmpty(pinTexts[i]) ? "" : pinTexts[i];
+            if (i < maxPins - 1)
+                textOnPins.text += "";
         }
     }
     public void SetCorrectPins()
@@ -65,6 +77,16 @@ public class PinSystem : MonoBehaviour
             {
                 if (pinTexts[i] != correctPins[i])
                 {
+                    OnIncorrectPins?.Invoke();
+
+                    EnemyMovement[] enemies = FindObjectsByType<EnemyMovement>(FindObjectsSortMode.None);
+                    for (int j = 0; j < enemies.Length; j++)
+                    {
+                        if (enemies[j] != null)
+                            enemies[j].OnEnterAudioRadius(gameObject);
+                    }
+                    
+                    ClosePanel();
                     return;
                 }
             }
@@ -79,5 +101,15 @@ public class PinSystem : MonoBehaviour
     {
         SafePinPanel.SetActive(false);
         ClearPins();
+    }
+    public void PlayInputPinSound()
+    {
+        PLAYBACK_STATE playbackState;
+        inputPinSoundEvent.getPlaybackState(out playbackState);
+        if (playbackState != PLAYBACK_STATE.PLAYING)
+        {
+            RuntimeManager.AttachInstanceToGameObject(inputPinSoundEvent, gameObject, false);
+            inputPinSoundEvent.start();
+        }
     }
 }

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 
 /// <summary>
@@ -24,6 +27,7 @@ public class MannequinFullGame : MonoBehaviour
     private PlayerSightInteraction playerSight;
     private Transform playerTransform;
 
+
     [Header("Animator Poses")]
     [SerializeField] private string[] poseAnimations = new string[] { "Pose1", "Pose2", "Pose3" };
     private Animator animator;
@@ -35,14 +39,24 @@ public class MannequinFullGame : MonoBehaviour
 
     [Header("Strike Detection")]
     [SerializeField] private float strikeRadius = 2f;
-    [SerializeField] private string correctStrikeLimb = "Head"; // Which limb is OK to strike
+    [SerializeField] private bool isDestroyable = false; // Can this mannequin be destroyed? (5 out of 20)
+    [SerializeField] private bool correctStrike = false; // Is this the correct one to destroy? (1 out of 5 destroyable)
     private Collider strikeCollider;
+    private Dictionary<string, Collider> limbColliders = new();
+
+    [Header("Audio")]
+    [SerializeField] private EventReference PoseSound;
+    [SerializeField] private EventReference StrikeSound;
+    private EventInstance poseSoundEvent;
+    private EventInstance strikeSoundEvent;
 
     [Header("Reset")]
     private PlayerResetManager resetManager;
 
     private bool isInPose = false;
     private bool wasLightOnLastFrame = true;
+    private int correctStrikesNeeded = 1; // Number of correct strikes needed to defeat all limbs
+    private int correctStrikesReceived = 0;
 
     void Start()
     {
@@ -51,13 +65,26 @@ public class MannequinFullGame : MonoBehaviour
         animator = GetComponent<Animator>();
         strikeCollider = GetComponent<Collider>();
         resetManager = FindAnyObjectByType<PlayerResetManager>();
+        poseSoundEvent = AudioManager.Instance.CreateInstance(PoseSound);
+        strikeSoundEvent = AudioManager.Instance.CreateInstance(StrikeSound);
+        
+        RuntimeManager.AttachInstanceToGameObject(poseSoundEvent, gameObject, false);
+        RuntimeManager.AttachInstanceToGameObject(strikeSoundEvent, gameObject, false);
 
         if (animator == null)
         {
-            Debug.LogError("MannequinEnemyType2: No Animator component found!");
+            Debug.LogError("Mannequin JOJO POSE: No Animator component found!");
+        }
+
+        // Initialize limbColliders dictionary with child colliders
+        Collider[] allColliders = GetComponentsInChildren<Collider>();
+        foreach (Collider col in allColliders)
+        {
+            limbColliders[col.gameObject.name] = col;
         }
 
         poseTimer = timeBetweenPoses;
+        correctStrikesReceived = 0;
     }
 
     void Update()
@@ -84,13 +111,24 @@ public class MannequinFullGame : MonoBehaviour
 
         if (!isLightOn)
         {
-            // Light is OFF: mannequin can pose
-            UpdatePoseSequence();
-            isInPose = true;
+            // Light is OFF: only destroyable mannequins can pose
+            if (isDestroyable)
+            {
+                UpdatePoseSequence();
+                isInPose = true;
+            }
+            else
+            {
+                // Non-destroyable mannequins stay in idle
+                if (!isInPose)
+                {
+                    ResetToIdle();
+                }
+            }
         }
         else
         {
-            // Light is ON: mannequin returns to idle
+            // Light is ON: all mannequins return to idle
             if (isInPose)
             {
                 ResetToIdle();
@@ -105,10 +143,10 @@ public class MannequinFullGame : MonoBehaviour
     /// </summary>
     public void OnStruck(string limb = "")
     {
-        // Check if correct limb was struck
-        if (limb != correctStrikeLimb && !string.IsNullOrEmpty(limb))
+        // Only destroyable mannequins can be struck
+        if (!isDestroyable)
         {
-            // Wrong limb - trigger event
+            // Trying to strike a non-destroyable mannequin - trigger wrong strike
             OnWrongStrike?.Invoke(limb);
             
             // Reset all mannequins poses
@@ -116,15 +154,74 @@ public class MannequinFullGame : MonoBehaviour
             
             // Trigger player reset
             TriggerPlayerResetWrongStrike(limb);
+            
+            Debug.Log($"Cannot strike non-destroyable mannequin: {gameObject.name}");
+            return;
+        }
+
+        // Check if correct strike based on correctStrike flag
+        if (!correctStrike)
+        {
+            // Wrong strike - trigger event
+            OnWrongStrike?.Invoke(limb);
+            
+            // Reset all mannequins poses
+            ResetAllMannequinPoses();
+            
+            // Trigger player reset
+            TriggerPlayerResetWrongStrike(limb);
+            
+            Debug.Log($"Wrong mannequin! This one is NOT the correct one!");
         }
         else
         {
             // Correct strike - trigger event
             OnCorrectStrike?.Invoke(limb);
             
-            // Play defeated pose/animation
-            ResetToIdle();
+            // Disable the struck limb collider
+            RemoveLimb(limb);
+            
+            correctStrikesReceived++;
+            Debug.Log($"Correct mannequin destroyed! This was the RIGHT one!");
+            
+            // Check if all limbs have been removed
+            if (correctStrikesReceived >= correctStrikesNeeded)
+            {
+                DefeatMannequin();
+            }
+            else
+            {
+                // Play defeated pose/animation
+                ResetToIdle();
+            }
         }
+    }
+
+    /// <summary>
+    /// Removes/disables a limb collider when struck correctly
+    /// </summary>
+    private void RemoveLimb(string limbName)
+    {
+        if (limbColliders.ContainsKey(limbName))
+        {
+            Collider limbCollider = limbColliders[limbName];
+            limbCollider.enabled = false;
+            Debug.Log($"Limb '{limbName}' removed from mannequin");
+        }
+        else
+        {
+            Debug.LogWarning($"Limb '{limbName}' not found in limbColliders dictionary");
+        }
+    }
+
+    /// <summary>
+    /// Called when all limbs have been defeated
+    /// </summary>
+    private void DefeatMannequin()
+    {
+        Debug.Log("Mannequin defeated! All limbs removed!");
+        // Disable the entire mannequin
+        gameObject.SetActive(false);
     }
 
     private void ResetAllMannequinPoses()
@@ -158,6 +255,8 @@ public class MannequinFullGame : MonoBehaviour
             // Switch to next pose
             currentPoseIndex = (currentPoseIndex + 1) % poseAnimations.Length;
             string poseName = poseAnimations[currentPoseIndex];
+
+            PlayPoseSound();
             
             // Trigger pose changed event
             OnPoseChanged?.Invoke(currentPoseIndex, poseName);
@@ -190,8 +289,45 @@ public class MannequinFullGame : MonoBehaviour
     {
         if (resetManager != null)
         {
-            resetManager.ResetPlayer($"Struck wrong limb: {hitLimb} (should hit {correctStrikeLimb})");
+            resetManager.ResetPlayer($"Wrong strike on {hitLimb}!");
         }
+    }
+
+    public void PlayPoseSound()
+    {
+        
+        PLAYBACK_STATE playbackState;
+        poseSoundEvent.getPlaybackState(out playbackState);
+        if (playbackState == PLAYBACK_STATE.STOPPED)
+        {
+            RuntimeManager.AttachInstanceToGameObject(poseSoundEvent, gameObject, false);
+            poseSoundEvent.start();
+        }
+    }
+    public void StopPoseSound()
+    {
+        poseSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+    }
+    public void PlayStrikeSound()
+    {
+        PLAYBACK_STATE playbackState;
+        strikeSoundEvent.getPlaybackState(out playbackState);
+        if (playbackState == PLAYBACK_STATE.STOPPED)
+        {
+            RuntimeManager.AttachInstanceToGameObject(strikeSoundEvent, gameObject, false);
+            strikeSoundEvent.start();
+        }
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.name == "AttackItem")
+        {
+            PlayStrikeSound();
+        }
+    }
+    public void StopStrikeSound()
+    {
+        strikeSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
     private void OnDrawGizmos()
