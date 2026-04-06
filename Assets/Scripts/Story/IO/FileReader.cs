@@ -1,3 +1,4 @@
+using Dialogue;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class FileReader : MonoBehaviour
     public static readonly string rootPath = $"{Application.dataPath}/Game Data/";
 
     //Read from file path outside resources
-    public static List<string> ReadFile(string path, bool includeBlankLines = false)
+    public static List<string> ReadFile(string path)
     {
         if(path.StartsWith('/'))
         {
@@ -23,7 +24,7 @@ public class FileReader : MonoBehaviour
                 while(!sr.EndOfStream)
                 {
                     string line = sr.ReadLine();
-                    if(includeBlankLines || !string.IsNullOrWhiteSpace(line))
+                    if(!string.IsNullOrWhiteSpace(line))
                     {
                         lines.Add(line);
                     }
@@ -39,7 +40,7 @@ public class FileReader : MonoBehaviour
     }
 
     //Read from Resource Asset Name
-    public static List<string> ReadAsset(string path, bool includeBlankLines = false)
+    public static Convo ReadAsset(string path)
     {
         TextAsset asset = Resources.Load<TextAsset>(path);
 
@@ -48,11 +49,11 @@ public class FileReader : MonoBehaviour
             return null;
         }
 
-        return ReadAsset(asset, includeBlankLines);
+        return ReadAsset(asset);
     }
 
     //Read from Resource Asset
-    public static List<string> ReadAsset(TextAsset text, bool includeBlankLines = false)
+    public static Convo ReadAsset(TextAsset text)
     {
         List<string> lines = new List<string>();
         using (StringReader sr = new StringReader(text.text))
@@ -60,12 +61,12 @@ public class FileReader : MonoBehaviour
             while (sr.Peek() > -1)
             {
                 string line = sr.ReadLine();
-                if (includeBlankLines || !string.IsNullOrWhiteSpace(line))
+                if (!string.IsNullOrWhiteSpace(line))
                 {
                     lines.Add(line);
                 }
             }
         }
-        return lines;
+        return new Convo(lines);
     }
 }

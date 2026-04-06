@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.ProBuilder.Shapes;
 using static Dialogue.TextArchitect;
 
 namespace Dialogue
@@ -9,13 +11,14 @@ namespace Dialogue
     public class DialogueSystem : MonoBehaviour
     {
         public DialogueContainer dialogueContainer = new DialogueContainer();
-        private ConvoManager convoManager;
+        public ConvoManager convoManager { get; private set; }
         public BuildMethod buildMethod = BuildMethod.typewriter;
         public bool isRunningConvo => convoManager.isRunning;
         public TextArchitect architect { get; private set; }
 
         [SerializeField] private InputActionReference nextInput;
-        public List<MiniConvo> allMiniConvos;
+        public List<MiniDialogue> allMiniConvos;
+        public Coroutine screenCo;
 
         //Dialogue System Trigger Events for Player Input (and others)
         public delegate void DialogueSystemEvent();
@@ -43,7 +46,7 @@ namespace Dialogue
         {
             if(initialized) return;
 
-            allMiniConvos = Resources.LoadAll<MiniConvo>("").ToList();
+            allMiniConvos = Resources.LoadAll<MiniDialogue>("").ToList();
 
             architect = new TextArchitect(dialogueContainer.dialogueText);
             architect.buildMethod = buildMethod;
@@ -63,10 +66,6 @@ namespace Dialogue
                 architect.buildMethod = buildMethod;
                 architect.StopBuildingText();
             }
-            //if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z))
-            //{
-            //    OnUserPrompt();
-            //}
         }
 
         #region Conversation
@@ -79,18 +78,38 @@ namespace Dialogue
         //Say for one-liner (not rlly used)
         public void Say(string speaker, string dialogue)
         {
-            List<string> convo = new List<string> { $"{speaker} \"{dialogue}\""};
+            List<string> convoString = new List<string> { $"{speaker} \"{dialogue}\""};
+            Convo convo = new Convo(convoString);
             convoManager.StartConvo(convo);
         }
         #endregion
 
         #region Triggers
+
+        public IEnumerator FadeToBlack(float duration)
+        {
+            while (screenCo != null)
+            {
+                yield return null;
+            }
+            screenCo = StartCoroutine(dialogueContainer.FadeToBlack(duration));
+        }
+
+        public IEnumerator FadeFromBlack(float duration)
+        {
+            while (screenCo != null)
+            {
+                yield return null;
+            }
+            screenCo = StartCoroutine(dialogueContainer.FadeFromBlack(duration));
+        }
+
         public void OpenDialogue(string assetName)
         {
             if (isRunningConvo)
                 return;
             if(assetName.StartsWith("Mini_"))
-                convoManager.StartConvo(allMiniConvos.Find(x => x.convoName == assetName).dialogues);
+                convoManager.StartConvo(new Convo(allMiniConvos.Find(x => x.convoName == assetName).dialogues));
             else
                 convoManager.StartConvo(FileReader.ReadAsset(assetName));
         }

@@ -9,7 +9,7 @@ namespace Dialogue
 {
 
     [CreateAssetMenu(fileName = "Mini_", menuName = "Story/MiniConvo")]
-    public class MiniConvo : ScriptableObject
+    public class MiniDialogue : ScriptableObject
     {
         public string convoName;
         public List<DialogueStructure> dialogues;
@@ -18,6 +18,7 @@ namespace Dialogue
     [Serializable]
     public class DialogueStructure
     {
+        public string rawLine { get; private set; } = string.Empty;
         public string speaker;
 
         //Dialogue
@@ -33,12 +34,12 @@ namespace Dialogue
         public DialogueStructure(string speaker, string dialogue, string functions)
         {
             this.speaker = speaker;
-            this.dialogue = string.IsNullOrWhiteSpace(dialogue) ? null : RipDialogue(dialogue);
-            this.functions = string.IsNullOrWhiteSpace(functions) ? null : RipFunctions(functions);
+            this.dialogue = string.IsNullOrWhiteSpace(dialogue) ? new List<DialogueData>() : RipDialogue(dialogue);
+            this.functions = string.IsNullOrWhiteSpace(functions) ? new List<FunctionsData>() : RipFunctions(functions);
         }
         public bool hasSpeaker => speaker != string.Empty;
-        public bool hasDialogue => dialogue != null;
-        public bool hasFunctions => functions != null;
+        public bool hasDialogue => dialogue.Count > 0;
+        public bool hasFunctions => functions.Count > 0;
 
         public List<DialogueData> RipDialogue(string rawDialogue)
         {
@@ -46,11 +47,18 @@ namespace Dialogue
             MatchCollection matches = Regex.Matches(rawDialogue, segmentIdPattern);
 
             int lastIdx = 0;
-            DialogueData segment = new DialogueData();
-            segment.dialogue = matches.Count == 0 ? rawDialogue : rawDialogue.Substring(0, matches[0].Index);
-            segment.segmentSignal = DialogueData.SegmentSignal.None;
-            segment.signalDelay = 0;
-            segments.Add(segment);
+            string firstSegment = matches.Count == 0 ? rawDialogue : rawDialogue.Substring(0, matches[0].Index);
+            if (!string.IsNullOrWhiteSpace(firstSegment))
+            {
+                DialogueData segment = new DialogueData
+                {
+                    rawData = rawDialogue,
+                    dialogue = firstSegment,
+                    segmentSignal = DialogueData.SegmentSignal.C,
+                    signalDelay = 0
+                };
+                segments.Add(segment);
+            }
 
             if(matches.Count == 0)
                 return segments;
@@ -60,7 +68,7 @@ namespace Dialogue
             for (int i = 0; i < matches.Count; i++)
             {
                 Match match = matches[i];
-                segment = new DialogueData();
+                DialogueData segment = new DialogueData();
 
                 //Signal
                 string signalMatch = match.Value;
@@ -90,7 +98,10 @@ namespace Dialogue
             List<FunctionsData> functions = new List<FunctionsData>();
             foreach (string func in data)
             {
-                FunctionsData function = new FunctionsData();
+                FunctionsData function = new FunctionsData
+                {
+                    rawData = func
+                };
                 int idx = func.IndexOf(argumentContainer);
                 function.name = func.Substring(0, idx).Trim();
                 if(function.name.ToLower().StartsWith(waitSignal))
@@ -145,11 +156,12 @@ namespace Dialogue
     [Serializable]
     public struct DialogueData
     {
+        public string rawData { get; set; }
         public string dialogue;
         public SegmentSignal segmentSignal;
         public float signalDelay;
         [Serializable]
-        public enum SegmentSignal { None, C, A, WC, WA }
+        public enum SegmentSignal { C, A, WC, WA }
 
         public bool append => (segmentSignal == SegmentSignal.A || segmentSignal == SegmentSignal.WA);
     }
@@ -157,6 +169,7 @@ namespace Dialogue
     [Serializable]
     public struct FunctionsData
     {
+        public string rawData { get; set; }
         public string name;
         public string[] args;
         public bool waitForCompletion;

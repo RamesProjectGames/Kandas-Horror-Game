@@ -46,6 +46,8 @@ namespace TestingPurposes
             db.AddFunction("NextDialogue", new Action(NextDialogue));
             db.AddFunction("PlayerFaceFront", new Action(PlayerFaceFront));
             db.AddFunction("AllowNPCMovement", new Action<string>(AllowNPCMovement));
+            db.AddFunction("Fadein", new Func<string, IEnumerator>(FadeIn));
+            db.AddFunction("fadeout", new Func<string, IEnumerator>(FadeOut));
             //db.AddFunction("SetUpEnding", new Action());
 
         }
@@ -105,6 +107,22 @@ namespace TestingPurposes
             if (float.TryParse(arg, out float duration))
             {
                 yield return new WaitForSeconds(duration);
+            }
+        }
+
+        private static IEnumerator FadeIn(string arg)
+        {
+            if (float.TryParse(arg, out float duration))
+            {
+                yield return DialogueSystem.Instance.StartCoroutine(DialogueSystem.Instance.FadeFromBlack(duration));
+            }
+        }
+
+        private static IEnumerator FadeOut(string arg)
+        {
+            if (float.TryParse(arg, out float duration))
+            {
+                yield return DialogueSystem.Instance.StartCoroutine(DialogueSystem.Instance.FadeToBlack(duration));
             }
         }
 
@@ -184,7 +202,7 @@ namespace TestingPurposes
         }
         private static void EndQuiz()
         {
-            UnityEngine.Object.FindAnyObjectByType<QuizSystem>(FindObjectsInactive.Include).OpenQuiz(false);
+            UnityEngine.Object.FindAnyObjectByType<QuizChoiceSystem>(FindObjectsInactive.Include).OpenQuiz(false);
         }
 
         private static void InspectFragment(string[] args)

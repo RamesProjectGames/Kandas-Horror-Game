@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Dialogue
 {
@@ -13,6 +14,8 @@ namespace Dialogue
         public GameObject dialoguePanel, namePanel;
         public TextMeshProUGUI nameText;
         public TextMeshProUGUI dialogueText;
+        public Image screenCover;
+
         private CanvasGroup canvasGroup => dialoguePanel.GetComponent<CanvasGroup>();
 
         [Header("Coroutines")]
@@ -37,6 +40,46 @@ namespace Dialogue
         public void HideName()
         {
             namePanel.SetActive(false);
+        }
+
+        public IEnumerator FadeToBlack(float duration)
+        {
+            float targetOpac = 1f;
+            float elapsedTime = 0f;
+            CanvasGroup cg = canvasGroup;
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                float percentage = elapsedTime / duration;
+
+                cg.alpha = Mathf.Lerp(cg.alpha, targetOpac, percentage);
+                Color scColor = screenCover.color;
+                scColor.a = Mathf.Lerp(scColor.a, targetOpac, percentage);
+                screenCover.color = scColor;
+                yield return null;
+            }
+            active = false;
+            DialogueSystem.Instance.screenCo = null;
+        }
+
+        public IEnumerator FadeFromBlack(float duration)
+        {
+            float targetOpac = 0f;
+            float elapsedTime = 0f;
+            CanvasGroup cg = canvasGroup;
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                float percentage = elapsedTime / duration;
+
+                cg.alpha = Mathf.Lerp(cg.alpha, targetOpac, percentage);
+                Color scColor = screenCover.color;
+                scColor.a = Mathf.Lerp(scColor.a, targetOpac, percentage);
+                screenCover.color = scColor;
+                yield return null;
+            }
+            active = true;
+            DialogueSystem.Instance.screenCo = null;
         }
 
         public Coroutine ShowDialogue()

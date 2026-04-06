@@ -15,11 +15,22 @@ namespace Dialogue
         private TextArchitect architect;
         private bool userPrompt = false;
 
+        private DialogicManager dialogicManager;
+
+        public Convo convo { get; private set; } = null;
+        private ConvoQueue convoQueue;
+
         public ConvoManager(TextArchitect architect)
         {
             this.architect = architect;
             ds.onUserPrompt += OnUserPrompt;
+
+            dialogicManager = new DialogicManager();
+            convoQueue = new ConvoQueue();
         }
+
+        public void Enqueue(Convo convo) => convoQueue.Enqueue(convo);
+        public void EnqueuePrio(Convo convo) => convoQueue.EnqueuePrio(convo);
 
         private void OnUserPrompt()
         {
@@ -27,21 +38,15 @@ namespace Dialogue
         }
 
         //Starting a new Dialogue
-        public void StartConvo(List<string> convo)
+        public void StartConvo(Convo convo)
         {
             if(convo == null)
                 return;
             StopConvo();
+            Enqueue(convo);
 
             ds.dialogueContainer.ShowDialogue();
-            process = ds.StartCoroutine(RunningConvo(convo));
-        }
-        public void StartConvo(List<DialogueStructure> convo)
-        {
-            StopConvo();
-
-            ds.dialogueContainer.ShowDialogue();
-            process = ds.StartCoroutine(RunningConvo(convo));
+            process = ds.StartCoroutine(RunningConvo());
         }
 
         //Stopping a Conversation
@@ -56,39 +61,34 @@ namespace Dialogue
         }
 
         //Convo Parse and Run
-        IEnumerator RunningConvo(List<string> convo)
+        IEnumerator RunningConvo()
         {
-            for (int i = 0; i < convo.Count; i++)
+            while(!convoQueue.IsEmpty())
             {
-                if (!string.IsNullOrWhiteSpace(convo[i]))
+                convo = convoQueue.top;
+                DialogueStructure line = convo.CurrLine();
+                if (line.hasSpeaker || line.hasDialogue || line.hasFunctions)
                 {
-                    DialogueStructure line = DialogueParser.Parse(convo[i]);
+                    if (dialogicManager.TryGetLogic(line, out Coroutine logic))
+                    {
+                        yield return logic;
+                    }
+                    else
+                    {
+                        if (line.hasDialogue)
+                            yield return RunDialogue(line);
+                        if (line.hasFunctions)
+                            yield return RunFunctions(line);
 
-                    if (line.hasDialogue)
-                        yield return RunDialogue(line);
-                    if (line.hasFunctions)
-                        yield return RunFunctions(line);
-
-                    if (line.hasDialogue)
-                        yield return WaitForUserInput();
+                        if (line.hasDialogue)
+                            yield return WaitForUserInput();
+                    }
                 }
-            }
 
-            StopConvo();
-        }
-
-        //Convo Parse and Run
-        IEnumerator RunningConvo(List<DialogueStructure> convo)
-        {
-            for (int i = 0; i < convo.Count; i++)
-            {
-                if (convo[i].hasDialogue)
-                    yield return RunDialogue(convo[i]);
-                if (convo[i].hasFunctions)
-                    yield return RunFunctions(convo[i]);
-
-                if (convo[i].hasDialogue)
-                    yield return WaitForUserInput();
+                if (!convo.ConvoDone())
+                    convo.IncrementProgress();
+                else
+                    convoQueue.Dequeue();
             }
 
             StopConvo();
@@ -111,7 +111,11 @@ namespace Dialogue
 
             foreach (DialogueData segment in line.dialogue)
             {
-                yield return HandleSegmentSignal(segment);
+                if (segment.rawData != line.dialogue[0].rawData)
+                {
+                    yield return HandleSegmentSignal(segment);
+                }
+
                 yield return BuildDialogue(segment.dialogue, segment.append);
             }
         }
