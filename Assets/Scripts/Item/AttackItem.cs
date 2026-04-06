@@ -19,11 +19,16 @@ public class AttackItem : MonoBehaviour
     [SerializeField] private InputActionReference interactAction;
     [SerializeField] private TMP_Text interactionText;
     private bool itemIsHeld = false;
+
+    [Header("Animation")]
+    [SerializeField] private string idleAnimationNotHeld = "Idle";
+    [SerializeField] private string idleAnimationHeld = "BatIdle";
+    [SerializeField] private string attackAnimation = "Attack";
+    private bool isAttacking = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         hitEffect.Stop();
-        animator.Play("Idle");
         attackSoundEvent = AudioManager.Instance.CreateInstance(attackSound);
         RuntimeManager.AttachInstanceToGameObject(attackSoundEvent, gameObject, false);
     }
@@ -31,6 +36,22 @@ public class AttackItem : MonoBehaviour
     {
         if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
             return;
+
+        // Check if attack animation has finished
+        if (isAttacking && animator != null)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (!stateInfo.IsName(attackAnimation))
+            {
+                isAttacking = false;
+            }
+            // If animation is still playing but has completed, mark as not attacking
+            else if (stateInfo.normalizedTime >= 1f && !animator.IsInTransition(0))
+            {
+                isAttacking = false;
+            }
+        }
+
         if (interactAction != null && interactAction.action.WasPerformedThisFrame())
         {
             PerformAttack();
@@ -39,6 +60,22 @@ public class AttackItem : MonoBehaviour
     public void SetHeldState(bool isHeld)
     {
         itemIsHeld = isHeld;
+        
+        if (animator != null)
+        {
+            animator.SetBool("isHold", isHeld);
+            // Play different idle animations based on held state
+            if (isHeld)
+            {
+                animator.Play(idleAnimationHeld);
+            }
+            else
+            {
+                animator.Play(idleAnimationNotHeld);
+                isAttacking = false; // Reset attack state when item is dropped
+            }
+        }
+
         if (interactionText != null)
         {
             interactionText.gameObject.SetActive(isHeld);
@@ -47,15 +84,18 @@ public class AttackItem : MonoBehaviour
     }
     public void PerformAttack()
     {
-        if(!itemIsHeld)
+        if (!itemIsHeld)
             return; // Only allow attacking if the item is currently held by the player
+
+        // Allow attack if not currently attacking (animation has finished)
+        if (isAttacking)
+            return; // Still in attack animation, wait for it to finish
+
         // Play attack animation
         if (animator != null)
         {
-            if(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-                return; // Prevent spamming attack while already attacking
-            animator.Play("Attack");
-            PlayAttackSound();
+            animator.Play(attackAnimation);
+            isAttacking = true;
         }
     }
     public void PlayEffect(Vector3 position = default)
