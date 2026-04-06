@@ -64,11 +64,38 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/BGM.bank
   Name: BGM
   StudioPath: bank:/BGM
-  lastModified: 639082279543249882
+  lastModified: 639110735498327277
   FileSizes:
   - Name: Desktop
     Value: 506
   Exists: 1
+--- !u!114 &-7813212504193567034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/NumPads
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/NumPads
+  Guid:
+    Data1: 487577553
+    Data2: 1298922738
+    Data3: 1914983827
+    Data4: 1803731739
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &-7269361194817130740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +212,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639102329917902675
+  lastModified: 639110899173139513
   FileSizes:
   - Name: Desktop
     Value: 1524
@@ -305,13 +332,18 @@ MonoBehaviour:
   - {fileID: 8863259646918854691}
   - {fileID: 2010647933892701668}
   - {fileID: 4454753689980159585}
+  - {fileID: 6618729507193921072}
+  - {fileID: 8281960395637879033}
+  - {fileID: 323353787290861564}
+  - {fileID: 8748180263284601938}
+  - {fileID: -7813212504193567034}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4634749821997254833}
   StringsBanks:
   - {fileID: 2402750766380479616}
   cacheVersion: 131858
-  cacheTime: 639107491382838778
+  cacheTime: 639110903536001363
   SerializableEventsDict:
   - key: event:/SFX/ChaserFootsteps
     index: 0
@@ -319,6 +351,43 @@ MonoBehaviour:
     index: 1
   - key: event:/SFX/PlayerFootsteps
     index: 2
+  - key: event:/SFX/ManequinMovement
+    index: 3
+  - key: event:/SFX/UIButtonClick
+    index: 4
+  - key: event:/SFX/PlayerSwing
+    index: 5
+  - key: event:/SFX/ManequinBreak
+    index: 6
+  - key: event:/SFX/NumPads
+    index: 7
+--- !u!114 &323353787290861564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/PlayerSwing
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/PlayerSwing
+  Guid:
+    Data1: 340312955
+    Data2: 1168589024
+    Data3: 1558991526
+    Data4: 124634725
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 445
 --- !u!114 &1641087735518963789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,10 +458,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639102329917907790
+  lastModified: 639110899173149727
   FileSizes:
   - Name: Desktop
-    Value: 1200
+    Value: 1426
   Exists: 1
 --- !u!114 &3406518332576070875
 MonoBehaviour:
@@ -409,10 +478,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639107491382838778
+  lastModified: 639110903536001363
   FileSizes:
   - Name: Desktop
-    Value: 831840
+    Value: 942496
   Exists: 1
 --- !u!114 &3551023922120485847
 MonoBehaviour:
@@ -429,7 +498,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Voice.bank
   Name: Voice
   StudioPath: bank:/Voice
-  lastModified: 639082279546248497
+  lastModified: 639110735503130814
   FileSizes:
   - Name: Desktop
     Value: 506
@@ -483,6 +552,87 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1524
   Exists: 1
+--- !u!114 &6618729507193921072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/ManequinMovement
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/ManequinMovement
+  Guid:
+    Data1: -193628141
+    Data2: 1097986696
+    Data3: -40709984
+    Data4: -1952618164
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1313
+--- !u!114 &8281960395637879033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UIButtonClick
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/UIButtonClick
+  Guid:
+    Data1: 560860274
+    Data2: 1119457769
+    Data3: 1211324295
+    Data4: 1537837001
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
+--- !u!114 &8748180263284601938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/ManequinBreak
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/ManequinBreak
+  Guid:
+    Data1: 398076042
+    Data2: 1157095324
+    Data3: 89383328
+    Data4: 1943445373
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 738
 --- !u!114 &8863259646918854691
 MonoBehaviour:
   m_ObjectHideFlags: 0
