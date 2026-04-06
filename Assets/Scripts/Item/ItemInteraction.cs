@@ -45,6 +45,7 @@ public class ItemInteraction : MonoBehaviour
     [Header("Interaction")]
     [SerializeField] private bool showTextOnPickup = true;
     [SerializeField] private InputActionReference interactAction;
+    public UnityEvent onPickup;
     public UnityEvent onInteract;
     public UnityEvent onThrow;
 
@@ -170,6 +171,9 @@ public class ItemInteraction : MonoBehaviour
     {
         if (isBroken) return;
         if (holdPoint == null) return;
+
+        if (onPickup != null)
+            onPickup.Invoke();
 
         IsHeld = true;
         hasBeenThrown = false;

@@ -320,7 +320,7 @@ public class MannequinFullGame : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.name == "AttackItem")
+        if(collision.gameObject.name == "Attack Item Hitbox")
         {
             PlayStrikeSound();
         }
