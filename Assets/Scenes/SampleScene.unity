@@ -27036,6 +27036,13 @@ MonoBehaviour:
       Data3: 1914983827
       Data4: 1803731739
     Path: event:/SFX/NumPads
+  SafeOpenedSound:
+    Guid:
+      Data1: -753068151
+      Data2: 1222886471
+      Data3: -690913360
+      Data4: -1732517166
+    Path: event:/SFX/SafeOpen
 --- !u!1 &1379203686
 GameObject:
   m_ObjectHideFlags: 0
@@ -29107,7 +29114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa1d70568c5fb3c418e75cc2080d1e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 0
+  throwForce: 5
   pickupUI: {fileID: 197050268}
   itemInteractionText: Pick Up
   globalAlert: 0

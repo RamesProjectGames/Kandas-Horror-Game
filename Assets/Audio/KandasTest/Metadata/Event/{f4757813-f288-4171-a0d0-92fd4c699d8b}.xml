@@ -5,7 +5,7 @@
 			<value>ManequinMovement</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{8e441aaf-216b-4dd9-bac5-be46f41e10bd}</destination>
@@ -125,6 +125,7 @@
 	<object class="MixerBusEffectChain" id="{338eb066-7345-4101-9105-e120398b3f01}">
 		<relationship name="effects">
 			<destination>{f36ddf4c-72fa-4329-bcd3-63a4a81bd465}</destination>
+			<destination>{6913a1ea-06eb-42ba-b9bb-f23d56783607}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{5a8f5d89-d24f-468a-b296-24355aca191c}" />
@@ -136,5 +137,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{01201242-9c7b-4e89-a8fd-5a34335548e2}" />
 	<object class="MixerBusFader" id="{f36ddf4c-72fa-4329-bcd3-63a4a81bd465}" />
+	<object class="SpatialiserEffect" id="{6913a1ea-06eb-42ba-b9bb-f23d56783607}" />
 	<object class="MixerBusFader" id="{cd59f154-0796-457f-93c2-1c1479a6cebf}" />
 </objects>

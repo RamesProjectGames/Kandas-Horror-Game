@@ -212,7 +212,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639110899173139513
+  lastModified: 639111573390859416
   FileSizes:
   - Name: Desktop
     Value: 1524
@@ -337,13 +337,14 @@ MonoBehaviour:
   - {fileID: 323353787290861564}
   - {fileID: 8748180263284601938}
   - {fileID: -7813212504193567034}
+  - {fileID: 3269528981090473387}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4634749821997254833}
   StringsBanks:
   - {fileID: 2402750766380479616}
   cacheVersion: 131858
-  cacheTime: 639110903536001363
+  cacheTime: 639111573394438798
   SerializableEventsDict:
   - key: event:/SFX/ChaserFootsteps
     index: 0
@@ -361,6 +362,8 @@ MonoBehaviour:
     index: 6
   - key: event:/SFX/NumPads
     index: 7
+  - key: event:/SFX/SafeOpen
+    index: 8
 --- !u!114 &323353787290861564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -458,11 +461,38 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639110899173149727
+  lastModified: 639111573390870752
   FileSizes:
   - Name: Desktop
-    Value: 1426
+    Value: 1464
   Exists: 1
+--- !u!114 &3269528981090473387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/SafeOpen
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/SafeOpen
+  Guid:
+    Data1: -753068151
+    Data2: 1222886471
+    Data3: -690913360
+    Data4: -1732517166
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 792
 --- !u!114 &3406518332576070875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,10 +508,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639110903536001363
+  lastModified: 639111573394438798
   FileSizes:
   - Name: Desktop
-    Value: 942496
+    Value: 952928
   Exists: 1
 --- !u!114 &3551023922120485847
 MonoBehaviour:
@@ -573,7 +603,7 @@ MonoBehaviour:
   Banks:
   - {fileID: 3406518332576070875}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -627,7 +657,7 @@ MonoBehaviour:
   Banks:
   - {fileID: 3406518332576070875}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1

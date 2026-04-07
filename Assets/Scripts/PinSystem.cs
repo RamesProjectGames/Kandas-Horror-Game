@@ -18,6 +18,7 @@ public class PinSystem : MonoBehaviour
 
     [Header("Audio")]
     [SerializeField] private EventReference inputPinSound;
+    [SerializeField] private EventReference SafeOpenedSound;
     private EventInstance inputPinSoundEvent;
 
     void Start()
@@ -27,7 +28,9 @@ public class PinSystem : MonoBehaviour
         for (int i = 0; i < maxPins; i++)
         {
             pinTexts.Add("");
+            correctPins.Add("");
         }
+        UpdatePinsUI();
         SetCorrectPins();
     }
     public void AddPin(string pinText)
@@ -71,7 +74,13 @@ public class PinSystem : MonoBehaviour
     }
     public void CheckPins()
     {
-        if(pinTexts.Count == maxPins)
+        var inputPins = 0;
+        for (int i = 0; i < maxPins; i++)
+        {
+            if (!string.IsNullOrEmpty(pinTexts[i]))
+                inputPins++;
+        }
+        if(inputPins == maxPins)
         {
             for (int i = 0; i < maxPins; i++)
             {
@@ -91,25 +100,27 @@ public class PinSystem : MonoBehaviour
                 }
             }
             OnCorrectPins?.Invoke();
+            ClosePanel();
+            PlaySafeOpenedSound();
         }
     }
     public void OpenPanel()
     {
         SafePinPanel.SetActive(true);
+        SettingManager.Instance.isPaused = true;
     }
     public void ClosePanel()
     {
         SafePinPanel.SetActive(false);
+        SettingManager.Instance.isPaused = false;
         ClearPins();
     }
     public void PlayInputPinSound()
     {
-        PLAYBACK_STATE playbackState;
-        inputPinSoundEvent.getPlaybackState(out playbackState);
-        if (playbackState != PLAYBACK_STATE.PLAYING)
-        {
-            RuntimeManager.AttachInstanceToGameObject(inputPinSoundEvent, gameObject, false);
-            inputPinSoundEvent.start();
-        }
+        AudioManager.Instance.PlayOneShot(inputPinSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
+    }
+    public void PlaySafeOpenedSound()
+    {
+        AudioManager.Instance.PlayOneShot(SafeOpenedSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
     }
 }
