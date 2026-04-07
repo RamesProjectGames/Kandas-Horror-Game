@@ -1,4 +1,6 @@
 using Dialogue;
+using FMOD.Studio;
+using FMODUnity;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -69,6 +71,10 @@ public class PlayerController : MovableObjects
     private Vector3 targetControllerCenter;
     private float targetCameraY;
     
+    [Header("Audio")]
+    public EventReference pantingSound;
+    private EventInstance pantingSoundEvent;
+    private bool wasExhausted = false;
 
     [Header("Footsteps")]
     // reference to the centralized sound manager – typically on the same GameObject
@@ -94,6 +100,9 @@ public class PlayerController : MovableObjects
         audioSrc = GetComponent<AudioSource>();
         CameraManager.SwitchCamera(playerCam);
         _noise = playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>();
+
+        pantingSoundEvent = AudioManager.Instance.CreateInstance(pantingSound);
+        RuntimeManager.AttachInstanceToGameObject(pantingSoundEvent, gameObject, false);
 
         inputController = playerCam.GetComponent<CinemachineInputAxisController>();
         
@@ -277,6 +286,17 @@ public class PlayerController : MovableObjects
                     moveSpd = speed;
                 }
             }
+            
+            // Handle panting sound when exhausted
+            if (isExhausted && !wasExhausted)
+            {
+                PlayPantingSound();
+            }
+            else if (!isExhausted && wasExhausted)
+            {
+                StopPantingSound();
+            }
+            wasExhausted = isExhausted;
             
 
             if(!Hiding.IsHiding())
@@ -550,6 +570,31 @@ public class PlayerController : MovableObjects
             Vector3 localPos = cameraHeightTarget.localPosition;
             localPos.y = standingCameraY;
             cameraHeightTarget.localPosition = localPos;
+        }
+    }
+
+    private void PlayPantingSound()
+    {
+        PLAYBACK_STATE playbackState;
+        pantingSoundEvent.getPlaybackState(out playbackState);
+        if (playbackState != PLAYBACK_STATE.PLAYING)
+        {
+            // Recreate the instance to ensure it can be played
+            pantingSoundEvent.release();
+            pantingSoundEvent = AudioManager.Instance.CreateInstance(pantingSound);
+            RuntimeManager.AttachInstanceToGameObject(pantingSoundEvent, gameObject, false);
+            pantingSoundEvent.start();
+        }
+    }
+
+    private void StopPantingSound()
+    {
+        PLAYBACK_STATE playbackState;
+        pantingSoundEvent.getPlaybackState(out playbackState);
+        if (playbackState == PLAYBACK_STATE.PLAYING)
+        {
+            pantingSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            pantingSoundEvent.release();
         }
     }
     #endregion
