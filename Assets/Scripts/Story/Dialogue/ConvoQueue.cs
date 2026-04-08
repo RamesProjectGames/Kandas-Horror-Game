@@ -18,9 +18,9 @@ namespace Dialogue
             while (convoQueue.Count > 0)
             {
                 queue.Enqueue(convoQueue.Dequeue());
-
-                convoQueue = queue;
             }
+
+            convoQueue = queue;
         }
 
         public void Dequeue()

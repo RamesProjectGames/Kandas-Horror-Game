@@ -23,13 +23,11 @@ namespace Dialogue
         }
 
         public int GetProgress() => progress;
-        public void SetProgress(int val) => this.progress = val;
+        public void SetProgress(int val) => progress = val;
         public void IncrementProgress() => progress++;
         public int count => lines.Count;
-
         public List<DialogueStructure> GetLines() => lines;
         public DialogueStructure CurrLine() => lines[progress];
-
-        public bool ConvoDone() => progress == lines.Count - 1;
+        public bool ConvoDone() => progress >= lines.Count - 1;
     }
 }
