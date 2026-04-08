@@ -58,6 +58,10 @@ public class PlayerGrabInteraction : MonoBehaviour
                     }
                 }
             }
+            if (currentItem.CanInteractWhenHeld && heldItem != null)
+            {
+                currentItem.onHoldInteract?.Invoke();
+            }
         }
         
         // handle charging and releasing a throw

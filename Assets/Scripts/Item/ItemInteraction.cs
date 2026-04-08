@@ -44,9 +44,12 @@ public class ItemInteraction : MonoBehaviour
 
     [Header("Interaction")]
     [SerializeField] private bool showTextOnPickup = true;
+    [SerializeField] private bool canInteractWhenHeld = false;
+    public bool CanInteractWhenHeld => canInteractWhenHeld;
     [SerializeField] private InputActionReference interactAction;
     public UnityEvent onPickup;
     public UnityEvent onInteract;
+    public UnityEvent onHoldInteract;
     public UnityEvent onThrow;
 
     [Header("UI References")]
