@@ -7,8 +7,8 @@ namespace Dialogue
     {
         string keyword { get; }
 
-        bool Matches(DialogueStructure structure);
+        bool Matches(DialogueStructure line);
 
-        IEnumerator Execute(DialogueStructure structure);
+        IEnumerator Execute(DialogueStructure line);
     }
 }

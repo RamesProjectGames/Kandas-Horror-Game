@@ -18,7 +18,8 @@ namespace Dialogue
     [Serializable]
     public class DialogueStructure
     {
-        public string rawLine { get; private set; } = string.Empty;
+        private string rawLine = string.Empty;
+        public string GetRawLine() => !string.IsNullOrWhiteSpace(rawLine) ? rawLine : ReconstructRawLine();
         public string speaker;
 
         //Dialogue
@@ -31,8 +32,9 @@ namespace Dialogue
         private const char argumentContainer = '(';
         private const string waitSignal = "[w]";
 
-        public DialogueStructure(string speaker, string dialogue, string functions)
+        public DialogueStructure(string rawLine, string speaker, string dialogue, string functions)
         {
+            this.rawLine = rawLine;
             this.speaker = speaker;
             this.dialogue = string.IsNullOrWhiteSpace(dialogue) ? new List<DialogueData>() : RipDialogue(dialogue);
             this.functions = string.IsNullOrWhiteSpace(functions) ? new List<FunctionsData>() : RipFunctions(functions);
@@ -119,7 +121,7 @@ namespace Dialogue
             return functions;
         }
 
-        public string[] ParseArgs(string args)
+        public static string[] ParseArgs(string args)
         {
             List<string> argList = new List<string>();
             StringBuilder currArg = new StringBuilder();
@@ -150,6 +152,44 @@ namespace Dialogue
             currArg.Clear();
 
             return argList.ToArray();
+        }
+
+        public string ReconstructRawLine()
+        {
+            string reconstructedLine = $"{speaker} \"";
+            for(int i = 0; i<dialogue.Count;i++)
+            {
+                if(i != 0)
+                {
+                    reconstructedLine += $"[{dialogue[i].segmentSignal}";
+                    if (dialogue[i].segmentSignal == DialogueData.SegmentSignal.WA || dialogue[i].segmentSignal == DialogueData.SegmentSignal.WC)
+                    {
+                        reconstructedLine = $"{reconstructedLine} {dialogue[i].signalDelay}";
+                    }
+                    reconstructedLine += $"{reconstructedLine}]";
+                }
+                reconstructedLine += dialogue[i].dialogue;
+            }
+            reconstructedLine = $"{reconstructedLine}\" ";
+            for(int i = 0;i<functions.Count;i++)
+            {
+                if (functions[i].waitForCompletion)
+                {
+                    reconstructedLine = $"{reconstructedLine}{waitSignal}";
+                }
+                reconstructedLine = $"{reconstructedLine}{functions[i].name}{argumentContainer}";
+                for(int j = 0; j < functions[i].args.Length;j++)
+                {
+                    //if(j != 0)
+                    //{
+                    //    reconstructedLine = $"{reconstructedLine}^";
+                    //}
+                    reconstructedLine = $"{reconstructedLine} {functions[i].args[j]}";
+                }
+                reconstructedLine = $"{reconstructedLine})";
+            }
+            rawLine = reconstructedLine;
+            return rawLine;
         }
     }
 

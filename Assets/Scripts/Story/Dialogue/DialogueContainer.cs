@@ -44,41 +44,42 @@ namespace Dialogue
 
         public IEnumerator FadeToBlack(float duration)
         {
-            float targetOpac = 1f;
+            float screenOpac = 1f;
             float elapsedTime = 0f;
             CanvasGroup cg = canvasGroup;
+            cg.alpha = 0f;
+            active = false;
             while (elapsedTime < duration)
             {
                 elapsedTime += Time.deltaTime;
                 float percentage = elapsedTime / duration;
 
-                cg.alpha = Mathf.Lerp(cg.alpha, targetOpac, percentage);
                 Color scColor = screenCover.color;
-                scColor.a = Mathf.Lerp(scColor.a, targetOpac, percentage);
+                scColor.a = Mathf.Lerp(scColor.a, screenOpac, percentage);
                 screenCover.color = scColor;
                 yield return null;
             }
-            active = false;
             DialogueSystem.Instance.screenCo = null;
         }
 
         public IEnumerator FadeFromBlack(float duration)
         {
-            float targetOpac = 0f;
+            float screenOpac = 0f;
             float elapsedTime = 0f;
             CanvasGroup cg = canvasGroup;
             while (elapsedTime < duration)
             {
                 elapsedTime += Time.deltaTime;
                 float percentage = elapsedTime / duration;
-
-                cg.alpha = Mathf.Lerp(cg.alpha, targetOpac, percentage);
+                if(percentage >= 0.1f)
+                    if(!active)
+                        active = true;
+                cg.alpha = Mathf.Lerp(cg.alpha, 1f, percentage);
                 Color scColor = screenCover.color;
-                scColor.a = Mathf.Lerp(scColor.a, targetOpac, percentage);
+                scColor.a = Mathf.Lerp(scColor.a, screenOpac, percentage);
                 screenCover.color = scColor;
                 yield return null;
             }
-            active = true;
             DialogueSystem.Instance.screenCo = null;
         }
 
@@ -108,8 +109,8 @@ namespace Dialogue
                 showingCo = null;
             }
 
-            hidingCo = DialogueSystem.Instance.StartCoroutine(Fading(0));
             active = false;
+            hidingCo = DialogueSystem.Instance.StartCoroutine(Fading(0));
 
             return hidingCo;
         }

@@ -219,8 +219,13 @@ namespace Dialogue
         {
             while (tmpro.maxVisibleCharacters < tmpro.textInfo.characterCount)
             {
-                tmpro.maxVisibleCharacters += speedUp ? charPerCycle * 5 : charPerCycle;
-                yield return new WaitForSeconds(.015f / speed);
+                if(DialogueSystem.Instance.dialogueContainer.active)
+                {
+                    tmpro.maxVisibleCharacters += speedUp ? charPerCycle * 5 : charPerCycle;
+                    yield return new WaitForSeconds(.015f / speed);
+                }
+                else
+                    yield return null;
             }
 
             StopBuildingText();
@@ -241,38 +246,41 @@ namespace Dialogue
 
             while (true)
             {
-                float fadeSpeed = (speedUp ? charPerCycle * 5 : charPerCycle) * speed * 4f;
-                for (int i = 0; i < maxRange; i++)
+                if (DialogueSystem.Instance.dialogueContainer.active)
                 {
-                    TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
-
-                    if (charInfo.isVisible)
+                    float fadeSpeed = (speedUp ? charPerCycle * 5 : charPerCycle) * speed * 4f;
+                    for (int i = 0; i < maxRange; i++)
                     {
-                        int vertexIndex = textInfo.characterInfo[i].vertexIndex;
-                        alphas[i] = Mathf.MoveTowards(alphas[i], 255, fadeSpeed);
+                        TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
 
-                        for (int v = 0; v < 4; v++)
+                        if (charInfo.isVisible)
                         {
-                            vertexColors[charInfo.vertexIndex + v].a = (byte)alphas[i];
+                            int vertexIndex = textInfo.characterInfo[i].vertexIndex;
+                            alphas[i] = Mathf.MoveTowards(alphas[i], 255, fadeSpeed);
+
+                            for (int v = 0; v < 4; v++)
+                            {
+                                vertexColors[charInfo.vertexIndex + v].a = (byte)alphas[i];
+                            }
+
+                            if (alphas[i] >= 255)
+                                minRange++;
                         }
-
-                        if (alphas[i] >= 255)
-                            minRange++;
                     }
-                }
 
-                tmpro.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+                    tmpro.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
 
-                bool lastCharInvisible = !textInfo.characterInfo[maxRange - 1].isVisible;
-                if (alphas[maxRange - 1] > alphaThreshold || lastCharInvisible)
-                {
-                    if (maxRange < textInfo.characterCount)
+                    bool lastCharInvisible = !textInfo.characterInfo[maxRange - 1].isVisible;
+                    if (alphas[maxRange - 1] > alphaThreshold || lastCharInvisible)
                     {
-                        maxRange++;
-                    }
-                    else if (alphas[maxRange - 1] >= 255 || lastCharInvisible)
-                    {
-                        break;
+                        if (maxRange < textInfo.characterCount)
+                        {
+                            maxRange++;
+                        }
+                        else if (alphas[maxRange - 1] >= 255 || lastCharInvisible)
+                        {
+                            break;
+                        }
                     }
                 }
 

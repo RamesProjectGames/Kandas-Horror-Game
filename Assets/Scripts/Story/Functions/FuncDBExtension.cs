@@ -48,6 +48,7 @@ namespace TestingPurposes
             db.AddFunction("AllowNPCMovement", new Action<string>(AllowNPCMovement));
             db.AddFunction("Fadein", new Func<string, IEnumerator>(FadeIn));
             db.AddFunction("fadeout", new Func<string, IEnumerator>(FadeOut));
+            db.AddFunction("StopWithoutObj", new Action<string>(ConditionalStopDialogue));
             //db.AddFunction("SetUpEnding", new Action());
 
         }
@@ -129,6 +130,14 @@ namespace TestingPurposes
         private static void CompleteObjective(string arg)
         {
             ObjectiveManager.Instance.CompleteObjective(arg);
+        }
+
+        private static void ConditionalStopDialogue(string arg)
+        {
+            if(!ObjectiveManager.Instance.objectiveDatas.Find(x => x.Name == arg).IsCompleted)
+            {
+                StopDialogue();
+            }
         }
 
         private static IEnumerator ShowDialogue(string arg)

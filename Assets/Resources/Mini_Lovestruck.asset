@@ -54,3 +54,16 @@ MonoBehaviour:
       segmentSignal: 0
       signalDelay: 0
     functions: []
+  - speaker: 
+    dialogue: []
+    functions:
+    - name: StopWithoutObj
+      args:
+      - LoveLetter
+      waitForCompletion: 0
+  - speaker: Narration
+    dialogue:
+    - dialogue: Looks like we found the author of the letters
+      segmentSignal: 0
+      signalDelay: 0
+    functions: []

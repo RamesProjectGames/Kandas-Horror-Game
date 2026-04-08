@@ -61,6 +61,8 @@ namespace Dialogue
         {
             if (Application.isPlaying && (SettingManager.Instance.isPaused || !isRunningConvo) && !dialogueContainer.active)
                 return;
+            if(Input.GetKeyDown(KeyCode.M))
+                convoManager.EnqueuePrio(FileReader.ReadAsset("Fragment1"));
             if (buildMethod != architect.buildMethod)
             {
                 architect.buildMethod = buildMethod;
@@ -117,6 +119,7 @@ namespace Dialogue
         {
             if (!isRunningConvo)
                 return;
+            convoManager.convoQueue.Dequeue();
             convoManager.StopConvo();
         }
 

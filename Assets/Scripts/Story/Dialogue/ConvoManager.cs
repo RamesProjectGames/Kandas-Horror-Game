@@ -17,8 +17,9 @@ namespace Dialogue
 
         private DialogicManager dialogicManager;
 
-        public Convo convo { get; private set; } = null;
-        private ConvoQueue convoQueue;
+        public Convo convo => convoQueue.IsEmpty() ? null : convoQueue.top;
+        public int convoProgress => convoQueue.IsEmpty() ? -1 : convoQueue.top.GetProgress();
+        public ConvoQueue convoQueue;
 
         public ConvoManager(TextArchitect architect)
         {
@@ -65,24 +66,29 @@ namespace Dialogue
         {
             while(!convoQueue.IsEmpty())
             {
-                convo = convoQueue.top;
                 DialogueStructure line = convo.CurrLine();
-                if (line.hasSpeaker || line.hasDialogue || line.hasFunctions)
+                if (string.IsNullOrWhiteSpace(line.GetRawLine()))
                 {
-                    if (dialogicManager.TryGetLogic(line, out Coroutine logic))
-                    {
-                        yield return logic;
-                    }
+                    if (!convo.ConvoDone())
+                        convo.IncrementProgress();
                     else
-                    {
-                        if (line.hasDialogue)
-                            yield return RunDialogue(line);
-                        if (line.hasFunctions)
-                            yield return RunFunctions(line);
+                        convoQueue.Dequeue();
+                    continue;
+                }
 
-                        if (line.hasDialogue)
-                            yield return WaitForUserInput();
-                    }
+                if (dialogicManager.TryGetLogic(line, out Coroutine logic))
+                {
+                    yield return logic;
+                }
+                else
+                {
+                    if (line.hasDialogue)
+                        yield return RunDialogue(line);
+                    if (line.hasFunctions)
+                        yield return RunFunctions(line);
+
+                    if (line.hasDialogue)
+                        yield return WaitForUserInput();
                 }
 
                 if (!convo.ConvoDone())

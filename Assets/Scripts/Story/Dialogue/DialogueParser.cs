@@ -12,7 +12,7 @@ namespace Dialogue
         {
             var (speaker, dialogue, functions) = SegmentLines(line);
 
-            return new DialogueStructure(speaker, dialogue, functions);
+            return new DialogueStructure(line, speaker, dialogue, functions);
         }
 
         //Separate Lines into speaker, dialogue, and functions
