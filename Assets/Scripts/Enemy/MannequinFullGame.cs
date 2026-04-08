@@ -294,15 +294,8 @@ public class MannequinFullGame : MonoBehaviour
     }
 
     public void PlayPoseSound()
-    {
-        
-        PLAYBACK_STATE playbackState;
-        poseSoundEvent.getPlaybackState(out playbackState);
-        if (playbackState == PLAYBACK_STATE.STOPPED)
-        {
-            RuntimeManager.AttachInstanceToGameObject(poseSoundEvent, gameObject, false);
-            poseSoundEvent.start();
-        }
+    {        
+        AudioManager.Instance.PlayOneShot(PoseSound, SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
     }
     public void StopPoseSound()
     {
@@ -310,13 +303,7 @@ public class MannequinFullGame : MonoBehaviour
     }
     public void PlayStrikeSound()
     {
-        PLAYBACK_STATE playbackState;
-        strikeSoundEvent.getPlaybackState(out playbackState);
-        if (playbackState == PLAYBACK_STATE.STOPPED)
-        {
-            RuntimeManager.AttachInstanceToGameObject(strikeSoundEvent, gameObject, false);
-            strikeSoundEvent.start();
-        }
+        AudioManager.Instance.PlayOneShot(StrikeSound, SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
     }
     void OnCollisionEnter(Collision collision)
     {

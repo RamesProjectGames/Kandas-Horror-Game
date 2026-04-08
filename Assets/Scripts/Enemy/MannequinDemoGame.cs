@@ -23,6 +23,7 @@ public class MannequinDemoGame : MonoBehaviour
     [SerializeField] private LayerMask obstacleMask;
     private PlayerSightInteraction playerSight;
     private Transform playerTransform;
+    private GameObject detectionObject;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
@@ -60,6 +61,12 @@ public class MannequinDemoGame : MonoBehaviour
         // Configure NavMeshAgent
         navMeshAgent.speed = moveSpeed;
         navMeshAgent.stoppingDistance = stoppingDistance;
+
+        // Create detection box object
+        detectionObject = Instantiate(new GameObject("DetectionBox"), transform.position, Quaternion.identity);
+        detectionObject.transform.localPosition = transform.localPosition ;
+        detectionObject.transform.localScale = detectionBoxSize;
+        detectionObject.layer = LayerMask.NameToLayer("Obstacle");
     }
 
     void Update()
@@ -141,7 +148,7 @@ public class MannequinDemoGame : MonoBehaviour
             return false;
 
         // Check if player position is within detection box bounds (with offset)
-        Vector3 boxCenter = transform.position + detectionBoxOffset;
+        Vector3 boxCenter = detectionObject.transform.position + detectionBoxOffset;
         Vector3 relativePlayerPos = playerTransform.position - boxCenter;
         
         return Mathf.Abs(relativePlayerPos.x) <= detectionBoxSize.x / 2f &&
@@ -299,13 +306,17 @@ public class MannequinDemoGame : MonoBehaviour
             Gizmos.color = Color.yellow;
         }
         Vector3 boxCenter = transform.position + detectionBoxOffset;
+        if(detectionObject != null)
+        {
+            boxCenter = detectionObject.transform.position + detectionBoxOffset;
+        }
         Gizmos.DrawWireCube(boxCenter, detectionBoxSize);
         
         // Draw offset indicator line
         if (detectionBoxOffset != Vector3.zero)
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(transform.position, boxCenter);
+            Gizmos.DrawLine(detectionObject==null ? transform.position : detectionObject.transform.position, boxCenter);
         }
 
         // Draw line to player if in range (for debugging obstruction)
@@ -319,7 +330,7 @@ public class MannequinDemoGame : MonoBehaviour
             {
                 Gizmos.color = Color.green; // Path clear
             }
-            Gizmos.DrawLine(transform.position, playerTransform.position);
+            Gizmos.DrawLine(detectionObject==null ? transform.position : detectionObject.transform.position, playerTransform.position);
         }
 
         // Draw original position
