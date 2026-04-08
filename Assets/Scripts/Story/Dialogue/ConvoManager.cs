@@ -114,15 +114,14 @@ namespace Dialogue
                     ds.HideSpeakerName();
                 }
             }
-
-            foreach (DialogueData segment in line.dialogue)
+            for (int i = 0; i < line.dialogue.Count; i++)
             {
-                if (segment.rawData != line.dialogue[0].rawData)
+                if (i != 0)
                 {
-                    yield return HandleSegmentSignal(segment);
+                    yield return HandleSegmentSignal(line.dialogue[i]);
                 }
 
-                yield return BuildDialogue(segment.dialogue, segment.append);
+                yield return BuildDialogue(line.dialogue[i].dialogue, line.dialogue[i].append);
             }
         }
 
