@@ -648,6 +648,60 @@ Transform:
   - {fileID: 603282754}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1 &32735619
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 32735620}
+  - component: {fileID: 32735621}
+  m_Layer: 0
+  m_Name: ManequinSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &32735620
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32735619}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 600990095}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &32735621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32735619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 091ec39e57a09a74b95390a0b166d833, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instanceID: Manequin Full Game
+  prefab: {fileID: 0}
+  poolSize: 20
+  centerPoint: {fileID: 0}
+  useCenterPointScale: 1
+  manualAreaSize: {x: 10, y: 0, z: 10}
+  useLocalOffset: 0
+  spawnOnStart: 1
+  spawnCountOnStart: 10
+  randomYRotation: 1
 --- !u!1 &41595146
 GameObject:
   m_ObjectHideFlags: 0
@@ -6636,6 +6690,7 @@ Transform:
   - {fileID: 1977160133}
   - {fileID: 1167034362}
   - {fileID: 1365992717}
+  - {fileID: 32735620}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &603282753
@@ -10108,7 +10163,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &839349913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10121,8 +10176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea01978428c7b0448893e05c1e4afb4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionBoxSize: {x: 45, y: 4.53, z: 12.33}
-  detectionBoxOffset: {x: 11.3, y: 1.25, z: 0}
+  detectionBoxSize: {x: 41.7, y: 4.69, z: 12.33}
+  detectionBoxOffset: {x: 8.2, y: 1.5, z: 0}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 256
