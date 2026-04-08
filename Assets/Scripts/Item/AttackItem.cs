@@ -17,7 +17,6 @@ public class AttackItem : MonoBehaviour
 
     [Header("Interaction")]
     [SerializeField] private InputActionReference interactAction;
-    [SerializeField] private TMP_Text interactionText;
     private bool itemIsHeld = false;
 
     [Header("Animation")]
@@ -25,12 +24,16 @@ public class AttackItem : MonoBehaviour
     [SerializeField] private string idleAnimationHeld = "BatIdle";
     [SerializeField] private string attackAnimation = "Attack";
     private bool isAttacking = false;
+
+
+    private PlayerGrabInteraction playerGrabInteraction;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         hitEffect.Stop();
         attackSoundEvent = AudioManager.Instance.CreateInstance(attackSound);
         RuntimeManager.AttachInstanceToGameObject(attackSoundEvent, gameObject, false);
+        playerGrabInteraction = FindFirstObjectByType<PlayerGrabInteraction>(FindObjectsInactive.Include);
     }
     void Update()
     {
@@ -75,12 +78,7 @@ public class AttackItem : MonoBehaviour
                 isAttacking = false; // Reset attack state when item is dropped
             }
         }
-
-        if (interactionText != null)
-        {
-            interactionText.gameObject.SetActive(isHeld);
-            interactionText.text = isHeld ? $"Press {interactAction.action.GetBindingDisplayString(0)} to Attack" : "";
-        }
+        playerGrabInteraction.SetPlayerInteractionTexts(isHeld ? $"Press {interactAction.action.GetBindingDisplayString(0)} to Attack" : "");
     }
     public void PerformAttack()
     {

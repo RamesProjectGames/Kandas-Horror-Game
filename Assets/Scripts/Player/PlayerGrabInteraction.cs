@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Dialogue;
 using TMPro;
 using UnityEngine;
@@ -12,13 +13,14 @@ public class PlayerGrabInteraction : MonoBehaviour
     public Vector2 throwForce;
 
     [Tooltip("How long the player can hold the throw button to reach max force.")]
-    public float maxThrowChargeTime = 1f;
+    public static float maxThrowChargeTime = 1f;
 
     public LayerMask pickupLayer, interactableLayer, fragmentLayer;
     public Transform holdPoint;
     [Tooltip("Optional camera whose forward vector will be used for throws. If not assigned the player transform is used.")]
     public Camera playerCamera;
-    public TextMeshProUGUI throwInteractionText;
+    public List<string> playerInteractionTexts = new List<string>();
+    public TextMeshProUGUI bottomInteractText;
     public Slider throwpowerSlider;
 
     private ItemInteraction currentItem;
@@ -26,11 +28,16 @@ public class PlayerGrabInteraction : MonoBehaviour
     [SerializeField] private InputActionReference throwAction, interAction;
 
     // runtime state for charging a throw
-    private float throwCharge;
+    private static float throwCharge;
 
     void Start()
     {
         throwpowerSlider.gameObject.SetActive(false);
+        if(throwAction != null)
+        {
+            string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
+            SetPlayerInteractionTexts($"Press {bindingDisplay} to throw");
+        }
     }
 
     void Update()
@@ -68,13 +75,15 @@ public class PlayerGrabInteraction : MonoBehaviour
         if (throwAction != null)
         {
             if (heldItem != null)
-            {
-                string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
-                throwInteractionText.text = $"Press {bindingDisplay} to throw";
+            {                
+                foreach (var interactionText in playerInteractionTexts)
+                {
+                    bottomInteractText.text = interactionText +" or \n";                    
+                }
             }
             else
             {
-                throwInteractionText.text = "";
+                bottomInteractText.text = "";
             }
             // accumulate charge while the button is held and we have an item
             if (throwAction.action.IsPressed() && heldItem != null)
@@ -99,13 +108,26 @@ public class PlayerGrabInteraction : MonoBehaviour
                     heldItem = null;
                 }
 
-                // reset charge no matter what
-                throwCharge = 0f;
             }
             throwpowerSlider.value = throwCharge / maxThrowChargeTime;
         }
     }
-
+    public void SetPlayerInteractionTexts(string newText)
+    {
+        if(!string.IsNullOrEmpty(newText))
+        {
+            return;
+        }
+        playerInteractionTexts.Add(newText);
+    }
+    public static float GetThrowCharge()
+    {
+        return throwCharge / maxThrowChargeTime;
+    }
+    public static void ResetThrowCharge()
+    {
+        throwCharge = 0f;
+    }
     void DetectItemInteraction()
     {
         ItemInteraction bestItem = null;
