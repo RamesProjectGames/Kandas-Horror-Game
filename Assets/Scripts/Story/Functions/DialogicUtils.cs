@@ -30,7 +30,7 @@ namespace Dialogue.LogicLines
                 {
                     DialogueStructure line = currConvo.GetLines()[i];
 
-                    if(!string.IsNullOrWhiteSpace(line.GetRawLine()) && (RipHeaderAndEncapsulators || (encDepth > 0 && !IsEncapsulationEnd(line.GetRawLine()))))
+                    if(RipHeaderAndEncapsulators || (encDepth > 0 && !IsEncapsulationEnd(line.GetRawLine())))
                         data.lines.Add(line.GetRawLine());
 
                     if(IsEncapsulationStart(line.GetRawLine()))

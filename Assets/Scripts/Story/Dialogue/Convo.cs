@@ -28,6 +28,6 @@ namespace Dialogue
         public int count => lines.Count;
         public List<DialogueStructure> GetLines() => lines;
         public DialogueStructure CurrLine() => lines[progress];
-        public bool ConvoDone() => progress >= lines.Count - 1;
+        public bool ConvoDone() => progress >= lines.Count;
     }
 }

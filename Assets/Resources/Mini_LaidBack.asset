@@ -52,14 +52,17 @@ MonoBehaviour:
     - dialogue: ' I know a good spot to ditch class to take a breather.'
       segmentSignal: 1
       signalDelay: 0
-    - dialogue: The school's backyards is quiet and people rarely go there except
-        to ditch classes. However, recently the teachers caught on with what's happening,
-        so the school closed it off.
+    - dialogue: The school's backyards are quiet and people rarely go there except
+        to ditch classes.
       segmentSignal: 0
       signalDelay: 0
-    - dialogue: It doesn't matter, they don't realize that some animal chewed its
-        way through the wires and there's actually a pretty big hole on one of the
-        gate's corners. You can slip through there just fine.
+    - dialogue: ' However, recently the teachers caught on with what''s happening,
+        so the school closed it off.'
+      segmentSignal: 1
+      signalDelay: 0
+    - dialogue: It doesn't matter though, what they don't realize that some animal
+        chewed its way through the wires and there's actually a pretty big hole on
+        one of the gate's corners. You can slip through there just fine.
       segmentSignal: 0
       signalDelay: 0
     - dialogue: It's covered by a lot of bushes, but that's good because the teacher

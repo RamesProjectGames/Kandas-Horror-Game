@@ -8,7 +8,7 @@ namespace Dialogue.Functions
     {   
         private Dictionary<string, Delegate> database = new Dictionary<string, Delegate>();
 
-        public bool HasFunctions(string functionName) => database.ContainsKey(functionName);
+        public bool HasFunction(string functionName) => database.ContainsKey(functionName);
 
         public void AddFunction(string functionName, Delegate function)
         {
