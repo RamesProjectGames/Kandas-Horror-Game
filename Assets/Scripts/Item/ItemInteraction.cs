@@ -277,10 +277,13 @@ public class ItemInteraction : MonoBehaviour
                 enemy.GetStunned();
             }
 
+            PlayerGrabInteraction.ResetThrowCharge();
+            
             return;
         }
 
         // Normal landing
+        PlayerGrabInteraction.ResetThrowCharge();
         HandleLanding();
         hasBeenThrown = false;
     }

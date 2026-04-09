@@ -558,7 +558,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         Debug.Log("Haha get stunned bozo");
         isStunned = true;
         agent.isStopped = true;
-        currIdleTime = idleTime;
+        currIdleTime = idleTime * PlayerGrabInteraction.GetThrowCharge();
     }
     #endregion
 }

@@ -10,6 +10,8 @@ public class AttackItem : MonoBehaviour
     [Header("Attack Settings")]
     [SerializeField] private ParticleSystem hitEffect;
     [SerializeField] private Animator animator;
+    [SerializeField] private float waitToAttack = 1.5f;
+    private float attackTimer = 0f;
 
     [Header("Audio")]
     [SerializeField] private EventReference attackSound;
@@ -17,7 +19,6 @@ public class AttackItem : MonoBehaviour
 
     [Header("Interaction")]
     [SerializeField] private InputActionReference interactAction;
-    [SerializeField] private TMP_Text interactionText;
     private bool itemIsHeld = false;
 
     [Header("Animation")]
@@ -25,18 +26,28 @@ public class AttackItem : MonoBehaviour
     [SerializeField] private string idleAnimationHeld = "BatIdle";
     [SerializeField] private string attackAnimation = "Attack";
     private bool isAttacking = false;
+
+
+    private PlayerGrabInteraction playerGrabInteraction;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        hitEffect = Instantiate(hitEffect, transform.position, Quaternion.identity, transform.parent);
         hitEffect.Stop();
         attackSoundEvent = AudioManager.Instance.CreateInstance(attackSound);
         RuntimeManager.AttachInstanceToGameObject(attackSoundEvent, gameObject, false);
+        playerGrabInteraction = FindFirstObjectByType<PlayerGrabInteraction>(FindObjectsInactive.Include);
     }
     void Update()
     {
         if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
             return;
 
+        if(attackTimer > 0f) 
+        {
+            attackTimer -= Time.deltaTime;
+            return;
+        }
         // Check if attack animation has finished
         if (isAttacking && animator != null)
         {
@@ -75,12 +86,7 @@ public class AttackItem : MonoBehaviour
                 isAttacking = false; // Reset attack state when item is dropped
             }
         }
-
-        if (interactionText != null)
-        {
-            interactionText.gameObject.SetActive(isHeld);
-            interactionText.text = isHeld ? $"Press {interactAction.action.GetBindingDisplayString(0)} to Attack" : "";
-        }
+        playerGrabInteraction.SetPlayerInteractionTexts(isHeld ? $"Press {interactAction.action.GetBindingDisplayString(0)} to Attack" : "");
     }
     public void PerformAttack()
     {
@@ -97,6 +103,7 @@ public class AttackItem : MonoBehaviour
             animator.Play(attackAnimation);
             isAttacking = true;
         }
+        attackTimer = waitToAttack;
     }
     public void PlayEffect(Vector3 position = default)
     {
