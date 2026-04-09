@@ -27890,7 +27890,6 @@ MonoBehaviour:
   pickupRadius: 3
   frontDotThreshold: 0.45
   throwForce: {x: 1, y: 4}
-  maxThrowChargeTime: 3
   pickupLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -27902,7 +27901,8 @@ MonoBehaviour:
     m_Bits: 8192
   holdPoint: {fileID: 908488196}
   playerCamera: {fileID: 1010298958}
-  throwInteractionText: {fileID: 338259099}
+  playerInteractionTexts: []
+  bottomInteractText: {fileID: 338259099}
   throwpowerSlider: {fileID: 401826553}
   throwAction: {fileID: -2799977855788558582, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   interAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
@@ -28563,7 +28563,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 57.95
+  m_fontSize: 66.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

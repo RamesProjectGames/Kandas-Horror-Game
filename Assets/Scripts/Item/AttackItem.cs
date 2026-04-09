@@ -10,6 +10,8 @@ public class AttackItem : MonoBehaviour
     [Header("Attack Settings")]
     [SerializeField] private ParticleSystem hitEffect;
     [SerializeField] private Animator animator;
+    [SerializeField] private float waitToAttack = 1.5f;
+    private float attackTimer = 0f;
 
     [Header("Audio")]
     [SerializeField] private EventReference attackSound;
@@ -30,6 +32,7 @@ public class AttackItem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        hitEffect = Instantiate(hitEffect, transform.position, Quaternion.identity, transform.parent);
         hitEffect.Stop();
         attackSoundEvent = AudioManager.Instance.CreateInstance(attackSound);
         RuntimeManager.AttachInstanceToGameObject(attackSoundEvent, gameObject, false);
@@ -40,6 +43,11 @@ public class AttackItem : MonoBehaviour
         if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
             return;
 
+        if(attackTimer > 0f) 
+        {
+            attackTimer -= Time.deltaTime;
+            return;
+        }
         // Check if attack animation has finished
         if (isAttacking && animator != null)
         {
@@ -95,6 +103,7 @@ public class AttackItem : MonoBehaviour
             animator.Play(attackAnimation);
             isAttacking = true;
         }
+        attackTimer = waitToAttack;
     }
     public void PlayEffect(Vector3 position = default)
     {
