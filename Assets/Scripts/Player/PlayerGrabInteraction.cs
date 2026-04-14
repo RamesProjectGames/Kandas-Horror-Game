@@ -36,7 +36,7 @@ public class PlayerGrabInteraction : MonoBehaviour
         if(throwAction != null)
         {
             string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
-            SetPlayerInteractionTexts($"Press {bindingDisplay} to throw");
+            AddPlayerInteractionTexts($"Press {bindingDisplay} to throw");
         }
     }
 
@@ -74,17 +74,7 @@ public class PlayerGrabInteraction : MonoBehaviour
         // handle charging and releasing a throw
         if (throwAction != null)
         {
-            if (heldItem != null)
-            {                
-                foreach (var interactionText in playerInteractionTexts)
-                {
-                    bottomInteractText.text = interactionText +" or \n";                    
-                }
-            }
-            else
-            {
-                bottomInteractText.text = "";
-            }
+            
             // accumulate charge while the button is held and we have an item
             if (throwAction.action.IsPressed() && heldItem != null)
             {
@@ -111,14 +101,35 @@ public class PlayerGrabInteraction : MonoBehaviour
             }
             throwpowerSlider.value = throwCharge / maxThrowChargeTime;
         }
+        
+        if (heldItem != null)
+        {
+            string interactionText = "";
+            for (int i = 0; i < playerInteractionTexts.Count; i++)
+            {
+                interactionText += playerInteractionTexts[i] + (i < playerInteractionTexts.Count - 1 ? " or \n" : "");
+            }
+            bottomInteractText.text = interactionText;
+        }
+        else
+        {
+            bottomInteractText.text = "";
+        }
     }
-    public void SetPlayerInteractionTexts(string newText)
+    public void AddPlayerInteractionTexts(string newText)
     {
-        if(!string.IsNullOrEmpty(newText))
+        if(string.IsNullOrEmpty(newText) || playerInteractionTexts.Contains(newText))
         {
             return;
         }
         playerInteractionTexts.Add(newText);
+    }
+    public void RemovePlayerInteractionTexts(string textToRemove)
+    {
+        if (playerInteractionTexts.Contains(textToRemove))
+        {
+            playerInteractionTexts.Remove(textToRemove);
+        }
     }
     public static float GetThrowCharge()
     {
