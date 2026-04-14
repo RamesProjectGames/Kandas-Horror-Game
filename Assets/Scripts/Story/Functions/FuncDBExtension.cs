@@ -13,6 +13,8 @@ namespace Dialogue.Functions
     {
         public static string sfxPath = "event:/SFX/";
         public static string bgmPath = "event:/BGM/";
+        public static string ambiencePath = "event:/Ambience/";
+        public static string voicePath = "event:/Voice/";
         public static void Extend(FunctionsDatabase db)
         {
 
@@ -36,6 +38,9 @@ namespace TestingPurposes
             db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
             db.AddFunction("StopSFX", new Action(StopSFX));
             db.AddFunction("PlayBGM", new Action<string[]>(PlayBGM));
+            db.AddFunction("PlayAmbience", new Action<string[]>(PlayAmbience));
+            db.AddFunction("PlayVoice", new Action<string[]>(PlayVoice));
+            db.AddFunction("StopVoice", new Action(StopVoice));
             db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
             db.AddFunction("HideDialogue", new Func<string, IEnumerator>(HideDialogue));
             db.AddFunction("PlayCutsceneVideo", new Action<string[]>(PlayCutscene));
@@ -178,14 +183,43 @@ namespace TestingPurposes
             AudioManager.Instance.StopAllSfx();
         }
 
+        private static void StopVoice()
+        {
+            AudioManager.Instance.StopAllVoice();
+        }
+
         private static void PlayBGM(string[] args)
         {
             var funcParams = ConvertArgsToParams(args);
-            EventReference sfx = RuntimeManager.PathToEventReference(bgmPath + args[0]);
+            EventReference bgm = RuntimeManager.PathToEventReference(bgmPath + args[0]);
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
             Vector3 pos = GameObject.Find("Player").transform.position;
+            AudioManager.Instance.PlayOneShot(bgm, volume, pitch, pos);
+        }
+
+        private static void PlayAmbience(string[] args)
+        {
+            Debug.Log("Playing Ambience");
+            var funcParams = ConvertArgsToParams(args);
+            EventReference ambience = RuntimeManager.PathToEventReference(ambiencePath + args[0]);
+            funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
+            funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
+
+            Vector3 pos = GameObject.Find("Player").transform.position;
+            AudioManager.Instance.PlayOneShot(ambience, volume, pitch, pos);
+        }
+
+        private static void PlayVoice(string[] args)
+        {
+            var funcParams = ConvertArgsToParams(args);
+            EventReference voice = RuntimeManager.PathToEventReference(voicePath + args[0]);
+            funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
+            funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
+
+            Vector3 pos = GameObject.Find("Player").transform.position;
+            AudioManager.Instance.PlayOneShot(voice, volume, pitch, pos);
         }
         #endregion
 

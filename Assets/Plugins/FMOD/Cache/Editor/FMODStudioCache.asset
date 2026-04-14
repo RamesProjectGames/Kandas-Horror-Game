@@ -64,11 +64,38 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/BGM.bank
   Name: BGM
   StudioPath: bank:/BGM
-  lastModified: 639082279543249882
+  lastModified: 639114229676683472
   FileSizes:
   - Name: Desktop
     Value: 506
   Exists: 1
+--- !u!114 &-7834978452386579897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/SchoolAmbience
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/SchoolAmbience
+  Guid:
+    Data1: 1518556481
+    Data2: 1216081865
+    Data3: 905261752
+    Data4: 1369548532
+  Banks:
+  - {fileID: 3551023922120485847}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 54260
 --- !u!114 &-7813212504193567034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,7 +239,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639102329917902675
+  lastModified: 639114252076366557
   FileSizes:
   - Name: Desktop
     Value: 1524
@@ -264,6 +291,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 506
   Exists: 1
+--- !u!114 &-3820378864822223141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/Chatter
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/Chatter
+  Guid:
+    Data1: -132550196
+    Data2: 1322843514
+    Data3: -1255761220
+    Data4: 628745851
+  Banks:
+  - {fileID: 3551023922120485847}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 19062
 --- !u!114 &-3567106662991801488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,7 +384,6 @@ MonoBehaviour:
   - {fileID: 3551023922120485847}
   EditorEvents:
   - {fileID: 8863259646918854691}
-  - {fileID: 2010647933892701668}
   - {fileID: 4454753689980159585}
   - {fileID: 6618729507193921072}
   - {fileID: 8281960395637879033}
@@ -339,34 +392,38 @@ MonoBehaviour:
   - {fileID: -7813212504193567034}
   - {fileID: 3269528981090473387}
   - {fileID: 1213060651724275254}
+  - {fileID: -7834978452386579897}
+  - {fileID: -3820378864822223141}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4634749821997254833}
   StringsBanks:
   - {fileID: 2402750766380479616}
   cacheVersion: 131858
-  cacheTime: 639111585951227712
+  cacheTime: 639114258198917320
   SerializableEventsDict:
   - key: event:/SFX/ChaserFootsteps
     index: 0
-  - key: event:/SFX/Cheer
-    index: 1
   - key: event:/SFX/PlayerFootsteps
-    index: 2
+    index: 1
   - key: event:/SFX/ManequinMovement
-    index: 3
+    index: 2
   - key: event:/SFX/UIButtonClick
-    index: 4
+    index: 3
   - key: event:/SFX/PlayerSwing
-    index: 5
+    index: 4
   - key: event:/SFX/ManequinBreak
-    index: 6
+    index: 5
   - key: event:/SFX/NumPads
-    index: 7
+    index: 6
   - key: event:/SFX/SafeOpen
-    index: 8
+    index: 7
   - key: event:/SFX/PlayerPanting
+    index: 8
+  - key: event:/Ambience/SchoolAmbience
     index: 9
+  - key: event:/Ambience/Chatter
+    index: 10
 --- !u!114 &323353787290861564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,33 +506,6 @@ MonoBehaviour:
   - Grass
   - Glass
   Exists: 1
---- !u!114 &2010647933892701668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Cheer
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Cheer
-  Guid:
-    Data1: 1518556481
-    Data2: 1216081865
-    Data3: 905261752
-    Data4: 1369548532
-  Banks:
-  - {fileID: 3406518332576070875}
-  IsStream: 1
-  Is3D: 1
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 54260
 --- !u!114 &2402750766380479616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,10 +521,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639111585951157518
+  lastModified: 639114252076381750
   FileSizes:
   - Name: Desktop
-    Value: 1502
+    Value: 1616
   Exists: 1
 --- !u!114 &3269528981090473387
 MonoBehaviour:
@@ -538,10 +568,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639111585951227712
+  lastModified: 639114252077271751
   FileSizes:
   - Name: Desktop
-    Value: 1009984
+    Value: 479008
   Exists: 1
 --- !u!114 &3551023922120485847
 MonoBehaviour:
@@ -558,10 +588,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Voice.bank
   Name: Voice
   StudioPath: bank:/Voice
-  lastModified: 639082279546248497
+  lastModified: 639114258198917320
   FileSizes:
   - Name: Desktop
-    Value: 506
+    Value: 746496
   Exists: 1
 --- !u!114 &4454753689980159585
 MonoBehaviour:

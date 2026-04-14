@@ -44,8 +44,12 @@ public class AudioManager : MonoBehaviour
 
     public void StopAllSfx()
     {
-        voiceBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
         sfxBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+    }
+
+    public void StopAllVoice()
+    {
+        voiceBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 
     public EventInstance CreateInstance(EventReference sound)

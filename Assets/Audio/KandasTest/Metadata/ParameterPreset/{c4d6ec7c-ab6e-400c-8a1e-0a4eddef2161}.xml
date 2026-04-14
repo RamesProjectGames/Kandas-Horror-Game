@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{c4d6ec7c-ab6e-400c-8a1e-0a4eddef2161}">
+		<property name="name">
+			<value>MonsterAction</value>
+		</property>
+		<relationship name="folder">
+			<destination>{369a592f-e00e-4013-8b3d-73ecd2170991}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{2506ff81-dac7-44d9-8d54-e7e1a750a907}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{2506ff81-dac7-44d9-8d54-e7e1a750a907}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>3</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>Laugh</value>
+			<value>Growl</value>
+			<value>Scream</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

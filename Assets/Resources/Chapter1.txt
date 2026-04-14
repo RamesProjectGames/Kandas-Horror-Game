@@ -5,14 +5,11 @@ Teacher "Good morning, everyone. Today, we have a new student in class."
 Jessica "Hello, everyone. My name is Jessica."
 Everyone "Hi, Jessica."
 Jessica "From now on, I will be studying in this school. I hope we can get along well."
-PlaySFX(Cheer ^v 0.1 ^p 1)
+PlayAmbience(Chatter ^v 0.1 ^p 1)
 Student A "(whispering) Dude, she’s super hot."
-if (!Objective(Class) && Objective(Desk))
-{
-	Student B "(whispering) You think you’d get a chance with her?"
-	Student C "(whispering) Why is she transferring here in the middle of the semester?"
-}
+Student B "(whispering) You think you’d get a chance with her?"
+Student C "(whispering) Why is she transferring here in the middle of the semester?"
 Student D "(whispering) Hahaha, maybe she got dropped out of her previous school?"
-Teacher "Alright, calm down, everybody, save the questions for later." StopSFX()
+Teacher "Alright, calm down, everybody, save the questions for later." StopVoice()
 "{a}\nNow, we need to start the class as we have a quiz today.{a}\nJessica, why don’t you sit over there?"
 Jessica "Okay." Objective(Class)
