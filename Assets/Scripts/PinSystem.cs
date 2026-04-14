@@ -18,6 +18,8 @@ public class PinSystem : MonoBehaviour
 
     [Header("Audio")]
     [SerializeField] private EventReference inputPinSound;
+    [SerializeField] private EventReference correctPinSound;
+    [SerializeField] private EventReference incorrectPinSound;
     [SerializeField] private EventReference SafeOpenedSound;
     private EventInstance inputPinSoundEvent;
 
@@ -86,6 +88,7 @@ public class PinSystem : MonoBehaviour
             {
                 if (pinTexts[i] != correctPins[i])
                 {
+                    AudioManager.Instance.PlayOneShot(incorrectPinSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
                     OnIncorrectPins?.Invoke();
 
                     EnemyMovement[] enemies = FindObjectsByType<EnemyMovement>(FindObjectsSortMode.None);
@@ -99,9 +102,11 @@ public class PinSystem : MonoBehaviour
                     return;
                 }
             }
+            AudioManager.Instance.PlayOneShot(correctPinSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
             OnCorrectPins?.Invoke();
             ClosePanel();
             PlaySafeOpenedSound();
+            
         }
     }
     public void OpenPanel()

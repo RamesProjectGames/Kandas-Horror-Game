@@ -86,7 +86,14 @@ public class AttackItem : MonoBehaviour
                 isAttacking = false; // Reset attack state when item is dropped
             }
         }
-        playerGrabInteraction.SetPlayerInteractionTexts(isHeld ? $"Press {interactAction.action.GetBindingDisplayString(0)} to Attack" : "");
+        if(isHeld)
+        {
+            playerGrabInteraction.AddPlayerInteractionTexts($"Press {interactAction.action.GetBindingDisplayString(0)} to Attack");            
+        }
+        else
+        {
+            playerGrabInteraction.RemovePlayerInteractionTexts($"Press {interactAction.action.GetBindingDisplayString(0)} to Attack");
+        }
     }
     public void PerformAttack()
     {
