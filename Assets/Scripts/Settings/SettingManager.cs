@@ -338,13 +338,19 @@ public class SettingManager : MonoBehaviour
         UnityEngine.Debug.Log($"Mic Name : {micName}");
         if (!string.IsNullOrEmpty(micName))
         {
-            settings.AudioInputDeviceName = GetMicName(index);
+            settings.AudioInputDeviceName = micName;
         }
         else
         {
             settings.AudioInputDeviceName = "";
         }
         SaveSettings();
+
+        MicrophoneManager micManager = MicrophoneManager.Instance;
+        if (micManager != null)
+        {
+            micManager.RestartRecording();
+        }
     }
     public string GetMicName(int index)
     {

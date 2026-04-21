@@ -249,6 +249,30 @@ public class MicrophoneManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Stops the current recording session and restarts it with the device stored in settings.
+    /// Call this whenever the user changes the audio input device.
+    /// </summary>
+    public void RestartRecording()
+    {
+        if (isRecording && coreSystem.handle != System.IntPtr.Zero && activeRecordingDevice >= 0)
+        {
+            coreSystem.recordStop(activeRecordingDevice);
+            isRecording = false;
+        }
+
+        if (recordingSound.handle != System.IntPtr.Zero)
+        {
+            recordingSound.release();
+            recordingSound = default;
+        }
+
+        isInitialized = false;
+        activeRecordingDevice = -1;
+        enableMicrophone = true;
+        InitializeMicrophone();
+    }
+
+    /// <summary>
     /// Checks if microphone is initialized and recording
     /// </summary>
     public bool IsMicrophoneActive()
