@@ -21,6 +21,7 @@ public class MicrophoneManager : MonoBehaviour
     private FMOD.Sound recordingSound;
     private bool isRecording = false;
     private float[] audioBuffer;
+    private int activeRecordingDevice = -1;
     
     private bool isInitialized = false;
 
@@ -138,6 +139,8 @@ public class MicrophoneManager : MonoBehaviour
             return;
         }
 
+        activeRecordingDevice = recordingDevice;
+
         // Create sound object for recording
         FMOD.CREATESOUNDEXINFO exInfo = new FMOD.CREATESOUNDEXINFO();
         exInfo.cbsize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(FMOD.CREATESOUNDEXINFO));
@@ -155,8 +158,8 @@ public class MicrophoneManager : MonoBehaviour
             return;
         }
 
-        // Start recording
-        result = coreSystem.recordStart(recordingDevice, recordingSound, true);
+        // Start recording on the resolved device index
+        result = coreSystem.recordStart(activeRecordingDevice, recordingSound, true);
         
         if (result != FMOD.RESULT.OK)
         {
@@ -167,7 +170,7 @@ public class MicrophoneManager : MonoBehaviour
 
         isRecording = true;
         isInitialized = true;
-        UnityEngine.Debug.Log("Microphone initialized with FMOD");
+        UnityEngine.Debug.Log($"Microphone initialized with FMOD on device [{activeRecordingDevice}]: {recordingDeviceName}");
         
         // if (SettingManager.Instance != null)
         // {
@@ -197,14 +200,26 @@ public class MicrophoneManager : MonoBehaviour
 
         try
         {
-            // Get the current position in the recording
+            // Get the current write position in the recording buffer
             uint recordPos = 0;
-            coreSystem.getRecordPosition(0, out recordPos);
+            coreSystem.getRecordPosition(activeRecordingDevice, out recordPos);
+
+            // Calculate the read start: step back by frequencyBands samples from the write head
+            uint soundLength = 0;
+            recordingSound.getLength(out soundLength, FMOD.TIMEUNIT.PCMBYTES);
+            uint readBytesNeeded = (uint)(frequencyBands * sizeof(short));
+            uint writeBytePos = recordPos * sizeof(short);
+
+            uint lockOffset;
+            if (writeBytePos >= readBytesNeeded)
+                lockOffset = writeBytePos - readBytesNeeded;
+            else
+                lockOffset = soundLength - (readBytesNeeded - writeBytePos);
 
             // Read audio data from the recording sound
             System.IntPtr ptr1, ptr2;
             uint len1, len2;
-            recordingSound.@lock(recordPos * sizeof(short), (uint)(frequencyBands * sizeof(short)), out ptr1, out ptr2, out len1, out len2);
+            recordingSound.@lock(lockOffset, readBytesNeeded, out ptr1, out ptr2, out len1, out len2);
 
             // Copy data to managed array
             if (len1 > 0)
@@ -234,6 +249,30 @@ public class MicrophoneManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Stops the current recording session and restarts it with the device stored in settings.
+    /// Call this whenever the user changes the audio input device.
+    /// </summary>
+    public void RestartRecording()
+    {
+        if (isRecording && coreSystem.handle != System.IntPtr.Zero && activeRecordingDevice >= 0)
+        {
+            coreSystem.recordStop(activeRecordingDevice);
+            isRecording = false;
+        }
+
+        if (recordingSound.handle != System.IntPtr.Zero)
+        {
+            recordingSound.release();
+            recordingSound = default;
+        }
+
+        isInitialized = false;
+        activeRecordingDevice = -1;
+        enableMicrophone = true;
+        InitializeMicrophone();
+    }
+
+    /// <summary>
     /// Checks if microphone is initialized and recording
     /// </summary>
     public bool IsMicrophoneActive()
@@ -244,9 +283,9 @@ public class MicrophoneManager : MonoBehaviour
     void OnDestroy()
     {
         // Stop microphone recording when object is destroyed
-        if (isRecording && coreSystem.handle != System.IntPtr.Zero)
+        if (isRecording && coreSystem.handle != System.IntPtr.Zero && activeRecordingDevice >= 0)
         {
-            coreSystem.recordStop(0);
+            coreSystem.recordStop(activeRecordingDevice);
             isRecording = false;
         }
 

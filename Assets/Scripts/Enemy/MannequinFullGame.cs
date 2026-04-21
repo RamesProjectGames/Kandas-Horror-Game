@@ -23,7 +23,6 @@ public class MannequinFullGame : MonoBehaviour
     public event StrikeEvent OnWrongStrike;
     public event MannequinEvent OnAllPosesReset;
     [Header("Detection")]
-    [SerializeField] private float detectionRange = 20f;
     private PlayerSightInteraction playerSight;
     private Transform playerTransform;
 
@@ -274,6 +273,11 @@ public class MannequinFullGame : MonoBehaviour
             // Trigger pose started event
             OnPoseStarted?.Invoke(currentPoseIndex, poseName);
         }
+        else
+        {
+            float randomRotation = Random.Range(-45f, 45f);
+            transform.rotation = Quaternion.Euler(0f, currentPoseIndex * 90f + randomRotation, 0f);
+        }
     }
 
     private void ResetToIdle()
@@ -317,21 +321,6 @@ public class MannequinFullGame : MonoBehaviour
         strikeSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
-    private void OnDrawGizmos()
-    {
-        if (isInPose)
-        {
-            Gizmos.color = Color.cyan;
-        }
-        else
-        {
-            Gizmos.color = Color.yellow;
-        }
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
-
-        // Draw strike radius
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, strikeRadius);
-    }
+    
 }
 

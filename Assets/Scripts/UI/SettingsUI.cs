@@ -343,7 +343,7 @@ public class SettingsUI : MonoBehaviour
             sectionButtons[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().fontStyle = i == index ? FontStyles.Underline : FontStyles.Normal;
         }
     }
-    public void OpenSettings() { SettingPanel.SetActive(true); PausePanel.SetActive(false); }
+    public void OpenSettings() { SettingPanel.SetActive(true); if(PausePanel != null) PausePanel.SetActive(false); }
     public void CloseSettings() { SettingPanel.SetActive(false); if(PausePanel != null) PausePanel.SetActive(true);}
     public void PausePanelToggle(bool state = false) 
     { 
