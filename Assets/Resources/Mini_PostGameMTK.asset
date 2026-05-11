@@ -16,12 +16,9 @@ MonoBehaviour:
   dialogues:
   - speaker: Teacher
     dialogue:
-    - dialogue: 'Okay, '
+    - dialogue: 'Okay everyone, '
       segmentSignal: 0
       signalDelay: 0
-    - dialogue: 'everyone, '
-      segmentSignal: 3
-      signalDelay: 0.5
     - dialogue: put your pencils down.
       segmentSignal: 3
       signalDelay: 0.5
@@ -32,4 +29,11 @@ MonoBehaviour:
     - name: Objective
       args:
       - DoQuiz
+      waitForCompletion: 0
+  - speaker: 
+    dialogue: []
+    functions:
+    - name: SwitchCam
+      args:
+      - Player Camera
       waitForCompletion: 0

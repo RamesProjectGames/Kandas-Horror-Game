@@ -16,7 +16,7 @@ namespace Dialogue
         public bool isRunningConvo => convoManager.isRunning;
         public TextArchitect architect { get; private set; }
 
-        [SerializeField] private InputActionReference nextInput;
+        [SerializeField] private InputActionReference nextInput, enqDebugInput;
         public List<MiniDialogue> allMiniDialogues;
         public Coroutine screenCo;
 
@@ -55,14 +55,13 @@ namespace Dialogue
             convoManager = new ConvoManager(architect);
 
             nextInput.action.performed += OnUserPrompt;
+            enqDebugInput.action.performed += EnqueueDebug;
         }
 
         private void Update()
         {
             if (Application.isPlaying && (SettingManager.Instance.isPaused || !isRunningConvo) && !dialogueContainer.active)
                 return;
-            if(Input.GetKeyDown(KeyCode.M))
-                convoManager.EnqueuePrio(FileReader.ReadAsset("Fragment1"));
             if (buildMethod != architect.buildMethod)
             {
                 architect.buildMethod = buildMethod;
@@ -121,6 +120,12 @@ namespace Dialogue
                 return;
             convoManager.convoQueue.Dequeue();
             convoManager.StopConvo();
+        }
+
+        public void EnqueueDebug(InputAction.CallbackContext ctx)
+        {
+            if (Input.GetKeyDown(KeyCode.M))
+                convoManager.EnqueuePrio(FileReader.ReadAsset("Fragment1"));
         }
 
         public void OnUserPrompt(InputAction.CallbackContext ctx)

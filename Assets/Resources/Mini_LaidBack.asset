@@ -40,17 +40,12 @@ MonoBehaviour:
     functions: []
   - speaker: Laid-Back Student
     dialogue:
-    - dialogue: Just kidding. Relax a little.
+    - dialogue: Just kidding. Relax a little. You look like you could use a break.
       segmentSignal: 0
       signalDelay: 0
-    - dialogue: ' You look like you could use a break.'
-      segmentSignal: 3
-      signalDelay: 0.5
-    - dialogue: I'll tell you a secret.
+    - dialogue: I'll tell you a secret. I know a good spot to ditch class to take
+        a breather.
       segmentSignal: 0
-      signalDelay: 0
-    - dialogue: ' I know a good spot to ditch class to take a breather.'
-      segmentSignal: 1
       signalDelay: 0
     - dialogue: The school's backyards are quiet and people rarely go there except
         to ditch classes.
@@ -65,7 +60,7 @@ MonoBehaviour:
         one of the gate's corners. You can slip through there just fine.
       segmentSignal: 0
       signalDelay: 0
-    - dialogue: It's covered by a lot of bushes, but that's good because the teacher
+    - dialogue: It's covered by a lot of bushes, but that's good because the teachers
         and the security guy wouldn't notice it.
       segmentSignal: 0
       signalDelay: 0
@@ -78,4 +73,8 @@ MonoBehaviour:
     - dialogue: "That\u2019s all from me, see ya around~"
       segmentSignal: 0
       signalDelay: 0
-    functions: []
+    functions:
+    - name: Objective
+      args:
+      - LaidBack
+      waitForCompletion: 0

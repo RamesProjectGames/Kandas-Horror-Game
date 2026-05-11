@@ -393,6 +393,17 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         yield return new WaitForEndOfFrame();
     }
 
+    public override IEnumerator Rotate(float yrot)
+    {
+        Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
+
+        while (Quaternion.Angle(transform.rotation, targetRotation) >= 1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 3 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
     public override IEnumerator Move(Vector3 pos, float speed = 3f)
     {
         // ensure we send the agent to a valid NavMesh position

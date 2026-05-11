@@ -18,7 +18,7 @@ namespace Dialogue
     [Serializable]
     public class DialogueStructure
     {
-        private string rawLine = string.Empty;
+        public string rawLine = string.Empty;
         public string GetRawLine() => !string.IsNullOrWhiteSpace(rawLine) ? rawLine : ReconstructRawLine();
         public string speaker;
 
@@ -156,39 +156,52 @@ namespace Dialogue
 
         public string ReconstructRawLine()
         {
-            string reconstructedLine = $"{speaker} \"";
+            string reconstructedLine = $"{speaker}";
             for(int i = 0; i<dialogue.Count;i++)
             {
-                if(i != 0)
+                if(i == 0)
+                {
+                    reconstructedLine += "\"";
+                }
+                else
                 {
                     reconstructedLine += $"[{dialogue[i].segmentSignal}";
                     if (dialogue[i].segmentSignal == DialogueData.SegmentSignal.WA || dialogue[i].segmentSignal == DialogueData.SegmentSignal.WC)
                     {
                         reconstructedLine = $"{reconstructedLine} {dialogue[i].signalDelay}";
                     }
-                    reconstructedLine += $"{reconstructedLine}]";
+                    reconstructedLine = $"{reconstructedLine}]";
+                    if (i == dialogue.Count - 1)
+                    {
+                        reconstructedLine = $"{reconstructedLine}\" ";
+                    }
                 }
                 reconstructedLine += dialogue[i].dialogue;
             }
-            reconstructedLine = $"{reconstructedLine}\" ";
             for(int i = 0;i<functions.Count;i++)
             {
                 if (functions[i].waitForCompletion)
                 {
                     reconstructedLine = $"{reconstructedLine}{waitSignal}";
                 }
+                if(i != 0)
+                    reconstructedLine = $"{reconstructedLine}, ";
                 reconstructedLine = $"{reconstructedLine}{functions[i].name}{argumentContainer}";
                 for(int j = 0; j < functions[i].args.Length;j++)
                 {
-                    //if(j != 0)
-                    //{
-                    //    reconstructedLine = $"{reconstructedLine}^";
-                    //}
-                    reconstructedLine = $"{reconstructedLine} {functions[i].args[j]}";
+                    if(j == 0)
+                    {
+                        reconstructedLine = $"{reconstructedLine}{functions[i].args[j]}";
+                    }
+                    else
+                    {
+                        reconstructedLine = $"{reconstructedLine} {functions[i].args[j]}";
+                    }
                 }
                 reconstructedLine = $"{reconstructedLine})";
             }
             rawLine = reconstructedLine;
+            Debug.Log(reconstructedLine);
             return rawLine;
         }
     }

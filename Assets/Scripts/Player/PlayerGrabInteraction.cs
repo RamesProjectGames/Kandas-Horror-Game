@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class PlayerGrabInteraction : MonoBehaviour
 {
+    [SerializeField] float yOffset = .5f;
     public float pickupRadius = 2f;
     public float frontDotThreshold = 0.5f;
     [Tooltip("X = minimum force, Y = maximum force when fully charged.")]
@@ -54,7 +55,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                 if ((interactableLayer & (1 << currentItem.gameObject.layer)) != 0 || (fragmentLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
                     currentItem.onInteract.Invoke();
-                    GetComponent<PlayerController>().FaceObject(currentItem.transform);
+                    //GetComponent<PlayerController>().FaceObject(currentItem.transform);
                 }
                 else if ((pickupLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
@@ -64,10 +65,10 @@ public class PlayerGrabInteraction : MonoBehaviour
                         heldItem.Pickup(holdPoint);
                     }
                 }
-            }
-            if (currentItem.CanInteractWhenHeld && heldItem != null)
-            {
-                currentItem.onHoldInteract?.Invoke();
+                else if (currentItem.CanInteractWhenHeld && heldItem != null)
+                {
+                    currentItem.onHoldInteract?.Invoke();
+                }
             }
         }
         
@@ -143,15 +144,16 @@ public class PlayerGrabInteraction : MonoBehaviour
     {
         ItemInteraction bestItem = null;
         float bestDistance = float.MaxValue;
+        Vector3 visionPos = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, pickupLayer | interactableLayer | fragmentLayer);
+        Collider[] hits = Physics.OverlapSphere(visionPos, pickupRadius, pickupLayer | interactableLayer | fragmentLayer);
 
         foreach (Collider hit in hits)
         {
             if (!hit.TryGetComponent(out ItemInteraction item) || item.IsHeld)
                 continue;
 
-            Vector3 toItem = (hit.transform.position - transform.position).normalized;
+            Vector3 toItem = (hit.transform.position - visionPos).normalized;
             Vector3 detectionForward = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
             float dot = Vector3.Dot(detectionForward, toItem);
 
@@ -159,7 +161,7 @@ public class PlayerGrabInteraction : MonoBehaviour
             if (dot >= frontDotThreshold)
             {
 
-                float distance = Vector3.Distance(transform.position, hit.transform.position);
+                float distance = Vector3.Distance(visionPos, hit.transform.position);
                 if (distance < bestDistance)
                 {
                     if ((interactableLayer & (1 << item.gameObject.layer)) != 0 || (fragmentLayer & (1 << item.gameObject.layer)) != 0)
@@ -230,11 +232,12 @@ public class PlayerGrabInteraction : MonoBehaviour
     //}
     void OnDrawGizmosSelected()
     {
+        Vector3 visionPos = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, pickupRadius);
+        Gizmos.DrawWireSphere(visionPos, pickupRadius);
 
         Gizmos.color = Color.blue;
         Vector3 gizmoForward = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
-        Gizmos.DrawRay(transform.position, gizmoForward * pickupRadius);
+        Gizmos.DrawRay(visionPos, gizmoForward * pickupRadius);
     }
 }

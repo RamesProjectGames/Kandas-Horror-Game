@@ -4,6 +4,7 @@ using FMODUnity;
 using System;
 using System.Collections;
 using System.Linq;
+using Unity.Cinemachine;
 using UnityEngine;
 using static UnityEngine.Rendering.GPUSort;
 
@@ -31,6 +32,7 @@ namespace TestingPurposes
         new public static void Extend(FunctionsDatabase db)
         {
             db.AddFunction("Teleport", new Action<string[]>(TeleportObject));
+            db.AddFunction("Rotate", new Action<string[]>(RotateObject));
             db.AddFunction("Move", new Action<string[]>(MoveObject));
             db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
             db.AddFunction("Poultry", new Action(PrintPoultry));
@@ -54,20 +56,21 @@ namespace TestingPurposes
             db.AddFunction("Fadein", new Func<string, IEnumerator>(FadeIn));
             db.AddFunction("fadeout", new Func<string, IEnumerator>(FadeOut));
             db.AddFunction("StopWithoutObj", new Action<string>(ConditionalStopDialogue));
-            //db.AddFunction("SetUpEnding", new Action());
-
+            db.AddFunction("SwitchCam", new Action<string>(SwitchCamera));
+            db.AddFunction("Despawn", new Action<string>(Despawn));
         }
 
 
         #region Move Objects
         private static void TeleportObject(string[] args)
         {
-            float x, y, z;
+            float x, y, z, rot;
             GameObject movableObject = GameObject.Find(args[0]);
             var funcParams = ConvertArgsToParams(args);
             funcParams.TryGetValue(new string[] { "^x" }, out x, defaultValue: movableObject.transform.position.x);
             funcParams.TryGetValue(new string[] { "^y" }, out y, defaultValue: movableObject.transform.position.y);
             funcParams.TryGetValue(new string[] { "^z" }, out z, defaultValue: movableObject.transform.position.z);
+            funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: movableObject.transform.rotation.y);
             movableObject.TryGetComponent(out MovableObjects moveScript);
             if (moveScript != null)
             {
@@ -76,6 +79,23 @@ namespace TestingPurposes
             else
             {
                 movableObject.transform.position = new Vector3(x, y, z);
+            }
+        }
+
+        private static void RotateObject(string[] args)
+        {
+            float rot;
+            GameObject movableObject = GameObject.Find(args[0]);
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: movableObject.transform.rotation.y);
+            movableObject.TryGetComponent(out MovableObjects moveScript);
+            if (moveScript != null)
+            {
+                moveScript.StartCoroutine(moveScript.Rotate(rot));
+            }
+            else
+            {
+                movableObject.transform.rotation = Quaternion.Euler(0,rot,0);
             }
         }
 
@@ -91,6 +111,15 @@ namespace TestingPurposes
             if (moveScript != null)
             {
                 moveScript.StartCoroutine(moveScript.Move(new Vector3(x, y, z)));
+            }
+        }
+
+        private static void Despawn(string arg)
+        {
+            GameObject obj = GameObject.Find(arg);
+            if (obj != null)
+            {
+                UnityEngine.Object.Destroy(obj);
             }
         }
 
@@ -227,6 +256,11 @@ namespace TestingPurposes
         private static void PlayCutscene(string[] args)
         {
 
+        }
+
+        private static void SwitchCamera(string arg)
+        {
+            CameraManager.SwitchCamera(GameObject.Find(arg).GetComponent<CinemachineCamera>());
         }
 
         private static void PrintPoultry()

@@ -1,4 +1,5 @@
 using Dialogue;
+using System;
 using System.Collections;
 using System.Drawing;
 using System.Linq;
@@ -11,10 +12,17 @@ public class NpcMovement : MovableObjects
     [SerializeField] int idxPoint = 0;
     [SerializeField] Animator animator;
 
+    [Header("Footsteps")]
+    [SerializeField] FootstepsSoundManager footstepManager;
+    public Transform foot;
+    public LayerMask groundMask;
+    public GroundSurface currentSurface;
+
     public static bool allowMovement = false;
     float speed = 1f;
     float idleTime = 5f, currIdleTime;
     bool wasPausedLastFrame = false;
+    float lastFootstep;
     
     private Vector2 Velocity;
     private Vector2 smoothDeltaPosition;
@@ -47,6 +55,17 @@ public class NpcMovement : MovableObjects
         yield return new WaitForEndOfFrame();
     }
 
+    public override IEnumerator Rotate(float yrot)
+    {
+        Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
+
+        while (Quaternion.Angle(transform.rotation, targetRotation) >= 1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 3 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -55,7 +74,10 @@ public class NpcMovement : MovableObjects
         if(point.Length > 0)
             agent.SetDestination(point[idxPoint].position);
         currIdleTime = idleTime;
-        if(animator != null)
+        // footsteps helper
+        if (footstepManager == null)
+            footstepManager = GetComponent<FootstepsSoundManager>();
+        if (animator != null)
         {
             animator.applyRootMotion = true;
             agent.updatePosition = false;
@@ -171,6 +193,7 @@ public class NpcMovement : MovableObjects
         }
         return false;
     }
+
     public void SynchronizeAnimatorAndAgent()
     {
         if(animator == null) return;
@@ -201,6 +224,17 @@ public class NpcMovement : MovableObjects
         animator.SetBool("move", shouldMove);
         animator.SetFloat("velocity", Velocity.magnitude);
 
+        var footstep = animator.GetFloat("Footstep");
+        if(Math.Abs(footstep) < .00001f)
+        {
+            footstep = 0f;
+        }
+
+        if ((footstep > 0f && lastFootstep < 0f) || (footstep < 0f && lastFootstep > 0f))
+        {
+            footstepManager.PlayFootstep();
+        }
+        lastFootstep = footstep;
         float deltaMagnitude = worldDeltaPosition.magnitude;
         if(deltaMagnitude > agent.radius / 2f)
         {

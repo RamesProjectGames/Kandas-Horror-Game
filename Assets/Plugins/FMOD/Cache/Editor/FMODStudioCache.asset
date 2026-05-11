@@ -64,7 +64,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/BGM.bank
   Name: BGM
   StudioPath: bank:/BGM
-  lastModified: 639123908638268076
+  lastModified: 639114229676683472
   FileSizes:
   - Name: Desktop
     Value: 506
@@ -239,7 +239,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639123908638268076
+  lastModified: 639141223916145019
   FileSizes:
   - Name: Desktop
     Value: 1524
@@ -338,6 +338,34 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1196
   Exists: 1
+--- !u!114 &-1220024459839668281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Voice/MonsterSounds
+  m_EditorClassIdentifier: 
+  Path: event:/Voice/MonsterSounds
+  Guid:
+    Data1: 949364318
+    Data2: 1185387525
+    Data3: 1417902772
+    Data4: -815849831
+  Banks:
+  - {fileID: 3551023922120485847}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 5889126407494620830}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-1108317354389884274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,13 +422,16 @@ MonoBehaviour:
   - {fileID: 1213060651724275254}
   - {fileID: -7834978452386579897}
   - {fileID: -3820378864822223141}
+  - {fileID: 8593934913192627197}
+  - {fileID: 4248163362495528005}
+  - {fileID: -1220024459839668281}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4634749821997254833}
   StringsBanks:
   - {fileID: 2402750766380479616}
   cacheVersion: 131858
-  cacheTime: 639123908638331228
+  cacheTime: 639141223916881504
   SerializableEventsDict:
   - key: event:/SFX/ChaserFootsteps
     index: 0
@@ -424,6 +455,12 @@ MonoBehaviour:
     index: 9
   - key: event:/Ambience/Chatter
     index: 10
+  - key: event:/SFX/SchoolBell
+    index: 11
+  - key: event:/SFX/ChairDrag
+    index: 12
+  - key: event:/Voice/MonsterSounds
+    index: 13
 --- !u!114 &323353787290861564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,10 +558,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639123908638268076
+  lastModified: 639141223916165041
   FileSizes:
   - Name: Desktop
-    Value: 1616
+    Value: 1768
   Exists: 1
 --- !u!114 &3269528981090473387
 MonoBehaviour:
@@ -568,10 +605,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639123908638301092
+  lastModified: 639141223916687029
   FileSizes:
   - Name: Desktop
-    Value: 479008
+    Value: 480736
   Exists: 1
 --- !u!114 &3551023922120485847
 MonoBehaviour:
@@ -588,11 +625,38 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Voice.bank
   Name: Voice
   StudioPath: bank:/Voice
-  lastModified: 639123908638331228
+  lastModified: 639141223916881504
   FileSizes:
   - Name: Desktop
-    Value: 746496
+    Value: 747680
   Exists: 1
+--- !u!114 &4248163362495528005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/ChairDrag
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/ChairDrag
+  Guid:
+    Data1: -605268262
+    Data2: 1211757595
+    Data3: 2063864506
+    Data4: 32723277
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &4454753689980159585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -641,6 +705,33 @@ MonoBehaviour:
   FileSizes:
   - Name: Desktop
     Value: 1524
+  Exists: 1
+--- !u!114 &5889126407494620830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MonsterSounds/MonsterAction
+  m_EditorClassIdentifier: 
+  Name: MonsterAction
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 1391496482
+    data2: 1209749928
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Laugh
+  - Growl
+  - Scream
   Exists: 1
 --- !u!114 &6618729507193921072
 MonoBehaviour:
@@ -696,6 +787,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2000
+--- !u!114 &8593934913192627197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/SchoolBell
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/SchoolBell
+  Guid:
+    Data1: -644680429
+    Data2: 1308308019
+    Data3: -621875303
+    Data4: -1657663997
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &8748180263284601938
 MonoBehaviour:
   m_ObjectHideFlags: 0

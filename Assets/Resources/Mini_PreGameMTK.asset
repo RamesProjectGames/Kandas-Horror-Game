@@ -14,7 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   convoName: Mini_PreGameMTK
   dialogues:
-  - speaker: Teacher
+  - rawLine: SwitchCam(QuizCam), Teleport(Player ^x 221.2 ^y 1 ^z 319)
+    speaker: 
+    dialogue: []
+    functions:
+    - name: SwitchCam
+      args:
+      - QuizCam
+      waitForCompletion: 0
+    - name: Teleport
+      args:
+      - Player
+      - ^x 221.2
+      - ^y 2
+      - ^z 319
+      waitForCompletion: 0
+  - rawLine: Teacher"So, [WA 0.5]" here is the math quiz for today.
+    speaker: Teacher
     dialogue:
     - dialogue: 'So, '
       segmentSignal: 0
@@ -23,13 +39,16 @@ MonoBehaviour:
       segmentSignal: 3
       signalDelay: 0.5
     functions: []
-  - speaker: Teacher
+  - rawLine: Teacher"You have to finish it in 3 minutes.
+    speaker: Teacher
     dialogue:
     - dialogue: You have to finish it in 3 minutes.
       segmentSignal: 0
       signalDelay: 0
     functions: []
-  - speaker: Teacher
+  - rawLine: Teacher"This quiz will contribute to 50% of your final grade for this
+      semester.[A]" \nSo, take it seriously.Objective(Desk)
+    speaker: Teacher
     dialogue:
     - dialogue: This quiz will contribute to 50% of your final grade for this semester.
       segmentSignal: 0
@@ -42,7 +61,8 @@ MonoBehaviour:
       args:
       - Desk
       waitForCompletion: 0
-  - speaker: 
+  - rawLine: StopDialogue(), StartQuiz()
+    speaker: 
     dialogue: []
     functions:
     - name: StopDialogue
