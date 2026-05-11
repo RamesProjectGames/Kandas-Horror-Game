@@ -5,7 +5,7 @@
 			<value>SchoolBell</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{8e441aaf-216b-4dd9-bac5-be46f41e10bd}</destination>
@@ -82,7 +82,11 @@
 			<destination>{8bf0f62d-9e2a-4505-95dd-c2cce023166a}</destination>
 		</relationship>
 	</object>
-	<object class="MultiSound" id="{bf775c9d-a561-4687-9aba-1b5879c43a88}" />
+	<object class="MultiSound" id="{bf775c9d-a561-4687-9aba-1b5879c43a88}">
+		<relationship name="sounds">
+			<destination>{40ae7fbf-563d-4613-9f0d-eb6342dc3e67}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusEffectChain" id="{c458adca-e13d-4662-ac17-371705d5a10e}">
 		<relationship name="effects">
 			<destination>{66b67b21-1682-4197-a2ab-7b5825e6f4ac}</destination>
@@ -95,6 +99,11 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{7804bb10-b0e7-478c-905e-1a2ab16fc92c}" />
+	<object class="SingleSound" id="{40ae7fbf-563d-4613-9f0d-eb6342dc3e67}">
+		<relationship name="audioFile">
+			<destination>{4a8fc4e8-b560-4b45-bad0-9011d143d2c5}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{66b67b21-1682-4197-a2ab-7b5825e6f4ac}" />
 	<object class="MixerBusFader" id="{85d3c8e1-054c-4b83-a3b3-b36c697d96a8}" />
 </objects>
