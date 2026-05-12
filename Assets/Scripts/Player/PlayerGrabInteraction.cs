@@ -43,11 +43,10 @@ public class PlayerGrabInteraction : MonoBehaviour
 
     void Update()
     {
+        DetectItemInteraction();
+
         if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
             return;
-        DetectItemInteraction();
-        //DetectFragmentItem();
-
         if (interAction != null && interAction.action.WasPerformedThisFrame())
         {
             if (currentItem != null)

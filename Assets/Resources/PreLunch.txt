@@ -2,7 +2,7 @@ Student B "(Whispering) Aww man, I didn’t get to finish."
 Student E "Forget it, {a}you’d get a low score no matter how hard you try anyway."
 PlaySFX(SchoolBell)
 Teacher "We’re just on time.{a} Tomorrow, I will announce the scores.{a}\nYou are all dismissed."
-[w]FadeOut(1), [w]Wait(1), [w]Despawn(Teacher), Teleport(Player ^x 221.5 ^y 2 ^z 319), [w]Rotate(Player ^r -45), [w]Wait(2), [w]FadeIn(1)
+[w]FadeOut(1), [w]Wait(1), [w]Despawn(Teacher), [w]Teleport(Player ^x 221.5 ^y 2 ^z 319), [w]Rotate(Player ^r -45), [w]Wait(2), [w]FadeIn(1)
 Student A "Hey, so what are you having for lunch?"
 Student B "I don't know, maybe the usual porridge from the canteen lady?"
 Student A "Ehhh, not trying something new?{a}\nI heard there's a new stall in the canteen that sells Poutine."
@@ -12,6 +12,6 @@ Student A "That's boring... {a} Hey Jessica, you wanna get lunch together?"
 Jessica "Oh, uhh... You guys go ahead, I'll catch up later."
 Student E "Okay then, don't forget to get ur lunch. Let's go, ■■■!"
 Student D "Alright, catch you later Jess~"
-[w]FadeOut(1), Rotate(Player ^r -90), [w]FadeIn(1)
-Jessica "Hmm, maybe I do need to catch a grub, Thankfully lunch is far from over. Gotta head to the canteen downstairs..."
-Objective(SubmitQuiz), SpawnMannequins(), AllowNPCMovement(true)
+[w]FadeOut(1), [w]Rotate(Player ^r -90), [w]FadeIn(1)
+Jessica "Hmm, maybe I do need to catch a grub, Thankfully lunch is far from over. Gotta head to the canteen downstairs..." Objective(SubmitQuiz)
+AllowNPCMovement(true)

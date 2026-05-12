@@ -25,7 +25,7 @@ public class FragmentManager : MonoBehaviour
 
     public void SpawnFragmentInScene(FragmentData fragment)
     {
-        GameObject fragmentObject = Instantiate(fragmentPrefab, fragment.fragmentPosition, Quaternion.identity, GameObject.Find("===Environment===").transform);
+        GameObject fragmentObject = Instantiate(fragmentPrefab, fragment.fragmentPosition, Quaternion.identity, GameObject.Find("===Fragments===").transform);
         fragmentObject.name = fragment.fragmentName;
         Fragment fragmentComponent = fragmentObject.GetComponent<Fragment>();
         fragmentComponent.SetFragmentData(fragment);

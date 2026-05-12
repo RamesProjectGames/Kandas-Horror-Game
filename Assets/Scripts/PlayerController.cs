@@ -548,7 +548,7 @@ public class PlayerController : MovableObjects
         //}
 
         // Snap to exact target
-        panTilt.PanAxis.Reset();
+        panTilt.PanAxis.Value = 0;
     }
 
     public override IEnumerator Move(Vector3 pos, float speed = 150f)
