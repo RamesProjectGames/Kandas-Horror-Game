@@ -1,8 +1,6 @@
 using Dialogue;
 using System;
 using System.Collections;
-using System.Drawing;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,8 +15,9 @@ public class NpcMovement : MovableObjects
     public Transform foot;
     public LayerMask groundMask;
     public GroundSurface currentSurface;
+    [SerializeField] private NPCAnimationState animState;
 
-    public static bool allowMovement = false;
+    public static bool allowMovement = true;
     float speed = 1f;
     float idleTime = 5f, currIdleTime;
     bool wasPausedLastFrame = false;
@@ -39,6 +38,8 @@ public class NpcMovement : MovableObjects
         // ensure we send the agent to a valid NavMesh position
         Vector3 validPos = GetValidNavMeshPosition(pos);
         agent.SetDestination(validPos);
+        agent.isStopped = false;
+        animator.SetFloat("Blend", 1);
         while (agent.remainingDistance >= agent.stoppingDistance)
         {
             yield return new WaitForEndOfFrame();
@@ -49,7 +50,11 @@ public class NpcMovement : MovableObjects
 
     public override IEnumerator Teleport(Vector3 pos)
     {
-        agent.Warp(pos);
+        agent.enabled = false;
+        transform.position = pos;
+        //agent.Warp(pos);
+        yield return new WaitForSeconds(.1f);
+        agent.enabled = true;
         StartCoroutine(FacePlayer());
         agent.ResetPath();
         yield return new WaitForEndOfFrame();
@@ -83,6 +88,17 @@ public class NpcMovement : MovableObjects
             agent.updatePosition = false;
             agent.updateRotation = true;
         }
+
+        float state = 0;
+        if (animState == NPCAnimationState.Sit)
+        {
+            state = UnityEngine.Random.Range(4, 7);
+        }
+        else if (animState == NPCAnimationState.Stand)
+        {
+            state = UnityEngine.Random.Range(0, 2);
+        }
+        animator.SetFloat("Blend", state / 7f);
     }
     void OnAnimatorMove()
     {
@@ -100,10 +116,11 @@ public class NpcMovement : MovableObjects
 
         if (point.Length == 0)
             return;
-        else if (point.Length == 1)
+        else if (point.Length == 1 && !agent.isStopped)
         {
             if (Vector3.Distance(transform.position, point[0].position) < agent.stoppingDistance)
             {
+                agent.isStopped = true;
                 if (point[idxPoint].faceTowards != null)
                 {
                     Vector3 targetPos = point[idxPoint].faceTowards.position;
@@ -114,12 +131,28 @@ public class NpcMovement : MovableObjects
                     if (Quaternion.Angle(transform.rotation, targetRotation) <= 5f)
                     {
                         transform.rotation = targetRotation;
-                        agent.isStopped = true;
                     }
                 }
+                float state = 0;
+                if (animState == NPCAnimationState.Sit)
+                {
+                    state = UnityEngine.Random.Range(4, 7);
+                }
+                else if (animState == NPCAnimationState.Stand)
+                {
+                    state = UnityEngine.Random.Range(0, 2);
+                }
+                animator.SetFloat("Blend", state / 7f);
+            }
+            else
+            {
+                agent.isStopped = false;
+                agent.speed = speed;
+                animator.SetFloat("Blend", 1f);
             }
             return;
         }
+        Debug.Log($"Agent {name} is {agent.remainingDistance}m away from it's target, point {idxPoint}, it's currently {(agent.isStopped ? "indeed": "not")} stopped");
 
         if (agent.isStopped)
         {
@@ -127,39 +160,39 @@ public class NpcMovement : MovableObjects
             if (currIdleTime <= 0)
             {
                 // Transition from Idle to Moving
-
+                animator.SetFloat("Blend", 1);
                 agent.isStopped = false;
                 agent.speed = speed;
             }
             return; // Exit early while idling
         }
-        else if(!agent.isStopped && agent.remainingDistance <= agent.stoppingDistance)
-        {
-            if (point[idxPoint].faceTowards != null)
-            {
-                Vector3 targetPos = point[idxPoint].faceTowards.position;
-                targetPos.y = transform.position.y;
-                Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
+        //if(!agent.isStopped && agent.remainingDistance <= agent.stoppingDistance)
+        //{
+        //    if (point[idxPoint].faceTowards != null)
+        //    {
+        //        Vector3 targetPos = point[idxPoint].faceTowards.position;
+        //        targetPos.y = transform.position.y;
+        //        Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+        //        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
 
-                if (Quaternion.Angle(transform.rotation, targetRotation) <= 5f)
-                {
-                    currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
-                    idxPoint = ++idxPoint % point.Length;
-                    agent.SetDestination(point[idxPoint].position);
-                    transform.rotation = targetRotation;
-                    agent.isStopped = true;
-                }
-            }
-            else
-            {
-                currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
-                idxPoint = ++idxPoint % point.Length;
-                agent.SetDestination(point[idxPoint].position);
-                agent.isStopped = true;
-            }
-            SynchronizeAnimatorAndAgent();
-        }
+        //        if (Quaternion.Angle(transform.rotation, targetRotation) <= 5f)
+        //        {
+        //            currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+        //            idxPoint = ++idxPoint % point.Length;
+        //            agent.SetDestination(point[idxPoint].position);
+        //            transform.rotation = targetRotation;
+        //            agent.isStopped = true;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+        //        idxPoint = ++idxPoint % point.Length;
+        //        agent.SetDestination(point[idxPoint].position);
+        //        agent.isStopped = true;
+        //    }
+        //    //SynchronizeAnimatorAndAgent();
+        //}
     }
 
     public IEnumerator FacePlayer()
@@ -189,7 +222,10 @@ public class NpcMovement : MovableObjects
         {
             if (agent != null) agent.enabled = true;
             wasPausedLastFrame = false;
-            agent.SetDestination(point[idxPoint].position);
+            if(point.Length>0)
+            {
+                agent.SetDestination(point[idxPoint].position);
+            }
         }
         return false;
     }
@@ -244,4 +280,20 @@ public class NpcMovement : MovableObjects
                 smooth);
         }
     }
+
+    public void TriggerDialogue()
+    {
+        animState = NPCAnimationState.Talk;
+        float state = 0;
+        state = UnityEngine.Random.Range(2, 5);
+        animator.SetFloat("Blend", state / 7f);
+    }
+}
+
+public enum NPCAnimationState
+{
+    Sit,
+    Stand,
+    Talk,
+    Walk
 }

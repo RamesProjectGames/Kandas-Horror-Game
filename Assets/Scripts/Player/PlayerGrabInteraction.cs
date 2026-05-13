@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class PlayerGrabInteraction : MonoBehaviour
 {
-    [SerializeField] float yOffset = .5f;
     public float pickupRadius = 2f;
     public float frontDotThreshold = 0.5f;
     [Tooltip("X = minimum force, Y = maximum force when fully charged.")]
@@ -143,7 +142,8 @@ public class PlayerGrabInteraction : MonoBehaviour
     {
         ItemInteraction bestItem = null;
         float bestDistance = float.MaxValue;
-        Vector3 visionPos = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+
+        Vector3 visionPos = new Vector3(transform.position.x, (playerCamera != null) ? playerCamera.transform.position.y : transform.position.y, transform.position.z);
 
         Collider[] hits = Physics.OverlapSphere(visionPos, pickupRadius, pickupLayer | interactableLayer | fragmentLayer);
 
@@ -231,7 +231,7 @@ public class PlayerGrabInteraction : MonoBehaviour
     //}
     void OnDrawGizmosSelected()
     {
-        Vector3 visionPos = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
+        Vector3 visionPos = new Vector3(transform.position.x, (playerCamera != null) ? playerCamera.transform.position.y : transform.position.y, transform.position.z);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(visionPos, pickupRadius);
 

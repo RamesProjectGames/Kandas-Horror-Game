@@ -2,7 +2,7 @@ Student B "(Whispering) Aww man, I didn’t get to finish."
 Student E "Forget it, {a}you’d get a low score no matter how hard you try anyway."
 PlaySFX(SchoolBell)
 Teacher "We’re just on time.{a} Tomorrow, I will announce the scores.{a}\nYou are all dismissed."
-[w]FadeOut(1), [w]Wait(1), [w]Despawn(Teacher), [w]Teleport(Player ^x 221.5 ^y 2 ^z 319), [w]Rotate(Player ^r -45), [w]Wait(2), [w]FadeIn(1)
+[w]FadeOut(1), [w]Wait(1), [w]Despawn(Teacher), [w]Teleport(Player ^x 220.75 ^y .5 ^z 319.25), [w]Rotate(Player ^r -45), [w]Wait(2), [w]FadeIn(1)
 Student A "Hey, so what are you having for lunch?"
 Student B "I don't know, maybe the usual porridge from the canteen lady?"
 Student A "Ehhh, not trying something new?{a}\nI heard there's a new stall in the canteen that sells Poutine."

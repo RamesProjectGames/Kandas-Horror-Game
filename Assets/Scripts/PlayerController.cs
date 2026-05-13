@@ -518,7 +518,11 @@ public class PlayerController : MovableObjects
     {
         controller.enabled = false;
         yield return new WaitForEndOfFrame();
-        agent.Warp(pos);
+        agent.enabled = false;
+        transform.position = pos;
+        //agent.Warp(pos);
+        yield return new WaitForSeconds(.1f);
+        agent.enabled = true;
         transform.rotation = Quaternion.Euler(0, 0, 0);
         agent.ResetPath();
         yield return new WaitForEndOfFrame();

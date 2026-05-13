@@ -386,7 +386,11 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
     public override IEnumerator Teleport(Vector3 pos)
     {
-        agent.Warp(pos);
+        agent.enabled = false;
+        transform.position = pos;
+        //agent.Warp(pos);
+        yield return new WaitForSeconds(.1f);
+        agent.enabled = true;
         StartCoroutine(FacePlayer());
         agent.ResetPath();
         ReturnToPatrol();

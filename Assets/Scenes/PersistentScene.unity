@@ -5812,7 +5812,7 @@ Transform:
   m_GameObject: {fileID: 405068811}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11892,7 +11892,7 @@ Transform:
   m_GameObject: {fileID: 809628273}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13233,8 +13233,8 @@ Transform:
   m_GameObject: {fileID: 890258804}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0.5}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1010298964}
@@ -27449,7 +27449,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0.9
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1761790452
@@ -27484,7 +27484,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef527615df24f254e83abb37eae04838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yOffset: 0.5
   pickupRadius: 2
   frontDotThreshold: 0.45
   throwForce: {x: 1, y: 4}
@@ -27699,7 +27698,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!136 &1761790457
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -27722,7 +27721,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &1761790460
 Transform:
   m_ObjectHideFlags: 0
@@ -27755,6 +27754,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sightRange: 250
   fieldOfViewAngle: 60
+  eyeOffset: 1.5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 256
