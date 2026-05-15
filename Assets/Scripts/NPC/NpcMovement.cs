@@ -76,8 +76,13 @@ public class NpcMovement : MovableObjects
     {
         agent = GetComponent<NavMeshAgent>();
         if (agent == null) agent = gameObject.AddComponent<NavMeshAgent>();
+
+        // NavMeshAgent must drive the transform because the animation has no root motion
+        agent.updatePosition = true;
+        agent.updateRotation = true;
+
         if(point.Length > 0)
-            agent.SetDestination(point[idxPoint].position);
+            agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
         currIdleTime = idleTime;
         // footsteps helper
         if (footstepManager == null)
@@ -85,8 +90,6 @@ public class NpcMovement : MovableObjects
         if (animator != null)
         {
             animator.applyRootMotion = true;
-            agent.updatePosition = false;
-            agent.updateRotation = true;
         }
 
         float state = 0;
@@ -98,15 +101,22 @@ public class NpcMovement : MovableObjects
         {
             state = UnityEngine.Random.Range(0, 2);
         }
+        else if (animState == NPCAnimationState.Talk)
+        {
+            state = UnityEngine.Random.Range(2, 4);
+        }
+        else if (animState == NPCAnimationState.Walk)
+        {
+            state = 7;
+        }
         animator.SetFloat("Blend", state / 7f);
     }
     void OnAnimatorMove()
     {
         if(animator == null) return;
-        Vector3 rootPosition = animator.rootPosition;
-        rootPosition.y = agent.nextPosition.y;
-        transform.position = rootPosition;
-        agent.nextPosition = rootPosition;
+        // NavMeshAgent drives position. OnAnimatorMove just syncs
+        // agent.nextPosition to the transform so the NavMesh stays consistent.
+        agent.nextPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -118,7 +128,7 @@ public class NpcMovement : MovableObjects
             return;
         else if (point.Length == 1 && !agent.isStopped)
         {
-            if (Vector3.Distance(transform.position, point[0].position) < agent.stoppingDistance)
+            if (Vector3.Distance(transform.position, point[0].transform.position) < agent.stoppingDistance)
             {
                 agent.isStopped = true;
                 if (point[idxPoint].faceTowards != null)
@@ -141,6 +151,14 @@ public class NpcMovement : MovableObjects
                 else if (animState == NPCAnimationState.Stand)
                 {
                     state = UnityEngine.Random.Range(0, 2);
+                }
+                else if (animState == NPCAnimationState.Talk)
+                {
+                    state = UnityEngine.Random.Range(2, 4);
+                }
+                else if (animState == NPCAnimationState.Walk)
+                {
+                    state = 7;
                 }
                 animator.SetFloat("Blend", state / 7f);
             }
@@ -166,33 +184,41 @@ public class NpcMovement : MovableObjects
             }
             return; // Exit early while idling
         }
-        //if(!agent.isStopped && agent.remainingDistance <= agent.stoppingDistance)
-        //{
-        //    if (point[idxPoint].faceTowards != null)
-        //    {
-        //        Vector3 targetPos = point[idxPoint].faceTowards.position;
-        //        targetPos.y = transform.position.y;
-        //        Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-        //        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
+        
+        // Agent is actively moving to waypoint
+        if (!agent.isStopped)
+        {
+            animator.SetFloat("Blend", 1);
+            agent.speed = speed;
+        }
+        
+        if (!agent.isStopped && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            if (point[idxPoint].faceTowards != null)
+            {
+                Vector3 targetPos = point[idxPoint].faceTowards.position;
+                targetPos.y = transform.position.y;
+                Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
 
-        //        if (Quaternion.Angle(transform.rotation, targetRotation) <= 5f)
-        //        {
-        //            currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
-        //            idxPoint = ++idxPoint % point.Length;
-        //            agent.SetDestination(point[idxPoint].position);
-        //            transform.rotation = targetRotation;
-        //            agent.isStopped = true;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
-        //        idxPoint = ++idxPoint % point.Length;
-        //        agent.SetDestination(point[idxPoint].position);
-        //        agent.isStopped = true;
-        //    }
-        //    //SynchronizeAnimatorAndAgent();
-        //}
+                if (Quaternion.Angle(transform.rotation, targetRotation) <= 5f)
+                {
+                    currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+                    idxPoint = ++idxPoint % point.Length;
+                    agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
+                    transform.rotation = targetRotation;
+                    agent.isStopped = true;
+                }
+            }
+            else
+            {
+                currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+                idxPoint = ++idxPoint % point.Length;
+                agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
+                agent.isStopped = true;
+            }
+            //SynchronizeAnimatorAndAgent();
+        }
     }
 
     public IEnumerator FacePlayer()
@@ -224,7 +250,7 @@ public class NpcMovement : MovableObjects
             wasPausedLastFrame = false;
             if(point.Length>0)
             {
-                agent.SetDestination(point[idxPoint].position);
+                agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
             }
         }
         return false;
