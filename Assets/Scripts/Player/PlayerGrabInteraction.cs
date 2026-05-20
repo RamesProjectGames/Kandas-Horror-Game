@@ -53,6 +53,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                 if ((interactableLayer & (1 << currentItem.gameObject.layer)) != 0 || (fragmentLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
                     currentItem.onInteract.Invoke();
+                    currentItem.HideUI();
                     //GetComponent<PlayerController>().FaceObject(currentItem.transform);
                 }
                 else if ((pickupLayer & (1 << currentItem.gameObject.layer)) != 0)
@@ -140,6 +141,12 @@ public class PlayerGrabInteraction : MonoBehaviour
     }
     void DetectItemInteraction()
     {
+        if(SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+        {
+            if(currentItem != null)
+                currentItem.HideUI();
+            return;
+        }
         ItemInteraction bestItem = null;
         float bestDistance = float.MaxValue;
 

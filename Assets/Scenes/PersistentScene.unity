@@ -17100,7 +17100,7 @@ MonoBehaviour:
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   - Name: ExploreSchool
-    Description: Explore the School
+    Description: Explore the School (optional)
     IsCompleted: 0
     isHidden: 0
     fragmentData: {fileID: 0}
@@ -17109,18 +17109,8 @@ MonoBehaviour:
     LimitedAfterObjective: Lunch
     ObjectiveObject: {fileID: 0}
     Chapter: 1
-  - Name: LaidBack
+  - Name: Laidback
     Description: Talk to the Laid-back student
-    IsCompleted: 0
-    isHidden: 1
-    fragmentData: {fileID: 0}
-    requirements:
-    - SubmitQuiz
-    LimitedAfterObjective: Lunch
-    ObjectiveObject: {fileID: 0}
-    Chapter: 1
-  - Name: LazyNDelinquent
-    Description: Eavesdrop the Lazy Student and the Delinquent Student's conversation
     IsCompleted: 0
     isHidden: 1
     fragmentData: {fileID: 0}
@@ -17154,6 +17144,16 @@ MonoBehaviour:
     IsCompleted: 0
     isHidden: 0
     fragmentData: {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
+    requirements:
+    - SubmitQuiz
+    LimitedAfterObjective: Lunch
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: Studying
+    Description: Talk to the Studying student
+    IsCompleted: 0
+    isHidden: 1
+    fragmentData: {fileID: 0}
     requirements:
     - SubmitQuiz
     LimitedAfterObjective: Lunch
@@ -27439,7 +27439,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1761790445}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -27718,7 +27718,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}

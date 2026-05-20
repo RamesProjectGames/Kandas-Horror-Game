@@ -1,11 +1,11 @@
-[w]SwitchCam(SignpostCam), PlayerFaceFront(), [w]Teleport(Player ^x 210 ^y  ^z 322), [w]Rotate(Player ^r 90), [w]Wait(1), [w]FadeIn(1)
+[w]SwitchCam(SignpostCam), PlayerFaceFront(), [w]Teleport(Player ^x 210 ^z 322), [w]Wait(1), [w]Rotate(Player ^r 90), [w]Wait(1), [w]FadeIn(1)
 Teacher "Good morning, everyone. Today, we have a new student in class."
 "Go on, introduce yourself to the class."
 [w]FadeOut(1), [w]Wait(0.5), SwitchCam(FrontClassCam), [w]Wait(1), [w]FadeIn(1)
 Jessica "Hello, everyone. My name is Jessica."
 Everyone "Hi, Jessica."
 Jessica "From now on, I will be studying in this school. I hope we can get along well."
-[w]FadeOut(1), [w]Wait(0.5), SwitchCam(BackClassCam), [w]Wait(1), [w]FadeIn(1), PlayAmbience(Chatter ^v 0.1 ^p 1)
+[w]FadeOut(1), [w]Wait(0.5), SwitchCam(BackClassCam), [w]Wait(1), [w]FadeIn(1), PlayAmbience(Chatter ^v 0.3 ^p 1)
 Student A "<style=\"Whispering\">Dude, she’s super hot.</style>"
 Student B "<style=\"Whispering\">You think you’d get a chance with her?</style>"
 Student C "<style=\"Whispering\">Why is she transferring here in the middle of the semester?</style>"
@@ -13,5 +13,5 @@ Student D "<style=\"Whispering\">Hahaha, maybe she got dropped out of her previo
 SwitchCam(SideClassCam), [w]Rotate(Player ^r 0)
 Teacher "Alright, calm down, everybody, save the questions for later." StopVoice()
 "{a}\nNow, we need to start the class as we have a quiz today.{a}\nJessica, why don’t you sit over there?"
-Jessica "Okay." Objective(Class)
+Jessica "Okay." [w]Rotate(Player ^r 90), Objective(Class)
 [w]SwitchCam("Player Camera")

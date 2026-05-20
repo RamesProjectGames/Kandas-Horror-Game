@@ -1,6 +1,7 @@
 using Dialogue.Functions;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Dialogue
@@ -41,7 +42,7 @@ namespace Dialogue
         //Starting a new Dialogue
         public void StartConvo(Convo convo)
         {
-            if(convo == null)
+            if (convo == null)
                 return;
             StopConvo();
             Enqueue(convo);

@@ -58,6 +58,7 @@ namespace TestingPurposes
             db.AddFunction("StopWithoutObj", new Action<string>(ConditionalStopDialogue));
             db.AddFunction("SwitchCam", new Action<string>(SwitchCamera));
             db.AddFunction("Despawn", new Action<string>(Despawn));
+            db.AddFunction("MovePrep", new Action(MovePrep));
         }
 
 
@@ -132,7 +133,12 @@ namespace TestingPurposes
         {
             bool allow = false;
             bool.TryParse(arg, out allow);
-            NpcMovement.allowMovement = allow;
+            NpcMovement.movementAllowed = allow;
+        }
+
+        private static void MovePrep()
+        {
+            NpcMovement.MovePrep.Invoke();
         }
         #endregion
 

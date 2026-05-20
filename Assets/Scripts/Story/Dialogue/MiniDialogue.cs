@@ -18,7 +18,7 @@ namespace Dialogue
     [Serializable]
     public class DialogueStructure
     {
-        public string rawLine = string.Empty;
+        private string rawLine = string.Empty;
         public string GetRawLine() => !string.IsNullOrWhiteSpace(rawLine) ? rawLine : ReconstructRawLine();
         public string speaker;
 
@@ -171,12 +171,12 @@ namespace Dialogue
                         reconstructedLine = $"{reconstructedLine} {dialogue[i].signalDelay}";
                     }
                     reconstructedLine = $"{reconstructedLine}]";
-                    if (i == dialogue.Count - 1)
-                    {
-                        reconstructedLine = $"{reconstructedLine}\" ";
-                    }
                 }
                 reconstructedLine += dialogue[i].dialogue;
+                if (i == dialogue.Count - 1)
+                {
+                    reconstructedLine = $"{reconstructedLine}\" ";
+                }
             }
             for(int i = 0;i<functions.Count;i++)
             {

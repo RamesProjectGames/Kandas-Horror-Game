@@ -29,6 +29,7 @@ namespace Dialogue.LogicLines
                 for (int i = startIdx; i < currConvo.count; i++)
                 {
                     DialogueStructure line = currConvo.GetLines()[i];
+                    Debug.Log(line.GetRawLine());
 
                     if(RipHeaderAndEncapsulators || (encDepth > 0 && !IsEncapsulationEnd(line.GetRawLine())))
                         data.lines.Add(line.GetRawLine());

@@ -154,7 +154,8 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if(SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+                if(SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo
+                    )
                 {
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -166,7 +167,7 @@ public class PlayerController : MovableObjects
                 }
             }
         }
-        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+        if (SettingManager.Instance.isPaused)
         {
             ResetMovementState();
             lookAction.action.Disable();
@@ -530,7 +531,11 @@ public class PlayerController : MovableObjects
     }
     public override IEnumerator Rotate(float yrot)
     {
+        if (agent != null)
+            agent.updateRotation = false;
         transform.rotation = Quaternion.Euler(0, yrot, 0);
+        if (agent != null)
+            agent.updateRotation = true;
         if (panTilt == null) yield break;
 
         //For incremental rotation
@@ -553,6 +558,7 @@ public class PlayerController : MovableObjects
 
         // Snap to exact target
         panTilt.PanAxis.Value = 0;
+        panTilt.PanAxis.TrackValueChange();
     }
 
     public override IEnumerator Move(Vector3 pos, float speed = 150f)
@@ -561,6 +567,7 @@ public class PlayerController : MovableObjects
         agent.isStopped = false;
         yield return new WaitForEndOfFrame();
     }
+
     public bool CanUseAgent()
     {
         return agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh;
