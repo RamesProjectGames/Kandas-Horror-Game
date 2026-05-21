@@ -14,6 +14,6 @@ Student A "That's boring..."
 Jessica "Oh, uhh... You guys go ahead, I'll catch up later."
 Student A "Okay then, don't forget to get ur lunch. Let's go, ■■■!"
 Student C "Alright, catch you later Jess~"
-[w]FadeOut(1), [w]Wait(1), [w]Teleport("NPC Boy" ^x 216.45 ^y .5 ^z 319.8), [w]Teleport("NPC Boy" ^x 216.45 ^y .5 ^z 319.8), [w]Teleport("NPC Boy" ^x 216.45 ^y .5 ^z 319.8), [w]Rotate(Player ^r -90), [w]FadeIn(1)
+[w]FadeOut(1), [w]Wait(1), [w]Teleport("NPC Boy (1)" ^x 311.6 ^y .5 ^z 234.85), [w]Teleport("NPC Boy" ^x 311.85 ^y .5 ^z 231.38), [w]Teleport("NPC Girl" ^x 312.85 ^y .5 ^z 234.8), [w]Rotate(Player ^r -90), [w]Wait(.1), [w]FadeIn(1)
 Jessica "Hmm, maybe I do need to catch a grub, Thankfully lunch is far from over. Gotta head to the canteen downstairs..." Objective(SubmitQuiz)
 AllowNPCMovement(true)

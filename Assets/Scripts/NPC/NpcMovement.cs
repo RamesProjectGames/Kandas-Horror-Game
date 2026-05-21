@@ -62,17 +62,23 @@ public class NpcMovement : MovableObjects
             yield return new WaitForEndOfFrame();
         }
         float state = 0;
-        if (DialogueSystem.Instance.isRunningConvo)
-            animState = NPCAnimationState.Talk;
-        else
-            animState = NPCAnimationState.Stand;
-        if (animState == NPCAnimationState.Stand)
+        if (animState == NPCAnimationState.Sit)
         {
-            state = UnityEngine.Random.Range(0, 2);
+            if (DialogueSystem.Instance.isRunningConvo)
+            {
+                state = UnityEngine.Random.Range(5, 7);
+            }
+            else
+                state = 4;
         }
-        else if (animState == NPCAnimationState.Talk)
+        else if (animState == NPCAnimationState.Stand)
         {
-            state = UnityEngine.Random.Range(2, 4);
+            if (DialogueSystem.Instance.isRunningConvo)
+            {
+                state = UnityEngine.Random.Range(2, 4);
+            }
+            else
+                state = UnityEngine.Random.Range(0, 2);
         }
         animator.SetFloat("Blend", state / 7f);
         agent.ResetPath();
@@ -95,17 +101,23 @@ public class NpcMovement : MovableObjects
         //    agent.enabled = false;
         //}
         float state = 0;
-        if (DialogueSystem.Instance.isRunningConvo)
-            animState = NPCAnimationState.Talk;
-        else
-            animState = NPCAnimationState.Stand;
-        if (animState == NPCAnimationState.Stand)
+        if (animState == NPCAnimationState.Sit)
         {
-            state = UnityEngine.Random.Range(0, 2);
+            if (DialogueSystem.Instance.isRunningConvo)
+            {
+                state = UnityEngine.Random.Range(5, 7);
+            }
+            else
+                state = 4;
         }
-        else if (animState == NPCAnimationState.Talk)
+        else if (animState == NPCAnimationState.Stand)
         {
-            state = UnityEngine.Random.Range(2, 4);
+            if (DialogueSystem.Instance.isRunningConvo)
+            {
+                state = UnityEngine.Random.Range(2, 4);
+            }
+            else
+                state = UnityEngine.Random.Range(0, 2);
         }
         animator.SetFloat("Blend", state / 7f);
         yield return new WaitForEndOfFrame();
@@ -133,6 +145,7 @@ public class NpcMovement : MovableObjects
     {
         if (point.Length > 0 && point[0] != null)
         {
+            animState = NPCAnimationState.Stand;
             StartCoroutine(Teleport(point[0].transform.position));
             if (point[idxPoint].faceTowards != null)
             {
@@ -140,10 +153,10 @@ public class NpcMovement : MovableObjects
                 targetPos.y = transform.position.y;
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
                 transform.rotation = targetRotation;
-                if(point.Length > 1)
-                    idxPoint++;
             }
         }
+        if (point.Length > 1)
+            idxPoint++;
     }
     #endregion
 
@@ -171,15 +184,21 @@ public class NpcMovement : MovableObjects
         float state = 0;
         if (animState == NPCAnimationState.Sit)
         {
-            state = UnityEngine.Random.Range(4, 7);
+            if (DialogueSystem.Instance.isRunningConvo)
+            {
+                state = UnityEngine.Random.Range(5, 7);
+            }
+            else
+                state = 4;
         }
         else if (animState == NPCAnimationState.Stand)
         {
-            state = UnityEngine.Random.Range(0, 2);
-        }
-        else if (animState == NPCAnimationState.Talk)
-        {
-            state = UnityEngine.Random.Range(2, 4);
+            if (DialogueSystem.Instance.isRunningConvo)
+            {
+                state = UnityEngine.Random.Range(2, 4);
+            }
+            else
+                state = UnityEngine.Random.Range(0, 2);
         }
         else if (animState == NPCAnimationState.Walk)
         {
@@ -398,9 +417,28 @@ public class NpcMovement : MovableObjects
     }
     public void TriggerDialogue()
     {
-        animState = NPCAnimationState.Talk;
+        if(animState == NPCAnimationState.Walk)
+            animState = NPCAnimationState.Stand;
         float state = 0;
-        state = UnityEngine.Random.Range(2, 5);
+        if (animState == NPCAnimationState.Sit)
+        {
+            if (DialogueSystem.Instance.isRunningConvo)
+            {
+                state = UnityEngine.Random.Range(5, 7);
+            }
+            else
+                state = 4;
+        }
+        else if (animState == NPCAnimationState.Stand)
+        {
+            if (DialogueSystem.Instance.isRunningConvo)
+            {
+                state = UnityEngine.Random.Range(2, 4);
+            }
+            else
+                state = UnityEngine.Random.Range(0, 2);
+        }
+        animator.SetFloat("Blend", state / 7f);
         animator.SetFloat("Blend", state / 7f);
     }
     #endregion
@@ -410,6 +448,5 @@ public enum NPCAnimationState
 {
     Sit,
     Stand,
-    Talk,
     Walk
 }

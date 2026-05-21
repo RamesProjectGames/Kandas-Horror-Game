@@ -21,10 +21,15 @@ MonoBehaviour:
       args:
       - QuizCam
       waitForCompletion: 1
-    - name: Wait
-      args:
-      - .5
-      waitForCompletion: 1
+  - speaker: Teacher
+    dialogue:
+    - dialogue: 'So, '
+      segmentSignal: 0
+      signalDelay: 0
+    - dialogue: here is the math quiz for today.
+      segmentSignal: 3
+      signalDelay: 0.5
+    functions:
     - name: Teleport
       args:
       - Player
@@ -35,15 +40,6 @@ MonoBehaviour:
       - ^z
       - 321.65
       waitForCompletion: 0
-  - speaker: Teacher
-    dialogue:
-    - dialogue: 'So, '
-      segmentSignal: 0
-      signalDelay: 0
-    - dialogue: here is the math quiz for today.
-      segmentSignal: 3
-      signalDelay: 0.5
-    functions: []
   - speaker: Teacher
     dialogue:
     - dialogue: You have to finish it in 3 minutes.
