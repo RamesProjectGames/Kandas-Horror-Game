@@ -65,28 +65,28 @@ public class HidingSpot : MonoBehaviour
 
         // Draw interaction radius
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, interactionRadius);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * hidingHeight, interactionRadius);
 
         // Draw hiding height reference
         Gizmos.color = Color.cyan;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.up * hidingHeight);
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (!visualizationEnabled) return;
+    // private void OnDrawGizmosSelected()
+    // {
+    //     if (!visualizationEnabled) return;
 
-        // Draw filled sphere when selected
-        Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
-        Gizmos.DrawSphere(transform.position, interactionRadius);
+    //     // Draw filled sphere when selected
+    //     Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
+    //     Gizmos.DrawSphere(transform.position, interactionRadius);
 
-        // Draw discovery state
-        if (isDiscovered)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, interactionRadius);
-        }
-    }
+    //     // Draw discovery state
+    //     if (isDiscovered)
+    //     {
+    //         Gizmos.color = Color.red;
+    //         Gizmos.DrawWireSphere(transform.position, interactionRadius);
+    //     }
+    // }
     public CinemachineCamera GetHidingCamera() => hidingCamera;
 
     /// <summary>
@@ -103,8 +103,11 @@ public class HidingSpot : MonoBehaviour
     public void HidePlayer(GameObject player)
     {
         coll.enabled = false;
-        rb.useGravity = false;
-        rb.isKinematic = true;
+        if(rb != null)
+        {
+            rb.useGravity = false;
+            rb.isKinematic = true;
+        }
         isOccupied = true;
         hiddenPlayer = player;
         currentDiscoveryProgress = 0f;

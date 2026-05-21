@@ -17159,6 +17159,86 @@ MonoBehaviour:
     LimitedAfterObjective: Lunch
     ObjectiveObject: {fileID: 0}
     Chapter: 1
+  - Name: WaitingFood
+    Description: Sit at the nearby table and wait for the food
+    IsCompleted: 0
+    isHidden: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - Lunch
+    LimitedAfterObjective: WaitingFood
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: GetFood
+    Description: Sit at the nearby table and wait for the food
+    IsCompleted: 0
+    isHidden: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - WaitingFood
+    LimitedAfterObjective: GetFood
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: EatLunch
+    Description: Go to the school yard to eat your lunch
+    IsCompleted: 0
+    isHidden: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - GetFood
+    LimitedAfterObjective: EatLunch
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: Bathroom
+    Description: Go to the bathroom
+    IsCompleted: 0
+    isHidden: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - EatLunch
+    LimitedAfterObjective: Bathroom
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: BackToClass1
+    Description: Go back to class
+    IsCompleted: 0
+    isHidden: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - Bathroom
+    LimitedAfterObjective: BackToClass1
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: FindKey
+    Description: "Look for classroom\u2019s key"
+    IsCompleted: 0
+    isHidden: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - BackToClass1
+    LimitedAfterObjective: FindKey
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: BackToClass2
+    Description: Go back to the classroom
+    IsCompleted: 0
+    isHidden: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - FindKey
+    LimitedAfterObjective: BackToClass2
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: SitDesk
+    Description: Go sit down at your desk
+    IsCompleted: 0
+    isHidden: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - BackToClass2
+    LimitedAfterObjective: SitDesk
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
   ObjectivePrefab: {fileID: 4575612503608170280, guid: d23d41e198abf6d4bafe61812b8a5261, type: 3}
   ObjectivesParent: {fileID: 415318066}
   currentObjectives: []
