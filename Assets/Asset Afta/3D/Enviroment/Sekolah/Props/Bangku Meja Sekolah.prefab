@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8409088460770768035
 Transform:
@@ -82,12 +82,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: c5301c877c72a6e4a9a67f124fad1211, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: c5301c877c72a6e4a9a67f124fad1211, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: d2e0e1ca4b2f3644eaf86f7b3ac7d3a3, type: 2}
     - target: {fileID: 919132149155446097, guid: c5301c877c72a6e4a9a67f124fad1211, type: 3}
       propertyPath: m_Name
       value: MejaSekolah
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c5301c877c72a6e4a9a67f124fad1211, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -177,12 +185,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 9e544478716dc334ab4d8c5ad36b362b, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9e544478716dc334ab4d8c5ad36b362b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: d2e0e1ca4b2f3644eaf86f7b3ac7d3a3, type: 2}
     - target: {fileID: 919132149155446097, guid: 9e544478716dc334ab4d8c5ad36b362b, type: 3}
       propertyPath: m_Name
       value: BangkuSekolah
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9e544478716dc334ab4d8c5ad36b362b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

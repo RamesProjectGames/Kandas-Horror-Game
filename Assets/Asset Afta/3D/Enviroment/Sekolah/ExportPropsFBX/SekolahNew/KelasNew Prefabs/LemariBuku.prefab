@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3694069659637020278
 Transform:
@@ -83,12 +83,24 @@ PrefabInstance:
       value: -89.992
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 003762ed9a5c6f243a82cedc05bac6c1, type: 3}
-      propertyPath: m_LightProbeUsage
-      value: 0
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 003762ed9a5c6f243a82cedc05bac6c1, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 003762ed9a5c6f243a82cedc05bac6c1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: eff60a2ed1232ee40a6cb29b4c7a2cce, type: 2}
     - target: {fileID: 919132149155446097, guid: 003762ed9a5c6f243a82cedc05bac6c1, type: 3}
       propertyPath: m_Name
       value: BukuFile
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 003762ed9a5c6f243a82cedc05bac6c1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -149,12 +161,24 @@ PrefabInstance:
       value: 269.999
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 0e44e82327e95f642924da2eb4ebcef7, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0e44e82327e95f642924da2eb4ebcef7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: eff60a2ed1232ee40a6cb29b4c7a2cce, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 0e44e82327e95f642924da2eb4ebcef7, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 6f2f685969c8d394d8d70214f903e783, type: 2}
     - target: {fileID: 919132149155446097, guid: 0e44e82327e95f642924da2eb4ebcef7, type: 3}
       propertyPath: m_Name
       value: LemariSekolah (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e44e82327e95f642924da2eb4ebcef7, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -244,12 +268,24 @@ PrefabInstance:
       value: -89.992
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 003762ed9a5c6f243a82cedc05bac6c1, type: 3}
-      propertyPath: m_LightProbeUsage
-      value: 0
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 003762ed9a5c6f243a82cedc05bac6c1, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 003762ed9a5c6f243a82cedc05bac6c1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: eff60a2ed1232ee40a6cb29b4c7a2cce, type: 2}
     - target: {fileID: 919132149155446097, guid: 003762ed9a5c6f243a82cedc05bac6c1, type: 3}
       propertyPath: m_Name
       value: BukuFile (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 003762ed9a5c6f243a82cedc05bac6c1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
