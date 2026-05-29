@@ -88,7 +88,7 @@ MonoBehaviour:
     Data3: 905261752
     Data4: 1369548532
   Banks:
-  - {fileID: 3551023922120485847}
+  - {fileID: -84114609574138668}
   IsStream: 1
   Is3D: 1
   IsOneShot: 0
@@ -239,10 +239,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639148804371000886
+  lastModified: 639156580951703502
   FileSizes:
   - Name: Desktop
-    Value: 1524
+    Value: 1670
   Exists: 1
 --- !u!114 &-4436178140409978421
 MonoBehaviour:
@@ -310,6 +310,7 @@ MonoBehaviour:
     Data3: -1255761220
     Data4: 628745851
   Banks:
+  - {fileID: -84114609574138668}
   - {fileID: 3551023922120485847}
   IsStream: 1
   Is3D: 1
@@ -392,6 +393,53 @@ MonoBehaviour:
   - Left
   - Right
   Exists: 1
+--- !u!114 &-450991878789132542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Voice/DialogueVoice
+  m_EditorClassIdentifier: 
+  Path: event:/Voice/DialogueVoice
+  Guid:
+    Data1: -1516551243
+    Data2: 1232385004
+    Data3: -736407678
+    Data4: 2036367839
+  Banks:
+  - {fileID: 3551023922120485847}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-84114609574138668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Ambience.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/KandasTest/Build/Desktop/Ambience.bank
+  Name: Ambience
+  StudioPath: bank:/Ambience
+  lastModified: 639156580951764473
+  FileSizes:
+  - Name: Desktop
+    Value: 767520
+  Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,6 +458,7 @@ MonoBehaviour:
   - {fileID: -4634749821997254833}
   - {fileID: 3406518332576070875}
   - {fileID: 3551023922120485847}
+  - {fileID: -84114609574138668}
   EditorEvents:
   - {fileID: 8863259646918854691}
   - {fileID: 4454753689980159585}
@@ -425,13 +474,14 @@ MonoBehaviour:
   - {fileID: 8593934913192627197}
   - {fileID: 4248163362495528005}
   - {fileID: -1220024459839668281}
+  - {fileID: -450991878789132542}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4634749821997254833}
   StringsBanks:
   - {fileID: 2402750766380479616}
   cacheVersion: 131858
-  cacheTime: 639148804380890439
+  cacheTime: 639156580951764473
   SerializableEventsDict:
   - key: event:/SFX/ChaserFootsteps
     index: 0
@@ -461,6 +511,8 @@ MonoBehaviour:
     index: 12
   - key: event:/Voice/MonsterSounds
     index: 13
+  - key: event:/Voice/DialogueVoice
+    index: 14
 --- !u!114 &323353787290861564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,10 +610,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639148804371010984
+  lastModified: 639156580951703502
   FileSizes:
   - Name: Desktop
-    Value: 1768
+    Value: 1902
   Exists: 1
 --- !u!114 &3269528981090473387
 MonoBehaviour:
@@ -605,7 +657,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639148804374143157
+  lastModified: 639156580951749243
   FileSizes:
   - Name: Desktop
     Value: 529888
@@ -625,10 +677,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Voice.bank
   Name: Voice
   StudioPath: bank:/Voice
-  lastModified: 639148804380890439
+  lastModified: 639156580951744059
   FileSizes:
   - Name: Desktop
-    Value: 768704
+    Value: 225600
   Exists: 1
 --- !u!114 &4248163362495528005
 MonoBehaviour:
