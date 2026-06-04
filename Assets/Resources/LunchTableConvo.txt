@@ -1,4 +1,5 @@
-Narrator "A group of students seems to be talking nearby."
+Narration "A group of students seems to be talking nearby."
+[w]SwitchCam(GossipCam)
 Gossiping Student "Have you heard of the horror story going viral in the internet these days?"
 Tired Student "No, I’ve been busy with assignments."
 Gossiping Student "Hehe, that’s why you have me! I can spill you all the tea!"
@@ -17,5 +18,6 @@ Gossiping Student "No, it’s true! The body was starting to decompose... it’s
 Nonchalant Student "How can anyone not notice a missing student?"
 Gossiping Student "It’s because of the recent long public holiday. No one was around in the school for days."
 Nonchalant Student "Is this one of the internet urban legend you keep falling for?"
-Jessica "(Looks like my food’s ready...)"
-Objective(SubmitQuiz), SpawnMannequins(), AllowNPCMovement(true)
+[w]SwitchCam("Player Camera")
+Jessica "<style=\"Whispering\">Looks like my food’s ready...</style>"
+Objective(WaitingFood)

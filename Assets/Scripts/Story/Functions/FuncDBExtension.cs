@@ -32,6 +32,7 @@ namespace TestingPurposes
         new public static void Extend(FunctionsDatabase db)
         {
             db.AddFunction("Teleport", new Action<string[]>(TeleportObject));
+            db.AddFunction("TeleportToWaypoint", new Action<string[]>(TeleportToWaypoint));
             db.AddFunction("Rotate", new Action<string[]>(RotateObject));
             db.AddFunction("Move", new Action<string[]>(MoveObject));
             db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
@@ -41,6 +42,7 @@ namespace TestingPurposes
             db.AddFunction("StopSFX", new Action(StopSFX));
             db.AddFunction("PlayBGM", new Action<string[]>(PlayBGM));
             db.AddFunction("PlayAmbience", new Action<string[]>(PlayAmbience));
+            db.AddFunction("StopAmbience", new Action(StopAmbience));
             db.AddFunction("PlayVoice", new Action<string[]>(PlayVoice));
             db.AddFunction("StopVoice", new Action(StopVoice));
             db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
@@ -80,6 +82,19 @@ namespace TestingPurposes
             else
             {
                 movableObject.transform.position = new Vector3(x, y, z);
+            }
+        }
+
+        private static void TeleportToWaypoint(string[] args)
+        {
+            int index;
+            GameObject movableObject = GameObject.Find(args[0]);
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^idx" }, out index, defaultValue: 0);
+            movableObject.TryGetComponent(out NpcMovement moveScript);
+            if (moveScript != null)
+            {
+                moveScript.TeleportToWaypoint(index);
             }
         }
 
@@ -221,6 +236,11 @@ namespace TestingPurposes
         private static void StopVoice()
         {
             AudioManager.Instance.StopAllVoice();
+        }
+
+        private static void StopAmbience()
+        {
+            AudioManager.Instance.StopAllAmbience();
         }
 
         private static void PlayBGM(string[] args)

@@ -225,9 +225,9 @@ namespace Dialogue
             {
                 if(DialogueSystem.Instance.dialogueContainer.active)
                 {
-                    tmpro.maxVisibleCharacters += speedUp ? charPerCycle * 5 : charPerCycle;
-                    if(vowels.Contains(tmpro.textInfo.characterInfo[tmpro.maxVisibleCharacters-1].character))
+                    if(vowels.Contains(tmpro.textInfo.characterInfo[tmpro.maxVisibleCharacters].character))
                         AudioManager.Instance.PlayOneShot(RuntimeManager.PathToEventReference("event:/Voice/DialogueVoice"), .33f, 1, GameObject.Find("Player").transform.position);
+                    tmpro.maxVisibleCharacters += speedUp ? charPerCycle * 5 : charPerCycle;
                     yield return new WaitForSeconds(.015f / speed);
                 }
                 else

@@ -550,10 +550,6 @@ public class ItemInteraction : MonoBehaviour
         if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0) return;
 
         NpcMovement npcMovement = GetComponent<NpcMovement>();
-        if (npcMovement != null)
-        {
-            npcMovement.StartCoroutine(npcMovement.FacePlayer());
-        }
 
         var bestMatch = objectiveDialoguePair
             .Select(pair => new

@@ -201,7 +201,6 @@ namespace Dialogue
                 reconstructedLine = $"{reconstructedLine})";
             }
             rawLine = reconstructedLine;
-            Debug.Log(reconstructedLine);
             return rawLine;
         }
     }
