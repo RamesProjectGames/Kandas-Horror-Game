@@ -17,6 +17,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     public float idleTime = 5f, currIdleTime;
     private bool isKilling = false;
     private bool isStunned = false;
+    private bool isInEnemyStopZone = false;
 
     [Header("Hiding Spot Detection")]
     [SerializeField] private float hidingSpotDetectionRadius = 15f;
@@ -95,6 +96,16 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                 isStunned = false;
             }
             return; // Exit early while idling
+        }
+
+        if (isInEnemyStopZone)
+        {
+            // stop any pursuit/investigation while inside an EnemyStop zone
+            if (detectedSound || isDiscoveringSpot || (fov != null && fov.canSeePlayer))
+            {
+                ReturnToPatrol();
+            }
+            return;
         }
 
         // 1. Check if player is currently hiding
@@ -423,6 +434,14 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         agent.ResetPath();
         ReturnToPatrol();
     }
+    public void OnEnterEnemyStopZone(bool isInZone)
+    {
+        isInEnemyStopZone = isInZone;
+        if(isInZone)
+        {
+            ReturnToPatrol();
+        }
+    }
 
     /// <summary>
     /// Called when enemy gives up pursuit and returns to patrolling.
@@ -565,8 +584,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         }
     }
 
-    #endregion
-
+    #endregion    
+    
     #region Stun
     public void GetStunned()
     {
