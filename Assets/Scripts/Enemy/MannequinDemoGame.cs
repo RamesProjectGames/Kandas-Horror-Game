@@ -34,6 +34,7 @@ public class MannequinDemoGame : MonoBehaviour
     [Header("Catch Animation")]
     [SerializeField] private string catchAnimationName = "Catch";
     private Animator animator;
+    private float previousSpeed;
 
     [Header("Reset")]
     [SerializeField] private float contactThreshold = 1f;
@@ -169,7 +170,21 @@ public class MannequinDemoGame : MonoBehaviour
 
         return false; // Path is clear
     }
-
+    private void PauseAnimator()
+    {
+        if (animator != null)
+        {
+            previousSpeed = animator.speed;
+            animator.speed = 0f;
+        }
+    }
+    private void ResumeAnimator()
+    {
+        if (animator != null)
+        {
+            animator.speed = previousSpeed;
+        }
+    }
     private void MoveTowardPlayer()
     {
         if (playerTransform == null || isAnimatingCatch)
@@ -188,6 +203,7 @@ public class MannequinDemoGame : MonoBehaviour
         if (distanceToPlayer > stoppingDistance)
         {
             // Use NavMeshAgent to set destination toward the player
+            ResumeAnimator();
             navMeshAgent.SetDestination(playerTransform.position);
         }
         else
@@ -199,6 +215,7 @@ public class MannequinDemoGame : MonoBehaviour
 
     private void StopMovement()
     {
+        PauseAnimator();
         if (navMeshAgent != null)
         {
             navMeshAgent.velocity = Vector3.zero;
