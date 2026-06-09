@@ -35,8 +35,17 @@ public class Fragment : ItemInteraction
     public void OnFragmentPickup()
     {
         if(!FragmentManager.Instance.FragmentOwned(this))
+        {
             FragmentManager.Instance.AddFragment(this);
-        Cutscene();
+            Cutscene();            
+        }
+        else
+        {
+            var inspectUI = InspectManagerUI.Instance;
+            if (inspectUI == null) return;
+            if(itemParent.childCount == 0) return;
+            inspectUI.OnItemSelected(itemParent.GetChild(0).gameObject);
+        }
     }
 
     public void Cutscene()

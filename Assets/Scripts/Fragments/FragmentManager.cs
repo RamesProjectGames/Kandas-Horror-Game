@@ -4,7 +4,6 @@ using System.Linq;
 public class FragmentManager : MonoBehaviour
 {
     public static FragmentManager Instance;
-    public GameObject fragmentPrefab;
     public List<FragmentData> allFragments = new List<FragmentData>();
     List<FragmentData> currentFragments = new List<FragmentData>();
     List<Fragment> fragmentGOs = new List<Fragment>();
@@ -25,7 +24,7 @@ public class FragmentManager : MonoBehaviour
 
     public void SpawnFragmentInScene(FragmentData fragment)
     {
-        GameObject fragmentObject = Instantiate(fragmentPrefab, fragment.fragmentPosition, Quaternion.identity, GameObject.Find("===Fragments===").transform);
+        GameObject fragmentObject = Instantiate(fragment.fragmentPrefab, fragment.fragmentPosition, Quaternion.identity, GameObject.Find("===Fragments===").transform);
         fragmentObject.name = fragment.fragmentName;
         Fragment fragmentComponent = fragmentObject.GetComponent<Fragment>();
         fragmentComponent.SetFragmentData(fragment);
