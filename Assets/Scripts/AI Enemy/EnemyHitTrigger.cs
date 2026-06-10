@@ -19,12 +19,18 @@ public class EnemyHitTrigger : MonoBehaviour
         }
         if (collision.articulationBody.CompareTag("EnemyStop"))
         {
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("EnemyStop"))
+        {
             HitEvent?.Invoke();
         }
     }
-    void OnCollisionExit(Collision collision)
+    void OnTriggerExit(Collider other)
     {
-        if (collision.articulationBody.CompareTag("EnemyStop"))
+        if (other.gameObject.CompareTag("EnemyStop"))
         {
             LeaveEvent?.Invoke();
         }

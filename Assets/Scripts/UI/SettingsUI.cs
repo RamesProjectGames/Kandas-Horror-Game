@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.InputSystem.Samples.RebindUI;
 using Unity.Mathematics;
+using UnityEngine.SceneManagement;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -357,5 +358,7 @@ public class SettingsUI : MonoBehaviour
             if(PausePanel != null) PausePanel.SetActive(false);
         }
     }
+    public void BackToMainMenu() { SceneManager.LoadScene("MainMenu"); }
     #endregion
+
 }

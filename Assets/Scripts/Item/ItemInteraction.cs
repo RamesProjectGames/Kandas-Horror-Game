@@ -583,6 +583,43 @@ public class ItemInteraction : MonoBehaviour
 
     #endregion
 
+    #region Animation Events
+
+    public void SetAnimationBool(string parameter)
+    {
+        Animator animator = GetComponent<Animator>();
+        var value = animator.GetBool(parameter);
+        if (animator != null)
+        {
+            animator.SetBool(parameter, !value);
+        }
+    }
+    public void SetAnimationTrigger(string parameter)
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.SetTrigger(parameter);
+        }
+    }
+    public void SetAnimationFloat(string parameter, float value)
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.SetFloat(parameter, value);
+        }
+    }
+    public void SetAnimationInt(string parameter, int value)
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.SetInteger(parameter, value);
+        }
+    }
+    #endregion
+
     #region Enemy Alert
 
     private void AlertNearbyEnemies()
