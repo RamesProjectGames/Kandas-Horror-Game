@@ -17,6 +17,7 @@ public class MannequinDemoGameEditor : Editor
     private void OnSceneGUI()
     {
         MannequinDemoGame mannequin = (MannequinDemoGame)target;
+        if (mannequin.canRoamAround) return; // Don't show detection box if roaming is enabled
         Transform transform = mannequin.transform;
 
         boxHandle.center = transform.position + mannequin.DetectionBoxOffset;
