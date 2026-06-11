@@ -12,7 +12,14 @@ public class LightingManager : MonoBehaviour
     [SerializeField, Range(0, 24)] private float TimeOfDay;
     [SerializeField] private List<Light> PointLights = new List<Light>();
     [SerializeField] private List<ReflectionProbe> ReflectionProbes = new List<ReflectionProbe>();
-
+    private void Start()
+    {
+        if (Preset == null)
+        {
+            Debug.LogError("No lighting preset assigned to " + name);
+        }
+        
+    }
     private void Update()
     {
         if (Preset == null)
@@ -42,6 +49,8 @@ public class LightingManager : MonoBehaviour
         if (DirectionalLight != null)
         {
             DirectionalLight.color = Preset.DirectionalColor.Evaluate(timePercent);
+
+            DirectionalLight.intensity = Preset.DirectionalIntensity.Evaluate(timePercent);
 
             DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, 170f, 0));
         }
@@ -92,7 +101,9 @@ public class LightingManager : MonoBehaviour
         
         if (DirectionalLight != null)
             return;
-
+        
+        PopulateLights();
+        
         //Search for lighting tab sun
         if (RenderSettings.sun != null)
         {
@@ -110,7 +121,12 @@ public class LightingManager : MonoBehaviour
                     return;
                 }
             }
-        }
+        }        
+    }
+    [ContextMenu("Populate Point Lights")]
+    public void PopulateLights()
+    {
+        PointLights.Clear();
         Light[] pointLights = FindObjectsByType<Light>(FindObjectsInactive.Include,FindObjectsSortMode.None);
         foreach (Light light in pointLights)
         {
@@ -121,6 +137,7 @@ public class LightingManager : MonoBehaviour
                 PointLights.Add(light);
             }
         }
+        ReflectionProbes.Clear();
         ReflectionProbes = new List<ReflectionProbe>(FindObjectsByType<ReflectionProbe>(FindObjectsInactive.Include,FindObjectsSortMode.None));
     }
     private void RefreshReflections()

@@ -18,8 +18,8 @@ public class LightingPreset : ScriptableObject
     public AnimationCurve PointLightMultiplier;
 
     [Header("Skybox")]
-public Gradient SkyboxTint;
-public AnimationCurve SkyboxExposure;
-public AnimationCurve SkyboxRotation;
+    public Gradient SkyboxTint;
+    public AnimationCurve SkyboxExposure;
+    public AnimationCurve SkyboxRotation;
     public AnimationCurve ReflectionIntensity;
 }
