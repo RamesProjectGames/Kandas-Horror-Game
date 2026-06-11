@@ -24673,8 +24673,8 @@ MonoBehaviour:
   maximumFogDistance: 0.125
   DefaultMat: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   VertexJitterMat: {fileID: 2100000, guid: 48755e82535867e47bc1b1eff93f8886, type: 2}
-  minimumMicrophoneVolume: 100
-  maximumMicrophoneVolume: 500
+  minimumMicrophoneVolume: 0.25
+  maximumMicrophoneVolume: 1
   minimumMouseSensitivity: 0.5
   maximumMouseSensitivity: 1
 --- !u!114 &1624481260
@@ -24782,6 +24782,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 53fb29fa-ebd3-495b-9708-93011d733804
     m_ActionName: 'Dialogue/Next[/Keyboard/space,/Keyboard/z]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f58b8320-b9de-4f2d-ad22-57077b2da2d4
+    m_ActionName: 'Dialogue/EnqueueDebug[/Keyboard/m]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI

@@ -226,16 +226,28 @@ public class MicrophoneManager : MonoBehaviour
             {
                 short[] shortSamples = new short[frequencyBands];
                 System.Runtime.InteropServices.Marshal.Copy(ptr1, shortSamples, 0, (int)len1 / sizeof(short));
-                
+
                 // Convert to float and calculate loudness
-                float totalLoudness = 0f;
+                float sum = 0f;
+
                 for (int i = 0; i < shortSamples.Length; i++)
                 {
-                    totalLoudness += Mathf.Abs(shortSamples[i] / 32768f); // Normalize to -1 to 1
+                    float sample = shortSamples[i] / 32768f;
+                    sum += sample * sample;
                 }
-                
-                recordingSound.unlock(ptr1, ptr2, len1, len2);
-                return totalLoudness / shortSamples.Length;
+
+                float rms = Mathf.Sqrt(sum / shortSamples.Length);
+
+                // Convert to dB
+                float db = 20f * Mathf.Log10(rms);
+
+                // Clamp human voice range
+                db = Mathf.Clamp(db, -60f, 0f);
+
+                // Normalize
+                float normalized = Mathf.InverseLerp(-50f, -20f, db) * SettingManager.Instance.settings.MicrophoneSensitivity;
+
+                return normalized;
             }
 
             recordingSound.unlock(ptr1, ptr2, len1, len2);

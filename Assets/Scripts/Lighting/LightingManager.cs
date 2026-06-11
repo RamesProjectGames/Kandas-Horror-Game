@@ -43,7 +43,7 @@ public class LightingManager : MonoBehaviour
         RenderSettings.fogColor = Preset.FogColor.Evaluate(timePercent);
         RenderSettings.reflectionIntensity = Preset.ReflectionIntensity.Evaluate(timePercent);
         float multiplier = Preset.PointLightMultiplier.Evaluate(timePercent);
-        float intensity = Mathf.Lerp(0.2f, 1f, Preset.AmbientIntensity.Evaluate(timePercent));
+        float intensity = Mathf.Lerp(0f, 1f, Preset.AmbientIntensity.Evaluate(timePercent));
 
         //If the directional light is set then rotate and set it's color, I actually rarely use the rotation because it casts tall shadows unless you clamp the value
         if (DirectionalLight != null)
