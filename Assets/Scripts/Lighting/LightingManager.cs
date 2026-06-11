@@ -83,13 +83,13 @@ public class LightingManager : MonoBehaviour
         "_Tint",
         Preset.SkyboxTint.Evaluate(timePercent));
 
-    SkyboxMaterial.SetFloat(
-        "_Exposure",
-        Preset.SkyboxExposure.Evaluate(timePercent));
+        SkyboxMaterial.SetFloat(
+            "_Exposure",
+            Preset.SkyboxExposure.Evaluate(timePercent));
 
-    SkyboxMaterial.SetFloat(
-        "_Rotation",
-        Preset.SkyboxRotation.Evaluate(timePercent));
+        SkyboxMaterial.SetFloat(
+            "_Rotation",
+            Preset.SkyboxRotation.Evaluate(timePercent));
 
         DynamicGI.UpdateEnvironment();
         RefreshReflections();
