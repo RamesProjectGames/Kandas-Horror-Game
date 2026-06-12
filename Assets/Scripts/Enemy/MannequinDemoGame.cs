@@ -370,32 +370,31 @@ public class MannequinDemoGame : MonoBehaviour
             Gizmos.color = Color.yellow;
         }
 
-        if(canRoamAround)
+        if(!canRoamAround)
         {
-            
-        }
-        Vector3 boxCenter = transform.position + detectionBoxOffset;
-        Gizmos.DrawWireCube(boxCenter, detectionBoxSize);
-        
-        // Draw offset indicator line
-        if (detectionBoxOffset != Vector3.zero)
-        {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(transform.position, boxCenter);
-        }
+            Vector3 boxCenter = transform.position + detectionBoxOffset;
+            Gizmos.DrawWireCube(boxCenter, detectionBoxSize);
 
-        // Draw line to player if in range (for debugging obstruction)
-        if (Application.isPlaying && playerTransform != null)
-        {
-            if (IsPathObstructed())
+            // Draw offset indicator line
+            if (detectionBoxOffset != Vector3.zero)
             {
-                Gizmos.color = Color.red; // Path blocked
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawLine(transform.position, boxCenter);
             }
-            else
+
+            // Draw line to player if in range (for debugging obstruction)
+            if (Application.isPlaying && playerTransform != null)
             {
-                Gizmos.color = Color.green; // Path clear
+                if (IsPathObstructed())
+                {
+                    Gizmos.color = Color.red; // Path blocked
+                }
+                else
+                {
+                    Gizmos.color = Color.green; // Path clear
+                }
+                Gizmos.DrawLine(transform.position, playerTransform.position);
             }
-            Gizmos.DrawLine(transform.position, playerTransform.position);
         }
 
         // Draw original position

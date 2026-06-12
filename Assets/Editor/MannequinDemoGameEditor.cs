@@ -9,6 +9,9 @@ public class MannequinDemoGameEditor : Editor
 
     private void OnEnable()
     {
+        MannequinDemoGame mannequin = (MannequinDemoGame)target;
+        if (mannequin.canRoamAround) return; // Don't show detection box if roaming is enabled
+
         boxHandle.axes = PrimitiveBoundsHandle.Axes.All;
         boxHandle.wireframeColor = Color.yellow;
         boxHandle.handleColor = new Color(1f, 1f, 0f, 0.4f);
