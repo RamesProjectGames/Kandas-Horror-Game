@@ -325,8 +325,8 @@ public class SettingManager : MonoBehaviour
 
     #region Control Settings Methods
 
-    public float minimumMicrophoneVolume = 100f;
-    public float maximumMicrophoneVolume = 500f;
+    public float minimumMicrophoneVolume = .25f;
+    public float maximumMicrophoneVolume = 1f;
     public float minimumMouseSensitivity = 0.1f;
     public float maximumMouseSensitivity = 1f;
     bool isRebinding = false;

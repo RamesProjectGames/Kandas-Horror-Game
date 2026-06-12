@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.InputSystem.Samples.RebindUI;
 using Unity.Mathematics;
+using UnityEngine.SceneManagement;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -71,7 +72,9 @@ public class SettingsUI : MonoBehaviour
         textureQualityText.text = TextureQualityToString(s.TextureQuality);
 
         // Control Settings
-        microphoneSensitivitySlider.value = Mathf.InverseLerp(settingManager.minimumMicrophoneVolume, settingManager.maximumMicrophoneVolume, s.MicrophoneSensitivity);
+        microphoneSensitivitySlider.minValue = settingManager.minimumMicrophoneVolume;
+        microphoneSensitivitySlider.maxValue = settingManager.maximumMicrophoneVolume;
+        microphoneSensitivitySlider.value = s.MicrophoneSensitivity;
         mouseSensitivitySlider.value = Mathf.InverseLerp(settingManager.minimumMouseSensitivity, settingManager.maximumMouseSensitivity, s.MouseSensitivity);
         sprintToggleText.text = s.SprintToggle ? "Toggle" : "Hold";
         crouchToggleText.text = s.CrouchToggle ? "Toggle" : "Hold";
@@ -357,5 +360,7 @@ public class SettingsUI : MonoBehaviour
             if(PausePanel != null) PausePanel.SetActive(false);
         }
     }
+    public void BackToMainMenu() { SceneManager.LoadScene("MainMenu"); }
     #endregion
+
 }

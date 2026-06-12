@@ -1830,13 +1830,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1105572347}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1105572348}
+        m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
+        m_MethodName: BackToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6468,7 +6468,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 459319806}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1105572348}
+        m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
+        m_MethodName: BackToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &459319806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17103,7 +17115,7 @@ MonoBehaviour:
     Description: Explore the School (optional)
     IsCompleted: 0
     isHidden: 0
-    fragmentData: {fileID: 0}
+    fragmentData: {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
     requirements:
     - SubmitQuiz
     LimitedAfterObjective: Lunch
@@ -23091,7 +23103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5ec4a54b9c041349910d14187ddee6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fragmentPrefab: {fileID: 6180898111845516536, guid: 1b8b5633bbec7694ca7ce3e199386c13, type: 3}
   allFragments:
   - {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
   - {fileID: 11400000, guid: a38d5a6c17cb5b34cade80cd80d4ae66, type: 2}
@@ -24662,8 +24673,8 @@ MonoBehaviour:
   maximumFogDistance: 0.125
   DefaultMat: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   VertexJitterMat: {fileID: 2100000, guid: 48755e82535867e47bc1b1eff93f8886, type: 2}
-  minimumMicrophoneVolume: 100
-  maximumMicrophoneVolume: 500
+  minimumMicrophoneVolume: 0.25
+  maximumMicrophoneVolume: 1
   minimumMouseSensitivity: 0.5
   maximumMouseSensitivity: 1
 --- !u!114 &1624481260
@@ -24771,6 +24782,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 53fb29fa-ebd3-495b-9708-93011d733804
     m_ActionName: 'Dialogue/Next[/Keyboard/space,/Keyboard/z]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f58b8320-b9de-4f2d-ad22-57077b2da2d4
+    m_ActionName: 'Dialogue/EnqueueDebug[/Keyboard/m]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
