@@ -17061,11 +17061,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a614861797795840a36b5ea4f2ca92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentChapter: 0
   objectiveDatas:
   - Name: Class
     Description: Go to the class
     IsCompleted: 0
     isHidden: 0
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements: []
     LimitedAfterObjective: Class
@@ -17075,6 +17077,7 @@ MonoBehaviour:
     Description: Sit on your desk.
     IsCompleted: 0
     isHidden: 0
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - Class
@@ -17085,6 +17088,7 @@ MonoBehaviour:
     Description: Finish the Math Quiz
     IsCompleted: 0
     isHidden: 0
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - Desk
@@ -17095,6 +17099,7 @@ MonoBehaviour:
     Description: "Submit your quiz paper on the teacher\u2019s desk"
     IsCompleted: 0
     isHidden: 0
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - DoQuiz
@@ -17105,6 +17110,7 @@ MonoBehaviour:
     Description: Buy lunch from the cafetaria
     IsCompleted: 0
     isHidden: 0
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - SubmitQuiz
@@ -17115,6 +17121,7 @@ MonoBehaviour:
     Description: Explore the School (optional)
     IsCompleted: 0
     isHidden: 0
+    isDemo: 0
     fragmentData: {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
     requirements:
     - SubmitQuiz
@@ -17125,6 +17132,7 @@ MonoBehaviour:
     Description: Talk to the Laid-back student
     IsCompleted: 0
     isHidden: 1
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - SubmitQuiz
@@ -17135,6 +17143,7 @@ MonoBehaviour:
     Description: Talk to the Diligent student
     IsCompleted: 0
     isHidden: 1
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - SubmitQuiz
@@ -17145,6 +17154,7 @@ MonoBehaviour:
     Description: Read the Love Letter under the table
     IsCompleted: 0
     isHidden: 1
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - SubmitQuiz
@@ -17155,6 +17165,7 @@ MonoBehaviour:
     Description: News Letter
     IsCompleted: 0
     isHidden: 0
+    isDemo: 0
     fragmentData: {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
     requirements:
     - SubmitQuiz
@@ -17165,6 +17176,7 @@ MonoBehaviour:
     Description: Talk to the Studying student
     IsCompleted: 0
     isHidden: 1
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - SubmitQuiz
@@ -17175,6 +17187,7 @@ MonoBehaviour:
     Description: Sit at the nearby table and wait for the food
     IsCompleted: 0
     isHidden: 0
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - Lunch
@@ -17185,6 +17198,7 @@ MonoBehaviour:
     Description: Sit at the nearby table and wait for the food
     IsCompleted: 0
     isHidden: 0
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - WaitingFood
@@ -17195,6 +17209,7 @@ MonoBehaviour:
     Description: Go to the school yard to eat your lunch
     IsCompleted: 0
     isHidden: 0
+    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - GetFood
@@ -17205,6 +17220,7 @@ MonoBehaviour:
     Description: Go to the bathroom
     IsCompleted: 0
     isHidden: 0
+    isDemo: 1
     fragmentData: {fileID: 0}
     requirements:
     - EatLunch
@@ -17215,6 +17231,7 @@ MonoBehaviour:
     Description: Go back to class
     IsCompleted: 0
     isHidden: 0
+    isDemo: 1
     fragmentData: {fileID: 0}
     requirements:
     - Bathroom
@@ -17225,6 +17242,7 @@ MonoBehaviour:
     Description: "Look for classroom\u2019s key"
     IsCompleted: 0
     isHidden: 0
+    isDemo: 1
     fragmentData: {fileID: 0}
     requirements:
     - BackToClass1
@@ -17235,6 +17253,7 @@ MonoBehaviour:
     Description: Go back to the classroom
     IsCompleted: 0
     isHidden: 0
+    isDemo: 1
     fragmentData: {fileID: 0}
     requirements:
     - FindKey
@@ -17245,6 +17264,7 @@ MonoBehaviour:
     Description: Go sit down at your desk
     IsCompleted: 0
     isHidden: 0
+    isDemo: 1
     fragmentData: {fileID: 0}
     requirements:
     - BackToClass2
