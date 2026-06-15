@@ -6,6 +6,8 @@ using UnityEngine;
 public class ObjectiveManager : MonoBehaviour
 {
     public static ObjectiveManager Instance;
+    public int currentChapter;
+    public bool isDemoBuild;
     public List<ObjectiveData> objectiveDatas = new List<ObjectiveData>();
     public Objective ObjectivePrefab;
     public Transform ObjectivesParent;
@@ -56,7 +58,11 @@ public class ObjectiveManager : MonoBehaviour
 
     public void UpdateCurrentObjectives()
     {
-        List<Objective> openObjectives = Objectives.FindAll(x => string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) || !Objectives.Find(y => y.objectiveData.Name == x.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted);
+        List<Objective> openObjectives = Objectives.FindAll(x =>
+            IsObjectiveAvailable(x.objectiveData) &&
+            (string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) ||
+            !Objectives.Find(y => y.objectiveData.Name == x.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted)
+        );
 
         foreach (Objective obj in openObjectives)
         {
@@ -67,10 +73,13 @@ public class ObjectiveManager : MonoBehaviour
                 if(!Objectives.Find(x => x.objectiveData.Name == req).objectiveData.IsCompleted)
                 {
                     isCurrent = false;
-                    if (currentObjectives.Contains(obj.objectiveData.Name))
+                    currentObjectives.RemoveAll(objName =>
                     {
-                        currentObjectives.Remove(obj.objectiveData.Name);
-                    }
+                        Objective obj = Objectives.Find(x => x.objectiveData.Name == objName);
+                        return obj == null ||
+                        obj.objectiveData.Chapter != currentChapter ||
+                        (!obj.objectiveData.isDemo && isDemoBuild);
+                    });
                     break;
                 }
             }
@@ -128,5 +137,15 @@ public class ObjectiveManager : MonoBehaviour
     public bool CheckIfFragmentValid(FragmentData fragData)
     {
         return currentObjectives.Contains(objectiveDatas.Find(x => x.fragmentData == fragData).Name) && !objectiveDatas.Find(x => x.fragmentData == fragData).IsCompleted;
+    }
+    public void SetChapter(int chapter)
+    {
+        currentChapter = chapter;
+        UpdateCurrentObjectives();
+    }
+    public bool IsObjectiveAvailable(ObjectiveData data)
+    {
+        return data.Chapter == currentChapter &&
+               (!data.isDemo || isDemoBuild);
     }
 }
