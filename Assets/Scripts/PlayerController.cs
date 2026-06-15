@@ -37,6 +37,7 @@ public class PlayerController : MovableObjects
     private bool isGrounded;
     public bool isSprinting;
     public bool isCrouching;
+    public bool isBeingGrab;
 
     [Header("Player Camera Settings")]
     [SerializeField] private CinemachineCamera playerCam;
@@ -48,6 +49,8 @@ public class PlayerController : MovableObjects
     //private CinemachineBasicMultiChannelPerlin _noise;
     private CinemachineInputAxisController inputController;
     private CinemachinePanTilt panTilt;
+    private Transform originalFollowTarget;
+    private Transform originalLookTarget;
 
     [Header("Bob Settings")]
     public float headBobAmplitude = 0.5f;
@@ -100,6 +103,8 @@ public class PlayerController : MovableObjects
         Hiding = GetComponent<PlayerHiding>();
         audioSrc = GetComponent<AudioSource>();
         CameraManager.SwitchCamera(playerCam);
+        originalFollowTarget = playerCam.Follow;
+        originalLookTarget = playerCam.LookAt;
         //_noise = playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>();
         panTilt = playerCam.GetComponent<CinemachinePanTilt>();
 
@@ -167,7 +172,7 @@ public class PlayerController : MovableObjects
                 }
             }
         }
-        if (SettingManager.Instance.isPaused)
+        if (SettingManager.Instance.isPaused || isBeingGrab)
         {
             ResetMovementState();
             lookAction.action.Disable();
@@ -587,6 +592,14 @@ public class PlayerController : MovableObjects
             localPos.y = standingCameraY;
             cameraHeightTarget.localPosition = localPos;
         }
+    }
+    public void ChangeCameraFollow(Transform newFollow = null)
+    {
+        playerCam.Follow = newFollow ?? originalFollowTarget;
+    }
+    public void ChangeCameraLookAt(Transform newLook = null)
+    {
+        playerCam.LookAt = newLook ?? originalLookTarget;
     }
 
     private void PlayPantingSound()
