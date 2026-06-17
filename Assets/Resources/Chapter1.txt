@@ -13,5 +13,5 @@ Student D "<style=\"Whispering\">Hahaha, maybe she got dropped out of her previo
 SwitchCam(SideClassCam), [w]Rotate(Player ^r 0)
 Teacher "Alright, calm down, everybody, save the questions for later." StopAmbience()
 "{a}\nNow, we need to start the class as we have a quiz today.{a}\nJessica, why don’t you sit over there?"
-Jessica "Okay." [w]Rotate(Player ^r 90), Objective(Class)
-[w]SwitchCam("Player Camera")
+Jessica "Okay." Objective(Class)
+[w]SwitchCam("Player Camera"), [w]Wait(0.5), [w]Rotate(Player ^r 90), [w]Wait(0.5), [w]HidePlayerRig()

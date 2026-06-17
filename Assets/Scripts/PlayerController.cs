@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.GPUSort;
 
 //[RequireComponent (typeof(CharacterController), typeof(Animator))]
 [RequireComponent(typeof(CharacterController))]
@@ -16,7 +17,9 @@ public class PlayerController : MovableObjects
     [SerializeField] private CharacterController controller;
     [SerializeField] private AudioSource audioSrc;
     [SerializeField] private GameObject face;
-    //[SerializeField] private Animator anim;
+    [SerializeField] private Animator anim;
+    [SerializeField] public GameObject rig;
+    [HideInInspector] public int lunchProgress = 0;
 
     [Header("Ground Detection")]
     public Transform foot;
@@ -98,14 +101,12 @@ public class PlayerController : MovableObjects
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         Hiding = GetComponent<PlayerHiding>();
         audioSrc = GetComponent<AudioSource>();
         CameraManager.SwitchCamera(playerCam);
         originalFollowTarget = playerCam.Follow;
         originalLookTarget = playerCam.LookAt;
-        //_noise = playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>();
         panTilt = playerCam.GetComponent<CinemachinePanTilt>();
 
         pantingSoundEvent = AudioManager.Instance.CreateInstance(pantingSound);
@@ -185,7 +186,7 @@ public class PlayerController : MovableObjects
         if (inputController != null)
         {
             float sliderValue = SettingManager.Instance.settings.MouseSensitivity ;
-            float calculatedGain = Mathf.Lerp(SettingManager.Instance.minimumMouseSensitivity, SettingManager.Instance.maximumMouseSensitivity, sliderValue) * lookSensitivity;
+            float calculatedGain = Mathf.Lerp(SettingManager.Instance.minimumMouseSensitivity, SettingManager.Instance.maximumMouseSensitivity, sliderValue) * lookSensitivity * 2;
 
             // Controllers is a list. Usually: Index 0 = Pan, Index 1 = Tilt
             foreach (var controller in inputController.Controllers)
@@ -408,7 +409,6 @@ public class PlayerController : MovableObjects
     private void FixedUpdate()
     {
         isGrounded = Physics.CheckSphere(foot.position, groundDist, groundMask);
-        //Debug.Log($"Player is Grounded: {isGrounded}");
 
         // accumulate distance travelled this frame and trigger a step when we've covered enough ground
         if (footstepManager != null && isGrounded && input.magnitude > 0.01f)
@@ -456,6 +456,46 @@ public class PlayerController : MovableObjects
         audioSrc.Play();
     }
 
+    #region Animation
+    public void ToggleRig(bool active)
+    {
+        rig.SetActive(active);
+    }
+
+    public void PrepLunch()
+    {
+        ToggleRig(true);
+        anim.SetBool("Lunch", true);
+        CameraManager.SwitchCamera(GameObject.Find("LunchCam").GetComponent<CinemachineCamera>());
+        Teleport(new Vector3(293.5f, transform.position.y, 218.75f));
+        Rotate(-90);
+    }
+
+    public void ToggleLunchSequence(bool active)
+    {
+        rig.SetActive(active);
+        anim.SetBool("Lunch", active);
+    }
+
+    public void EatFood()
+    {
+        anim.SetTrigger("EatLunch");
+        if (lunchProgress++ == 2)
+        {
+            anim.SetBool("Meds", true);
+            anim.SetBool("Lunch", false);
+            GetComponent<PlayerGrabInteraction>().currentItem.ChangeInteractionText("EatMeds");
+        }
+    }
+
+    public void EatMeds()
+    {
+        anim.SetTrigger("EatMeds");
+        DialogueSystem.Instance.convoManager.EnqueuePrio(FileReader.ReadAsset("Mini_PostLunch"));
+    }
+    #endregion
+
+    #region Camera Handling
     private void HandleCrouch()
     {
         // Prevent standing up if blocked by ceiling
@@ -494,7 +534,6 @@ public class PlayerController : MovableObjects
         float desiredY = isCrouching ? crouchCameraY : standingCameraY;
         return Mathf.Abs(cameraHeightTarget.localPosition.y - desiredY) > 0.02f;
     }
-
     public void FaceObject(Transform targetObject)
     {
         Vector3 direction = targetObject.position - playerCam.transform.position;
@@ -513,11 +552,16 @@ public class PlayerController : MovableObjects
     public void FaceFront()
     {
         transform.rotation = Quaternion.Euler(0, 0, 0);
-
-        //panTilt.PanAxis.Value = 0;
-        //panTilt.TiltAxis.Value = 0;
-        //playerCam.ForceCameraPosition(transform.forward, Quaternion.identity);
     }
+    public void ChangeCameraFollow(Transform newFollow = null)
+    {
+        playerCam.Follow = newFollow ?? originalFollowTarget;
+    }
+    public void ChangeCameraLookAt(Transform newLook = null)
+    {
+        playerCam.LookAt = newLook ?? originalLookTarget;
+    }
+#endregion
 
     #region Agent (auto) Movement
     public override IEnumerator Teleport(Vector3 pos)
@@ -593,15 +637,9 @@ public class PlayerController : MovableObjects
             cameraHeightTarget.localPosition = localPos;
         }
     }
-    public void ChangeCameraFollow(Transform newFollow = null)
-    {
-        playerCam.Follow = newFollow ?? originalFollowTarget;
-    }
-    public void ChangeCameraLookAt(Transform newLook = null)
-    {
-        playerCam.LookAt = newLook ?? originalLookTarget;
-    }
+    #endregion
 
+    #region Audio
     private void PlayPantingSound()
     {
         PLAYBACK_STATE playbackState;

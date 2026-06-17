@@ -516,32 +516,25 @@ public class ItemInteraction : MonoBehaviour
 
         if (ObjectiveManager.Instance == null) return false;
         if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0) return false;
-        var bestMatch = objectiveDialoguePair
-            .Select(pair => new
-            {
-                Pair = pair,
-                MatchCount = pair.objective.Count(obj => ObjectiveManager.Instance.isCurrentAndNotCompleted(obj)),
-                EarliestMatchIndex = pair.objective
-                    .Where(obj => ObjectiveManager.Instance.currentObjectives.Contains(obj))
-                    .Select(obj => ObjectiveManager.Instance.currentObjectives.IndexOf(obj))
-                    .DefaultIfEmpty(int.MaxValue)
-                    .Min()
-            })
-            .Where(x => x.MatchCount > 0)
-            .OrderByDescending(x => x.MatchCount)
-            .ThenBy(x => x.EarliestMatchIndex)
-            .FirstOrDefault();
+        bool match = objectiveDialoguePair.Any(pair => !pair.objective.Any(objective => !ObjectiveManager.Instance.isCurrentAndNotCompleted(objective)));
+    //    foreach (var pair in objectiveDialoguePair)
+    //    {
+    //        match = true;
+    //        foreach (string objective in pair.objective)
+    //        {
+    //            Debug.Log($"{objective} is being checked");
+    //            if(!ObjectiveManager.Instance.isCurrentAndNotCompleted(objective))
+    //            {
+    //                Debug.Log($"{objective} is not active");
+    //                match = false;
+    //                break;
+    //            }
+    //        }
+    //        if (match)
+    //            break;
+    //    }
 
-        ObjectiveDialoguePair fallback = objectiveDialoguePair.Find(x => x.objective.Length == 0);
-
-        if (bestMatch != null || fallback != null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return match;
     }
 
     public void TriggerDialogue()
@@ -581,6 +574,11 @@ public class ItemInteraction : MonoBehaviour
         }
     }
 
+    public void ChangeInteractionText(string newText)
+    {
+        itemInteractionText = newText;
+        pickupText.text = itemInteractionText;
+    }
     #endregion
 
     #region Animation Events

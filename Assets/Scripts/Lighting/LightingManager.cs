@@ -62,9 +62,7 @@ public class LightingManager : MonoBehaviour
             if (light == null)
                 continue;
 
-            light.intensity =
-                light.GetComponent<OriginalIntensity>().BaseIntensity
-                * multiplier;
+            light.intensity = multiplier;
         }
         foreach (ReflectionProbe probe in ReflectionProbes)
         {

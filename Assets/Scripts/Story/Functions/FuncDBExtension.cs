@@ -27,17 +27,24 @@ namespace Dialogue.Functions
 
 namespace TestingPurposes
 {
-    public class TestFunction : FuncDBExtension
+    public class DialogueEvents : FuncDBExtension
     {
         new public static void Extend(FunctionsDatabase db)
         {
+            #region Movement
             db.AddFunction("Teleport", new Action<string[]>(TeleportObject));
             db.AddFunction("TeleportToWaypoint", new Action<string[]>(TeleportToWaypoint));
             db.AddFunction("Rotate", new Action<string[]>(RotateObject));
             db.AddFunction("Move", new Action<string[]>(MoveObject));
-            db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
-            db.AddFunction("Poultry", new Action(PrintPoultry));
-            db.AddFunction("Objective", new Action<string>(CompleteObjective));
+            db.AddFunction("PlayerFaceFront", new Action(PlayerFaceFront));
+            db.AddFunction("AllowNPCMovement", new Action<string>(AllowNPCMovement));
+            db.AddFunction("Fadein", new Func<string, IEnumerator>(FadeIn));
+            db.AddFunction("fadeout", new Func<string, IEnumerator>(FadeOut));
+            db.AddFunction("SwitchCam", new Action<string>(SwitchCamera));
+            db.AddFunction("Despawn", new Action<string>(Despawn));
+            db.AddFunction("MovePrep", new Action(MovePrep));
+            #endregion
+            #region Audio
             db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
             db.AddFunction("StopSFX", new Action(StopSFX));
             db.AddFunction("PlayBGM", new Action<string[]>(PlayBGM));
@@ -45,22 +52,26 @@ namespace TestingPurposes
             db.AddFunction("StopAmbience", new Action(StopAmbience));
             db.AddFunction("PlayVoice", new Action<string[]>(PlayVoice));
             db.AddFunction("StopVoice", new Action(StopVoice));
+            #endregion
+            #region Dialogue Progression
             db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
             db.AddFunction("HideDialogue", new Func<string, IEnumerator>(HideDialogue));
+            db.AddFunction("NextDialogue", new Action(NextDialogue));
+            db.AddFunction("StopDialogue", new Action(StopDialogue));
+            db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
+            db.AddFunction("Objective", new Action<string>(CompleteObjective));
+            db.AddFunction("StopWithoutObj", new Action<string>(ConditionalStopDialogue));
+            #endregion
+            #region Misc Events
             db.AddFunction("PlayCutsceneVideo", new Action<string[]>(PlayCutscene));
             db.AddFunction("InspectFragment", new Action<string[]>(InspectFragment));
             db.AddFunction("StartQuiz", new Action(StartQuiz));
             db.AddFunction("EndQuiz", new Action(EndQuiz));
-            db.AddFunction("StopDialogue", new Action(StopDialogue));
-            db.AddFunction("NextDialogue", new Action(NextDialogue));
-            db.AddFunction("PlayerFaceFront", new Action(PlayerFaceFront));
-            db.AddFunction("AllowNPCMovement", new Action<string>(AllowNPCMovement));
-            db.AddFunction("Fadein", new Func<string, IEnumerator>(FadeIn));
-            db.AddFunction("fadeout", new Func<string, IEnumerator>(FadeOut));
-            db.AddFunction("StopWithoutObj", new Action<string>(ConditionalStopDialogue));
-            db.AddFunction("SwitchCam", new Action<string>(SwitchCamera));
-            db.AddFunction("Despawn", new Action<string>(Despawn));
-            db.AddFunction("MovePrep", new Action(MovePrep));
+            db.AddFunction("PrepLunch", new Action(PrepLunch));
+            db.AddFunction("EatLunch", new Action(EatLunch));
+            db.AddFunction("HidePlayerRig", new Action(HidePlayerRig));
+            db.AddFunction("ShowPlayerRig", new Action(ShowPlayerRig));
+            #endregion
         }
 
 
@@ -278,7 +289,7 @@ namespace TestingPurposes
         }
         #endregion
 
-        #region Dialogue Events
+        #region Misc Events
         private static void PlayCutscene(string[] args)
         {
 
@@ -287,11 +298,35 @@ namespace TestingPurposes
         private static void SwitchCamera(string arg)
         {
             CameraManager.SwitchCamera(GameObject.Find(arg).GetComponent<CinemachineCamera>());
+            //if (arg == "Player Camera")
+            //    HidePlayerRig();
         }
 
-        private static void PrintPoultry()
+        private static void PrepLunch()
         {
-            Debug.Log("Poultry printed from functions");
+            GameObject.Find("Player").GetComponent<PlayerController>().PrepLunch();
+        }
+
+        private static void EatLunch()
+        {
+            if(GameObject.Find("Player").GetComponent<PlayerController>().lunchProgress < 2)
+            {
+                GameObject.Find("Player").GetComponent<PlayerController>().EatFood();
+            }
+            else
+            {
+                GameObject.Find("Player").GetComponent<PlayerController>().EatMeds();
+            }
+        }
+
+        private static void HidePlayerRig()
+        {
+            GameObject.Find("Player").GetComponent<PlayerController>().ToggleRig(false);
+        }
+
+        private static void ShowPlayerRig()
+        {
+            GameObject.Find("Player").GetComponent<PlayerController>().ToggleRig(true);
         }
 
         private static void SpawnMannequins()

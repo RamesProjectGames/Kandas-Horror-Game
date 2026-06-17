@@ -68,9 +68,6 @@ namespace Dialogue
             while(!convoQueue.IsEmpty())
             {
                 Convo currConvo = convo;
-                Debug.Log(currConvo.GetProgress());
-                if(currConvo.CurrLine().dialogue.Count>0)
-                    Debug.Log(currConvo.CurrLine().dialogue[0].dialogue);
                 DialogueStructure line = currConvo.CurrLine();
                 if (string.IsNullOrWhiteSpace(line.GetRawLine()))
                 {

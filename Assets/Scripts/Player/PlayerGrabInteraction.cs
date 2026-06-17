@@ -23,7 +23,7 @@ public class PlayerGrabInteraction : MonoBehaviour
     public TextMeshProUGUI bottomInteractText;
     public Slider throwpowerSlider;
 
-    private ItemInteraction currentItem;
+    [HideInInspector] public ItemInteraction currentItem;
     private ItemInteraction heldItem;
     [SerializeField] private InputActionReference throwAction, interAction;
 
