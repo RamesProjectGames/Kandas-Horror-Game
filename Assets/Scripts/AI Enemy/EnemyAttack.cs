@@ -8,24 +8,22 @@ public class EnemyAttack : MonoBehaviour
     public LayerMask obstacleMask;
 
     public GameObject player;
-    public GameObject playerMesh;
 
     public bool canAttackPlayer;
 
-    Animator animator;
+    public Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        playerMesh = player.transform.Find("Capsule Mesh").gameObject;
-        animator = GetComponent<Animator>();
+        // animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
-            return;
+        // if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+        //     return;
             
         Vector3 enemyPos = transform.position;
         Vector3 playerPos = player.transform.position;
