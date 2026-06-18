@@ -173,7 +173,7 @@ public class PlayerController : MovableObjects
                 }
             }
         }
-        if (SettingManager.Instance.isPaused || isBeingGrab)
+        if (SettingManager.Instance.isPaused || isBeingGrab || SettingManager.Instance.gameOver)
         {
             ResetMovementState();
             lookAction.action.Disable();
