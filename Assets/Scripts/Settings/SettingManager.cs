@@ -13,6 +13,7 @@ public class SettingManager : MonoBehaviour
     private InputAction pauseAction;
     private SettingsUI settingsUI;
     public bool isPaused = false;
+    public bool gameOver;
     void Awake()
     {
         if (Instance == null)

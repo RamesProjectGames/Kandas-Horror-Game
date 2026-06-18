@@ -328,6 +328,7 @@ public class SettingsUI : MonoBehaviour
     [Header("UI Navigation")]
     public GameObject PausePanel;
     public GameObject SettingPanel;
+    public GameObject GameoverPanel;
     public List<GameObject> scrollings = new List<GameObject>();
     public List<Button> sectionButtons = new List<Button>();
 
@@ -361,6 +362,18 @@ public class SettingsUI : MonoBehaviour
         }
     }
     public void BackToMainMenu() { SceneManager.LoadScene("MainMenu"); }
+    public void ShowGameover(bool open)
+    { 
+        GameoverPanel.SetActive(open); 
+        settingManager.gameOver = open;
+    }
+    public void TryAgain()
+    {
+        var playerReset = FindAnyObjectByType<PlayerResetManager>();
+        if(playerReset == null) return;
+        playerReset.ResetPlayer($"Getting Hit by Monster Bat!");
+        settingManager.gameOver = false;
+    }
     #endregion
 
 }

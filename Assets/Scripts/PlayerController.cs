@@ -173,7 +173,7 @@ public class PlayerController : MovableObjects
                 }
             }
         }
-        if (SettingManager.Instance.isPaused || CameraManager.currentActiveCamera != playerCam || isBeingGrab)
+        if (SettingManager.Instance.isPaused || CameraManager.currentActiveCamera != playerCam || isBeingGrab || SettingManager.Instance.gameOver)
         {
             ResetMovementState();
             lookAction.action.Disable();
