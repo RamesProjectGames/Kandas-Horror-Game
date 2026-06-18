@@ -60,8 +60,7 @@ public class ObjectiveManager : MonoBehaviour
     {
         List<Objective> openObjectives = Objectives.FindAll(x =>
             IsObjectiveAvailable(x.objectiveData) &&
-            (string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) ||
-            !Objectives.Find(y => y.objectiveData.Name == x.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted)
+            (string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) || !Objectives.Find(y => y.objectiveData.Name == x.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted)
         );
 
         foreach (Objective obj in openObjectives)
@@ -76,9 +75,7 @@ public class ObjectiveManager : MonoBehaviour
                     currentObjectives.RemoveAll(objName =>
                     {
                         Objective obj = Objectives.Find(x => x.objectiveData.Name == objName);
-                        return obj == null ||
-                        obj.objectiveData.Chapter != currentChapter ||
-                        (!obj.objectiveData.isDemo && isDemoBuild);
+                        return obj == null || !IsObjectiveAvailable(obj.objectiveData);
                     });
                     break;
                 }
@@ -146,6 +143,6 @@ public class ObjectiveManager : MonoBehaviour
     public bool IsObjectiveAvailable(ObjectiveData data)
     {
         return data.Chapter == currentChapter &&
-               (!data.isDemo || isDemoBuild);
+               (isDemoBuild || !data.isDemo);
     }
 }

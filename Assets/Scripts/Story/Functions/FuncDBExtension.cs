@@ -72,6 +72,7 @@ namespace TestingPurposes
             db.AddFunction("EatLunch", new Func<IEnumerator>(EatLunch));
             db.AddFunction("HidePlayerRig", new Action(HidePlayerRig));
             db.AddFunction("ShowPlayerRig", new Action(ShowPlayerRig));
+            db.AddFunction("ToggleDoor", new Action(ToggleDoor));
             #endregion
         }
 
@@ -310,7 +311,7 @@ namespace TestingPurposes
 
         private static IEnumerator EatLunch()
         {
-            if(GameObject.Find("Player").GetComponent<PlayerController>().lunchProgress < 2)
+            if(GameObject.Find("Player").GetComponent<PlayerController>().lunchProgress < 3)
             {
                 GameObject.Find("Player").GetComponent<PlayerController>().EatFood();
             }
@@ -329,6 +330,11 @@ namespace TestingPurposes
         private static void ShowPlayerRig()
         {
             GameObject.Find("Player").GetComponent<PlayerController>().ToggleRig(true);
+        }
+
+        private static void ToggleDoor()
+        {
+            GameObject.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().ToggleDoor();
         }
 
         private static void SpawnMannequins()
