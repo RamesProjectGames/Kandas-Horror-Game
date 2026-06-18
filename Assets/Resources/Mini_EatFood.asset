@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   convoName: Mini_EatFood
   dialogues:
-  - speaker: 
-    dialogue: []
+  - speaker: Narration
+    dialogue:
+    - dialogue: ...
+      segmentSignal: 0
+      signalDelay: 0
     functions:
     - name: EatLunch
       args: []

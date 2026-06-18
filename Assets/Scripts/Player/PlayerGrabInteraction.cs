@@ -23,7 +23,7 @@ public class PlayerGrabInteraction : MonoBehaviour
     public TextMeshProUGUI bottomInteractText;
     public Slider throwpowerSlider;
 
-    [HideInInspector] public ItemInteraction currentItem;
+    public ItemInteraction currentItem;
     private ItemInteraction heldItem;
     [SerializeField] private InputActionReference throwAction, interAction;
 
@@ -93,7 +93,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                     float t = Mathf.Clamp01(throwCharge / maxThrowChargeTime);
                     float forceMag = Mathf.Lerp(throwForce.x, throwForce.y, t);
                     // use camera forward direction if available, otherwise fall back to player forward
-                    Vector3 direction = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
+                    Vector3 direction = (CameraManager.currentActiveCamera != null) ? CameraManager.currentActiveCamera.transform.forward : transform.forward;
                     heldItem.Throw(direction * forceMag);
                     heldItem = null;
                 }
@@ -150,7 +150,7 @@ public class PlayerGrabInteraction : MonoBehaviour
         ItemInteraction bestItem = null;
         float bestDistance = float.MaxValue;
 
-        Vector3 visionPos = new Vector3(transform.position.x, (playerCamera != null) ? playerCamera.transform.position.y : transform.position.y, transform.position.z);
+        Vector3 visionPos = (CameraManager.currentActiveCamera != null) ? CameraManager.currentActiveCamera.transform.position : transform.position;
 
         Collider[] hits = Physics.OverlapSphere(visionPos, pickupRadius, pickupLayer | interactableLayer | fragmentLayer);
 
@@ -160,7 +160,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                 continue;
 
             Vector3 toItem = (hit.transform.position - visionPos).normalized;
-            Vector3 detectionForward = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
+            Vector3 detectionForward = (CameraManager.currentActiveCamera != null) ? CameraManager.currentActiveCamera.transform.forward : transform.forward;
             float dot = Vector3.Dot(detectionForward, toItem);
 
             // Only detect front cone
@@ -197,6 +197,8 @@ public class PlayerGrabInteraction : MonoBehaviour
             if (currentItem != null)
                 currentItem.ShowUI();
         }
+        else if(currentItem != null && !currentItem.pickupUI.activeSelf)
+            currentItem.ShowUI();
     }
     //void DetectFragmentItem()
     //{
@@ -238,12 +240,12 @@ public class PlayerGrabInteraction : MonoBehaviour
     //}
     void OnDrawGizmosSelected()
     {
-        Vector3 visionPos = new Vector3(transform.position.x, (playerCamera != null) ? playerCamera.transform.position.y : transform.position.y, transform.position.z);
+        Vector3 visionPos = (CameraManager.currentActiveCamera != null) ? CameraManager.currentActiveCamera.transform.position : transform.position;
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(visionPos, pickupRadius);
 
         Gizmos.color = Color.blue;
-        Vector3 gizmoForward = (playerCamera != null) ? playerCamera.transform.forward : transform.forward;
+        Vector3 gizmoForward = (CameraManager.currentActiveCamera != null) ? CameraManager.currentActiveCamera.transform.forward : transform.forward;
         Gizmos.DrawRay(visionPos, gizmoForward * pickupRadius);
     }
 }

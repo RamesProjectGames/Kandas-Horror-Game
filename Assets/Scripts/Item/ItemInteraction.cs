@@ -15,7 +15,7 @@ public class ItemInteraction : MonoBehaviour
     [SerializeField] private float throwForce = 10f;
 
     [Header("Pickup UI")]
-    [SerializeField] private GameObject pickupUI;
+    public GameObject pickupUI;
     [SerializeField] private string itemInteractionText = "Pick Up";
 
     [Header("Landing / Alert")]

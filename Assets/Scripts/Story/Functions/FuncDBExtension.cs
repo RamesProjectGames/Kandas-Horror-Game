@@ -29,13 +29,14 @@ namespace TestingPurposes
 {
     public class DialogueEvents : FuncDBExtension
     {
+        Coroutine ongoingCoroutine;
         new public static void Extend(FunctionsDatabase db)
         {
             #region Movement
-            db.AddFunction("Teleport", new Action<string[]>(TeleportObject));
+            db.AddFunction("Teleport", new Func<string[], IEnumerator>(TeleportObject));
             db.AddFunction("TeleportToWaypoint", new Action<string[]>(TeleportToWaypoint));
-            db.AddFunction("Rotate", new Action<string[]>(RotateObject));
-            db.AddFunction("Move", new Action<string[]>(MoveObject));
+            db.AddFunction("Rotate", new Func<string[], IEnumerator>(RotateObject));
+            db.AddFunction("Move", new Func<string[], IEnumerator>(MoveObject));
             db.AddFunction("PlayerFaceFront", new Action(PlayerFaceFront));
             db.AddFunction("AllowNPCMovement", new Action<string>(AllowNPCMovement));
             db.AddFunction("Fadein", new Func<string, IEnumerator>(FadeIn));
@@ -67,8 +68,8 @@ namespace TestingPurposes
             db.AddFunction("InspectFragment", new Action<string[]>(InspectFragment));
             db.AddFunction("StartQuiz", new Action(StartQuiz));
             db.AddFunction("EndQuiz", new Action(EndQuiz));
-            db.AddFunction("PrepLunch", new Action(PrepLunch));
-            db.AddFunction("EatLunch", new Action(EatLunch));
+            db.AddFunction("PrepLunch", new Func<IEnumerator>(PrepLunch));
+            db.AddFunction("EatLunch", new Func<IEnumerator>(EatLunch));
             db.AddFunction("HidePlayerRig", new Action(HidePlayerRig));
             db.AddFunction("ShowPlayerRig", new Action(ShowPlayerRig));
             #endregion
@@ -76,7 +77,7 @@ namespace TestingPurposes
 
 
         #region Move Objects
-        private static void TeleportObject(string[] args)
+        private static IEnumerator TeleportObject(string[] args)
         {
             float x, y, z, rot;
             GameObject movableObject = GameObject.Find(args[0]);
@@ -88,11 +89,11 @@ namespace TestingPurposes
             movableObject.TryGetComponent(out MovableObjects moveScript);
             if (moveScript != null)
             {
-                moveScript.StartCoroutine(moveScript.Teleport(new Vector3(x, y, z)));
+                yield return moveScript.StartCoroutine(moveScript.Teleport(new Vector3(x, y, z)));
             }
             else
             {
-                movableObject.transform.position = new Vector3(x, y, z);
+                yield return movableObject.transform.position = new Vector3(x, y, z);
             }
         }
 
@@ -109,7 +110,7 @@ namespace TestingPurposes
             }
         }
 
-        private static void RotateObject(string[] args)
+        private static IEnumerator RotateObject(string[] args)
         {
             float rot;
             GameObject movableObject = GameObject.Find(args[0]);
@@ -118,15 +119,15 @@ namespace TestingPurposes
             movableObject.TryGetComponent(out MovableObjects moveScript);
             if (moveScript != null)
             {
-                moveScript.StartCoroutine(moveScript.Rotate(rot));
+                yield return moveScript.StartCoroutine(moveScript.Rotate(rot));
             }
             else
             {
-                movableObject.transform.rotation = Quaternion.Euler(0,rot,0);
+                yield return movableObject.transform.rotation = Quaternion.Euler(0, rot, 0);
             }
         }
 
-        private static void MoveObject(string[] args)
+        private static IEnumerator MoveObject(string[] args)
         {
             float x, y, z;
             GameObject movableObject = GameObject.Find(args[0]);
@@ -137,7 +138,7 @@ namespace TestingPurposes
             movableObject.TryGetComponent(out MovableObjects moveScript);
             if (moveScript != null)
             {
-                moveScript.StartCoroutine(moveScript.Move(new Vector3(x, y, z)));
+                yield return moveScript.StartCoroutine(moveScript.Move(new Vector3(x, y, z)));
             }
         }
 
@@ -302,12 +303,12 @@ namespace TestingPurposes
             //    HidePlayerRig();
         }
 
-        private static void PrepLunch()
+        private static IEnumerator PrepLunch()
         {
-            GameObject.Find("Player").GetComponent<PlayerController>().PrepLunch();
+            yield return DialogueSystem.Instance.StartCoroutine(GameObject.Find("Player").GetComponent<PlayerController>().PrepLunch());
         }
 
-        private static void EatLunch()
+        private static IEnumerator EatLunch()
         {
             if(GameObject.Find("Player").GetComponent<PlayerController>().lunchProgress < 2)
             {
@@ -317,6 +318,7 @@ namespace TestingPurposes
             {
                 GameObject.Find("Player").GetComponent<PlayerController>().EatMeds();
             }
+            yield return new WaitForSeconds(1f);
         }
 
         private static void HidePlayerRig()

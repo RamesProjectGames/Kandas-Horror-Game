@@ -160,7 +160,7 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if(SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo
+                if(SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo || CameraManager.currentActiveCamera != playerCam
                     )
                 {
                     Cursor.lockState = CursorLockMode.None;
@@ -173,7 +173,7 @@ public class PlayerController : MovableObjects
                 }
             }
         }
-        if (SettingManager.Instance.isPaused || isBeingGrab)
+        if (SettingManager.Instance.isPaused || CameraManager.currentActiveCamera != playerCam || isBeingGrab)
         {
             ResetMovementState();
             lookAction.action.Disable();
@@ -442,6 +442,7 @@ public class PlayerController : MovableObjects
         {
             HandleCrouch();
             controller.SimpleMove(moveSpd * input);
+            agent.nextPosition = transform.position;
         }
     }
 
@@ -462,13 +463,14 @@ public class PlayerController : MovableObjects
         rig.SetActive(active);
     }
 
-    public void PrepLunch()
+    public IEnumerator PrepLunch()
     {
         ToggleRig(true);
         anim.SetBool("Lunch", true);
         CameraManager.SwitchCamera(GameObject.Find("LunchCam").GetComponent<CinemachineCamera>());
-        Teleport(new Vector3(293.5f, transform.position.y, 218.75f));
-        Rotate(-90);
+        yield return new WaitForSeconds(.1f);
+        yield return StartCoroutine(Teleport(new Vector3(293.5f, transform.position.y, 218.75f)));
+        yield return StartCoroutine(Rotate(180f));
     }
 
     public void ToggleLunchSequence(bool active)
@@ -491,7 +493,7 @@ public class PlayerController : MovableObjects
     public void EatMeds()
     {
         anim.SetTrigger("EatMeds");
-        DialogueSystem.Instance.convoManager.EnqueuePrio(FileReader.ReadAsset("Mini_PostLunch"));
+        DialogueSystem.Instance.convoManager.Enqueue(FileReader.ReadAsset("PostLunch"));
     }
     #endregion
 

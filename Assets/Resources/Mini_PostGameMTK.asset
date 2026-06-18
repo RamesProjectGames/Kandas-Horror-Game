@@ -33,13 +33,13 @@ MonoBehaviour:
   - speaker: 
     dialogue: []
     functions:
+    - name: SwitchCam
+      args:
+      - Player Camera
+      waitForCompletion: 1
     - name: Rotate
       args:
       - Player
       - ^r
       - -90
-      waitForCompletion: 0
-    - name: SwitchCam
-      args:
-      - Player Camera
-      waitForCompletion: 0
+      waitForCompletion: 1

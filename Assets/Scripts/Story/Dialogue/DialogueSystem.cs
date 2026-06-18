@@ -124,8 +124,7 @@ namespace Dialogue
 
         public void EnqueueDebug(InputAction.CallbackContext ctx)
         {
-            if (Input.GetKeyDown(KeyCode.M))
-                convoManager.EnqueuePrio(FileReader.ReadAsset("Fragment1"));
+            convoManager.EnqueuePrio(FileReader.ReadAsset("PostLunch"));
         }
 
         public void OnUserPrompt(InputAction.CallbackContext ctx)
