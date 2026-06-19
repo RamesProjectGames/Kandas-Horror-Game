@@ -128,7 +128,7 @@ public class ObjectiveManager : MonoBehaviour
 
     public bool isCurrentAndNotCompleted(string objName)
     {
-        return currentObjectives.Contains(objName) && !Objectives.Find(x => x.objectiveData.Name == objName).objectiveData.IsCompleted;
+        return objName == string.Empty || (currentObjectives.Contains(objName) && !Objectives.Find(x => x.objectiveData.Name == objName).objectiveData.IsCompleted);
     }
 
     public bool CheckIfFragmentValid(FragmentData fragData)

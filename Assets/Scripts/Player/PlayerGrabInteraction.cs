@@ -152,7 +152,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         Vector3 visionPos = (CameraManager.currentActiveCamera != null) ? CameraManager.currentActiveCamera.transform.position : transform.position;
 
-        Collider[] hits = Physics.OverlapSphere(visionPos, pickupRadius, pickupLayer | interactableLayer | fragmentLayer);
+        Collider[] hits = Physics.OverlapSphere(visionPos, pickupRadius, pickupLayer | interactableLayer | fragmentLayer, QueryTriggerInteraction.Collide);
 
         foreach (Collider hit in hits)
         {
