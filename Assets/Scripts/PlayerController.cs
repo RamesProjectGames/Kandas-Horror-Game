@@ -494,7 +494,7 @@ public class PlayerController : MovableObjects
     public void EatMeds()
     {
         anim.SetTrigger("EatMeds");
-        DialogueSystem.Instance.convoManager.Enqueue(FileReader.ReadAsset("PostLunch"));
+        DialogueSystem.Instance.convoManager.Enqueue(FileReader.ReadAsset("Mini_PostLunch"));
     }
     #endregion
 

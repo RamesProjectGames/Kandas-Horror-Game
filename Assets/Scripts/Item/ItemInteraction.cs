@@ -516,23 +516,7 @@ public class ItemInteraction : MonoBehaviour
 
         if (ObjectiveManager.Instance == null) return false;
         if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0) return false;
-        bool match = objectiveDialoguePair.Any(pair => !pair.objective.Any(objective => !ObjectiveManager.Instance.isCurrentAndNotCompleted(objective)));
-    //    foreach (var pair in objectiveDialoguePair)
-    //    {
-    //        match = true;
-    //        foreach (string objective in pair.objective)
-    //        {
-    //            Debug.Log($"{objective} is being checked");
-    //            if(!ObjectiveManager.Instance.isCurrentAndNotCompleted(objective))
-    //            {
-    //                Debug.Log($"{objective} is not active");
-    //                match = false;
-    //                break;
-    //            }
-    //        }
-    //        if (match)
-    //            break;
-    //    }
+        bool match = objectiveDialoguePair.Any(pair => pair.objective.Length == 0 || pair.objective.All(objective => string.IsNullOrEmpty(objective) || ObjectiveManager.Instance.isCurrentAndNotCompleted(objective)));
 
         return match;
     }
@@ -566,10 +550,18 @@ public class ItemInteraction : MonoBehaviour
         }
         else
         {
-            ObjectiveDialoguePair fallback = objectiveDialoguePair.Find(x => x.objective.Length == 0);
+            ObjectiveDialoguePair fallback = objectiveDialoguePair.Find(x => x.objective[0] == "");
             if (fallback != null)
             {
                 DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset);
+            }
+            else
+            {
+                fallback = objectiveDialoguePair.Find(x => x.objective.Length == 0);
+                if (fallback != null)
+                {
+                    DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset);
+                }
             }
         }
     }

@@ -19,4 +19,21 @@ MonoBehaviour:
     - dialogue: I want to go to the bathroom.
       segmentSignal: 0
       signalDelay: 0
-    functions: []
+    functions:
+    - name: Objective
+      args:
+      - EatLunch
+      waitForCompletion: 0
+    - name: SwitchCam
+      args:
+      - Player Camera
+      waitForCompletion: 1
+    - name: Rotate
+      args:
+      - Player
+      - ^r
+      - 90
+      waitForCompletion: 1
+    - name: HidePlayerRig
+      args: []
+      waitForCompletion: 1
