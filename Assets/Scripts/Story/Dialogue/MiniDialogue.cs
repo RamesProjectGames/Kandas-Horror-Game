@@ -18,7 +18,7 @@ namespace Dialogue
     [Serializable]
     public class DialogueStructure
     {
-        private string rawLine = string.Empty;
+        public string rawLine = string.Empty;
         public string GetRawLine() => !string.IsNullOrWhiteSpace(rawLine) ? rawLine : ReconstructRawLine();
         public string speaker;
 
