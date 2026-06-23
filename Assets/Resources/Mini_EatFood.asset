@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   convoName: Mini_EatFood
   dialogues:
-  - speaker: Narration
+  - rawLine: Narration"..." EatLunch()
+    speaker: Narration
     dialogue:
     - dialogue: ...
       segmentSignal: 0
@@ -22,4 +23,8 @@ MonoBehaviour:
     functions:
     - name: EatLunch
       args: []
+      waitForCompletion: 0
+    - name: Wait
+      args:
+      - 2
       waitForCompletion: 0
