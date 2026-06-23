@@ -51,20 +51,22 @@ public class NpcMovement : MovableObjects
     #region Dialogue Player Movement
     public override IEnumerator Move(Vector3 pos, float speed = 3f)
     {
-        Vector3 validPos = GetValidNavMeshPosition(pos);
+        Vector3 validPos = new Vector3();
         if (agent != null)
         {
             agent.enabled = true;
+            validPos = GetValidNavMeshPosition(pos);
             agent.SetDestination(validPos);
             agent.isStopped = false;
         }
         animator.SetFloat("Blend", 1);
-        while (agent.remainingDistance >= agent.stoppingDistance)
+        while (agent != null && agent.enabled && agent.remainingDistance >= agent.stoppingDistance)
         {
             yield return new WaitForEndOfFrame();
         }
         if (agent != null)
         {
+            agent.Warp(validPos);
             agent.enabled = false;
             agent.isStopped = true;
             agent.ResetPath();

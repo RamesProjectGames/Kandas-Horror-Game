@@ -47,7 +47,6 @@ namespace Dialogue
             StopConvo();
             Enqueue(convo);
 
-            ds.dialogueContainer.ShowDialogue();
             process = ds.StartCoroutine(RunningConvo());
         }
 
@@ -104,6 +103,7 @@ namespace Dialogue
         #region Handling Dialogues
         IEnumerator RunDialogue(DialogueStructure line)
         {
+            ds.dialogueContainer.ShowDialogue();
             if (line.hasSpeaker)
             {
                 if(line.speaker.ToLower() != "narration")

@@ -160,7 +160,7 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if(SettingManager.Instance.isPaused || (DialogueSystem.Instance.isRunningConvo && DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
+                if(SettingManager.Instance.isPaused || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
                 {
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -182,7 +182,7 @@ public class PlayerController : MovableObjects
             lookAction.action.Enable();
         }
         //Mouse Look Control
-        if (inputController != null)
+        if (inputController != null && (DialogueSystem.Instance.isRunningConvo && DialogueSystem.Instance.cameraControl))
         {
             float sliderValue = SettingManager.Instance.settings.MouseSensitivity ;
             float calculatedGain = Mathf.Lerp(SettingManager.Instance.minimumMouseSensitivity, SettingManager.Instance.maximumMouseSensitivity, sliderValue) * lookSensitivity * 2;

@@ -108,6 +108,7 @@ namespace Dialogue
 
         public void OpenDialogue(string assetName, bool allowCam = false)
         {
+            cameraControl = allowCam;
             if (isRunningConvo)
                 return;
             if(assetName.StartsWith("Mini_"))
