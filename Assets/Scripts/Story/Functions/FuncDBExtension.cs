@@ -4,6 +4,7 @@ using FMODUnity;
 using System;
 using System.Collections;
 using System.Linq;
+using Unity.Cinemachine;
 using UnityEngine;
 using static UnityEngine.Rendering.GPUSort;
 
@@ -26,60 +27,108 @@ namespace Dialogue.Functions
 
 namespace TestingPurposes
 {
-    public class TestFunction : FuncDBExtension
+    public class DialogueEvents : FuncDBExtension
     {
+        Coroutine ongoingCoroutine;
         new public static void Extend(FunctionsDatabase db)
         {
-            db.AddFunction("Teleport", new Action<string[]>(TeleportObject));
-            db.AddFunction("Move", new Action<string[]>(MoveObject));
-            db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
-            db.AddFunction("Poultry", new Action(PrintPoultry));
-            db.AddFunction("Objective", new Action<string>(CompleteObjective));
-            db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
-            db.AddFunction("StopSFX", new Action(StopSFX));
-            db.AddFunction("PlayBGM", new Action<string[]>(PlayBGM));
-            db.AddFunction("PlayAmbience", new Action<string[]>(PlayAmbience));
-            db.AddFunction("PlayVoice", new Action<string[]>(PlayVoice));
-            db.AddFunction("StopVoice", new Action(StopVoice));
-            db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
-            db.AddFunction("HideDialogue", new Func<string, IEnumerator>(HideDialogue));
-            db.AddFunction("PlayCutsceneVideo", new Action<string[]>(PlayCutscene));
-            db.AddFunction("InspectFragment", new Action<string[]>(InspectFragment));
-            db.AddFunction("StartQuiz", new Action(StartQuiz));
-            db.AddFunction("EndQuiz", new Action(EndQuiz));
-            db.AddFunction("StopDialogue", new Action(StopDialogue));
-            db.AddFunction("NextDialogue", new Action(NextDialogue));
+            #region Movement
+            db.AddFunction("Teleport", new Func<string[], IEnumerator>(TeleportObject));
+            db.AddFunction("TeleportToWaypoint", new Action<string[]>(TeleportToWaypoint));
+            db.AddFunction("Rotate", new Func<string[], IEnumerator>(RotateObject));
+            db.AddFunction("Move", new Func<string[], IEnumerator>(MoveObject));
             db.AddFunction("PlayerFaceFront", new Action(PlayerFaceFront));
             db.AddFunction("AllowNPCMovement", new Action<string>(AllowNPCMovement));
             db.AddFunction("Fadein", new Func<string, IEnumerator>(FadeIn));
             db.AddFunction("fadeout", new Func<string, IEnumerator>(FadeOut));
+            db.AddFunction("SwitchCam", new Action<string>(SwitchCamera));
+            db.AddFunction("Despawn", new Action<string>(Despawn));
+            db.AddFunction("MovePrep", new Action(MovePrep));
+            #endregion
+            #region Audio
+            db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
+            db.AddFunction("StopSFX", new Action(StopSFX));
+            db.AddFunction("PlayBGM", new Action<string[]>(PlayBGM));
+            db.AddFunction("PlayAmbience", new Action<string[]>(PlayAmbience));
+            db.AddFunction("StopAmbience", new Action(StopAmbience));
+            db.AddFunction("PlayVoice", new Action<string[]>(PlayVoice));
+            db.AddFunction("StopVoice", new Action(StopVoice));
+            #endregion
+            #region Dialogue Progression
+            db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
+            db.AddFunction("HideDialogue", new Func<string, IEnumerator>(HideDialogue));
+            db.AddFunction("NextDialogue", new Action(NextDialogue));
+            db.AddFunction("StopDialogue", new Action(StopDialogue));
+            db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
+            db.AddFunction("Objective", new Action<string>(CompleteObjective));
             db.AddFunction("StopWithoutObj", new Action<string>(ConditionalStopDialogue));
-            //db.AddFunction("SetUpEnding", new Action());
-
+            #endregion
+            #region Misc Events
+            db.AddFunction("PlayCutsceneVideo", new Action<string[]>(PlayCutscene));
+            db.AddFunction("InspectFragment", new Action<string[]>(InspectFragment));
+            db.AddFunction("StartQuiz", new Action(StartQuiz));
+            db.AddFunction("EndQuiz", new Action(EndQuiz));
+            db.AddFunction("PrepLunch", new Func<IEnumerator>(PrepLunch));
+            db.AddFunction("EatLunch", new Func<IEnumerator>(EatLunch));
+            db.AddFunction("HidePlayerRig", new Action(HidePlayerRig));
+            db.AddFunction("ShowPlayerRig", new Action(ShowPlayerRig));
+            db.AddFunction("ToggleDoor", new Action(ToggleDoor));
+            #endregion
         }
 
 
         #region Move Objects
-        private static void TeleportObject(string[] args)
+        private static IEnumerator TeleportObject(string[] args)
         {
-            float x, y, z;
+            float x, y, z, rot;
             GameObject movableObject = GameObject.Find(args[0]);
             var funcParams = ConvertArgsToParams(args);
             funcParams.TryGetValue(new string[] { "^x" }, out x, defaultValue: movableObject.transform.position.x);
             funcParams.TryGetValue(new string[] { "^y" }, out y, defaultValue: movableObject.transform.position.y);
             funcParams.TryGetValue(new string[] { "^z" }, out z, defaultValue: movableObject.transform.position.z);
+            funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: movableObject.transform.rotation.y);
             movableObject.TryGetComponent(out MovableObjects moveScript);
             if (moveScript != null)
             {
-                moveScript.StartCoroutine(moveScript.Teleport(new Vector3(x, y, z)));
+                yield return moveScript.StartCoroutine(moveScript.Teleport(new Vector3(x, y, z)));
             }
             else
             {
-                movableObject.transform.position = new Vector3(x, y, z);
+                yield return movableObject.transform.position = new Vector3(x, y, z);
             }
         }
 
-        private static void MoveObject(string[] args)
+        private static void TeleportToWaypoint(string[] args)
+        {
+            int index;
+            GameObject movableObject = GameObject.Find(args[0]);
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^idx" }, out index, defaultValue: 0);
+            movableObject.TryGetComponent(out NpcMovement moveScript);
+            if (moveScript != null)
+            {
+                moveScript.TeleportToWaypoint(index);
+            }
+        }
+
+        private static IEnumerator RotateObject(string[] args)
+        {
+            float rot;
+            GameObject movableObject = GameObject.Find(args[0]);
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: movableObject.transform.rotation.y);
+            movableObject.TryGetComponent(out MovableObjects moveScript);
+            if (moveScript != null)
+            {
+                yield return moveScript.StartCoroutine(moveScript.Rotate(rot));
+            }
+            else
+            {
+                yield return movableObject.transform.rotation = Quaternion.Euler(0, rot, 0);
+            }
+        }
+
+        private static IEnumerator MoveObject(string[] args)
         {
             float x, y, z;
             GameObject movableObject = GameObject.Find(args[0]);
@@ -90,7 +139,16 @@ namespace TestingPurposes
             movableObject.TryGetComponent(out MovableObjects moveScript);
             if (moveScript != null)
             {
-                moveScript.StartCoroutine(moveScript.Move(new Vector3(x, y, z)));
+                yield return moveScript.StartCoroutine(moveScript.Move(new Vector3(x, y, z)));
+            }
+        }
+
+        private static void Despawn(string arg)
+        {
+            GameObject obj = GameObject.Find(arg);
+            if (obj != null)
+            {
+                UnityEngine.Object.Destroy(obj);
             }
         }
 
@@ -103,7 +161,12 @@ namespace TestingPurposes
         {
             bool allow = false;
             bool.TryParse(arg, out allow);
-            NpcMovement.allowMovement = allow;
+            NpcMovement.movementAllowed = allow;
+        }
+
+        private static void MovePrep()
+        {
+            NpcMovement.MovePrep.Invoke();
         }
         #endregion
 
@@ -188,6 +251,11 @@ namespace TestingPurposes
             AudioManager.Instance.StopAllVoice();
         }
 
+        private static void StopAmbience()
+        {
+            AudioManager.Instance.StopAllAmbience();
+        }
+
         private static void PlayBGM(string[] args)
         {
             var funcParams = ConvertArgsToParams(args);
@@ -223,15 +291,50 @@ namespace TestingPurposes
         }
         #endregion
 
-        #region Dialogue Events
+        #region Misc Events
         private static void PlayCutscene(string[] args)
         {
 
         }
 
-        private static void PrintPoultry()
+        private static void SwitchCamera(string arg)
         {
-            Debug.Log("Poultry printed from functions");
+            CameraManager.SwitchCamera(GameObject.Find(arg).GetComponent<CinemachineCamera>());
+            //if (arg == "Player Camera")
+            //    HidePlayerRig();
+        }
+
+        private static IEnumerator PrepLunch()
+        {
+            yield return DialogueSystem.Instance.StartCoroutine(GameObject.Find("Player").GetComponent<PlayerController>().PrepLunch());
+        }
+
+        private static IEnumerator EatLunch()
+        {
+            if(GameObject.Find("Player").GetComponent<PlayerController>().lunchProgress < 3)
+            {
+                GameObject.Find("Player").GetComponent<PlayerController>().EatFood();
+            }
+            else
+            {
+                GameObject.Find("Player").GetComponent<PlayerController>().EatMeds();
+            }
+            yield return new WaitForSeconds(1f);
+        }
+
+        private static void HidePlayerRig()
+        {
+            GameObject.Find("Player").GetComponent<PlayerController>().ToggleRig(false);
+        }
+
+        private static void ShowPlayerRig()
+        {
+            GameObject.Find("Player").GetComponent<PlayerController>().ToggleRig(true);
+        }
+
+        private static void ToggleDoor()
+        {
+            GameObject.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().ToggleDoor();
         }
 
         private static void SpawnMannequins()

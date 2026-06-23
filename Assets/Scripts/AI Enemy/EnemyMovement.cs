@@ -17,6 +17,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     public float idleTime = 5f, currIdleTime;
     private bool isKilling = false;
     private bool isStunned = false;
+    private bool isInEnemyStopZone = false;
 
     [Header("Hiding Spot Detection")]
     [SerializeField] private float hidingSpotDetectionRadius = 15f;
@@ -95,6 +96,16 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                 isStunned = false;
             }
             return; // Exit early while idling
+        }
+
+        if (isInEnemyStopZone)
+        {
+            // stop any pursuit/investigation while inside an EnemyStop zone
+            if (detectedSound || isDiscoveringSpot || (fov != null && fov.canSeePlayer))
+            {
+                ReturnToPatrol();
+            }
+            return;
         }
 
         // 1. Check if player is currently hiding
@@ -386,11 +397,26 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
     public override IEnumerator Teleport(Vector3 pos)
     {
-        agent.Warp(pos);
+        agent.enabled = false;
+        transform.position = pos;
+        //agent.Warp(pos);
+        yield return new WaitForSeconds(.1f);
+        agent.enabled = true;
         StartCoroutine(FacePlayer());
         agent.ResetPath();
         ReturnToPatrol();
         yield return new WaitForEndOfFrame();
+    }
+
+    public override IEnumerator Rotate(float yrot)
+    {
+        Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
+
+        while (Quaternion.Angle(transform.rotation, targetRotation) >= 1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 3 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     public override IEnumerator Move(Vector3 pos, float speed = 3f)
@@ -407,6 +433,14 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         StartCoroutine(FacePlayer());
         agent.ResetPath();
         ReturnToPatrol();
+    }
+    public void OnEnterEnemyStopZone(bool isInZone)
+    {
+        isInEnemyStopZone = isInZone;
+        if(isInZone)
+        {
+            ReturnToPatrol();
+        }
     }
 
     /// <summary>
@@ -550,8 +584,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         }
     }
 
-    #endregion
-
+    #endregion    
+    
     #region Stun
     public void GetStunned()
     {

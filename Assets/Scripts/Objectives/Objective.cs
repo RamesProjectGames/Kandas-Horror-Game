@@ -38,6 +38,7 @@ public class ObjectiveData
     public string Description;
     public bool IsCompleted;
     public bool isHidden;
+    public bool isDemo;
     public FragmentData fragmentData;
     [Tooltip("These objectives must be cleared to access this objective")]
     public List<string> requirements = new List<string>();

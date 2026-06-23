@@ -7,7 +7,7 @@ public class AudioManager : MonoBehaviour
 {
     private List<EventInstance> eventInstances;
     public static AudioManager Instance;
-    private Bus masterVolumeBus, bgmBus, sfxBus, voiceBus;
+    private Bus masterVolumeBus, bgmBus, sfxBus, voiceBus, ambienceBus;
 
     private void Awake()
     {
@@ -22,6 +22,7 @@ public class AudioManager : MonoBehaviour
         bgmBus = RuntimeManager.GetBus("bus:/BGM");
         sfxBus = RuntimeManager.GetBus("bus:/SFX");
         voiceBus = RuntimeManager.GetBus("bus:/Voice");
+        ambienceBus = RuntimeManager.GetBus("bus:/Ambience");
     }
 
     private void Update()
@@ -44,12 +45,17 @@ public class AudioManager : MonoBehaviour
 
     public void StopAllSfx()
     {
-        sfxBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        sfxBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 
     public void StopAllVoice()
     {
-        voiceBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        voiceBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+    }
+
+    public void StopAllAmbience()
+    {
+        ambienceBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
     public EventInstance CreateInstance(EventReference sound)

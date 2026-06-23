@@ -14,9 +14,10 @@ namespace Dialogue
         public ConvoManager convoManager { get; private set; }
         public BuildMethod buildMethod = BuildMethod.typewriter;
         public bool isRunningConvo => convoManager.isRunning;
+        public bool cameraControl;
         public TextArchitect architect { get; private set; }
 
-        [SerializeField] private InputActionReference nextInput;
+        [SerializeField] private InputActionReference nextInput, enqDebugInput;
         public List<MiniDialogue> allMiniDialogues;
         public Coroutine screenCo;
 
@@ -55,14 +56,13 @@ namespace Dialogue
             convoManager = new ConvoManager(architect);
 
             nextInput.action.performed += OnUserPrompt;
+            enqDebugInput.action.performed += EnqueueDebug;
         }
 
         private void Update()
         {
             if (Application.isPlaying && (SettingManager.Instance.isPaused || !isRunningConvo) && !dialogueContainer.active)
                 return;
-            if(Input.GetKeyDown(KeyCode.M))
-                convoManager.EnqueuePrio(FileReader.ReadAsset("Fragment1"));
             if (buildMethod != architect.buildMethod)
             {
                 architect.buildMethod = buildMethod;
@@ -106,8 +106,9 @@ namespace Dialogue
             screenCo = StartCoroutine(dialogueContainer.FadeFromBlack(duration));
         }
 
-        public void OpenDialogue(string assetName)
+        public void OpenDialogue(string assetName, bool allowCam = false)
         {
+            cameraControl = allowCam;
             if (isRunningConvo)
                 return;
             if(assetName.StartsWith("Mini_"))
@@ -121,6 +122,11 @@ namespace Dialogue
                 return;
             convoManager.convoQueue.Dequeue();
             convoManager.StopConvo();
+        }
+
+        public void EnqueueDebug(InputAction.CallbackContext ctx)
+        {
+            convoManager.EnqueuePrio(FileReader.ReadAsset("PostLunch"));
         }
 
         public void OnUserPrompt(InputAction.CallbackContext ctx)

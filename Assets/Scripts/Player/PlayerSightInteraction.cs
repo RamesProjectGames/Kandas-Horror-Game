@@ -6,6 +6,7 @@ public class PlayerSightInteraction : MonoBehaviour
     [Header("Sight Detection")]
     [SerializeField] private float sightRange = 30f;
     [SerializeField] private float fieldOfViewAngle = 60f;
+    [SerializeField] private float eyeOffset = 1.5f;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private string enemyTag = "Enemy";
 
@@ -194,23 +195,24 @@ public class PlayerSightInteraction : MonoBehaviour
         Camera cam = Camera.main;
         Vector3 viewDirection = cam != null ? cam.transform.forward : transform.forward;
 
+        Vector3 visionPos = new Vector3(transform.position.x, cam != null ? cam.transform.position.y : transform.position.y, transform.position.z);
         // Draw sight range circle
         Gizmos.color = Color.yellow;
-        DrawCircle(transform.position, sightRange, 32);
+        DrawCircle(visionPos, sightRange, 32);
 
         // Draw field of view cone based on camera direction
         Gizmos.color = Color.cyan;
         Vector3 leftBound = Quaternion.Euler(0, -fieldOfViewAngle / 2f, 0) * viewDirection * sightRange;
         Vector3 rightBound = Quaternion.Euler(0, fieldOfViewAngle / 2f, 0) * viewDirection * sightRange;
         
-        Gizmos.DrawLine(transform.position, transform.position + leftBound);
-        Gizmos.DrawLine(transform.position, transform.position + rightBound);
+        Gizmos.DrawLine(visionPos, visionPos + leftBound);
+        Gizmos.DrawLine(visionPos, visionPos + rightBound);
 
         // Draw visible enemies
         Gizmos.color = Color.green;
         foreach (Transform enemy in visibleEnemies)
         {
-            Gizmos.DrawLine(transform.position, enemy.position);
+            Gizmos.DrawLine(visionPos, enemy.position);
         }
     }
 

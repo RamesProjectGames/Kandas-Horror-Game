@@ -1,6 +1,7 @@
 using Dialogue.Functions;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Dialogue
@@ -41,12 +42,11 @@ namespace Dialogue
         //Starting a new Dialogue
         public void StartConvo(Convo convo)
         {
-            if(convo == null)
+            if (convo == null)
                 return;
             StopConvo();
             Enqueue(convo);
 
-            ds.dialogueContainer.ShowDialogue();
             process = ds.StartCoroutine(RunningConvo());
         }
 
@@ -103,6 +103,7 @@ namespace Dialogue
         #region Handling Dialogues
         IEnumerator RunDialogue(DialogueStructure line)
         {
+            ds.dialogueContainer.ShowDialogue();
             if (line.hasSpeaker)
             {
                 if(line.speaker.ToLower() != "narration")

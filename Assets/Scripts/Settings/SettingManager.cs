@@ -13,6 +13,7 @@ public class SettingManager : MonoBehaviour
     private InputAction pauseAction;
     private SettingsUI settingsUI;
     public bool isPaused = false;
+    public bool gameOver;
     void Awake()
     {
         if (Instance == null)
@@ -325,8 +326,8 @@ public class SettingManager : MonoBehaviour
 
     #region Control Settings Methods
 
-    public float minimumMicrophoneVolume = 100f;
-    public float maximumMicrophoneVolume = 500f;
+    public float minimumMicrophoneVolume = .25f;
+    public float maximumMicrophoneVolume = 1f;
     public float minimumMouseSensitivity = 0.1f;
     public float maximumMouseSensitivity = 1f;
     bool isRebinding = false;

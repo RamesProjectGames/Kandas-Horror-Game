@@ -15,7 +15,7 @@ public class ItemInteraction : MonoBehaviour
     [SerializeField] private float throwForce = 10f;
 
     [Header("Pickup UI")]
-    [SerializeField] private GameObject pickupUI;
+    public GameObject pickupUI;
     [SerializeField] private string itemInteractionText = "Pick Up";
 
     [Header("Landing / Alert")]
@@ -45,6 +45,7 @@ public class ItemInteraction : MonoBehaviour
     [Header("Interaction")]
     [SerializeField] private bool showTextOnPickup = true;
     [SerializeField] private bool canInteractWhenHeld = false;
+    public bool controlCameraOnDialogue = false;
     public bool CanInteractWhenHeld => canInteractWhenHeld;
     [SerializeField] private InputActionReference interactAction;
     public UnityEvent onPickup;
@@ -516,32 +517,9 @@ public class ItemInteraction : MonoBehaviour
 
         if (ObjectiveManager.Instance == null) return false;
         if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0) return false;
-        var bestMatch = objectiveDialoguePair
-            .Select(pair => new
-            {
-                Pair = pair,
-                MatchCount = pair.objective.Count(obj => ObjectiveManager.Instance.isCurrentAndNotCompleted(obj)),
-                EarliestMatchIndex = pair.objective
-                    .Where(obj => ObjectiveManager.Instance.currentObjectives.Contains(obj))
-                    .Select(obj => ObjectiveManager.Instance.currentObjectives.IndexOf(obj))
-                    .DefaultIfEmpty(int.MaxValue)
-                    .Min()
-            })
-            .Where(x => x.MatchCount > 0)
-            .OrderByDescending(x => x.MatchCount)
-            .ThenBy(x => x.EarliestMatchIndex)
-            .FirstOrDefault();
+        bool match = objectiveDialoguePair.Any(pair => pair.objective.Length == 0 || pair.objective.All(objective => string.IsNullOrEmpty(objective) || ObjectiveManager.Instance.isCurrentAndNotCompleted(objective)));
 
-        ObjectiveDialoguePair fallback = objectiveDialoguePair.Find(x => x.objective.Length == 0);
-
-        if (bestMatch != null || fallback != null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return match;
     }
 
     public void TriggerDialogue()
@@ -550,10 +528,6 @@ public class ItemInteraction : MonoBehaviour
         if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0) return;
 
         NpcMovement npcMovement = GetComponent<NpcMovement>();
-        if (npcMovement != null)
-        {
-            npcMovement.StartCoroutine(npcMovement.FacePlayer());
-        }
 
         var bestMatch = objectiveDialoguePair
             .Select(pair => new
@@ -573,18 +547,68 @@ public class ItemInteraction : MonoBehaviour
 
         if (bestMatch != null)
         {
-            DialogueSystem.Instance.OpenDialogue(bestMatch.Pair.dialogueAsset);
+            DialogueSystem.Instance.OpenDialogue(bestMatch.Pair.dialogueAsset, controlCameraOnDialogue);
         }
         else
         {
-            ObjectiveDialoguePair fallback = objectiveDialoguePair.Find(x => x.objective.Length == 0);
+            ObjectiveDialoguePair fallback = objectiveDialoguePair.Find(x => x.objective[0] == "");
             if (fallback != null)
             {
-                DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset);
+                DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset, controlCameraOnDialogue);
+            }
+            else
+            {
+                fallback = objectiveDialoguePair.Find(x => x.objective.Length == 0);
+                if (fallback != null)
+                {
+                    DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset, controlCameraOnDialogue);
+                }
             }
         }
     }
 
+    public void ChangeInteractionText(string newText)
+    {
+        itemInteractionText = newText;
+        pickupText.text = itemInteractionText;
+    }
+    #endregion
+
+    #region Animation Events
+
+    public void SetAnimationBool(string parameter)
+    {
+        Animator animator = GetComponent<Animator>();
+        var value = animator.GetBool(parameter);
+        if (animator != null)
+        {
+            animator.SetBool(parameter, !value);
+        }
+    }
+    public void SetAnimationTrigger(string parameter)
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.SetTrigger(parameter);
+        }
+    }
+    public void SetAnimationFloat(string parameter, float value)
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.SetFloat(parameter, value);
+        }
+    }
+    public void SetAnimationInt(string parameter, int value)
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.SetInteger(parameter, value);
+        }
+    }
     #endregion
 
     #region Enemy Alert

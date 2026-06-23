@@ -19,6 +19,7 @@ public class QuizChoiceSystem : MonoBehaviour
     public float quizTimer = 10f;
     [Header("UI Elements")]
     public GameObject quizPanel;
+    public GameObject quizUIBlocker;
     public TMP_Text questionText;
     public TMP_Text timerText;
     public List<QuizButton> choiceTexts = new List<QuizButton>();
@@ -72,7 +73,8 @@ public class QuizChoiceSystem : MonoBehaviour
             Debug.LogError("No quiz questions assigned!");
             return;
         }
-        
+
+        quizQuestions = quizQuestions.OrderBy(x => Random.value).ToList();
         currentQuestionIndex = 0;
         currentTimer = quizTimer;
         isQuizActive = true;
@@ -93,6 +95,7 @@ public class QuizChoiceSystem : MonoBehaviour
         QuizChoiceData currentQuestion = quizQuestions[currentQuestionIndex];
         questionText.text = currentQuestion.questionText;
         answers = currentQuestion.GetAnswers();
+        choiceTexts = choiceTexts.OrderBy(x => Random.value).ToList();
         for (int i = 0; i < answers.Count; i++)
         {
             if (i < answers.Count && i < choiceTexts.Count)
@@ -105,7 +108,8 @@ public class QuizChoiceSystem : MonoBehaviour
                 quizButton.quizButton.onClick.RemoveAllListeners();
                 quizButton.quizButton.onClick.AddListener(() =>
                 {
-                    if(isCorrect)
+                    quizUIBlocker.SetActive(true);
+                    if (isCorrect)
                     {    
                         quizButton.quizButton.image.color = Color.green;
                         correctAnswers.Add(currentQuestion.questionText);
@@ -124,6 +128,7 @@ public class QuizChoiceSystem : MonoBehaviour
                 choiceTexts[i].quizButton.gameObject.SetActive(false);
             }
         }
+        quizUIBlocker.SetActive(false);
     }
 
     void NextQuestion()
@@ -138,6 +143,7 @@ public class QuizChoiceSystem : MonoBehaviour
     }
     void SkipQuestion()
     {
+        quizUIBlocker.SetActive(true);
         currentQuestionIndex++;
         QuizChoiceData currentQuestion = quizQuestions[currentQuestionIndex];
         wrongAnswers.Add(currentQuestion.questionText);

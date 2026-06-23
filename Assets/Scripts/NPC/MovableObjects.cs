@@ -10,4 +10,6 @@ public abstract class MovableObjects : MonoBehaviour
     public abstract IEnumerator Teleport(Vector3 pos);
 
     public abstract IEnumerator Move(Vector3 pos, float speed = 3f);
+
+    public abstract IEnumerator Rotate(float yrot);
 }

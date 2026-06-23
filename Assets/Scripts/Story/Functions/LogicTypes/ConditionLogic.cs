@@ -41,14 +41,14 @@ namespace Dialogue.LogicLines
             }
 
             EncapsulatedData selectedData = conditionCheck ? ifData : elseData;
-            currConvo.SetProgress(ifData.endingIdx);
+            currConvo.SetProgress(ifData.endingIdx-1);
             if (!selectedData.isNull && selectedData.lines.Count > 0)
             {
                 Convo newConvo = new Convo(selectedData.lines);
 
                 foreach (DialogueStructure selectedLines in newConvo.GetLines())
                 {
-                    Debug.Log($"if: {selectedLines.dialogue[0]}");
+                    Debug.Log($"if: {selectedLines.dialogue[0].dialogue}");
                 }
                 DialogueSystem.Instance.convoManager.EnqueuePrio(newConvo);
             }

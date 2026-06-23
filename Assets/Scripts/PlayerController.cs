@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.GPUSort;
 
 //[RequireComponent (typeof(CharacterController), typeof(Animator))]
 [RequireComponent(typeof(CharacterController))]
@@ -16,12 +17,15 @@ public class PlayerController : MovableObjects
     [SerializeField] private CharacterController controller;
     [SerializeField] private AudioSource audioSrc;
     [SerializeField] private GameObject face;
-    //[SerializeField] private Animator anim;
+    [SerializeField] private Animator anim;
+    [SerializeField] public GameObject rig;
+    [HideInInspector] public int lunchProgress = 0;
 
     [Header("Ground Detection")]
     public Transform foot;
     public LayerMask groundMask;
     public AudioClip[] audioClip;
+    public GroundSurface currentSurface;
 
     [Header("Input Action")]
     private Vector3 input;
@@ -32,10 +36,11 @@ public class PlayerController : MovableObjects
     [SerializeField] private float jumpPow;
     [SerializeField] private float gravity = 9.81f, groundDist = 1f, speed = 150f, sprintMulti = 2.0f, jumpCd, maxStamina, staminaDecayRate;
     [SerializeField] private bool isExhausted;
-    private float xMove, pitch, yaw, upVel, stamina, moveSpd;
+    private float stamina, moveSpd;
     private bool isGrounded;
     public bool isSprinting;
     public bool isCrouching;
+    public bool isBeingGrab;
 
     [Header("Player Camera Settings")]
     [SerializeField] private CinemachineCamera playerCam;
@@ -44,8 +49,11 @@ public class PlayerController : MovableObjects
     public float smoothTime = 0.1f;
     public float minVerticalAngle = -20f, maxVerticalAngle = 20f;
     public float interactionAngle = 20f, interactionDist = 5f;
-    private CinemachineBasicMultiChannelPerlin _noise;
+    //private CinemachineBasicMultiChannelPerlin _noise;
     private CinemachineInputAxisController inputController;
+    private CinemachinePanTilt panTilt;
+    private Transform originalFollowTarget;
+    private Transform originalLookTarget;
 
     [Header("Bob Settings")]
     public float headBobAmplitude = 0.5f;
@@ -68,7 +76,6 @@ public class PlayerController : MovableObjects
     [SerializeField] private float ceilingCheckRadius = 0.25f;
     [SerializeField] private float ceilingCheckOffset = 0.1f;
     private float targetControllerHeight;
-    private Vector3 targetControllerCenter;
     private float targetCameraY;
     
     [Header("Audio")]
@@ -94,12 +101,13 @@ public class PlayerController : MovableObjects
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         Hiding = GetComponent<PlayerHiding>();
         audioSrc = GetComponent<AudioSource>();
         CameraManager.SwitchCamera(playerCam);
-        _noise = playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>();
+        originalFollowTarget = playerCam.Follow;
+        originalLookTarget = playerCam.LookAt;
+        panTilt = playerCam.GetComponent<CinemachinePanTilt>();
 
         pantingSoundEvent = AudioManager.Instance.CreateInstance(pantingSound);
         RuntimeManager.AttachInstanceToGameObject(pantingSoundEvent, gameObject, false);
@@ -124,14 +132,13 @@ public class PlayerController : MovableObjects
         agent.acceleration = 8f;
         agent.stoppingDistance = 0.1f;
         if(CanUseAgent()) agent.isStopped = true;
+        agent.updateRotation = false;
 
         targetControllerHeight = standingHeight;
-        targetControllerCenter = new Vector3(0f, standingHeight * 0.5f, 0f);
         targetCameraY = standingCameraY;
 
         // Force initial values
         controller.height = standingHeight;
-        controller.center = targetControllerCenter;
 
         if (cameraHeightTarget != null)
         {
@@ -153,7 +160,7 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if(SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+                if(SettingManager.Instance.isPaused || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
                 {
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -165,21 +172,20 @@ public class PlayerController : MovableObjects
                 }
             }
         }
-        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+        if (SettingManager.Instance.isPaused || CameraManager.currentActiveCamera != playerCam || isBeingGrab || SettingManager.Instance.gameOver)
         {
             ResetMovementState();
             lookAction.action.Disable();
-            return;
         }
-        else if(!lookAction.action.enabled)
+        else if (!lookAction.action.enabled)
         {
             lookAction.action.Enable();
         }
-        if (inputController != null)
+        //Mouse Look Control
+        if (inputController != null && (DialogueSystem.Instance.isRunningConvo && DialogueSystem.Instance.cameraControl))
         {
-
             float sliderValue = SettingManager.Instance.settings.MouseSensitivity ;
-            float calculatedGain = Mathf.Lerp(SettingManager.Instance.minimumMouseSensitivity, SettingManager.Instance.maximumMouseSensitivity, sliderValue) * lookSensitivity;
+            float calculatedGain = Mathf.Lerp(SettingManager.Instance.minimumMouseSensitivity, SettingManager.Instance.maximumMouseSensitivity, sliderValue) * lookSensitivity * 2;
 
             // Controllers is a list. Usually: Index 0 = Pan, Index 1 = Tilt
             foreach (var controller in inputController.Controllers)
@@ -198,9 +204,9 @@ public class PlayerController : MovableObjects
             }
         }
         inputController.enabled = Cursor.lockState == CursorLockMode.Locked;
-        if(SettingManager.Instance.isPaused) return;
+        if (SettingManager.Instance.isPaused) return;
 
-        if(!CanUseAgent()) return;
+        if (!CanUseAgent()) return;
         //Movement - skip input if player is hiding
         if (Hiding != null && Hiding.IsHiding())
         {
@@ -330,58 +336,35 @@ public class PlayerController : MovableObjects
                 stamina = maxStamina;
                 staminaFillImage.gameObject.SetActive(false);
             }
-            // if (input == Vector3.zero)
-            // {
-            //     //anim.SetFloat("Speed", 0f);
-            //     //anim.SetBool("isWalking", false);
-            //     //anim.SetBool("isRunning", false);
-            //     _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, idleBobAmplitude, Time.deltaTime * 5f);
-            //     _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, 0.5f, Time.deltaTime * 5f);
-            // }
-            // else if (sprintAction == null || !sprintAction.IsPressed())
-            // {
-            //     _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, walkBobAmplitude, Time.deltaTime * 5f);
-            //     _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, walkBobFrequency, Time.deltaTime * 5f);
-            //     //anim.SetFloat("Speed", Mathf.Sign(Input.GetAxis("Vertical")) * input.magnitude);
-            //     //anim.SetBool("isWalking", true);
-            //     //anim.SetBool("isRunning", false);
-            // }
-            // else
-            // {
-            //     _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, idleBobAmplitude, Time.deltaTime * 5f);
-            //     _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, 0.5f, Time.deltaTime * 5f);
-            //     //anim.SetFloat("Speed", Input.GetAxis("Vertical") * input.magnitude);
-            //     //anim.SetBool("isWalking", false);
-            //     //anim.SetBool("isRunning", true);
-            // }
-            float targetAmplitude = 0f;
-            float targetFrequency = 0f;
 
-            bool crouchTransitioning = IsCrouchTransitioning();
+            //float targetAmplitude = 0f;
+            //float targetFrequency = 0f;
 
-            if (input != Vector3.zero && !crouchTransitioning)
-            {
-                float headBobMultiplier = 1f;
+            //bool crouchTransitioning = IsCrouchTransitioning();
 
-                if (isCrouching)
-                    headBobMultiplier = crouchBobMultiplier;
+            //if (input != Vector3.zero && !crouchTransitioning)
+            //{
+            //    float headBobMultiplier = 1f;
 
-                if (isSprinting && !isCrouching)
-                {
-                    headBobMultiplier = sprintBobMultiplier;
+            //    if (isCrouching)
+            //        headBobMultiplier = crouchBobMultiplier;
 
-                    stamina -= staminaDecayRate * Time.deltaTime;
-                    if (stamina <= 0f)
-                        stamina = 0f;
-                }
+            //    if (isSprinting && !isCrouching)
+            //    {
+            //        headBobMultiplier = sprintBobMultiplier;
 
-                targetAmplitude = headBobAmplitude * headBobMultiplier;
-                targetFrequency = headBobFrequency * headBobMultiplier;
-            }
+            //        stamina -= staminaDecayRate * Time.deltaTime;
+            //        if (stamina <= 0f)
+            //            stamina = 0f;
+            //    }
+
+            //    targetAmplitude = headBobAmplitude * headBobMultiplier;
+            //    targetFrequency = headBobFrequency * headBobMultiplier;
+            //}
 
             // Smoothly apply noise instead of snapping
-            _noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, targetAmplitude, Time.deltaTime * 8f);
-            _noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, targetFrequency, Time.deltaTime * 8f);
+            //_noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, targetAmplitude, Time.deltaTime * 8f);
+            //_noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, targetFrequency, Time.deltaTime * 8f);
 
         }
         else
@@ -389,9 +372,14 @@ public class PlayerController : MovableObjects
             if(!CanUseAgent()) return;
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
+                agent.updateRotation = false;
                 Vector3 posPoint = agent.destination - transform.position;
                 playerCam.ForceCameraPosition(posPoint, Quaternion.identity);
                 agent.isStopped = true;
+            }
+            else
+            {
+                agent.updateRotation = true;
             }
         }
         
@@ -420,7 +408,6 @@ public class PlayerController : MovableObjects
     private void FixedUpdate()
     {
         isGrounded = Physics.CheckSphere(foot.position, groundDist, groundMask);
-        //Debug.Log($"Player is Grounded: {isGrounded}");
 
         // accumulate distance travelled this frame and trigger a step when we've covered enough ground
         if (footstepManager != null && isGrounded && input.magnitude > 0.01f)
@@ -454,6 +441,8 @@ public class PlayerController : MovableObjects
         {
             HandleCrouch();
             controller.SimpleMove(moveSpd * input);
+            anim.SetFloat("MoveBlend", Mathf.CeilToInt(input.magnitude));
+            agent.nextPosition = transform.position;
         }
     }
 
@@ -468,6 +457,47 @@ public class PlayerController : MovableObjects
         audioSrc.Play();
     }
 
+    #region Animation
+    public void ToggleRig(bool active)
+    {
+        rig.SetActive(active);
+    }
+
+    public IEnumerator PrepLunch()
+    {
+        ToggleRig(true);
+        anim.SetBool("Lunch", true);
+        CameraManager.SwitchCamera(GameObject.Find("LunchCam").GetComponent<CinemachineCamera>());
+        yield return new WaitForSeconds(.1f);
+        yield return StartCoroutine(Teleport(new Vector3(293.5f, transform.position.y, 218.75f)));
+        yield return StartCoroutine(Rotate(180f));
+    }
+
+    public void ToggleLunchSequence(bool active)
+    {
+        rig.SetActive(active);
+        anim.SetBool("Lunch", active);
+    }
+
+    public void EatFood()
+    {
+        anim.SetTrigger("EatLunch");
+        if (lunchProgress++ == 2)
+        {
+            anim.SetBool("Meds", true);
+            anim.SetBool("Lunch", false);
+            GetComponent<PlayerGrabInteraction>().currentItem.ChangeInteractionText("EatMeds");
+        }
+    }
+
+    public void EatMeds()
+    {
+        anim.SetTrigger("EatMeds");
+        DialogueSystem.Instance.convoManager.Enqueue(FileReader.ReadAsset("PostLunch"));
+    }
+    #endregion
+
+    #region Camera Handling
     private void HandleCrouch()
     {
         // Prevent standing up if blocked by ceiling
@@ -506,11 +536,8 @@ public class PlayerController : MovableObjects
         float desiredY = isCrouching ? crouchCameraY : standingCameraY;
         return Mathf.Abs(cameraHeightTarget.localPosition.y - desiredY) > 0.02f;
     }
-
     public void FaceObject(Transform targetObject)
     {
-        CinemachinePanTilt panTilt = playerCam.GetComponent<CinemachinePanTilt>();
-
         Vector3 direction = targetObject.position - playerCam.transform.position;
 
         // Yaw (horizontal rotation)
@@ -526,23 +553,63 @@ public class PlayerController : MovableObjects
 
     public void FaceFront()
     {
-        CinemachinePanTilt panTilt = playerCam.GetComponent<CinemachinePanTilt>();
-
-        panTilt.PanAxis.Value = 0;
-        panTilt.TiltAxis.Value = 0;
-        //playerCam.ForceCameraPosition(transform.forward, Quaternion.identity);
+        transform.rotation = Quaternion.Euler(0, 0, 0);
     }
+    public void ChangeCameraFollow(Transform newFollow = null)
+    {
+        playerCam.Follow = newFollow ?? originalFollowTarget;
+    }
+    public void ChangeCameraLookAt(Transform newLook = null)
+    {
+        playerCam.LookAt = newLook ?? originalLookTarget;
+    }
+#endregion
 
     #region Agent (auto) Movement
     public override IEnumerator Teleport(Vector3 pos)
     {
         controller.enabled = false;
         yield return new WaitForEndOfFrame();
-        agent.Warp(pos);
-        transform.LookAt(transform.forward);
+        agent.enabled = false;
+        transform.position = pos;
+        //agent.Warp(pos);
+        yield return new WaitForSeconds(.1f);
+        agent.enabled = true;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
         agent.ResetPath();
         yield return new WaitForEndOfFrame();
         controller.enabled = true;
+    }
+    public override IEnumerator Rotate(float yrot)
+    {
+        if (agent != null)
+            agent.updateRotation = false;
+        transform.rotation = Quaternion.Euler(0, yrot, 0);
+        if (agent != null)
+            agent.updateRotation = true;
+        if (panTilt == null) yield break;
+
+        //For incremental rotation
+        //float startPan = panTilt.PanAxis.Value;
+        //float elapsed = 0f;
+        //float duration = 1f / speed; // adjust duration based on your speed definition
+
+        //// Optionally clamp target angle to [-180,180] range
+        //yrot = ((yrot % 360) + 360) % 360;
+        //if (yrot > 180) yrot -= 360;
+
+        //while (elapsed < duration)
+        //{
+        //    elapsed += Time.deltaTime;
+        //    float t = elapsed / duration;
+        //    float newPan = Mathf.LerpAngle(startPan, yrot, t);
+        //    panTilt.PanAxis.Value = newPan;
+        //    yield return null; // or WaitForEndOfFrame
+        //}
+
+        // Snap to exact target
+        panTilt.PanAxis.Value = 0;
+        panTilt.PanAxis.TrackValueChange();
     }
 
     public override IEnumerator Move(Vector3 pos, float speed = 150f)
@@ -551,6 +618,7 @@ public class PlayerController : MovableObjects
         agent.isStopped = false;
         yield return new WaitForEndOfFrame();
     }
+
     public bool CanUseAgent()
     {
         return agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh;
@@ -563,7 +631,6 @@ public class PlayerController : MovableObjects
         staminaFillImage.gameObject.SetActive(false);
 
         controller.height = standingHeight;
-        controller.center = new Vector3(0f, standingHeight * 0.5f, 0f);
 
         if (cameraHeightTarget != null)
         {
@@ -572,7 +639,9 @@ public class PlayerController : MovableObjects
             cameraHeightTarget.localPosition = localPos;
         }
     }
+    #endregion
 
+    #region Audio
     private void PlayPantingSound()
     {
         PLAYBACK_STATE playbackState;

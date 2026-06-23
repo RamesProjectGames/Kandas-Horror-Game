@@ -8,8 +8,6 @@ namespace Dialogue
     [System.Serializable]
     public class DialogueContainer
     {
-        private const float fadeSpeed = 5f;
-
         [Header("Components")]
         public GameObject dialoguePanel, namePanel;
         public TextMeshProUGUI nameText;
@@ -18,7 +16,9 @@ namespace Dialogue
 
         private CanvasGroup canvasGroup => dialoguePanel.GetComponent<CanvasGroup>();
 
-        [Header("Coroutines")]
+        [Header("Canvas Group Controller")]
+        private const float fadeSpeed = 5f;
+
         private Coroutine showingCo = null;
         private Coroutine hidingCo = null;
 

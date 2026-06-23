@@ -18,12 +18,15 @@ public class MannequinDemoGame : MonoBehaviour
     public event MannequinEvent OnCatchAnimationStart;
     public event MannequinEvent OnCatchAnimationComplete;
     [Header("Detection")]
+    public bool canRoamAround = false;
     [SerializeField] private Vector3 detectionBoxSize = new Vector3(20f, 5f, 20f);
     [SerializeField] private Vector3 detectionBoxOffset = Vector3.zero;
     [SerializeField] private LayerMask obstacleMask;
+    public Vector3 DetectionBoxSize { get => detectionBoxSize; set => detectionBoxSize = value; }
+    public Vector3 DetectionBoxOffset { get => detectionBoxOffset; set => detectionBoxOffset = value; }
     private PlayerSightInteraction playerSight;
+    private EnemySightDetection sightDetection;
     private Transform playerTransform;
-    private GameObject detectionObject;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
@@ -33,6 +36,7 @@ public class MannequinDemoGame : MonoBehaviour
     [Header("Catch Animation")]
     [SerializeField] private string catchAnimationName = "Catch";
     private Animator animator;
+    private float previousSpeed;
 
     [Header("Reset")]
     [SerializeField] private float contactThreshold = 1f;
@@ -48,6 +52,7 @@ public class MannequinDemoGame : MonoBehaviour
     {
         originalPosition = transform.position;
         playerSight = FindAnyObjectByType<PlayerSightInteraction>();
+        sightDetection = GetComponent<EnemySightDetection>();
         playerTransform = playerSight?.transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -62,11 +67,6 @@ public class MannequinDemoGame : MonoBehaviour
         navMeshAgent.speed = moveSpeed;
         navMeshAgent.stoppingDistance = stoppingDistance;
 
-        // Create detection box object
-        detectionObject = Instantiate(new GameObject("DetectionBox"), transform.position, Quaternion.identity);
-        detectionObject.transform.localPosition = transform.localPosition ;
-        detectionObject.transform.localScale = detectionBoxSize;
-        detectionObject.layer = LayerMask.NameToLayer("Obstacle");
     }
 
     void Update()
@@ -79,6 +79,49 @@ public class MannequinDemoGame : MonoBehaviour
 
         if (!isPlayerLooking)
         {
+            if(canRoamAround)
+            {
+                if(sightDetection == null)
+                {
+                    Debug.LogWarning("EnemySightDetection component not found on mannequin. Roaming behavior will not function properly.");
+                    return;
+                }
+                // If roaming is enabled, ignore detection box and always move toward player
+                if(sightDetection.canSeePlayer)
+                {
+                    isReturningToOrigin = false;
+
+                    // Trigger player detected event
+                    if (!isMovingTowardPlayer)
+                    {
+                        OnPlayerDetected?.Invoke();
+                    }
+
+                    isMovingTowardPlayer = true;
+
+                    // Trigger start moving event on state change
+                    if (!wasMovingLastFrame)
+                    {
+                        OnStartMoving?.Invoke();
+                        wasMovingLastFrame = true;
+                    }
+
+                    MoveTowardPlayer();
+                }
+                else
+                {
+                    // Player out of range - return to original position
+                    if (isMovingTowardPlayer && !isAnimatingCatch)
+                    {
+                        isMovingTowardPlayer = false;
+                        OnStoppedMoving?.Invoke();
+                    }
+                    wasMovingLastFrame = false;
+                    isReturningToOrigin = true;
+                    ReturnToOriginalPosition();
+                }
+                return;
+            }
             // Player is NOT looking - move toward player like a Weeping Angel
             if (IsPlayerInDetectionBox())
             {
@@ -147,8 +190,13 @@ public class MannequinDemoGame : MonoBehaviour
         if (playerTransform == null)
             return false;
 
+        if(canRoamAround)
+        {
+            return true; // Ignore detection box and always move toward player
+        }
+
         // Check if player position is within detection box bounds (with offset)
-        Vector3 boxCenter = detectionObject.transform.position + detectionBoxOffset;
+        Vector3 boxCenter = transform.position + detectionBoxOffset;
         Vector3 relativePlayerPos = playerTransform.position - boxCenter;
         
         return Mathf.Abs(relativePlayerPos.x) <= detectionBoxSize.x / 2f &&
@@ -173,7 +221,21 @@ public class MannequinDemoGame : MonoBehaviour
 
         return false; // Path is clear
     }
-
+    private void PauseAnimator()
+    {
+        if (animator != null)
+        {
+            previousSpeed = animator.speed;
+            animator.speed = 0f;
+        }
+    }
+    private void ResumeAnimator()
+    {
+        if (animator != null)
+        {
+            animator.speed = previousSpeed;
+        }
+    }
     private void MoveTowardPlayer()
     {
         if (playerTransform == null || isAnimatingCatch)
@@ -192,6 +254,7 @@ public class MannequinDemoGame : MonoBehaviour
         if (distanceToPlayer > stoppingDistance)
         {
             // Use NavMeshAgent to set destination toward the player
+            ResumeAnimator();
             navMeshAgent.SetDestination(playerTransform.position);
         }
         else
@@ -203,6 +266,7 @@ public class MannequinDemoGame : MonoBehaviour
 
     private void StopMovement()
     {
+        PauseAnimator();
         if (navMeshAgent != null)
         {
             navMeshAgent.velocity = Vector3.zero;
@@ -305,32 +369,32 @@ public class MannequinDemoGame : MonoBehaviour
         {
             Gizmos.color = Color.yellow;
         }
-        Vector3 boxCenter = transform.position + detectionBoxOffset;
-        if(detectionObject != null)
-        {
-            boxCenter = detectionObject.transform.position + detectionBoxOffset;
-        }
-        Gizmos.DrawWireCube(boxCenter, detectionBoxSize);
-        
-        // Draw offset indicator line
-        if (detectionBoxOffset != Vector3.zero)
-        {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(detectionObject==null ? transform.position : detectionObject.transform.position, boxCenter);
-        }
 
-        // Draw line to player if in range (for debugging obstruction)
-        if (Application.isPlaying && playerTransform != null)
+        if(!canRoamAround)
         {
-            if (IsPathObstructed())
+            Vector3 boxCenter = transform.position + detectionBoxOffset;
+            Gizmos.DrawWireCube(boxCenter, detectionBoxSize);
+
+            // Draw offset indicator line
+            if (detectionBoxOffset != Vector3.zero)
             {
-                Gizmos.color = Color.red; // Path blocked
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawLine(transform.position, boxCenter);
             }
-            else
+
+            // Draw line to player if in range (for debugging obstruction)
+            if (Application.isPlaying && playerTransform != null)
             {
-                Gizmos.color = Color.green; // Path clear
+                if (IsPathObstructed())
+                {
+                    Gizmos.color = Color.red; // Path blocked
+                }
+                else
+                {
+                    Gizmos.color = Color.green; // Path clear
+                }
+                Gizmos.DrawLine(transform.position, playerTransform.position);
             }
-            Gizmos.DrawLine(detectionObject==null ? transform.position : detectionObject.transform.position, playerTransform.position);
         }
 
         // Draw original position

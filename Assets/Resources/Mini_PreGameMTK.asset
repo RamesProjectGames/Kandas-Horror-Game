@@ -14,6 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   convoName: Mini_PreGameMTK
   dialogues:
+  - speaker: 
+    dialogue: []
+    functions:
+    - name: SwitchCam
+      args:
+      - QuizCam
+      waitForCompletion: 1
   - speaker: Teacher
     dialogue:
     - dialogue: 'So, '
@@ -22,7 +29,15 @@ MonoBehaviour:
     - dialogue: here is the math quiz for today.
       segmentSignal: 3
       signalDelay: 0.5
-    functions: []
+    functions:
+    - name: Teleport
+      args:
+      - Player
+      - ^x
+      - 216.65
+      - ^z
+      - 321.65
+      waitForCompletion: 0
   - speaker: Teacher
     dialogue:
     - dialogue: You have to finish it in 3 minutes.

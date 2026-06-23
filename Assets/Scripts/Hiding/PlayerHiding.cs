@@ -81,7 +81,8 @@ public class PlayerHiding : MonoBehaviour
     /// </summary>
     private void DetectNearbyHidingSpots()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, hidingSpotLayer);
+        Vector3 bodyCenter = new Vector3(transform.position.x, transform.position.y + +(GetComponent<CapsuleCollider>().height / 2), transform.position.z);
+        Collider[] colliders = Physics.OverlapSphere(bodyCenter, detectionRadius, hidingSpotLayer);
 
         foreach (Collider col in colliders)
         {
@@ -101,7 +102,8 @@ public class PlayerHiding : MonoBehaviour
         if (isHiding)
             return;
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, hidingSpotLayer);
+        Vector3 bodyCenter = new Vector3(transform.position.x, transform.position.y + +(GetComponent<CapsuleCollider>().height / 2), transform.position.z);
+        Collider[] colliders = Physics.OverlapSphere(bodyCenter, detectionRadius, hidingSpotLayer);
         HidingSpot nearestSpot = null;
         float nearestDistance = float.MaxValue;
 
@@ -310,6 +312,7 @@ public class PlayerHiding : MonoBehaviour
     {
         // Draw detection radius
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Vector3 bodyCenter = new Vector3(transform.position.x, transform.position.y + (GetComponent<CapsuleCollider>().height/2), transform.position.z);
+        Gizmos.DrawWireSphere(bodyCenter, detectionRadius);
     }
 }

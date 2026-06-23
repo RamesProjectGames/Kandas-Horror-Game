@@ -828,6 +828,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EnqueueDebug",
+                    "type": "Button",
+                    "id": "f58b8320-b9de-4f2d-ad22-57077b2da2d4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -883,6 +892,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9e857eaf-8dae-47fb-8726-bffaea8a03e3",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EnqueueDebug",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

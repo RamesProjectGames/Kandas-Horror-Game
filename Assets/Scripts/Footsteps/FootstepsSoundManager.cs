@@ -199,3 +199,11 @@ public class FootstepsSoundManager : MonoBehaviour
         return t.terrainData.terrainLayers[maxIndex].name;
     }
 }
+
+public enum GroundSurface
+{
+    Dress,
+    Floor,
+    Grass,
+    Glass
+}

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.InputSystem.Samples.RebindUI;
 using Unity.Mathematics;
+using UnityEngine.SceneManagement;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -71,7 +72,9 @@ public class SettingsUI : MonoBehaviour
         textureQualityText.text = TextureQualityToString(s.TextureQuality);
 
         // Control Settings
-        microphoneSensitivitySlider.value = Mathf.InverseLerp(settingManager.minimumMicrophoneVolume, settingManager.maximumMicrophoneVolume, s.MicrophoneSensitivity);
+        microphoneSensitivitySlider.minValue = settingManager.minimumMicrophoneVolume;
+        microphoneSensitivitySlider.maxValue = settingManager.maximumMicrophoneVolume;
+        microphoneSensitivitySlider.value = s.MicrophoneSensitivity;
         mouseSensitivitySlider.value = Mathf.InverseLerp(settingManager.minimumMouseSensitivity, settingManager.maximumMouseSensitivity, s.MouseSensitivity);
         sprintToggleText.text = s.SprintToggle ? "Toggle" : "Hold";
         crouchToggleText.text = s.CrouchToggle ? "Toggle" : "Hold";
@@ -325,6 +328,7 @@ public class SettingsUI : MonoBehaviour
     [Header("UI Navigation")]
     public GameObject PausePanel;
     public GameObject SettingPanel;
+    public GameObject GameoverPanel;
     public List<GameObject> scrollings = new List<GameObject>();
     public List<Button> sectionButtons = new List<Button>();
 
@@ -357,5 +361,19 @@ public class SettingsUI : MonoBehaviour
             if(PausePanel != null) PausePanel.SetActive(false);
         }
     }
+    public void BackToMainMenu() { SceneManager.LoadScene("MainMenu"); }
+    public void ShowGameover(bool open)
+    { 
+        GameoverPanel.SetActive(open); 
+        settingManager.gameOver = open;
+    }
+    public void TryAgain()
+    {
+        var playerReset = FindAnyObjectByType<PlayerResetManager>();
+        if(playerReset == null) return;
+        playerReset.ResetPlayer($"Getting Hit by Monster Bat!");
+        settingManager.gameOver = false;
+    }
     #endregion
+
 }
