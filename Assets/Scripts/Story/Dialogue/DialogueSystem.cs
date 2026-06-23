@@ -14,6 +14,7 @@ namespace Dialogue
         public ConvoManager convoManager { get; private set; }
         public BuildMethod buildMethod = BuildMethod.typewriter;
         public bool isRunningConvo => convoManager.isRunning;
+        public bool cameraControl;
         public TextArchitect architect { get; private set; }
 
         [SerializeField] private InputActionReference nextInput, enqDebugInput;
@@ -105,7 +106,7 @@ namespace Dialogue
             screenCo = StartCoroutine(dialogueContainer.FadeFromBlack(duration));
         }
 
-        public void OpenDialogue(string assetName)
+        public void OpenDialogue(string assetName, bool allowCam = false)
         {
             if (isRunningConvo)
                 return;

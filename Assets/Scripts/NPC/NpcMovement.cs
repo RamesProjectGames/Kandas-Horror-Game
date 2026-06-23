@@ -51,15 +51,23 @@ public class NpcMovement : MovableObjects
     #region Dialogue Player Movement
     public override IEnumerator Move(Vector3 pos, float speed = 3f)
     {
-        // ensure we send the agent to a valid NavMesh position
         Vector3 validPos = GetValidNavMeshPosition(pos);
-        agent.SetDestination(validPos);
-        agent.isStopped = false;
+        if (agent != null)
+        {
+            agent.enabled = true;
+            agent.SetDestination(validPos);
+            agent.isStopped = false;
+        }
         animator.SetFloat("Blend", 1);
-        agent.enabled = true;
         while (agent.remainingDistance >= agent.stoppingDistance)
         {
             yield return new WaitForEndOfFrame();
+        }
+        if (agent != null)
+        {
+            agent.enabled = false;
+            agent.isStopped = true;
+            agent.ResetPath();
         }
         float state = 0;
         if (animState == NPCAnimationState.Sit)
@@ -80,8 +88,11 @@ public class NpcMovement : MovableObjects
             else
                 state = UnityEngine.Random.Range(0, 2);
         }
+        if (agent != null)
+        {
+            agent.enabled = movementAllowed && point.Length > 1;
+        }
         animator.SetFloat("Blend", state / 7f);
-        agent.ResetPath();
     }
 
     public override IEnumerator Teleport(Vector3 pos)

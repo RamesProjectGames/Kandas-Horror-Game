@@ -160,8 +160,7 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if(SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo || CameraManager.currentActiveCamera != playerCam
-                    )
+                if(SettingManager.Instance.isPaused || (DialogueSystem.Instance.isRunningConvo && DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
                 {
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -177,12 +176,12 @@ public class PlayerController : MovableObjects
         {
             ResetMovementState();
             lookAction.action.Disable();
-            return;
         }
-        else if(!lookAction.action.enabled)
+        else if (!lookAction.action.enabled)
         {
             lookAction.action.Enable();
         }
+        //Mouse Look Control
         if (inputController != null)
         {
             float sliderValue = SettingManager.Instance.settings.MouseSensitivity ;
@@ -205,9 +204,9 @@ public class PlayerController : MovableObjects
             }
         }
         inputController.enabled = Cursor.lockState == CursorLockMode.Locked;
-        if(SettingManager.Instance.isPaused) return;
+        if (SettingManager.Instance.isPaused) return;
 
-        if(!CanUseAgent()) return;
+        if (!CanUseAgent()) return;
         //Movement - skip input if player is hiding
         if (Hiding != null && Hiding.IsHiding())
         {
@@ -494,7 +493,7 @@ public class PlayerController : MovableObjects
     public void EatMeds()
     {
         anim.SetTrigger("EatMeds");
-        DialogueSystem.Instance.convoManager.Enqueue(FileReader.ReadAsset("Mini_PostLunch"));
+        DialogueSystem.Instance.convoManager.Enqueue(FileReader.ReadAsset("PostLunch"));
     }
     #endregion
 

@@ -4806,6 +4806,7 @@ MonoBehaviour:
     screenCover: {fileID: 1800880768}
     active: 0
   buildMethod: 1
+  cameraControl: 0
   nextInput: {fileID: -9077876474924563115, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   enqDebugInput: {fileID: 592641294968355165, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   allMiniDialogues: []
@@ -17693,7 +17694,7 @@ MonoBehaviour:
     fragmentData: {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
     requirements:
     - SubmitQuiz
-    LimitedAfterObjective: Lunch
+    LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   - Name: Studying
@@ -28437,7 +28438,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.7
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
