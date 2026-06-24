@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -34,8 +36,10 @@ public class MannequinDemoGame : MonoBehaviour
     private NavMeshAgent navMeshAgent;
 
     [Header("Catch Animation")]
-    [SerializeField] private string catchAnimationName = "Catch";
-    private Animator animator;
+    [SerializeField] private List<string> idleAnimations = new List<string>();
+    [SerializeField] private Animator animator;
+    [SerializeField] private CinemachineCamera chokeCamera;
+    private CinemachineCamera playerCamera;
     private float previousSpeed;
 
     [Header("Reset")]
@@ -66,6 +70,7 @@ public class MannequinDemoGame : MonoBehaviour
         // Configure NavMeshAgent
         navMeshAgent.speed = moveSpeed;
         navMeshAgent.stoppingDistance = stoppingDistance;
+        ReturnIdleAnimation();
 
     }
 
@@ -233,6 +238,7 @@ public class MannequinDemoGame : MonoBehaviour
     {
         if (animator != null)
         {
+            animator.SetFloat("MoveBlend",1);
             animator.speed = previousSpeed;
         }
     }
@@ -247,7 +253,7 @@ public class MannequinDemoGame : MonoBehaviour
             StopMovement();
             return; // Cannot move - path is blocked
         }
-
+        
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
         // Only move if not at stopping distance
@@ -273,7 +279,15 @@ public class MannequinDemoGame : MonoBehaviour
             navMeshAgent.ResetPath();
         }
     }
-
+    private void ReturnIdleAnimation()
+    {
+        var randomIdle = Random.Range(0, idleAnimations.Count-1);
+        if(animator!=null)
+        {
+            animator.SetFloat("MoveBlend",0);
+            animator.SetFloat("Selected", randomIdle);
+        }
+    }
     private void ReturnToOriginalPosition()
     {
         if (isAnimatingCatch)
@@ -290,6 +304,7 @@ public class MannequinDemoGame : MonoBehaviour
         {
             // Reached original position
             isReturningToOrigin = false;
+            ReturnIdleAnimation();
             StopMovement();
         }
     }
@@ -304,7 +319,7 @@ public class MannequinDemoGame : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetTrigger(catchAnimationName);
+            animator.SetFloat("MoveBlend",2);
         }
 
         // Start coroutine to wait for animation to complete, then reset position
@@ -329,7 +344,12 @@ public class MannequinDemoGame : MonoBehaviour
             // Fallback delay if no animator
             yield return new WaitForSeconds(2f);
         }
+        playerCamera = CameraManager.currentActiveCamera;
+        CameraManager.SwitchCamera(chokeCamera);
 
+    }
+    public void TriggerResetDoll()
+    {        
         // Reset mannequin to original position
         transform.position = originalPosition;
         
@@ -349,12 +369,13 @@ public class MannequinDemoGame : MonoBehaviour
         // Trigger player reset
         TriggerPlayerReset();
     }
-
     private void TriggerPlayerReset()
     {
-        if (resetManager != null)
+        CameraManager.SwitchCamera(playerCamera);
+        var settingUI = FindAnyObjectByType<SettingsUI>();
+        if (settingUI != null)
         {
-            resetManager.ResetPlayer("Mannequin Type 1 caught player!");
+            settingUI.ShowGameover(true);
         }
     }
 
