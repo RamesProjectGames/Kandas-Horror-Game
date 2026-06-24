@@ -344,9 +344,13 @@ public class MannequinDemoGame : MonoBehaviour
             // Fallback delay if no animator
             yield return new WaitForSeconds(2f);
         }
+        
+
+    }
+    public void SwitchPlayerPerspective()
+    {
         playerCamera = CameraManager.currentActiveCamera;
         CameraManager.SwitchCamera(chokeCamera);
-
     }
     public void TriggerResetDoll()
     {        
