@@ -3,12 +3,20 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Animator))]
 public class AnimationEventHandler : MonoBehaviour
 {
-    public UnityEvent OnAnimationEvent;
-    public void TriggerAnimationEvent()
+    public UnityEvent OnAnimationEnded;
+    public UnityEvent OnAnimationStart;
+    public void TriggerAnimationEnded()
     {
-        if (OnAnimationEvent != null)
+        if (OnAnimationEnded != null)
         {
-            OnAnimationEvent.Invoke();
+            OnAnimationEnded.Invoke();
+        }
+    }
+    public void TriggerAnimationStart()
+    {
+        if(OnAnimationStart != null)
+        {
+            OnAnimationStart.Invoke();
         }
     }
 }

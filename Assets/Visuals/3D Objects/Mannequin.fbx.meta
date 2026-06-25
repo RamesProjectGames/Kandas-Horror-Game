@@ -22,7 +22,8 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: Event TriggerAnimationEnded has a time (2.211864) outside
+      the clip's valid range (0.000000..2.125000). It will never be fired
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -119,7 +120,14 @@ ModelImporter:
       curves: []
       events:
       - time: 0.9830509
-        functionName: TriggerAnimationEvent
+        functionName: TriggerAnimationEnded
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.13867489
+        functionName: TriggerAnimationStart
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
