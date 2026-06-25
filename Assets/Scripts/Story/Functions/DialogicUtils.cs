@@ -28,18 +28,18 @@ namespace Dialogue.LogicLines
                 EncapsulatedData data = new EncapsulatedData { lines = new List<string>(), startingIdx = startIdx, endingIdx = 0};
                 for (int i = startIdx; i < currConvo.count; i++)
                 {
-                    DialogueStructure line = currConvo.GetLines()[i];
+                    string line = currConvo.GetLines()[i];
 
-                    if(RipHeaderAndEncapsulators || (encDepth > 0 && !IsEncapsulationEnd(line.GetRawLine())))
-                        data.lines.Add(line.GetRawLine());
+                    if(RipHeaderAndEncapsulators || (encDepth > 0 && !IsEncapsulationEnd(line)))
+                        data.lines.Add(line);
 
-                    if(IsEncapsulationStart(line.GetRawLine()))
+                    if(IsEncapsulationStart(line))
                     {
                         encDepth++;
                         continue;
                     }
 
-                    if (IsEncapsulationEnd(line.GetRawLine()))
+                    if (IsEncapsulationEnd(line))
                     {
                         encDepth--;
                         if(encDepth == 0)

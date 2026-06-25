@@ -29,7 +29,9 @@ namespace TestingPurposes
 {
     public class DialogueEvents : FuncDBExtension
     {
-        Coroutine ongoingCoroutine;
+    #region Variables
+        public static int DoorAttempts = 0;
+    #endregion
         new public static void Extend(FunctionsDatabase db)
         {
             #region Movement
@@ -73,6 +75,7 @@ namespace TestingPurposes
             db.AddFunction("HidePlayerRig", new Action(HidePlayerRig));
             db.AddFunction("ShowPlayerRig", new Action(ShowPlayerRig));
             db.AddFunction("ToggleDoor", new Action(ToggleDoor));
+            db.AddFunction("TryOpenDoor", new Action(TryOpenDoor));
             #endregion
         }
 
@@ -334,10 +337,26 @@ namespace TestingPurposes
 
         private static void ToggleDoor()
         {
-            GameObject.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().ToggleDoor();
+            UnityEngine.Object.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().ToggleDoor();
         }
 
-        private static void SpawnMannequins()
+        private static void TryOpenDoor()
+        {
+            if(++DoorAttempts < 3)
+            {
+                EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "DoorRattle");
+
+                Vector3 pos = GameObject.Find("Player").transform.position;
+                AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
+            }
+        }
+
+        private static void SpawnNurseOfficeMannequin()
+        {
+
+        }
+
+        private static void SurvivalHorrorPrep()
         {
 
         }

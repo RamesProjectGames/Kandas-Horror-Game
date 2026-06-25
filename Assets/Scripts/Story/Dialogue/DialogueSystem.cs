@@ -18,7 +18,6 @@ namespace Dialogue
         public TextArchitect architect { get; private set; }
 
         [SerializeField] private InputActionReference nextInput, enqDebugInput;
-        public List<MiniDialogue> allMiniDialogues;
         public Coroutine screenCo;
 
         //Dialogue System Trigger Events for Player Input (and others)
@@ -46,8 +45,6 @@ namespace Dialogue
         private void Init()
         {
             if(initialized) return;
-
-            allMiniDialogues = Resources.LoadAll<MiniDialogue>("").ToList();
 
             architect = new TextArchitect(dialogueContainer.dialogueText);
             architect.buildMethod = buildMethod;
@@ -111,10 +108,7 @@ namespace Dialogue
             cameraControl = allowCam;
             if (isRunningConvo)
                 return;
-            if(assetName.StartsWith("Mini_"))
-                convoManager.StartConvo(new Convo(allMiniDialogues.Find(x => x.convoName == assetName).dialogues));
-            else
-                convoManager.StartConvo(FileReader.ReadAsset(assetName));
+            convoManager.StartConvo(FileReader.ReadAsset(assetName));
         }
         public void StopDialogue()
         {

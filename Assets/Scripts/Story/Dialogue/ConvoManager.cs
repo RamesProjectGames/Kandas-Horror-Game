@@ -67,12 +67,20 @@ namespace Dialogue
             while(!convoQueue.IsEmpty())
             {
                 Convo currConvo = convo;
-                DialogueStructure line = currConvo.CurrLine();
-                if (string.IsNullOrWhiteSpace(line.GetRawLine()))
+                Debug.Log(convo.GetProgress());
+                string text = string.Empty;
+                if(currConvo.ConvoDone())
+                {
+                    TryAdvanceConvo(currConvo);
+                    continue;
+                }
+                string rawline = currConvo.CurrLine();
+                if (string.IsNullOrWhiteSpace(rawline))
                 {
                     TryAdvanceConvo(currConvo); 
                     continue;
                 }
+                DialogueStructure line = DialogueParser.Parse(rawline);
 
                 if (dialogicManager.TryGetLogic(line, out Coroutine logic))
                 {
@@ -93,11 +101,14 @@ namespace Dialogue
             StopConvo();
         }
 
-        private void TryAdvanceConvo(Convo convo)
+        private void TryAdvanceConvo(Convo currConvo)
         {
-            convo.IncrementProgress();
+            currConvo.IncrementProgress();
             if (convo.ConvoDone())
+            {
+                Debug.Log("Dequeueing");
                 convoQueue.Dequeue();
+            }
         }
 
         #region Handling Dialogues
