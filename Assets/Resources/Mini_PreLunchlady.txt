@@ -1,5 +1,5 @@
 Jessica "Excuse me, Ma’am.{wc 0} Can I get one serving of fried rice, please?"
 Lunch Lady "..."
 Jessica "Um{wa .2}.{wa .2}.{wa .2}.{wa .2} Hello?"
-Lunch Lady "..." Move(Lunchlady ^x 0 ^y 0)
-Jessica "<style="Whispering">Did she get my order...?</style>{a}<style="Whispering"> Well, she seems to be cooking something, so I guess I’ll wait nearby.</style>" Objective(Lunch)
+Lunch Lady "..." Move(Lunchlady ^x 326 ^y 216), [w]Rotate(Lunchlady ^r 90)
+Jessica "<style=\"Whispering\">Did she get my order...?</style>{a}<style=\"Whispering\"> Well, she seems to be cooking something, so I guess I’ll wait nearby.</style>" Objective(Lunch)

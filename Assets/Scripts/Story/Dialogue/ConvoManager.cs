@@ -67,7 +67,6 @@ namespace Dialogue
             while(!convoQueue.IsEmpty())
             {
                 Convo currConvo = convo;
-                Debug.Log(convo.GetProgress());
                 string text = string.Empty;
                 if(currConvo.ConvoDone())
                 {
@@ -106,7 +105,6 @@ namespace Dialogue
             currConvo.IncrementProgress();
             if (convo.ConvoDone())
             {
-                Debug.Log("Dequeueing");
                 convoQueue.Dequeue();
             }
         }
