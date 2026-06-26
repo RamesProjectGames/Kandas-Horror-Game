@@ -1,11 +1,15 @@
 [w]TryOpenDoor()
-if(DoorAttempts( ) == 2)
+if(DoorAttempts() == 1)
+{
+	Jessica "Huh."
+}
+if(DoorAttempts() == 2)
 {
 	Jessica "Come on."
 }
 else
 {
-	if(DoorAttempts( ) == 3)
+	if(DoorAttempts() == 3)
 	{
 		Jessica "Open!!!"
 	}

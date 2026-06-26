@@ -1,4 +1,3 @@
-using Dialogue.Functions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +6,6 @@ using System.Text.RegularExpressions;
 using TestingPurposes;
 using UnityEngine;
 using static Dialogue.LogicLines.DialogicUtils.Encapsulation;
-using static UnityEngine.Rendering.GPUSort;
 
 namespace Dialogue.LogicLines
 {
@@ -86,6 +84,7 @@ namespace Dialogue.LogicLines
             },
             {"DoorAttempts", x =>
                 {
+                    Debug.Log($"{DialogueEvents.DoorAttempts} attempts");
                     return DialogueEvents.DoorAttempts.ToString();
                 }
             }

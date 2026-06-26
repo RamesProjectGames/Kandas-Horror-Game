@@ -46,8 +46,6 @@ namespace Dialogue
         {
             float screenOpac = 1f;
             float elapsedTime = 0f;
-            CanvasGroup cg = canvasGroup;
-            cg.alpha = 0f;
             active = false;
             while (elapsedTime < duration)
             {
@@ -66,7 +64,6 @@ namespace Dialogue
         {
             float screenOpac = 0f;
             float elapsedTime = 0f;
-            CanvasGroup cg = canvasGroup;
             while (elapsedTime < duration)
             {
                 elapsedTime += Time.deltaTime;
@@ -74,7 +71,6 @@ namespace Dialogue
                 if(percentage >= 0.1f)
                     if(!active)
                         active = true;
-                cg.alpha = Mathf.Lerp(cg.alpha, 1f, percentage);
                 Color scColor = screenCover.color;
                 scColor.a = Mathf.Lerp(scColor.a, screenOpac, percentage);
                 screenCover.color = scColor;

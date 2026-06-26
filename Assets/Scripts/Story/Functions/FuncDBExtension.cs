@@ -75,7 +75,7 @@ namespace TestingPurposes
             db.AddFunction("HidePlayerRig", new Action(HidePlayerRig));
             db.AddFunction("ShowPlayerRig", new Action(ShowPlayerRig));
             db.AddFunction("ToggleDoor", new Action(ToggleDoor));
-            db.AddFunction("TryOpenDoor", new Action(TryOpenDoor));
+            db.AddFunction("TryOpenDoor", new Func<IEnumerator>(TryOpenDoor));
             #endregion
         }
 
@@ -340,8 +340,9 @@ namespace TestingPurposes
             UnityEngine.Object.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().ToggleDoor();
         }
 
-        private static void TryOpenDoor()
+        private static IEnumerator TryOpenDoor()
         {
+            Debug.Log("Trying to open door");
             if(++DoorAttempts < 3)
             {
                 EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "DoorRattle");
@@ -349,6 +350,7 @@ namespace TestingPurposes
                 Vector3 pos = GameObject.Find("Player").transform.position;
                 AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
             }
+            yield return null;
         }
 
         private static void SpawnNurseOfficeMannequin()
