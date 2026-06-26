@@ -96,6 +96,7 @@ namespace Dialogue.LogicLines
             bool[] negate = new bool[condParts.Length];
             for (int i = 0; i < condParts.Length; i++)
             {
+                Debug.Log(condParts[i]);
                 if (condParts[i].StartsWith("\"") && condParts[i].EndsWith("\""))
                 {
                     condParts[i] = condParts[i].Substring(1, condParts[i].Length - 2);

@@ -75,6 +75,11 @@ namespace TestingPurposes
             db.AddFunction("HidePlayerRig", new Action(HidePlayerRig));
             db.AddFunction("ShowPlayerRig", new Action(ShowPlayerRig));
             db.AddFunction("ToggleDoor", new Action(ToggleDoor));
+            db.AddFunction("CloseDoor", new Action(CloseDoor));
+            db.AddFunction("OpenDoor", new Action(OpenDoor));
+            db.AddFunction("ToggleSpecificDoor", new Action<string>(ToggleSpecificDoor));
+            db.AddFunction("CloseSpecificDoor", new Action<string>(CloseSpecificDoor));
+            db.AddFunction("OpenSpecificDoor", new Action<string>(OpenSpecificDoor));
             db.AddFunction("TryOpenDoor", new Func<IEnumerator>(TryOpenDoor));
             #endregion
         }
@@ -340,12 +345,49 @@ namespace TestingPurposes
             UnityEngine.Object.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().ToggleDoor();
         }
 
+        private static void ToggleSpecificDoor(string arg = "")
+        {
+            Door door = UnityEngine.Object.FindObjectsByType<PlayerGrabInteraction>(sortMode: FindObjectsSortMode.None).First(x => x.gameObject.name == arg).GetComponent<Door>();
+            if (door != null)
+            {
+                door.ToggleDoor();
+            }
+        }
+
+        private static void CloseDoor()
+        {
+            UnityEngine.Object.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().CloseDoor();
+        }
+
+        private static void CloseSpecificDoor(string arg = "")
+        {
+            Door door = UnityEngine.Object.FindObjectsByType<PlayerGrabInteraction>(sortMode: FindObjectsSortMode.None).First(x => x.gameObject.name == arg).GetComponent<Door>();
+            if(door != null)
+            {
+                door.CloseDoor();
+            }
+        }
+
+        private static void OpenDoor()
+        {
+            UnityEngine.Object.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().OpenDoor();
+        }
+
+        private static void OpenSpecificDoor(string arg = "")
+        {
+            Door door = UnityEngine.Object.FindObjectsByType<PlayerGrabInteraction>(sortMode:FindObjectsSortMode.None).First(x=>x.gameObject.name == arg).GetComponent<Door>();
+            if (door != null)
+            {
+                door.OpenDoor();
+            }
+        }
+
         private static IEnumerator TryOpenDoor()
         {
             Debug.Log("Trying to open door");
             if(++DoorAttempts < 3)
             {
-                EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "DoorRattle");
+                EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
 
                 Vector3 pos = GameObject.Find("Player").transform.position;
                 AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
