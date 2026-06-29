@@ -81,6 +81,8 @@ namespace TestingPurposes
             db.AddFunction("CloseSpecificDoor", new Action<string>(CloseSpecificDoor));
             db.AddFunction("OpenSpecificDoor", new Action<string>(OpenSpecificDoor));
             db.AddFunction("TryOpenDoor", new Func<IEnumerator>(TryOpenDoor));
+            db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
+            db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
             #endregion
         }
 
@@ -308,8 +310,6 @@ namespace TestingPurposes
         private static void SwitchCamera(string arg)
         {
             CameraManager.SwitchCamera(GameObject.Find(arg).GetComponent<CinemachineCamera>());
-            //if (arg == "Player Camera")
-            //    HidePlayerRig();
         }
 
         private static IEnumerator PrepLunch()
@@ -347,7 +347,7 @@ namespace TestingPurposes
 
         private static void ToggleSpecificDoor(string arg = "")
         {
-            Door door = UnityEngine.Object.FindObjectsByType<PlayerGrabInteraction>(sortMode: FindObjectsSortMode.None).First(x => x.gameObject.name == arg).GetComponent<Door>();
+            Door door = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).First(x => x.gameObject.name == arg).GetComponent<Door>();
             if (door != null)
             {
                 door.ToggleDoor();
@@ -361,7 +361,7 @@ namespace TestingPurposes
 
         private static void CloseSpecificDoor(string arg = "")
         {
-            Door door = UnityEngine.Object.FindObjectsByType<PlayerGrabInteraction>(sortMode: FindObjectsSortMode.None).First(x => x.gameObject.name == arg).GetComponent<Door>();
+            Door door = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).First(x => x.gameObject.name == arg).GetComponent<Door>();
             if(door != null)
             {
                 door.CloseDoor();
@@ -375,7 +375,7 @@ namespace TestingPurposes
 
         private static void OpenSpecificDoor(string arg = "")
         {
-            Door door = UnityEngine.Object.FindObjectsByType<PlayerGrabInteraction>(sortMode:FindObjectsSortMode.None).First(x=>x.gameObject.name == arg).GetComponent<Door>();
+            Door door = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode:FindObjectsSortMode.None).First(x=>x.gameObject.name == arg).GetComponent<Door>();
             if (door != null)
             {
                 door.OpenDoor();
@@ -384,13 +384,16 @@ namespace TestingPurposes
 
         private static IEnumerator TryOpenDoor()
         {
-            Debug.Log("Trying to open door");
-            if(++DoorAttempts < 3)
+            if(++DoorAttempts < 10)
             {
                 EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
 
                 Vector3 pos = GameObject.Find("Player").transform.position;
                 AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
+            }
+            else
+            {
+                OpenDoor();
             }
             yield return null;
         }
@@ -402,7 +405,7 @@ namespace TestingPurposes
 
         private static void SurvivalHorrorPrep()
         {
-
+            GameObject.Find("Trial Monster").SetActive(true);
         }
 
         private static void StartQuiz()

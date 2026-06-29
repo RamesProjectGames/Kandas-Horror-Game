@@ -1,23 +1,13 @@
-[w]TryOpenDoor()
+TryOpenDoor()
 if(DoorAttempts() == 1)
 {
 	Jessica "Huh."
 }
-else
+if(DoorAttempts() == 2)
 {
-	if(DoorAttempts() == 2)
-	{
-		Jessica "Come on."
-	}
-	else
-	{
-		if(DoorAttempts() == 3)
-		{
-			Jessica "Open!!!"
-		}
-		else
-		{
-			ToggleDoor()
-		}
-	}
+	Jessica "Come on."
+}
+if(DoorAttempts() == 8)
+{
+	Jessica "Open!!!"
 }

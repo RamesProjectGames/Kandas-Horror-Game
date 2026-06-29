@@ -299,7 +299,7 @@ public class NpcMovement : MovableObjects
     // Update is called once per frame
     void Update()
     {
-        if (HandlePauseState() || !movementAllowed) return;
+        if (HandlePauseState() || (!movementAllowed && !agent.enabled)) return;
 
         if (point.Length < 2)
             return;
