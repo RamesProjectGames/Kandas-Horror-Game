@@ -1,5 +1,6 @@
-ToggleDoor(), [w]FadeOut(1), [w]Move(Player ^x 270 ^z 327), PrepChase(), [w]FadeIn(1)
-Jessica "That was close... Where is everyone?"
+ToggleDoor(), [w]FadeOut(1), [w]Wait(1), [w]Rotate(Player ^r 0), [w]Move(Player ^x 270 ^z 327), PrepChase(), [w]FadeIn(1), [w]Wait(5)
+Jessica "That was close..." Rotate(Player ^r 0), [w]Wait(.5), Rotate(Player ^r 180), [w]Wait(.5)
+"{a} Where is everyone?"
 [w]PlayVoice(MonsterLaugh), [w]Wait(3), SwitchCam(MonsterCam)
 Jessica "W.{wa 0.2}.{wa 0.2}.{wa 0.2} What's that???"
-"I need to get to class" CompleteObjective(OpenBathroomStall), [w]SwitchCam("Player Camera")
+"I need to get to class" Objective(OpenBathroomStall), [w]SwitchCam("Player Camera")

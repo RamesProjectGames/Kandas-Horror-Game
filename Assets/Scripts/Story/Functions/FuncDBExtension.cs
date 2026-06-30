@@ -405,7 +405,7 @@ namespace TestingPurposes
 
         private static void SurvivalHorrorPrep()
         {
-            GameObject.Find("Trial Monster").SetActive(true);
+            UnityEngine.Object.FindAnyObjectByType<EnemyMovement>(FindObjectsInactive.Include).gameObject.SetActive(true);
         }
 
         private static void StartQuiz()

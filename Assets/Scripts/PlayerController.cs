@@ -131,7 +131,11 @@ public class PlayerController : MovableObjects
         agent.angularSpeed = 300f;
         agent.acceleration = 8f;
         agent.stoppingDistance = 0.1f;
-        if(CanUseAgent()) agent.isStopped = true;
+        if(CanUseAgent())
+        {
+            agent.isStopped = true;
+            agent.enabled = true;
+        }
         agent.updateRotation = false;
 
         targetControllerHeight = standingHeight;
@@ -153,6 +157,14 @@ public class PlayerController : MovableObjects
     {
         //Mouse Lock - Unlock when holding Alt
         {
+            if(CameraManager.currentActiveCamera != playerCam)
+            {
+                agent.enabled = false;
+            }
+            else
+            {
+                agent.enabled = true;
+            }
             if (unlockAction != null && unlockAction.action.IsPressed())
             {
                 Cursor.lockState = CursorLockMode.None;
@@ -468,7 +480,7 @@ public class PlayerController : MovableObjects
         ToggleRig(true);
         anim.SetBool("Lunch", true);
         CameraManager.SwitchCamera(GameObject.Find("LunchCam").GetComponent<CinemachineCamera>());
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(1f);
         yield return StartCoroutine(Teleport(new Vector3(293.5f, transform.position.y, 218.75f)));
         yield return StartCoroutine(Rotate(180f));
     }

@@ -60,41 +60,7 @@ public class NpcMovement : MovableObjects
             agent.isStopped = false;
         }
         animator.SetFloat("Blend", 1);
-        while (agent != null && agent.enabled && agent.remainingDistance >= agent.stoppingDistance)
-        {
-            yield return new WaitForEndOfFrame();
-        }
-        if (agent != null)
-        {
-            agent.Warp(validPos);
-            agent.enabled = false;
-            agent.isStopped = true;
-            agent.ResetPath();
-        }
-        float state = 0;
-        if (animState == NPCAnimationState.Sit)
-        {
-            if (DialogueSystem.Instance.isRunningConvo)
-            {
-                state = UnityEngine.Random.Range(5, 7);
-            }
-            else
-                state = 4;
-        }
-        else if (animState == NPCAnimationState.Stand)
-        {
-            if (DialogueSystem.Instance.isRunningConvo)
-            {
-                state = UnityEngine.Random.Range(2, 4);
-            }
-            else
-                state = UnityEngine.Random.Range(0, 2);
-        }
-        if (agent != null)
-        {
-            agent.enabled = movementAllowed && point.Length > 1;
-        }
-        animator.SetFloat("Blend", state / 7f);
+        yield return new WaitForEndOfFrame();
     }
 
     public override IEnumerator Teleport(Vector3 pos)
@@ -363,7 +329,7 @@ public class NpcMovement : MovableObjects
                     idxPoint = ++idxPoint % point.Length;
                     agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
                     transform.rotation = targetRotation;
-                    if (animState == NPCAnimationState.Sit)
+                    if (animState == NPCAnimationState.Sit || !movementAllowed)
                     {
                         agent.enabled = false;
                     }
