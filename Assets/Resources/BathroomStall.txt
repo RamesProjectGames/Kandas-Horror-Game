@@ -1,19 +1,13 @@
-PlaySFX(), TryOpenDoor()
-if()
+TryOpenDoor()
+if(DoorAttempts() == 1)
+{
+	Jessica "Huh."
+}
+if(DoorAttempts() == 2)
 {
 	Jessica "Come on."
 }
-else
+if(DoorAttempts() == 8)
 {
-	if()
-	{
-		Jessica "Open!!!"
-	}
-	else
-	{
-		if()
-		{
-			ToggleDoor()
-		}
-	}
+	Jessica "Open!!!"
 }

@@ -64,7 +64,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/BGM.bank
   Name: BGM
   StudioPath: bank:/BGM
-  lastModified: 639123908638268076
+  lastModified: 639114229676683472
   FileSizes:
   - Name: Desktop
     Value: 506
@@ -224,6 +224,33 @@ MonoBehaviour:
   - Grass
   - Glass
   Exists: 1
+--- !u!114 &-5001346951890776082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/OpenDoor
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/OpenDoor
+  Guid:
+    Data1: 2128108812
+    Data2: 1335126971
+    Data3: -1400990824
+    Data4: -893813831
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-4634749821997254833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,7 +266,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639178360030255695
+  lastModified: 639183499036805842
   FileSizes:
   - Name: Desktop
     Value: 1670
@@ -420,6 +447,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-219522304673146145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/CloseDoor
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/CloseDoor
+  Guid:
+    Data1: -1714351920
+    Data2: 1172199355
+    Data3: -1918944321
+    Data4: 1714926068
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-84114609574138668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,7 +489,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 639178360030335951
+  lastModified: 639180918074101973
   FileSizes:
   - Name: Desktop
     Value: 767520
@@ -475,13 +529,20 @@ MonoBehaviour:
   - {fileID: 4248163362495528005}
   - {fileID: -1220024459839668281}
   - {fileID: -450991878789132542}
+  - {fileID: -5001346951890776082}
+  - {fileID: 1340779600708937508}
+  - {fileID: 304292105708723806}
+  - {fileID: 6663355417012789704}
+  - {fileID: -219522304673146145}
+  - {fileID: 5448810224667033649}
+  - {fileID: 7454540365068080637}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4634749821997254833}
   StringsBanks:
   - {fileID: 2402750766380479616}
   cacheVersion: 131858
-  cacheTime: 639178360030335951
+  cacheTime: 639183499039339369
   SerializableEventsDict:
   - key: event:/SFX/ChaserFootsteps
     index: 0
@@ -513,6 +574,47 @@ MonoBehaviour:
     index: 13
   - key: event:/Voice/DialogueVoice
     index: 14
+  - key: event:/SFX/OpenDoor
+    index: 15
+  - key: event:/SFX/WaterTrickle
+    index: 16
+  - key: event:/SFX/RattleDoor
+    index: 17
+  - key: event:/SFX/Flush
+    index: 18
+  - key: event:/SFX/CloseDoor
+    index: 19
+  - key: event:/Voice/MonsterGrowl
+    index: 20
+  - key: event:/Voice/MonsterLaugh
+    index: 21
+--- !u!114 &304292105708723806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/RattleDoor
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/RattleDoor
+  Guid:
+    Data1: 1276436129
+    Data2: 1318619321
+    Data3: 929253536
+    Data4: 328602916
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1140
 --- !u!114 &323353787290861564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -567,6 +669,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 6000
+--- !u!114 &1340779600708937508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/WaterTrickle
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/WaterTrickle
+  Guid:
+    Data1: 541334052
+    Data2: 1154727455
+    Data3: 1549569437
+    Data4: 1244215158
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &1641087735518963789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -610,10 +739,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639178360030305207
+  lastModified: 639183499036825917
   FileSizes:
   - Name: Desktop
-    Value: 1902
+    Value: 2196
   Exists: 1
 --- !u!114 &3269528981090473387
 MonoBehaviour:
@@ -657,10 +786,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639178360030235421
+  lastModified: 639183294972013827
   FileSizes:
   - Name: Desktop
-    Value: 529888
+    Value: 843424
   Exists: 1
 --- !u!114 &3551023922120485847
 MonoBehaviour:
@@ -677,10 +806,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Voice.bank
   Name: Voice
   StudioPath: bank:/Voice
-  lastModified: 639178360030335951
+  lastModified: 639183499039339369
   FileSizes:
   - Name: Desktop
-    Value: 225600
+    Value: 533408
   Exists: 1
 --- !u!114 &4248163362495528005
 MonoBehaviour:
@@ -738,6 +867,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 30
   Length: 0
+--- !u!114 &5448810224667033649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Voice/MonsterGrowl
+  m_EditorClassIdentifier: 
+  Path: event:/Voice/MonsterGrowl
+  Guid:
+    Data1: 597321160
+    Data2: 1299235099
+    Data3: -996413787
+    Data4: -95659864
+  Banks:
+  - {fileID: 3551023922120485847}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5400
 --- !u!114 &5861357476710844773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -812,6 +968,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1313
+--- !u!114 &6663355417012789704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Flush
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Flush
+  Guid:
+    Data1: 952852656
+    Data2: 1136393475
+    Data3: 1413307013
+    Data4: 1039477039
+  Banks:
+  - {fileID: 3406518332576070875}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &7454540365068080637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Voice/MonsterLaugh
+  m_EditorClassIdentifier: 
+  Path: event:/Voice/MonsterLaugh
+  Guid:
+    Data1: 379736041
+    Data2: 1140087779
+    Data3: -1608810870
+    Data4: -316017125
+  Banks:
+  - {fileID: 3551023922120485847}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2800
 --- !u!114 &8281960395637879033
 MonoBehaviour:
   m_ObjectHideFlags: 0

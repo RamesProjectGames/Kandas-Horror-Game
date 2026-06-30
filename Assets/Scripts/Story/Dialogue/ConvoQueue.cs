@@ -5,7 +5,7 @@ namespace Dialogue
 {
     public class ConvoQueue
     {
-        private Queue<Convo> convoQueue = new Queue<Convo>();
+        public Queue<Convo> convoQueue = new Queue<Convo>();
 
         public Convo top => convoQueue.Peek();
 

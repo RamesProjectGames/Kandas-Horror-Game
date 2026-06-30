@@ -4809,7 +4809,6 @@ MonoBehaviour:
   cameraControl: 0
   nextInput: {fileID: -9077876474924563115, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   enqDebugInput: {fileID: 592641294968355165, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  allMiniDialogues: []
   dialoguePrompt: {fileID: 267598599}
 --- !u!114 &333569209
 MonoBehaviour:
@@ -28179,7 +28178,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1761790445}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.3
+  m_Radius: 0.2
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -28189,7 +28188,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.7
-  m_BaseOffset: 0
+  m_BaseOffset: 0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1761790452
@@ -28438,7 +28437,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.7
-  m_Radius: 0.3
+  m_Radius: 0.2
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -28463,7 +28462,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.2
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -28476,7 +28475,7 @@ Transform:
   m_GameObject: {fileID: 1761790445}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15, y: 0, z: -5}
+  m_LocalPosition: {x: 15, y: 0.6, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

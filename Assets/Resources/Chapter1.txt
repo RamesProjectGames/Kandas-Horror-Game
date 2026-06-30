@@ -1,4 +1,4 @@
-[w]SwitchCam(SignpostCam), PlayerFaceFront(), [w]Teleport(Player ^x 210 ^z 322), [w]Rotate(Player ^r 90), [w]Wait(1), [w]FadeIn(1)
+[w]SwitchCam(SignpostCam), PlayerFaceFront(), [w]Teleport(Player ^x 210 ^y 1 ^z 322), [w]Rotate(Player ^r 90), [w]Wait(1), [w]FadeIn(1)
 Teacher "Good morning, everyone. Today, we have a new student in class."
 "Go on, introduce yourself to the class."
 [w]FadeOut(1), SwitchCam(FrontClassCam), [w]Wait(1), [w]FadeIn(1)

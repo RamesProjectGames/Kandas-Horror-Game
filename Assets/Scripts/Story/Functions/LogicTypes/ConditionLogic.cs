@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using TestingPurposes;
 using UnityEngine;
 using static Dialogue.LogicLines.DialogicUtils.Encapsulation;
-using static UnityEngine.Rendering.GPUSort;
 
 namespace Dialogue.LogicLines
 {
@@ -32,7 +32,7 @@ namespace Dialogue.LogicLines
 
             if(ifData.endingIdx + 1 < currConvo.count)
             {
-                string nextLine = currConvo.GetLines()[ifData.endingIdx+1].GetRawLine().Trim();
+                string nextLine = currConvo.GetLines()[ifData.endingIdx+1].Trim();
                 if(nextLine.ToLower() == ELSE.ToLower())
                 {
                     elseData = RipEncapsulatedData(currConvo, ifData.endingIdx + 1, false);
@@ -41,14 +41,14 @@ namespace Dialogue.LogicLines
             }
 
             EncapsulatedData selectedData = conditionCheck ? ifData : elseData;
-            currConvo.SetProgress(ifData.endingIdx-1);
+            currConvo.SetProgress(ifData.endingIdx);
             if (!selectedData.isNull && selectedData.lines.Count > 0)
             {
                 Convo newConvo = new Convo(selectedData.lines);
 
-                foreach (DialogueStructure selectedLines in newConvo.GetLines())
+                foreach (string selectedLines in newConvo.GetLines())
                 {
-                    Debug.Log($"if: {selectedLines.dialogue[0].dialogue}");
+                    Debug.Log($"if: {selectedLines}");
                 }
                 DialogueSystem.Instance.convoManager.EnqueuePrio(newConvo);
             }
@@ -82,6 +82,12 @@ namespace Dialogue.LogicLines
                     return false.ToString();
                 }
             },
+            {"DoorAttempts", x =>
+                {
+                    Debug.Log($"{DialogueEvents.DoorAttempts} attempts");
+                    return DialogueEvents.DoorAttempts.ToString();
+                }
+            }
         };
 
         private bool ConditionCheck(string condition)

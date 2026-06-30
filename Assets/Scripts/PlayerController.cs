@@ -621,7 +621,7 @@ public class PlayerController : MovableObjects
 
     public bool CanUseAgent()
     {
-        return agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh;
+        return agent != null && agent.enabled && agent.isOnNavMesh;
     }
     public void ResetMovementState()
     {

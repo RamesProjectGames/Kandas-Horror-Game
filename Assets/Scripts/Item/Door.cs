@@ -7,14 +7,15 @@ public class Door : MonoBehaviour
     bool canInteractWithDoor = true;
     bool isOpen = false;
 
-    [ContextMenu("Set Open Rotation")]
     public void ToggleDoor()
     {
-        if(isOpen)
+        Debug.Log("Toggling Door");
+        if (isOpen)
             CloseDoor();
         else
             OpenDoor();
     }
+    [ContextMenu("Set Open Rotation")]
     public void OpenDoor()
     {
         if (!canInteractWithDoor) return;

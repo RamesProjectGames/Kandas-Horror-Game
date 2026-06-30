@@ -1,0 +1,9 @@
+Lovestruck Student "Hi, uh, wanna have lunch together?"
+Confident Student "Yeah sure!{a} I got chocolate in my locker this morning, no idea who it’s from but we can share it."
+Lovestruck Student "Okay! {c}I love you" NextDialogue()
+Confident Student "What was that?"
+Lovestruck Student "Uh, nothing. Let’s go."
+if (Objective(LoveLetter))
+{
+	Narration "Looks like we found the author of the letters."
+}

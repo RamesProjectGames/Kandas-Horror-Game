@@ -29,7 +29,9 @@ namespace TestingPurposes
 {
     public class DialogueEvents : FuncDBExtension
     {
-        Coroutine ongoingCoroutine;
+    #region Variables
+        public static int DoorAttempts = 0;
+    #endregion
         new public static void Extend(FunctionsDatabase db)
         {
             #region Movement
@@ -73,6 +75,14 @@ namespace TestingPurposes
             db.AddFunction("HidePlayerRig", new Action(HidePlayerRig));
             db.AddFunction("ShowPlayerRig", new Action(ShowPlayerRig));
             db.AddFunction("ToggleDoor", new Action(ToggleDoor));
+            db.AddFunction("CloseDoor", new Action(CloseDoor));
+            db.AddFunction("OpenDoor", new Action(OpenDoor));
+            db.AddFunction("ToggleSpecificDoor", new Action<string>(ToggleSpecificDoor));
+            db.AddFunction("CloseSpecificDoor", new Action<string>(CloseSpecificDoor));
+            db.AddFunction("OpenSpecificDoor", new Action<string>(OpenSpecificDoor));
+            db.AddFunction("TryOpenDoor", new Func<IEnumerator>(TryOpenDoor));
+            db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
+            db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
             #endregion
         }
 
@@ -300,8 +310,6 @@ namespace TestingPurposes
         private static void SwitchCamera(string arg)
         {
             CameraManager.SwitchCamera(GameObject.Find(arg).GetComponent<CinemachineCamera>());
-            //if (arg == "Player Camera")
-            //    HidePlayerRig();
         }
 
         private static IEnumerator PrepLunch()
@@ -334,12 +342,70 @@ namespace TestingPurposes
 
         private static void ToggleDoor()
         {
-            GameObject.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().ToggleDoor();
+            UnityEngine.Object.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().ToggleDoor();
         }
 
-        private static void SpawnMannequins()
+        private static void ToggleSpecificDoor(string arg = "")
+        {
+            Door door = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).First(x => x.gameObject.name == arg).GetComponent<Door>();
+            if (door != null)
+            {
+                door.ToggleDoor();
+            }
+        }
+
+        private static void CloseDoor()
+        {
+            UnityEngine.Object.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().CloseDoor();
+        }
+
+        private static void CloseSpecificDoor(string arg = "")
+        {
+            Door door = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).First(x => x.gameObject.name == arg).GetComponent<Door>();
+            if(door != null)
+            {
+                door.CloseDoor();
+            }
+        }
+
+        private static void OpenDoor()
+        {
+            UnityEngine.Object.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().OpenDoor();
+        }
+
+        private static void OpenSpecificDoor(string arg = "")
+        {
+            Door door = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode:FindObjectsSortMode.None).First(x=>x.gameObject.name == arg).GetComponent<Door>();
+            if (door != null)
+            {
+                door.OpenDoor();
+            }
+        }
+
+        private static IEnumerator TryOpenDoor()
+        {
+            if(++DoorAttempts < 10)
+            {
+                EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
+
+                Vector3 pos = GameObject.Find("Player").transform.position;
+                AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
+            }
+            else
+            {
+                OpenDoor();
+            }
+            yield return null;
+        }
+
+        private static void SpawnNurseOfficeMannequin()
         {
 
+        }
+
+        private static void SurvivalHorrorPrep()
+        {
+            GameObject.Find("Trial Monster").SetActive(true);
         }
 
         private static void StartQuiz()
