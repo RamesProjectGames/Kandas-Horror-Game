@@ -22,8 +22,7 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: Event TriggerAnimationEnded has a time (2.211864) outside
-      the clip's valid range (0.000000..2.125000). It will never be fired
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -48,8 +47,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -119,15 +118,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.9830509
-        functionName: TriggerAnimationEnded
+      - time: 0.13867489
+        functionName: TriggerAnimationStart
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.13867489
-        functionName: TriggerAnimationStart
+      - time: 0.93506753
+        functionName: TriggerAnimationEnded
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -141,8 +140,8 @@ ModelImporter:
       name: Mannequin_Pose
       takeName: Mannequin_Poses
       internalID: 3587285501027719330
-      firstFrame: 0
-      lastFrame: 0
+      firstFrame: 10
+      lastFrame: 10.5
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -150,7 +149,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -165,13 +164,13 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 10
     - serializedVersion: 16
       name: Mannequin_Pose 1
       takeName: Mannequin_Poses
       internalID: -1235159898458850620
       firstFrame: 11
-      lastFrame: 11
+      lastFrame: 11.5
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -179,7 +178,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -194,13 +193,13 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 10
     - serializedVersion: 16
       name: Mannequin_Pose 2
       takeName: Mannequin_Poses
       internalID: 1609651149009529794
       firstFrame: 22
-      lastFrame: 22
+      lastFrame: 22.5
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -208,7 +207,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -229,7 +228,7 @@ ModelImporter:
       takeName: Mannequin_Poses
       internalID: 8935059538686741865
       firstFrame: 33
-      lastFrame: 33
+      lastFrame: 33.5
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -237,7 +236,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -258,7 +257,7 @@ ModelImporter:
       takeName: Mannequin_Poses
       internalID: -2640243314452824139
       firstFrame: 45
-      lastFrame: 45
+      lastFrame: 45.5
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -266,7 +265,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -287,7 +286,7 @@ ModelImporter:
       takeName: Mannequin_Poses
       internalID: 1338560720484824002
       firstFrame: 58
-      lastFrame: 58
+      lastFrame: 58.5
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -295,7 +294,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
