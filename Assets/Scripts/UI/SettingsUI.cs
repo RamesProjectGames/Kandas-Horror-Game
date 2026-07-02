@@ -362,7 +362,7 @@ public class SettingsUI : MonoBehaviour
             if(PausePanel != null) PausePanel.SetActive(false);
         }
     }
-    public void BackToMainMenu() { SceneManager.LoadScene("MainMenu"); }
+    public void BackToMainMenu() { SceneManager.LoadScene("Main Menu"); }
     public void ShowGameover(bool open)
     { 
         GameoverPanel.SetActive(open); 
