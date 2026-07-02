@@ -1324,6 +1324,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1769316551452577732}
     m_Modifications:
     - target: {fileID: 434594011349067369, guid: 947c8c552f924e344bbef3fa0fdf76b1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 434594011349067369, guid: 947c8c552f924e344bbef3fa0fdf76b1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 07d9e372655f6b44f944252485178241, type: 2}
@@ -1350,6 +1354,10 @@ PrefabInstance:
     - target: {fileID: 5398146930638476887, guid: 947c8c552f924e344bbef3fa0fdf76b1, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651747115936531314, guid: 947c8c552f924e344bbef3fa0fdf76b1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5651747115936531314, guid: 947c8c552f924e344bbef3fa0fdf76b1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
