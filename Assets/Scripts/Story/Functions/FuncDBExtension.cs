@@ -3,6 +3,7 @@ using Dialogue.Functions;
 using FMODUnity;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -80,6 +81,8 @@ namespace TestingPurposes
             db.AddFunction("ToggleSpecificDoor", new Action<string>(ToggleSpecificDoor));
             db.AddFunction("CloseSpecificDoor", new Action<string>(CloseSpecificDoor));
             db.AddFunction("OpenSpecificDoor", new Action<string>(OpenSpecificDoor));
+            db.AddFunction("CloseAllDoors", new Action(CloseAllDoors));
+            db.AddFunction("OpenAllDoors", new Action(OpenAllDoors));
             db.AddFunction("TryOpenDoor", new Func<IEnumerator>(TryOpenDoor));
             db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
             db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
@@ -347,8 +350,8 @@ namespace TestingPurposes
 
         private static void ToggleSpecificDoor(string arg = "")
         {
-            Door door = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).First(x => x.gameObject.name == arg).GetComponent<Door>();
-            if (door != null)
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg).Select(x => x.GetComponent<Door>());
+            foreach (Door door in doors)
             {
                 door.ToggleDoor();
             }
@@ -361,8 +364,17 @@ namespace TestingPurposes
 
         private static void CloseSpecificDoor(string arg = "")
         {
-            Door door = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).First(x => x.gameObject.name == arg).GetComponent<Door>();
-            if(door != null)
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg).Select(x => x.GetComponent<Door>());
+            foreach(Door door in doors)
+            {
+                door.CloseDoor();
+            }
+        }
+
+        private static void CloseAllDoors()
+        {
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(sortMode: FindObjectsSortMode.None);
+            foreach (Door door in doors)
             {
                 door.CloseDoor();
             }
@@ -375,8 +387,16 @@ namespace TestingPurposes
 
         private static void OpenSpecificDoor(string arg = "")
         {
-            Door door = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode:FindObjectsSortMode.None).First(x=>x.gameObject.name == arg).GetComponent<Door>();
-            if (door != null)
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg).Select(x => x.GetComponent<Door>());
+            foreach (Door door in doors)
+            {
+                door.OpenDoor();
+            }
+        }
+        private static void OpenAllDoors()
+        {
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(sortMode: FindObjectsSortMode.None);
+            foreach (Door door in doors)
             {
                 door.OpenDoor();
             }

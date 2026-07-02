@@ -1,4 +1,4 @@
-ToggleDoor(), [w]Rotate(Player ^r -90), [w]FadeOut(1), [w]Wait(1), [w]FadeIn(1), [w]Move(Player ^x 270 ^z 327), [w]Rotate(Player ^r 225), PrepChase(), [w]Wait(5)
+ToggleDoor(), Rotate(Player ^r -90), [w]FadeOut(1), [w]Wait(1), [w]FadeIn(1), [w]Move(Player ^x 270 ^z 327), [w]Rotate(Player ^r 225), PrepChase(), [w]Wait(5)
 Jessica "That was close..." [w]Rotate(Player ^r 90), [w]Rotate(Player ^r 180), [w]Rotate(Player ^r 135)
 "{a} Where is everyone?"
 [w]PlayVoice(MonsterLaugh), [w]Wait(3), SwitchCam(MonsterCam)

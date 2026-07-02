@@ -415,8 +415,15 @@ public class PlayerController : MovableObjects
 
     private void ApplyLookSensitivity()
     {
-        if (inputController == null || SettingManager.Instance == null || SettingManager.Instance.settings == null)
+        if (inputController == null || SettingManager.Instance == null || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || SettingManager.Instance.settings == null)
+        {
+            inputController.enabled = false;
             return;
+        }
+        else if (!inputController.enabled)
+        {
+            inputController.enabled = true;
+        }
 
         float sliderValue = SettingManager.Instance.settings.MouseSensitivity * lookSensitivity;
 
