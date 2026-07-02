@@ -52,6 +52,7 @@ public class MannequinDemoGame : MonoBehaviour
     private bool wasMovingLastFrame = false;
     private bool isReturningToOrigin = false;
 
+
     void Start()
     {
         originalPosition = transform.position;
@@ -233,6 +234,25 @@ public class MannequinDemoGame : MonoBehaviour
             animator.speed = previousSpeed;
         }
     }
+
+    private bool IsPlayerWithinRange()
+    {
+        if (playerTransform == null)
+            return false;
+
+        Collider[] overlaps = Physics.OverlapSphere(transform.position, contactThreshold);
+        foreach (Collider hit in overlaps)
+        {
+            Transform hitTransform = hit.transform;
+            if (hitTransform == playerTransform || hitTransform.IsChildOf(playerTransform) || playerTransform.IsChildOf(hitTransform))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void MoveTowardPlayer()
     {
         if (playerTransform == null || isAnimatingCatch)
@@ -244,21 +264,17 @@ public class MannequinDemoGame : MonoBehaviour
             StopMovement();
             return; // Cannot move - path is blocked
         }
-        
-        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
-        // Only move if not at stopping distance
-        if (distanceToPlayer > stoppingDistance)
+        if (IsPlayerWithinRange())
         {
-            // Use NavMeshAgent to set destination toward the player
-            ResumeAnimator();
-            navMeshAgent.SetDestination(playerTransform.position);
-        }
-        else
-        {
-            // Reached player - start catch animation
+            // Player is physically inside the detection overlap - start catch animation
             PlayCatchAnimation();
+            return;
         }
+
+        // Use NavMeshAgent to set destination toward the player
+        ResumeAnimator();
+        navMeshAgent.SetDestination(playerTransform.position);
     }
 
     private void StopMovement()
@@ -419,5 +435,8 @@ public class MannequinDemoGame : MonoBehaviour
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(originalPosition, 0.5f);
         }
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.position, contactThreshold);
     }
 }
