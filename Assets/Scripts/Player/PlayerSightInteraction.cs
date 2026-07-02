@@ -104,16 +104,9 @@ public class PlayerSightInteraction : MonoBehaviour
     /// </summary>
     private bool IsInFieldOfView(Vector3 directionToTarget)
     {
-        // 1. Convert enemy 3D world position to 2D screen coordinates (0 to 1)
-        Vector3 viewportPoint = Camera.main.WorldToViewportPoint(directionToTarget);
-        // 2. Check if enemy is in front of the camera and inside screen edges
-        bool isAhead = viewportPoint.z > 0;
-        bool isInsideX = viewportPoint.x > 0 && viewportPoint.x < 1;
-        bool isInsideY = viewportPoint.y > 0 && viewportPoint.y < 1;
-        return isAhead && isInsideX && isInsideY;
-        //Vector3 viewDirection = playerCamera != null ? playerCamera.transform.forward : transform.forward;
-        //float angleToTarget = Vector3.Angle(viewDirection, directionToTarget);
-        //return angleToTarget <= fieldOfViewAngle / 2f;
+        Vector3 viewDirection = playerCamera != null ? playerCamera.transform.forward : transform.forward;
+        float angleToTarget = Vector3.Angle(viewDirection, directionToTarget);
+        return angleToTarget <= fieldOfViewAngle / 2f;
     }
 
     /// <summary>
