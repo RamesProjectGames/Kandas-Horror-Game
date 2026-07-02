@@ -50,7 +50,7 @@ public class PlayerController : MovableObjects
     public float minVerticalAngle = -20f, maxVerticalAngle = 20f;
     public float interactionAngle = 20f, interactionDist = 5f;
     //private CinemachineBasicMultiChannelPerlin _noise;
-    private CinemachineInputAxisController inputController;
+    [SerializeField] private CinemachineInputAxisController inputController;
     private CinemachinePanTilt panTilt;
     private Transform originalFollowTarget;
     private Transform originalLookTarget;
@@ -113,6 +113,7 @@ public class PlayerController : MovableObjects
         RuntimeManager.AttachInstanceToGameObject(pantingSoundEvent, gameObject, false);
 
         inputController = playerCam.GetComponent<CinemachineInputAxisController>();
+        ApplyLookSensitivity();
         
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -149,6 +150,17 @@ public class PlayerController : MovableObjects
             Vector3 camLocal = cameraHeightTarget.localPosition;
             camLocal.y = standingCameraY;
             cameraHeightTarget.localPosition = camLocal;
+        }
+    }
+    [ContextMenu("Show Input Axis")]
+    public void ShowInputAxis()
+    {
+        if (inputController != null)
+        {
+            foreach (var controller in inputController.Controllers)
+            {
+                Debug.Log($"Controller Name: {controller.Name}, Gain: {controller.Input.Gain}");
+            }
         }
     }
 
@@ -194,28 +206,11 @@ public class PlayerController : MovableObjects
             lookAction.action.Enable();
         }
         //Mouse Look Control
-        if (inputController != null && (DialogueSystem.Instance.isRunningConvo && DialogueSystem.Instance.cameraControl))
+        if (inputController != null)
         {
-            float sliderValue = SettingManager.Instance.settings.MouseSensitivity ;
-            float calculatedGain = Mathf.Lerp(SettingManager.Instance.minimumMouseSensitivity, SettingManager.Instance.maximumMouseSensitivity, sliderValue) * lookSensitivity * 2;
-
-            // Controllers is a list. Usually: Index 0 = Pan, Index 1 = Tilt
-            foreach (var controller in inputController.Controllers)
-            {
-                if (controller.Name.Contains("Tilt") )
-                {
-                    // Multiplying by -1 flips the direction
-                    controller.Input.Gain = -calculatedGain;
-                }
-                else
-                {
-                    controller.Input.Gain = calculatedGain;
-                }
-                controller.Driver.AccelTime = 0f;
-                controller.Driver.DecelTime = 0f;
-            }
+            ApplyLookSensitivity();
         }
-        inputController.enabled = Cursor.lockState == CursorLockMode.Locked;
+        // inputController.enabled = Cursor.lockState == CursorLockMode.Locked;
         if (SettingManager.Instance.isPaused) return;
 
         if (!CanUseAgent()) return;
@@ -231,6 +226,7 @@ public class PlayerController : MovableObjects
                 if (sprintAction != null && sprintAction.action.IsPressed() && !isExhausted)
                 {
                     isSprinting = true;
+                    stamina -= staminaDecayRate * Time.deltaTime;
                     if (stamina <= 0f)
                     {
                         stamina= 0;
@@ -415,6 +411,32 @@ public class PlayerController : MovableObjects
         //     transform.localEulerAngles = new Vector3(0, yaw, 0);
         //     face.transform.localEulerAngles = new Vector3(pitch, 0, 0);
         // }
+    }
+
+    private void ApplyLookSensitivity()
+    {
+        if (inputController == null || SettingManager.Instance == null || SettingManager.Instance.settings == null)
+            return;
+
+        float sliderValue = SettingManager.Instance.settings.MouseSensitivity * lookSensitivity;
+
+        foreach (var controller in inputController.Controllers)
+        {
+            if (controller == null)
+                continue;
+
+            if (controller.Name == "Look Y (Tilt)")
+            {
+                controller.Input.Gain = -sliderValue;
+            }
+            else if (controller.Name == "Look X (Pan)")
+            {
+                controller.Input.Gain = sliderValue;
+            }
+
+            controller.Driver.AccelTime = 0f;
+            controller.Driver.DecelTime = 0f;
+        }
     }
 
     private void FixedUpdate()

@@ -21,6 +21,10 @@ public class FloatingText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(mainCamera == null)
+        {
+            return;
+        }
         Vector3 direction = transform.position - mainCamera.position;
 
         // 2. CRITICAL: Flatten the direction so there is no vertical tilt

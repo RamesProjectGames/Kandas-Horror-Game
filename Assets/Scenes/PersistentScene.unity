@@ -25320,7 +25320,7 @@ MonoBehaviour:
   minimumMicrophoneVolume: 0.25
   maximumMicrophoneVolume: 1
   minimumMouseSensitivity: 0.5
-  maximumMouseSensitivity: 1
+  maximumMouseSensitivity: 2
 --- !u!114 &1624481260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28384,12 +28384,13 @@ MonoBehaviour:
   isBeingGrab: 0
   playerCam: {fileID: 1252175986}
   cam: {fileID: 1010298964}
-  lookSensitivity: 1.5
+  lookSensitivity: 1
   smoothTime: 0.1
   minVerticalAngle: -40
   maxVerticalAngle: 20
   interactionAngle: 20
   interactionDist: 2
+  inputController: {fileID: 1252175983}
   headBobAmplitude: 0.1
   headBobFrequency: 0.3
   walkBobMultiplier: 1.5
@@ -33089,7 +33090,7 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1761790460}
   - {fileID: 2045580813}
   - {fileID: 1873875439}
   - {fileID: 1056521399}
+  - {fileID: 1761790460}
