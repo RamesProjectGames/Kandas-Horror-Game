@@ -25,7 +25,6 @@ public class SettingsUI : MonoBehaviour
     }
     void Update()
     {
-        
     }
     #region Graphics Settings UI Elements
     [Header("Graphics Settings UI Elements")]
@@ -75,6 +74,8 @@ public class SettingsUI : MonoBehaviour
         microphoneSensitivitySlider.minValue = settingManager.minimumMicrophoneVolume;
         microphoneSensitivitySlider.maxValue = settingManager.maximumMicrophoneVolume;
         microphoneSensitivitySlider.value = s.MicrophoneSensitivity;
+        // mouseSensitivitySlider.minValue = settingManager.minimumMouseSensitivity;
+        // mouseSensitivitySlider.maxValue = settingManager.maximumMouseSensitivity;
         mouseSensitivitySlider.value = Mathf.InverseLerp(settingManager.minimumMouseSensitivity, settingManager.maximumMouseSensitivity, s.MouseSensitivity);
         sprintToggleText.text = s.SprintToggle ? "Toggle" : "Hold";
         crouchToggleText.text = s.CrouchToggle ? "Toggle" : "Hold";
