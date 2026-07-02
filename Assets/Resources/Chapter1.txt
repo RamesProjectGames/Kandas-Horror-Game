@@ -10,8 +10,8 @@ Student A "<style=\"Whispering\">Dude, she’s super hot.</style>"
 Student B "<style=\"Whispering\">You think you’d get a chance with her?</style>"
 Student C "<style=\"Whispering\">Why is she transferring here in the middle of the semester?</style>"
 Student D "<style=\"Whispering\">Hahaha, maybe she got dropped out of her previous school?</style>"
-SwitchCam(SideClassCam), [w]Rotate(Player ^r 0)
+SwitchCam(SideClassCam), Rotate(Player ^r 0)
 Teacher "Alright, calm down, everybody, save the questions for later." StopAmbience()
 "{a}\nNow, we need to start the class as we have a quiz today.{a}\nJessica, why don’t you sit over there?"
 Jessica "Okay." Objective(Class)
-[w]SwitchCam("Player Camera"), [w]Rotate(Player ^r 90), [w]HidePlayerRig()
+[w]SwitchCam("Player Camera"), Rotate(Player ^r 90), [w]HidePlayerRig()

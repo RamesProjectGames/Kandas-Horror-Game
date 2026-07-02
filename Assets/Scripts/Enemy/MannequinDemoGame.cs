@@ -59,7 +59,6 @@ public class MannequinDemoGame : MonoBehaviour
         sightDetection = GetComponent<EnemySightDetection>();
         playerTransform = playerSight?.transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
         resetManager = FindAnyObjectByType<PlayerResetManager>();
 
         if (navMeshAgent == null)
@@ -76,7 +75,7 @@ public class MannequinDemoGame : MonoBehaviour
 
     void Update()
     {
-        if (playerSight == null || playerTransform == null)
+        if (playerSight == null || playerTransform == null || !ObjectiveManager.Instance.isCompleted("NurseReport"))
             return;
 
         // Check if player can see this enemy (Weeping Angel behavior: moves when NOT observed)
@@ -179,15 +178,7 @@ public class MannequinDemoGame : MonoBehaviour
 
     private bool IsPlayerLooking()
     {
-        // Check if this enemy is in the player's visible enemies list
-        foreach (Transform visibleEnemy in playerSight.GetVisibleEnemies())
-        {
-            if (visibleEnemy == transform)
-            {
-                return true;
-            }
-        }
-        return false;
+        return playerSight.GetVisibleEnemies().Contains(transform);
     }
 
     private bool IsPlayerInDetectionBox()
@@ -285,7 +276,7 @@ public class MannequinDemoGame : MonoBehaviour
         if(animator!=null)
         {
             animator.SetFloat("MoveBlend",0);
-            animator.SetFloat("Selected", randomIdle);
+            animator.SetFloat("SelectedPose", randomIdle);
         }
     }
     private void ReturnToOriginalPosition()

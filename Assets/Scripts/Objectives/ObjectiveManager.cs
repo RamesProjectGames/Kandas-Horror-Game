@@ -131,6 +131,11 @@ public class ObjectiveManager : MonoBehaviour
         return objName == string.Empty || (currentObjectives.Contains(objName) && !Objectives.Find(x => x.objectiveData.Name == objName).objectiveData.IsCompleted);
     }
 
+    public bool isCompleted(string objName)
+    {
+        return objName == string.Empty || Objectives.Find(x => x.objectiveData.Name == objName).objectiveData.IsCompleted;
+    }
+
     public bool CheckIfFragmentValid(FragmentData fragData)
     {
         return currentObjectives.Contains(objectiveDatas.Find(x => x.fragmentData == fragData).Name) && !objectiveDatas.Find(x => x.fragmentData == fragData).IsCompleted;

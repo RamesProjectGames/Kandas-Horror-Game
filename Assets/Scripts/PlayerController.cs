@@ -594,34 +594,26 @@ public class PlayerController : MovableObjects
     }
     public override IEnumerator Rotate(float yrot)
     {
+        if (panTilt == null)
+        {
+            panTilt.PanAxis.Value = 0;
+            panTilt.PanAxis.TrackValueChange();
+        }
+
         if (agent != null)
             agent.updateRotation = false;
-        transform.rotation = Quaternion.Euler(0, yrot, 0);
+        Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
+        while (Quaternion.Angle(transform.rotation, targetRotation) > 5f)
+        {
+            // Putar secara bertahap dari rotasi saat ini ke rotasi target
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime*2.0f);
+            yield return null;
+        }
+        // Snap to exact target
+        transform.rotation = targetRotation;
+
         if (agent != null)
             agent.updateRotation = true;
-        if (panTilt == null) yield break;
-
-        //For incremental rotation
-        //float startPan = panTilt.PanAxis.Value;
-        //float elapsed = 0f;
-        //float duration = 1f / speed; // adjust duration based on your speed definition
-
-        //// Optionally clamp target angle to [-180,180] range
-        //yrot = ((yrot % 360) + 360) % 360;
-        //if (yrot > 180) yrot -= 360;
-
-        //while (elapsed < duration)
-        //{
-        //    elapsed += Time.deltaTime;
-        //    float t = elapsed / duration;
-        //    float newPan = Mathf.LerpAngle(startPan, yrot, t);
-        //    panTilt.PanAxis.Value = newPan;
-        //    yield return null; // or WaitForEndOfFrame
-        //}
-
-        // Snap to exact target
-        panTilt.PanAxis.Value = 0;
-        panTilt.PanAxis.TrackValueChange();
     }
 
     public override IEnumerator Move(Vector3 pos, float speed = 150f)
