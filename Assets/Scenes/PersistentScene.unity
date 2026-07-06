@@ -17589,7 +17589,7 @@ MonoBehaviour:
   objectiveDatas:
   - Name: Class
     Description: Go to the class
-    IsCompleted: 0
+    IsCompleted: 1
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
@@ -17599,7 +17599,7 @@ MonoBehaviour:
     Chapter: 1
   - Name: Desk
     Description: Sit on your desk.
-    IsCompleted: 0
+    IsCompleted: 1
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
@@ -17610,7 +17610,7 @@ MonoBehaviour:
     Chapter: 1
   - Name: DoQuiz
     Description: Finish the Math Quiz
-    IsCompleted: 0
+    IsCompleted: 1
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
@@ -17621,7 +17621,7 @@ MonoBehaviour:
     Chapter: 1
   - Name: SubmitQuiz
     Description: "Submit your quiz paper on the teacher\u2019s desk"
-    IsCompleted: 0
+    IsCompleted: 1
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
@@ -28459,14 +28459,14 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.4
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.86, z: 0}
 --- !u!4 &1761790460
 Transform:
   m_ObjectHideFlags: 0
@@ -28476,7 +28476,7 @@ Transform:
   m_GameObject: {fileID: 1761790445}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15, y: 0.6, z: -5}
+  m_LocalPosition: {x: 212.68977, y: 0.055, z: 264.05862}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
