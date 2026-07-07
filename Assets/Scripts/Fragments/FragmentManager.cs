@@ -35,7 +35,19 @@ public class FragmentManager : MonoBehaviour
     public void AddFragment(Fragment fragment)
     {
         if (!FragmentOwned(fragment))
+        {
             currentFragments.Add(fragment.GetFragmentData());
+
+            if (ChapterDataManager.Instance != null)
+            {
+                FragmentData fragmentData = fragment.GetFragmentData();
+                int fragmentId = fragmentData != null && fragmentData.fragmentId >= 0
+                    ? fragmentData.fragmentId
+                    : GetStableFragmentId(fragmentData);
+
+                ChapterDataManager.Instance.CollectFragment(fragmentId);
+            }
+        }
     }
     public void RemoveFragment(Fragment fragment)
     {
@@ -61,6 +73,19 @@ public class FragmentManager : MonoBehaviour
     public bool FragmentOwned(Fragment fragment)
     {
         return currentFragments.Contains(fragment.GetFragmentData());
+    }
+
+    private int GetStableFragmentId(FragmentData fragmentData)
+    {
+        if (fragmentData == null) return -1;
+
+        int hash = 0;
+        foreach (char c in fragmentData.fragmentName)
+        {
+            hash = (hash * 31) + c;
+        }
+
+        return hash;
     }
 
     public void UpdateFragmentState(FragmentData fragData)

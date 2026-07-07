@@ -1733,6 +1733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterPanel: {fileID: 1940191588}
+  mainmenuPanel: {fileID: 406953651}
   chapters:
   - {fileID: 843994988}
   - {fileID: 903546710}
@@ -1741,9 +1742,9 @@ MonoBehaviour:
   chaptersData:
   - chapterTitle: Chapter 1
     chapterDesc: '"New Kid In Class"'
-    chapterContent: {fileID: 21300000, guid: 7e14cd03ccdc24e479f9195426332f3a, type: 3}
+    chapterContent: {fileID: 21300000, guid: 02f1b19c2235c6d448e50a4f9805b00a, type: 3}
     chapterScene:
-      m_SceneAsset: {fileID: 102900000, guid: ec27e97c9fd48cc438bebd6821dba5a2, type: 3}
+      m_SceneAsset: {fileID: 102900000, guid: ccc2859e885a3a84dbb8afbf70a877aa, type: 3}
       m_SceneName: Test-Chapter 1
   - chapterTitle: Chapter 2
     chapterDesc: '"Akin To A Dog"'
@@ -6815,6 +6816,8 @@ Transform:
   - {fileID: 1021947265}
   - {fileID: 87415708}
   - {fileID: 681937510}
+  - {fileID: 1106276314}
+  - {fileID: 1474137935}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &404052070
@@ -10665,6 +10668,9 @@ MonoBehaviour:
   mainMenuScene:
     m_SceneAsset: {fileID: 102900000, guid: 6effdddf72df1334781133355ee306b0, type: 3}
     m_SceneName: Main Menu
+  currentChapter:
+    m_SceneAsset: {fileID: 0}
+    m_SceneName: 
   currentChapterIndex: 0
   progressSpeed: 1
   delayAfterDone: 0.5
@@ -17569,6 +17575,63 @@ RectTransform:
   m_AnchoredPosition: {x: 718.22, y: -217.74}
   m_SizeDelta: {x: 1436.44, y: 75.096}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1106276313
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1106276314}
+  - component: {fileID: 1106276315}
+  m_Layer: 0
+  m_Name: Chapter Data Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1106276314
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106276313}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 399593666}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1106276315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106276313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea47b19c34c70c445b5e7e65779232bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highestChapterUnlocked: 1
+  currentChapterIndex: 0
+  collectedFragments: 
+  chapterScenes:
+  - m_SceneAsset: {fileID: 102900000, guid: ccc2859e885a3a84dbb8afbf70a877aa, type: 3}
+    m_SceneName: Test-Chapter 1
+  - m_SceneAsset: {fileID: 102900000, guid: 3308fad8b00ebbf478fdc3857bf27c04, type: 3}
+    m_SceneName: Chapter 2-RumahMC
+  - m_SceneAsset: {fileID: 102900000, guid: 074cf16857a479e48aa043dd07e75395, type: 3}
+    m_SceneName: Chapter 3-Villa
+  - m_SceneAsset: {fileID: 102900000, guid: 074cf16857a479e48aa043dd07e75395, type: 3}
+    m_SceneName: Chapter 3-Villa
+  saveFileName: chapter_progress.json
 --- !u!1 &1109726889
 GameObject:
   m_ObjectHideFlags: 0
@@ -22182,6 +22245,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459965807}
   m_CullTransparentMesh: 1
+--- !u!1 &1474137934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1474137935}
+  - component: {fileID: 1474137936}
+  m_Layer: 0
+  m_Name: Scene Load Async
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1474137935
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474137934}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 399593666}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1474137936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474137934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57afa8ac0e044ab4f97c0f6638a9dc26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1490683042
 GameObject:
   m_ObjectHideFlags: 0
