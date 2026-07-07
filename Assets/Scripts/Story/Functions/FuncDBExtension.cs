@@ -88,6 +88,7 @@ namespace TestingPurposes
             db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
             db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
             db.AddFunction("CrossGate", new Func<IEnumerator>(CrossSchoolGate));
+            db.AddFunction("MoveAlya", new Action(MoveAlya));
             #endregion
         }
 
@@ -310,6 +311,13 @@ namespace TestingPurposes
         private static void PlayCutscene(string[] args)
         {
 
+        }
+
+        private static void MoveAlya()
+        {
+            Debug.Log("Moving Alya");
+            GameObject.FindObjectsByType<NpcMovement>(sortMode:FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == "Alya").GetComponent<NpcMovement>().moveAlya = true;
+            //if(ObjectiveManager.Instance.isCompleted(""))
         }
 
         private static void SwitchCamera(string arg)

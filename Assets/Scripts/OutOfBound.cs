@@ -19,18 +19,14 @@ public class OutOfBound : MonoBehaviour
     {
         if(ObjectiveManager.Instance == null)
             return;
-        foreach (var obj in ObjectiveManager.Instance.currentObjectives)
-        {
-            col.enabled = relatedObjectives.Contains(obj);
-        }
+        col.enabled = relatedObjectives.Any(x => ObjectiveManager.Instance.currentObjectives.Contains(x));
     }
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             // Handle player entering the out-of-bounds area
-            
-                TriggerDialogue();
+            TriggerDialogue();
         }
     }
     public void TriggerDialogue()

@@ -37,6 +37,7 @@ public class NpcMovement : MovableObjects
     float idleTime = 5f, currIdleTime;
     bool wasPausedLastFrame = false;
     float lastFootstep;
+    [HideInInspector] public bool moveAlya = false;
     
     private Vector2 Velocity;
     private Vector2 smoothDeltaPosition;
@@ -267,6 +268,12 @@ public class NpcMovement : MovableObjects
     {
         if (HandlePauseState() || (!movementAllowed && !agent.enabled)) return;
 
+        if (gameObject.name == "Alya" && !moveAlya)
+        {
+            agent.enabled = false;
+            return;
+        }
+
         if (point.Length < 2)
             return;
 
@@ -327,7 +334,12 @@ public class NpcMovement : MovableObjects
                     animator.SetFloat("Blend", state / 7f);
                     currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
                     idxPoint = ++idxPoint % point.Length;
-                    agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
+                    if (point[idxPoint].gameObject.name == "GateOut")
+                    {
+                        StartCoroutine(Teleport(point[idxPoint++].position));
+                    }
+                    else
+                        agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
                     transform.rotation = targetRotation;
                     if (animState == NPCAnimationState.Sit || !movementAllowed)
                     {
