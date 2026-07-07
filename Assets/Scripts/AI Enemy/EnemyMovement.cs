@@ -235,7 +235,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             agent.SetDestination(point[idxPoint].position);
         }
     }
-    public void TriggerKillPlayer(PlayerHiding player)
+    public void TriggerKillPlayer(Transform player)
     {
         if (isKilling) return;
         
@@ -246,7 +246,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         StartCoroutine(KillRoutine(player));
     }
 
-    private IEnumerator KillRoutine(PlayerHiding player)
+    private IEnumerator KillRoutine(Transform player, string killAnimationTrigger = "Attack")
     {
         agent.isStopped = false;
         agent.speed = pursueSpeed;
@@ -260,19 +260,16 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
         agent.isStopped = true;
         
-        // Play Kill Animation
-        // anim.SetTrigger("Attack"); 
-        
-        // Force the player out of the cupboard so they are visible during death
-        player.ForceUnhide();
+        if(animator != null)
+        {
+            //Stop Movements
+            animator.SetFloat("LowerBody", 0f);
+            // Play Kill Animation
+            animator.SetTrigger(killAnimationTrigger); 
+        }
 
-        // Rotate monster to face player for the kill
-        transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
 
-        yield return new WaitForSeconds(1.5f);
-        
-        // Call your Game Over / Scene Reload logic here
-        Debug.Log("GAME OVER: Player Eaten");
+        // Handle By Animation Event Handler, which will call the actual kill logic when the animation ends
     }
     public void InvestigatePlayerSpot(HidingSpot spot)
     {

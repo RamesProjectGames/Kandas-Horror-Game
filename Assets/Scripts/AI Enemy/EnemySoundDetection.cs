@@ -57,7 +57,7 @@ public class EnemySoundDetection : MonoBehaviour
             if (loudness >= currentThreshold)
             {
                 // DANGER: Kill the player
-                enemyMovement.TriggerKillPlayer(playerHiding);
+                enemyMovement.TriggerKillPlayer(playerHiding.transform);
             }
             else if (loudness >= (currentThreshold - warningBuffer))
             {
