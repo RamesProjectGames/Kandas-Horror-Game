@@ -24,7 +24,7 @@ public class MainMenuManager : MonoBehaviour
     [Header("Scenes to load")]
     [SerializeField] private SceneField persistentScene;
     [SerializeField] private SceneField mainMenuScene;
-    private SceneField currentChapter;
+    public SceneField currentChapter;
     public int currentChapterIndex;
 
     private List<AsyncOperation> loadOperations = new List<AsyncOperation>();
@@ -32,6 +32,12 @@ public class MainMenuManager : MonoBehaviour
     {
         loadingPanel.SetActive(false);
         Instance = this;
+    }
+    
+    void Start()
+    {
+        currentChapter = null;
+        currentChapterIndex = 0;
     }
     public void ChapterSelect(SceneField sceneName, int chapIndex)
     {        
@@ -52,10 +58,17 @@ public class MainMenuManager : MonoBehaviour
         loadOperations.Clear();
         totalProgress = 0f;
 
-        loadOperations.Add(SceneManager.LoadSceneAsync(persistentScene, LoadSceneMode.Additive));
-        loadOperations.Add(SceneManager.LoadSceneAsync(currentChapter, LoadSceneMode.Additive));
+        List<SceneField> scenesToLoad = new List<SceneField> { persistentScene, currentChapter };
+        List<SceneField> scenesToUnload = new List<SceneField> { mainMenuScene };
 
-        StartCoroutine(ProgressLoadingBar());
+        AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, persistentScene, () =>
+        {
+            DialogueSystem.Instance.OpenDialogue($"Chapter{currentChapterIndex}");
+        }, progress =>
+        {
+            totalProgress = progress;
+            UpdateLoadingSprite();
+        });
     }
     private void HideMenu()
     {
@@ -84,29 +97,19 @@ public class MainMenuManager : MonoBehaviour
             float actualProgress = loadOperations.Average(op => op.progress);
 
             bool isDone = actualProgress >= 1f;
-            // While loading, only allow progress to go up to 0.9
             float targetProgress = isDone ? 1f : Mathf.Clamp(actualProgress, 0f, 0.9f);
 
-            // Smoothly move displayed progress toward target
             totalProgress = Mathf.MoveTowards(totalProgress, targetProgress, progressSpeed * Time.deltaTime);
-            //Debug.Log($"Actual: {actualProgress:F3} | Display: {totalProgress:F3} | Done: {isDone}");
-
             UpdateLoadingSprite();
 
-            // Only break when everything is done AND displayed progress reached 1
             if (isDone && totalProgress >= 1f)
             {
                 yield return new WaitForSeconds(delayAfterDone);
-                SceneManager.SetActiveScene(SceneManager.GetSceneByName(persistentScene.SceneName));
-                SceneManager.UnloadSceneAsync(mainMenuScene);
                 break;
             }
 
             yield return null;
         }
-        DialogueSystem.Instance.OpenDialogue($"Chapter{currentChapterIndex}");
-        //DialogueSystem.Instance.OpenDialogue("Mini_Lovestruck");
-
     }
     private void UpdateLoadingSprite()
     {

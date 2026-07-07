@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class ChapterManager : MonoBehaviour
 {
     public GameObject chapterPanel;
+    public GameObject mainmenuPanel;
     public List<Button> chapters = new List<Button>();
     public List<ChapterData> chaptersData = new List<ChapterData>();
     public TextMeshProUGUI title;
@@ -17,9 +18,25 @@ public class ChapterManager : MonoBehaviour
     void Start()
     {
         ChapterSelect(0);
+        SetChapterUnlocked();
     }
 
-    public void ChangePanelState(bool state) { chapterPanel.SetActive(state); }
+    public void ChangePanelState(bool state) 
+    { 
+        chapterPanel.SetActive(state);
+        mainmenuPanel.SetActive(!state);
+    }
+    public void SetChapterUnlocked()
+    {
+        if(ChapterDataManager.Instance != null)
+        {
+            int highestChapterUnlocked = ChapterDataManager.Instance.highestChapterUnlocked;
+            for (int i = 0; i < chapters.Count; i++)
+            {
+                chapters[i].interactable = i < highestChapterUnlocked;
+            }
+        }
+    }
     public void ChapterSelect(int index)
     {
         for (int i = 0; i < chapters.Count; i++)

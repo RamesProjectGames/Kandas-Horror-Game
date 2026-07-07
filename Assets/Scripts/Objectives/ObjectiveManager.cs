@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ObjectiveManager : MonoBehaviour
 {
@@ -54,6 +54,7 @@ public class ObjectiveManager : MonoBehaviour
             obj.UpdateObjectiveText();
         }
         UpdateCurrentObjectives();
+        TryUnlockNextChapter();
     }
 
     public void UpdateCurrentObjectives()
@@ -143,11 +144,61 @@ public class ObjectiveManager : MonoBehaviour
     public void SetChapter(int chapter)
     {
         currentChapter = chapter;
+        if (ChapterDataManager.Instance != null)
+        {
+            ChapterDataManager.Instance.SelectChapter(chapter);
+        }
         UpdateCurrentObjectives();
+        TryUnlockNextChapter();
     }
     public bool IsObjectiveAvailable(ObjectiveData data)
     {
         return data.Chapter == currentChapter &&
                (isDemoBuild || !data.isDemo);
+    }
+
+    private void TryUnlockNextChapter()
+    {
+        if (ChapterDataManager.Instance == null)
+            return;
+
+        List<ObjectiveData> chapterObjectives = objectiveDatas.FindAll(x => x.Chapter == currentChapter);
+        if (chapterObjectives.Count == 0)
+            return;
+
+        bool allCompleted = chapterObjectives.All(x => x.IsCompleted);
+        if (allCompleted)
+        {
+            ChapterDataManager.Instance.UnlockChapter(currentChapter + 1);
+            LoadNextChapterScene();
+        }
+    }
+
+    private void LoadNextChapterScene()
+    {
+        if (ChapterDataManager.Instance == null)
+            return;
+
+        int nextChapterIndex = currentChapter + 1;
+        if (nextChapterIndex <= 0)
+            return;
+
+        SceneField nextScene = ChapterDataManager.Instance.GetChapterScene(nextChapterIndex);
+        if (nextScene == null)
+            return;
+
+        List<SceneField> scenesToLoad = new List<SceneField> { nextScene };
+        List<SceneField> scenesToUnload = new List<SceneField>();
+
+        SceneField currentChapterScene = ChapterDataManager.Instance.GetChapterScene(currentChapter);
+        if (currentChapterScene != null)
+        {
+            scenesToUnload.Add(currentChapterScene);
+        }
+
+        if (SceneManager.GetActiveScene().name != nextScene.SceneName)
+        {
+            AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, nextScene);
+        }
     }
 }
