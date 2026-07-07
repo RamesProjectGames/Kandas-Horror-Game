@@ -9,8 +9,10 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     [SerializeField] Waypoint[] point;
     [SerializeField] int idxPoint = 0;
     [SerializeField] EnemySightDetection fov;
+    [SerializeField] EnemyAttack attack;
     [SerializeField] Animator animator;
     bool detectedSound;
+    private bool attackMovementHalted = false;
     public Vector3 soundSource;
     public float speed = 3f;
     public float pursueSpeed = 6f;
@@ -18,6 +20,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     private bool isKilling = false;
     private bool isStunned = false;
     private bool isInEnemyStopZone = false;
+    public bool shouldMove;
 
     [Header("Hiding Spot Detection")]
     [SerializeField] private float hidingSpotDetectionRadius = 15f;
@@ -83,6 +86,19 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     void Update()
     {
         if (HandlePauseState()) return;
+        if (attack != null && attack.canAttackPlayer)
+        {
+            attackMovementHalted = true;
+            if (agent != null) agent.isStopped = true;
+            if (animator != null) animator.SetFloat("LowerBody", 0f);
+            return;
+        }
+
+        if (attackMovementHalted)
+        {
+            attackMovementHalted = false;
+            if (agent != null) agent.isStopped = false;
+        }
 
         if(isStunned)
         {
@@ -125,8 +141,18 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             transform.LookAt(new Vector3(fov.player.transform.position.x, transform.position.y, fov.player.transform.position.z));
             detectedSound = false; 
             agent.isStopped = true;            
+            // Update animator to show running/moving while pursuing
+            if (animator != null)
+            {
+                animator.SetFloat("LowerBody", 0.11f);
+                animator.SetBool("move", true);
+            }
+
             // Move directly towards player
             transform.position += directionToPlayer * pursueSpeed * Time.deltaTime;
+
+            // If we've stopped moving for some reason, ensure animator resets
+            // (will be re-evaluated by other branches or SynchronizeAnimatorAndAgent)
         }
         else if (isPlayerHiding && fov.PlayerWasSpottedWhileHiding && !isDiscoveringSpot)
         {
@@ -333,12 +359,20 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             );
         }
 
-        bool shouldMove = Velocity.magnitude > 0.5f 
+        shouldMove = Velocity.magnitude > 0.5f 
             && agent.remainingDistance > agent.stoppingDistance;
 
 
-        animator.SetBool("move", shouldMove);
-        animator.SetFloat("velocity", Velocity.magnitude);
+        // animator.SetBool("move", shouldMove);
+        if(shouldMove)
+        {
+            animator.SetFloat("LowerBody", 0.11f);
+        }
+        else
+        {
+            animator.SetFloat("LowerBody", 0f);
+        }
+        // animator.SetFloat("velocity", Velocity.magnitude);
     }
 
     #region Player Hiding
@@ -437,10 +471,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     public void OnEnterEnemyStopZone(bool isInZone)
     {
         isInEnemyStopZone = isInZone;
-        if(isInZone)
-        {
-            ReturnToPatrol();
-        }
     }
 
     /// <summary>

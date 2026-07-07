@@ -35,6 +35,6 @@ public class ConfirmationUI : MonoBehaviour
     }
     public void IsShowed(bool show)
     {
-        gameObject.SetActive(show);
+        transform.LeanScale(show ? Vector3.one : Vector3.zero, 0.2f);
     }
 }

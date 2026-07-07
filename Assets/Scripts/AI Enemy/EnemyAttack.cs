@@ -12,6 +12,7 @@ public class EnemyAttack : MonoBehaviour
     public bool canAttackPlayer;
 
     public Animator animator;
+    public float distanceToPlayer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,7 +31,7 @@ public class EnemyAttack : MonoBehaviour
 
         Vector3 playerTarget = (playerPos - enemyPos).normalized;
         playerTarget.y = 0;
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
         if (distanceToPlayer < attackRange)
         {

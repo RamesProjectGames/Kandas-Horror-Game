@@ -12905,6 +12905,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
+  gameOver: 0
   settings:
     GameResolution: 0
     FrameRate: 60
@@ -16332,6 +16333,7 @@ MonoBehaviour:
   languageDropdown: {fileID: 789803700}
   PausePanel: {fileID: 0}
   SettingPanel: {fileID: 987474522}
+  GameoverPanel: {fileID: 0}
   scrollings:
   - {fileID: 1408264515}
   - {fileID: 1186383222}
@@ -18362,7 +18364,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1156246966
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18372,7 +18374,7 @@ RectTransform:
   m_GameObject: {fileID: 1156246965}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 503084150}
