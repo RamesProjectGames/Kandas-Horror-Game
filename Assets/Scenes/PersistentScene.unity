@@ -13393,7 +13393,6 @@ Transform:
   m_Children:
   - {fileID: 1010298964}
   - {fileID: 1252175981}
-  - {fileID: 1087755490}
   m_Father: {fileID: 1761790460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &890258806
@@ -17122,12 +17121,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1087755489}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 890258805}
+  m_Father: {fileID: 1761790460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1100575498
 GameObject:
@@ -19821,10 +19820,10 @@ MonoBehaviour:
     Controllers:
     - Name: Look X (Pan)
       Owner: {fileID: 1252175984}
-      Enabled: 1
+      Enabled: 0
       Input:
-        InputAction: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-        Gain: 1
+        InputAction: {fileID: 0}
+        Gain: 0
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -19860,12 +19859,12 @@ MonoBehaviour:
   PanAxis:
     Value: 0
     Center: 0
-    Range: {x: -180, y: 180}
+    Range: {x: 0, y: 0}
     Wrap: 1
     Recentering:
-      Enabled: 0
+      Enabled: 1
       Wait: 1
-      Time: 2
+      Time: 1
     Restrictions: 0
   TiltAxis:
     Value: 0
@@ -28482,6 +28481,7 @@ Transform:
   m_Children:
   - {fileID: 405068812}
   - {fileID: 809628274}
+  - {fileID: 1087755490}
   - {fileID: 890258805}
   - {fileID: 1234470049}
   m_Father: {fileID: 0}

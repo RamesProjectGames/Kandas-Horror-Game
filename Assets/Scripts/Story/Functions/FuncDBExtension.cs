@@ -453,7 +453,8 @@ namespace TestingPurposes
                 endPos = GameObject.Find("GateIn").GetComponent<Waypoint>();
                 startPos = GameObject.Find("GateOut").GetComponent<Waypoint>();
             }
-            GameObject.Find("Player").GetComponent<PlayerController>().StartCoroutine(GameObject.Find("Player").GetComponent<PlayerController>().Rotate(endPos.transform.rotation.y));
+            GameObject.Find("GateCam").transform.rotation = startPos.transform.rotation;
+            GameObject.Find("GateCam").GetComponent<CinemachineCamera>().Follow = endPos.transform;
             GameObject.Find("GateCam").transform.position = startPos.position;
             SwitchCamera("GateCam");
             while (Vector3.Distance(CameraManager.currentActiveCamera.transform.position, endPos.position) > .1f)
@@ -462,8 +463,10 @@ namespace TestingPurposes
                 yield return null;
             }
             yield return TeleportObject(new string[] { "Player", "^x", endPos.position.x.ToString(), "^z", endPos.position.z.ToString() });
+            RotateObject(new string[] { "Player", "^r", startPos.transform.rotation.y.ToString() });
             SwitchCamera("Player Camera");
-            GameObject.Find("GateCam").transform.rotation = endPos.transform.rotation;
+            yield return new WaitForSeconds(1);
+            GameObject.Find("GateCam").GetComponent<CinemachineCamera>().Follow = startPos.transform;
         }
 
         private static void InspectFragment(string[] args)
