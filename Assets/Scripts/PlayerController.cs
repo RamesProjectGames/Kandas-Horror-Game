@@ -51,14 +51,13 @@ public class PlayerController : MovableObjects
     public float interactionAngle = 20f, interactionDist = 5f;
     //private CinemachineBasicMultiChannelPerlin _noise;
     [SerializeField] private CinemachineInputAxisController inputController;
-    private CinemachinePanTilt panTilt;
     private Transform originalFollowTarget;
     private Transform originalLookTarget;
 
     [Header("Bob Settings")]
     public float headBobAmplitude = 0.5f;
     public float headBobFrequency = 1.0f;
-    public float walkBobMultiplier = 1.5f; 
+    public float walkBobMultiplier = 1.5f;
     public float sprintBobMultiplier = 2.0f;
     public float crouchBobMultiplier = 0.5f;
 
@@ -77,7 +76,7 @@ public class PlayerController : MovableObjects
     [SerializeField] private float ceilingCheckOffset = 0.1f;
     private float targetControllerHeight;
     private float targetCameraY;
-    
+
     [Header("Audio")]
     public EventReference pantingSound;
     private EventInstance pantingSoundEvent;
@@ -107,14 +106,13 @@ public class PlayerController : MovableObjects
         CameraManager.SwitchCamera(playerCam);
         originalFollowTarget = playerCam.Follow;
         originalLookTarget = playerCam.LookAt;
-        panTilt = playerCam.GetComponent<CinemachinePanTilt>();
 
         pantingSoundEvent = AudioManager.Instance.CreateInstance(pantingSound);
         RuntimeManager.AttachInstanceToGameObject(pantingSoundEvent, gameObject, false);
 
         inputController = playerCam.GetComponent<CinemachineInputAxisController>();
         ApplyLookSensitivity();
-        
+
         Cursor.lockState = CursorLockMode.Locked;
 
         stamina = maxStamina;
@@ -132,7 +130,7 @@ public class PlayerController : MovableObjects
         agent.angularSpeed = 300f;
         agent.acceleration = 8f;
         agent.stoppingDistance = 0.1f;
-        if(CanUseAgent())
+        if (CanUseAgent())
         {
             agent.isStopped = true;
             agent.enabled = true;
@@ -169,7 +167,7 @@ public class PlayerController : MovableObjects
     {
         //Mouse Lock - Unlock when holding Alt
         {
-            if(CameraManager.currentActiveCamera != playerCam)
+            if (CameraManager.currentActiveCamera != playerCam)
             {
                 agent.enabled = false;
             }
@@ -184,7 +182,7 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if(SettingManager.Instance.isPaused || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
+                if (SettingManager.Instance.isPaused || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
                 {
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -219,9 +217,9 @@ public class PlayerController : MovableObjects
         {
             // when hidden we don't process movement input or physics
         }
-        else if(agent.isStopped)
+        else if (agent.isStopped)
         {
-            if(!SettingManager.Instance.settings.SprintToggle)
+            if (!SettingManager.Instance.settings.SprintToggle)
             {
                 if (sprintAction != null && sprintAction.action.IsPressed() && !isExhausted)
                 {
@@ -229,7 +227,7 @@ public class PlayerController : MovableObjects
                     stamina -= staminaDecayRate * Time.deltaTime;
                     if (stamina <= 0f)
                     {
-                        stamina= 0;
+                        stamina = 0;
                         isExhausted = true;
                     }
                 }
@@ -245,7 +243,7 @@ public class PlayerController : MovableObjects
                     isSprinting = true;
                     if (stamina <= 0f)
                     {
-                        stamina= 0;
+                        stamina = 0;
                         isExhausted = true;
                     }
                 }
@@ -291,7 +289,7 @@ public class PlayerController : MovableObjects
                 {
                     moveSpd = speed * sprintMulti;
                 }
-                else if(isCrouching)
+                else if (isCrouching)
                 {
                     moveSpd = speed * crouchSpeedMultiplier;
                 }
@@ -300,7 +298,7 @@ public class PlayerController : MovableObjects
                     moveSpd = speed;
                 }
             }
-            
+
             // Handle panting sound when exhausted
             if (isExhausted && !wasExhausted)
             {
@@ -311,9 +309,9 @@ public class PlayerController : MovableObjects
                 StopPantingSound();
             }
             wasExhausted = isExhausted;
-            
 
-            if(!Hiding.IsHiding())
+
+            if (!Hiding.IsHiding())
             {
                 Vector2 moveInput = moveAction != null ? moveAction.action.ReadValue<Vector2>() : Vector2.zero;
 
@@ -330,11 +328,11 @@ public class PlayerController : MovableObjects
 
                 input = (hor + ver).normalized;
             }
-            if(!isSprinting)
+            if (!isSprinting)
             {
                 stamina += staminaDecayRate * Time.deltaTime * (isCrouching ? sprintMulti : 1f);
             }
-            if(stamina < maxStamina)
+            if (stamina < maxStamina)
             {
                 staminaFillImage.gameObject.SetActive(true);
                 staminaFillImage.fillAmount = stamina / maxStamina;
@@ -377,21 +375,16 @@ public class PlayerController : MovableObjects
         }
         else
         {
-            if(!CanUseAgent()) return;
+            if (!CanUseAgent()) return;
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
-                agent.updateRotation = false;
                 Vector3 posPoint = agent.destination - transform.position;
                 playerCam.ForceCameraPosition(posPoint, Quaternion.identity);
                 agent.isStopped = true;
             }
-            else
-            {
-                agent.updateRotation = true;
-            }
         }
-        
-        
+
+
         // Player body rotation is handled by Cinemachine camera - do not force rotation here
         // Uncomment only if you need manual body rotation separate from camera
         // if (Cursor.lockState == CursorLockMode.Locked)
@@ -436,10 +429,10 @@ public class PlayerController : MovableObjects
             {
                 controller.Input.Gain = -sliderValue;
             }
-            else if (controller.Name == "Look X (Pan)")
-            {
-                controller.Input.Gain = sliderValue;
-            }
+            //else if (controller.Name == "Look X (Pan)")
+            //{
+            //    controller.Input.Gain = sliderValue;
+            //}
 
             controller.Driver.AccelTime = 0f;
             controller.Driver.DecelTime = 0f;
@@ -455,10 +448,10 @@ public class PlayerController : MovableObjects
         {
             // scale step distance inversely with speed: faster movement = more frequent steps
             // use speed (normal walk speed, ~150) as baseline
-            float effectiveStepDistance = moveSpd > 0.1f 
-                ? baseStepDistance * (speed / moveSpd) 
+            float effectiveStepDistance = moveSpd > 0.1f
+                ? baseStepDistance * (speed / moveSpd)
                 : baseStepDistance;
-            
+
             float dist = Vector3.Distance(transform.position, _lastFootstepPosition);
             _footstepDistanceAccum += dist;
             if (_footstepDistanceAccum >= effectiveStepDistance)
@@ -467,7 +460,7 @@ public class PlayerController : MovableObjects
                 footstepManager.PlayFootstep();
             }
         }
-        else if(footstepManager != null)
+        else if (footstepManager != null)
         {
             footstepManager.StopFootstep();
         }
@@ -476,10 +469,10 @@ public class PlayerController : MovableObjects
 
     private void LateUpdate()
     {
-        // cam.localRotation = Quaternion.Euler(pitch, 0, 0);
-        // transform.Rotate(Vector3.up * xMove);
         if (controller.enabled && !SettingManager.Instance.isPaused && !DialogueSystem.Instance.isRunningConvo)
         {
+            // Rotate body left/right using Look X input
+            transform.Rotate(Vector3.up * lookAction.action.ReadValue<Vector2>().x * SettingManager.Instance.settings.MouseSensitivity * lookSensitivity * Time.deltaTime);
             HandleCrouch();
             controller.SimpleMove(moveSpd * input);
             anim.SetFloat("MoveBlend", Mathf.CeilToInt(input.magnitude));
@@ -577,20 +570,6 @@ public class PlayerController : MovableObjects
         float desiredY = isCrouching ? crouchCameraY : standingCameraY;
         return Mathf.Abs(cameraHeightTarget.localPosition.y - desiredY) > 0.02f;
     }
-    public void FaceObject(Transform targetObject)
-    {
-        Vector3 direction = targetObject.position - playerCam.transform.position;
-
-        // Yaw (horizontal rotation)
-        float yaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-
-        // Pitch (vertical rotation)
-        float pitch = -Mathf.Asin(direction.normalized.y) * Mathf.Rad2Deg;
-
-        panTilt.PanAxis.Value = yaw;
-        panTilt.TiltAxis.Value = pitch;
-        playerCam.LookAt = targetObject;
-    }
 
     public void FaceFront()
     {
@@ -604,7 +583,7 @@ public class PlayerController : MovableObjects
     {
         playerCam.LookAt = newLook ?? originalLookTarget;
     }
-#endregion
+    #endregion
 
     #region Agent (auto) Movement
     public override IEnumerator Teleport(Vector3 pos)
@@ -616,33 +595,21 @@ public class PlayerController : MovableObjects
         //agent.Warp(pos);
         yield return new WaitForSeconds(.1f);
         agent.enabled = true;
-        transform.rotation = Quaternion.Euler(0, 0, 0);
         agent.ResetPath();
         yield return new WaitForEndOfFrame();
         controller.enabled = true;
     }
     public override IEnumerator Rotate(float yrot)
     {
-        if (panTilt == null)
-        {
-            panTilt.PanAxis.Value = 0;
-            panTilt.PanAxis.TrackValueChange();
-        }
-
-        if (agent != null)
-            agent.updateRotation = false;
         Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
         while (Quaternion.Angle(transform.rotation, targetRotation) > 5f)
         {
             // Putar secara bertahap dari rotasi saat ini ke rotasi target
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime*2.0f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
             yield return null;
         }
         // Snap to exact target
         transform.rotation = targetRotation;
-
-        if (agent != null)
-            agent.updateRotation = true;
     }
 
     public override IEnumerator Move(Vector3 pos, float speed = 150f)
