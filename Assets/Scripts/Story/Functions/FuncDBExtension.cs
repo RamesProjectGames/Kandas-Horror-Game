@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static UnityEngine.Rendering.GPUSort;
 
 namespace Dialogue.Functions
@@ -86,6 +87,7 @@ namespace TestingPurposes
             db.AddFunction("TryOpenDoor", new Func<IEnumerator>(TryOpenDoor));
             db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
             db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
+            db.AddFunction("CrossGate", new Func<IEnumerator>(CrossSchoolGate));
             #endregion
         }
 
@@ -435,6 +437,33 @@ namespace TestingPurposes
         private static void EndQuiz()
         {
             UnityEngine.Object.FindAnyObjectByType<QuizChoiceSystem>(FindObjectsInactive.Include).OpenQuiz(false);
+        }
+
+        private static IEnumerator CrossSchoolGate()
+        {
+            Waypoint startPos, endPos;
+            if (Vector3.Distance(GameObject.Find("Player").transform.position, GameObject.Find("GateIn").GetComponent<Waypoint>().position) <
+               Vector3.Distance(GameObject.Find("Player").transform.position, GameObject.Find("GateOut").GetComponent<Waypoint>().position))
+            {
+                startPos = GameObject.Find("GateIn").GetComponent<Waypoint>();
+                endPos = GameObject.Find("GateOut").GetComponent<Waypoint>();
+            }
+            else
+            {
+                endPos = GameObject.Find("GateIn").GetComponent<Waypoint>();
+                startPos = GameObject.Find("GateOut").GetComponent<Waypoint>();
+            }
+            GameObject.Find("Player").GetComponent<PlayerController>().StartCoroutine(GameObject.Find("Player").GetComponent<PlayerController>().Rotate(endPos.transform.rotation.y));
+            GameObject.Find("GateCam").transform.position = startPos.position;
+            SwitchCamera("GateCam");
+            while (Vector3.Distance(CameraManager.currentActiveCamera.transform.position, endPos.position) > .1f)
+            {
+                CameraManager.currentActiveCamera.transform.position = Vector3.Lerp(CameraManager.currentActiveCamera.transform.position, endPos.position, Time.deltaTime * 2.0f);
+                yield return null;
+            }
+            yield return TeleportObject(new string[] { "Player", "^x", endPos.position.x.ToString(), "^z", endPos.position.z.ToString() });
+            SwitchCamera("Player Camera");
+            GameObject.Find("GateCam").transform.rotation = endPos.transform.rotation;
         }
 
         private static void InspectFragment(string[] args)
