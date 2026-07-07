@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 public class EnemySightDetection : MonoBehaviour
 {
     public float viewRadius;
+    [SerializeField] private float baseViewRadius = 8f;
+    [SerializeField] private float maxViewRadius = 14f;
+    [SerializeField] private float radiusChangeSpeed = 4f;
+
     [Range(0, 360)]
     public float viewAngle;
 
@@ -34,6 +38,10 @@ public class EnemySightDetection : MonoBehaviour
     {
         if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
             return;
+
+        float targetRadius = canSeePlayer ? maxViewRadius : baseViewRadius;
+        viewRadius = Mathf.MoveTowards(viewRadius, targetRadius, radiusChangeSpeed * Time.deltaTime);
+
         Vector3 enemyPos = transform.position;
         Vector3 playerPos = player.transform.position;
 
