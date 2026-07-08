@@ -57,25 +57,14 @@ public class AsyncSceneLoader : MonoBehaviour
             if (scene == null || string.IsNullOrEmpty(scene.SceneName))
                 continue;
 
-            if (!SceneManager.GetSceneByName(scene.SceneName).IsValid())
+            Scene sceneToLoad = SceneManager.GetSceneByName(scene.SceneName);
+            if (!sceneToLoad.isLoaded)
             {
                 loadOperations.Add(SceneManager.LoadSceneAsync(scene.SceneName, LoadSceneMode.Additive));
             }
         }
 
-        foreach (SceneField scene in scenesToUnload ?? new List<SceneField>())
-        {
-            if (scene == null || string.IsNullOrEmpty(scene.SceneName))
-                continue;
-
-            Scene sceneToUnload = SceneManager.GetSceneByName(scene.SceneName);
-            if (sceneToUnload.IsValid() && sceneToUnload != SceneManager.GetActiveScene())
-            {
-                unloadOperations.Add(SceneManager.UnloadSceneAsync(scene.SceneName));
-            }
-        }
-
-        while (loadOperations.Any(op => !op.isDone) || unloadOperations.Any(op => !op.isDone))
+        while (loadOperations.Any(op => !op.isDone))
         {
             float totalProgress = 0f;
             int progressCount = 0;
@@ -85,6 +74,39 @@ public class AsyncSceneLoader : MonoBehaviour
                 totalProgress += operation.progress;
                 progressCount++;
             }
+
+            CurrentProgress = progressCount > 0 ? totalProgress / progressCount : 0f;
+            ProgressUpdated?.Invoke(CurrentProgress);
+            onProgress?.Invoke(CurrentProgress);
+
+            yield return null;
+        }
+
+        if (activeScene != null && !string.IsNullOrEmpty(activeScene.SceneName))
+        {
+            Scene targetScene = SceneManager.GetSceneByName(activeScene.SceneName);
+            if (targetScene.IsValid() && targetScene.isLoaded)
+            {
+                SceneManager.SetActiveScene(targetScene);
+            }
+        }
+
+        foreach (SceneField scene in scenesToUnload ?? new List<SceneField>())
+        {
+            if (scene == null || string.IsNullOrEmpty(scene.SceneName))
+                continue;
+
+            Scene sceneToUnload = SceneManager.GetSceneByName(scene.SceneName);
+            if (sceneToUnload.IsValid() && sceneToUnload.isLoaded && sceneToUnload != SceneManager.GetActiveScene())
+            {
+                unloadOperations.Add(SceneManager.UnloadSceneAsync(scene.SceneName));
+            }
+        }
+
+        while (unloadOperations.Any(op => !op.isDone))
+        {
+            float totalProgress = 0f;
+            int progressCount = 0;
 
             foreach (AsyncOperation operation in unloadOperations)
             {
@@ -97,15 +119,6 @@ public class AsyncSceneLoader : MonoBehaviour
             onProgress?.Invoke(CurrentProgress);
 
             yield return null;
-        }
-
-        if (activeScene != null && !string.IsNullOrEmpty(activeScene.SceneName))
-        {
-            Scene targetScene = SceneManager.GetSceneByName(activeScene.SceneName);
-            if (targetScene.IsValid())
-            {
-                SceneManager.SetActiveScene(targetScene);
-            }
         }
 
         IsBusy = false;
