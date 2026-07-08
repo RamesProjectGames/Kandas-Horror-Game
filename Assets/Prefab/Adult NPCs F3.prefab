@@ -667,6 +667,7 @@ MonoBehaviour:
     m_Bits: 8
   currentSurface: 0
   animState: 1
+  moveAlya: 0
 --- !u!95 &7269883131936128781
 Animator:
   serializedVersion: 7
@@ -677,7 +678,7 @@ Animator:
   m_GameObject: {fileID: 192231905340700647}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fa0c3782a43a3c04b847aaef11e64650, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9c9eb717aa3e1d54e9760bf538c26c12, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -747,6 +748,7 @@ MonoBehaviour:
   breakSound: {fileID: 0}
   showTextOnPickup: 1
   canInteractWhenHeld: 0
+  controlCameraOnDialogue: 0
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   onPickup:
     m_PersistentCalls:

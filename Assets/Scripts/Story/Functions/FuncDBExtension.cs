@@ -316,7 +316,15 @@ namespace TestingPurposes
         private static void MoveAlya()
         {
             Debug.Log("Moving Alya");
-            GameObject.FindObjectsByType<NpcMovement>(sortMode:FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == "Alya").GetComponent<NpcMovement>().moveAlya = true;
+            GameObject.FindObjectsByType<NpcMovement>(sortMode:FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == "Alya").GetComponent<NpcMovement>().moveMyself = true;
+            //if(ObjectiveManager.Instance.isCompleted(""))
+        }
+
+        private static void MoveTeacher()
+        {
+            Debug.Log("Moving Teacher");
+            GameObject.FindObjectsByType<NpcMovement>(sortMode:FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name.Contains("Teacher")).GetComponent<NpcMovement>().moveMyself = true;
+            GameObject.FindObjectsByType<NpcMovement>(sortMode:FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name.Contains("Teacher")).GetComponent<NpcMovement>().agent.enabled = true;
             //if(ObjectiveManager.Instance.isCompleted(""))
         }
 
@@ -332,13 +340,14 @@ namespace TestingPurposes
 
         private static IEnumerator EatLunch()
         {
-            if(GameObject.Find("Player").GetComponent<PlayerController>().lunchProgress < 3)
+            if(GameObject.Find("Player").GetComponent<PlayerController>().lunchProgress <= 5)
             {
                 GameObject.Find("Player").GetComponent<PlayerController>().EatFood();
             }
-            else
+            if (GameObject.Find("Player").GetComponent<PlayerController>().lunchProgress >= 5)
             {
-                GameObject.Find("Player").GetComponent<PlayerController>().EatMeds();
+                DialogueSystem.Instance.convoManager.Enqueue(FileReader.ReadAsset("PostLunch"));
+                //GameObject.Find("Player").GetComponent<PlayerController>().EatMeds();
             }
             yield return new WaitForSeconds(1f);
         }

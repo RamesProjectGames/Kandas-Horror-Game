@@ -37,7 +37,7 @@ public class NpcMovement : MovableObjects
     float idleTime = 5f, currIdleTime;
     bool wasPausedLastFrame = false;
     float lastFootstep;
-    [HideInInspector] public bool moveAlya = false;
+    [HideInInspector] public bool moveMyself = false;
     
     private Vector2 Velocity;
     private Vector2 smoothDeltaPosition;
@@ -268,7 +268,7 @@ public class NpcMovement : MovableObjects
     {
         if (HandlePauseState() || (!movementAllowed && !agent.enabled)) return;
 
-        if (gameObject.name == "Alya" && !moveAlya)
+        if (!moveMyself)
         {
             agent.enabled = false;
             return;
