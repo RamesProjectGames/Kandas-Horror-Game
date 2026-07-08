@@ -36,8 +36,7 @@ public class MainMenuManager : MonoBehaviour
     
     void Start()
     {
-        currentChapter = null;
-        currentChapterIndex = 0;
+        
     }
     public void ChapterSelect(SceneField sceneName, int chapIndex)
     {        
@@ -57,6 +56,12 @@ public class MainMenuManager : MonoBehaviour
 
         loadOperations.Clear();
         totalProgress = 0f;
+
+        if(currentChapter == null)
+        {
+            currentChapter = ChapterDataManager.Instance.chapterScenes[0];
+            currentChapterIndex = 1;
+        }
 
         List<SceneField> scenesToLoad = new List<SceneField> { persistentScene, currentChapter };
         List<SceneField> scenesToUnload = new List<SceneField> { mainMenuScene };

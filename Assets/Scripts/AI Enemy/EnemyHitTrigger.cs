@@ -5,6 +5,7 @@ public class EnemyHitTrigger : MonoBehaviour
 {
     public string registeredHitLayerName = "Player";
     public UnityEvent registeredHitEvent;
+    public UnityEvent registeredLeaveEvent;
     public UnityEvent HitEvent;
     public UnityEvent LeaveEvent;
     
@@ -16,13 +17,7 @@ public class EnemyHitTrigger : MonoBehaviour
         }
         if (other.gameObject.CompareTag(registeredHitLayerName))
         {
-            Debug.Log("EnemyHitTrigger: Player hit by enemy");
             registeredHitEvent?.Invoke();
-            var settingUI = FindAnyObjectByType<SettingsUI>();
-            if (settingUI != null)
-            {
-                settingUI.ShowGameover(true);
-            }
         }
     }
     void OnTriggerExit(Collider other)
@@ -30,6 +25,10 @@ public class EnemyHitTrigger : MonoBehaviour
         if (other.gameObject.CompareTag("EnemyStop"))
         {
             LeaveEvent?.Invoke();
+        }
+        else if (other.gameObject.CompareTag(registeredHitLayerName))
+        {
+            registeredLeaveEvent?.Invoke();
         }
     }
 }
