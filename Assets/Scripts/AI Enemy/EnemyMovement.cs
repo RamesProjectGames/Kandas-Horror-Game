@@ -443,7 +443,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     {
         Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
 
-        while (Quaternion.Angle(transform.rotation, targetRotation) >= 1f)
+        while (Quaternion.Angle(transform.rotation, targetRotation) >= 10f)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 3 * Time.deltaTime);
             yield return new WaitForEndOfFrame();

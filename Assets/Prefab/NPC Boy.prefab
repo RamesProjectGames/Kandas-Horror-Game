@@ -1869,17 +1869,17 @@ NavMeshAgent:
   m_GameObject: {fileID: 5600532092239625216}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.3
+  m_Radius: 0.2
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0.15
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &6622265638776377449
@@ -1906,6 +1906,7 @@ MonoBehaviour:
     m_Bits: 8
   currentSurface: 0
   animState: 0
+  moveMyself: 0
 --- !u!95 &3338942343666924565
 Animator:
   serializedVersion: 7
@@ -1986,6 +1987,7 @@ MonoBehaviour:
   breakSound: {fileID: 0}
   showTextOnPickup: 1
   canInteractWhenHeld: 0
+  controlCameraOnDialogue: 0
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   onPickup:
     m_PersistentCalls:

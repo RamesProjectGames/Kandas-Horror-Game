@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.Rendering.GPUSort;
 
 namespace Dialogue.Functions
 {
@@ -88,7 +86,7 @@ namespace TestingPurposes
             db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
             db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
             db.AddFunction("CrossGate", new Func<IEnumerator>(CrossSchoolGate));
-            db.AddFunction("MoveAlya", new Action(MoveAlya));
+            db.AddFunction("MoveSpecificNPC", new Action<string>(MoveSpecificNPC));
             #endregion
         }
 
@@ -313,18 +311,16 @@ namespace TestingPurposes
 
         }
 
-        private static void MoveAlya()
+        private static void MoveSpecificNPC(string arg)
         {
-            Debug.Log("Moving Alya");
-            GameObject.FindObjectsByType<NpcMovement>(sortMode:FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == "Alya").GetComponent<NpcMovement>().moveMyself = true;
-            //if(ObjectiveManager.Instance.isCompleted(""))
-        }
-
-        private static void MoveTeacher()
-        {
-            Debug.Log("Moving Teacher");
-            GameObject.FindObjectsByType<NpcMovement>(sortMode:FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name.Contains("Teacher")).GetComponent<NpcMovement>().moveMyself = true;
-            GameObject.FindObjectsByType<NpcMovement>(sortMode:FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name.Contains("Teacher")).GetComponent<NpcMovement>().agent.enabled = true;
+            Debug.Log($"Moving {arg}");
+            UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name.Contains(arg)).GetComponent<NpcMovement>().agent.enabled = true;
+            foreach(NpcMovement npc in UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name.Contains(arg)).Select(x => x.GetComponent<NpcMovement>()))
+            {
+                npc.moveMyself = true;
+                npc.agent.enabled = true;
+                if(npc.point.Length>0) npc.agent.SetDestination(npc.point[npc.idxPoint].position);
+            }
             //if(ObjectiveManager.Instance.isCompleted(""))
         }
 

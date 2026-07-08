@@ -602,7 +602,7 @@ public class PlayerController : MovableObjects
     public override IEnumerator Rotate(float yrot)
     {
         Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
-        while (Quaternion.Angle(transform.rotation, targetRotation) > 5f)
+        while (Quaternion.Angle(transform.rotation, targetRotation) > 10f)
         {
             // Putar secara bertahap dari rotasi saat ini ke rotasi target
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
