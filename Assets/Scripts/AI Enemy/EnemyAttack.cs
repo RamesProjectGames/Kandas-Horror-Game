@@ -52,4 +52,15 @@ public class EnemyAttack : MonoBehaviour
             canAttackPlayer = false;
         }
     }
+    public void PlayerAttack()
+    {
+        if (canAttackPlayer)
+        {
+            var settingUI = FindAnyObjectByType<SettingsUI>();
+            if (settingUI != null)
+            {
+                settingUI.ShowGameover(true);
+            }
+        }
+    }
 }
