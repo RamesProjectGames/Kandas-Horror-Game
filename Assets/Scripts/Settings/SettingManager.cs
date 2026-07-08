@@ -16,6 +16,7 @@ public class SettingManager : MonoBehaviour
     public bool gameOver;
     void Awake()
     {
+        transform.SetParent(null);
         if (Instance == null)
         {
             Instance = this;

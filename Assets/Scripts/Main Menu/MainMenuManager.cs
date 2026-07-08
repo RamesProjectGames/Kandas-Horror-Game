@@ -118,11 +118,15 @@ public class MainMenuManager : MonoBehaviour
     }
     private void UpdateLoadingSprite()
     {
+        if (loadingBar == null || loadingPercentages == null || loadingPercentages.Count == 0)
+            return;
+
         foreach (var item in loadingPercentages.OrderBy(x => x.progresThreshold))
         {
             if (totalProgress >= item.progresThreshold)
             {
-                loadingBar.sprite = item.loadingBarThreshold;
+                if (item.loadingBarThreshold != null)
+                    loadingBar.sprite = item.loadingBarThreshold;
             }
         }
     }

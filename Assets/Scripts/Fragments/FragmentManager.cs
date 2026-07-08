@@ -10,6 +10,7 @@ public class FragmentManager : MonoBehaviour
 
     private void Awake()
     {
+        transform.SetParent(null);
         if (Instance == null)
         {
             Instance = this;
@@ -19,16 +20,21 @@ public class FragmentManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        allFragments.Clear();
+        // allFragments.Clear();
     }
 
     public void SpawnFragmentInScene(FragmentData fragment)
     {
+        if(fragment == null || fragment.fragmentPrefab == null)
+        {
+            Debug.LogWarning("Fragment or its prefab is null. Cannot spawn.");
+            return;
+        }
         GameObject fragmentObject = Instantiate(fragment.fragmentPrefab, fragment.fragmentPosition, Quaternion.identity, GameObject.Find("===Fragments===").transform);
         fragmentObject.name = fragment.fragmentName;
         Fragment fragmentComponent = fragmentObject.GetComponent<Fragment>();
         fragmentComponent.SetFragmentData(fragment);
-        allFragments.Add(fragment);
+        // allFragments.Add(fragment);
         fragmentGOs.Add(fragmentComponent);
     }
 
