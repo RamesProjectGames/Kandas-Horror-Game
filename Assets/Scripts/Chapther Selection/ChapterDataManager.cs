@@ -86,6 +86,12 @@ public class ChapterDataManager : MonoBehaviour
         highestChapterUnlocked = Mathf.Max(highestChapterUnlocked, normalizedChapter);
         SaveProgress();
     }
+    [ContextMenu("Unlock All Chapters")]
+    public void UnlockAllChapters()
+    {
+        highestChapterUnlocked = chapterScenes.Count;
+        SaveProgress();
+    }
     public void SelectChapter(int chapterIndex)
     {
         currentChapterIndex = chapterIndex;
