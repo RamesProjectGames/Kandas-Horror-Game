@@ -135,8 +135,12 @@ public class AttackItem : MonoBehaviour
     {
         attackSoundEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        PlayEffect(collision.contacts[0].point);
+        PlayEffect(other.ClosestPoint(transform.position));
+        if(other.gameObject.TryGetComponent(out MannequinFullGame mannequin))
+        {
+            mannequin.OnStruck();
+        }
     }
 }
