@@ -13,7 +13,6 @@ public class ChapterManager : MonoBehaviour
     public TextMeshProUGUI title;
     public TextMeshProUGUI desc;
     public Image content;
-
     SceneField chapterSceneName;
     void Start()
     {
@@ -39,9 +38,10 @@ public class ChapterManager : MonoBehaviour
     }
     public void ChapterSelect(int index)
     {
+        int highestChapterUnlocked = ChapterDataManager.Instance.highestChapterUnlocked;
         for (int i = 0; i < chapters.Count; i++)
         {
-            chapters[i].interactable = i != index;
+            chapters[i].interactable = i < highestChapterUnlocked;
             chapters[i].gameObject.GetComponent<TextMeshProUGUI>().fontStyle = i == index ? FontStyles.Underline : FontStyles.Normal; 
         }
         title.text = chaptersData[index].chapterTitle;
