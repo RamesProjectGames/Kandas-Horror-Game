@@ -6,6 +6,20 @@ public class Door : MonoBehaviour
     public Vector3 closedRotation;
     bool canInteractWithDoor = true;
     bool isOpen = false;
+    OcclusionPortal portal;
+
+    void Start()
+    {
+        portal = GetComponent<OcclusionPortal>();
+    }
+
+    void Update()
+    {
+        if(portal != null)
+        {
+            portal.open = isOpen;            
+        }
+    }
 
     public void ToggleDoor()
     {
