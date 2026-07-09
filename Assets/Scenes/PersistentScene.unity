@@ -17697,7 +17697,7 @@ MonoBehaviour:
     Chapter: 1
   - Name: NurseReport
     Description: Read the report in the Nurse Office
-    IsCompleted: 0
+    IsCompleted: 1
     isHidden: 1
     isDemo: 0
     fragmentData: {fileID: 0}
@@ -19458,6 +19458,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e7d286001bdc1f94499806ee4b55eab7, type: 3}
       propertyPath: m_Name
       value: Jessica
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e7d286001bdc1f94499806ee4b55eab7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: e7d286001bdc1f94499806ee4b55eab7, type: 3}
       propertyPath: m_Controller
@@ -28474,7 +28478,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761790445}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -28485,7 +28489,7 @@ Transform:
   - {fileID: 890258805}
   - {fileID: 1234470049}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &1761790461
 MonoBehaviour:
   m_ObjectHideFlags: 0

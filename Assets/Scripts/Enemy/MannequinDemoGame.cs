@@ -8,6 +8,7 @@ using UnityEngine.AI;
 /// Plays catch animation when reaching player, then resets to original position
 /// Event-based system for interaction tracking
 /// </summary>
+
 public class MannequinDemoGame : MonoBehaviour
 {
     // ===== EVENTS =====
@@ -76,7 +77,7 @@ public class MannequinDemoGame : MonoBehaviour
 
     void Update()
     {
-        if (playerSight == null || playerTransform == null || !ObjectiveManager.Instance.isCompleted("NurseReport"))
+        if (playerSight == null || playerTransform == null || !ObjectiveManager.Instance.isCompleted("NurseReport") || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver)
             return;
 
         // Check if player can see this enemy (Weeping Angel behavior: moves when NOT observed)
@@ -210,10 +211,14 @@ public class MannequinDemoGame : MonoBehaviour
         Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
-        // Use obstacleMask to detect obstructions
-        if (Physics.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleMask))
+        if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit, distanceToPlayer, obstacleMask, QueryTriggerInteraction.Ignore))
         {
-            return true; // Path is obstructed
+            // Ignore the player itself and the mannequin's own colliders
+            if (hit.transform == playerTransform || hit.transform == transform)
+            {
+                return false;
+            }
+            return true;
         }
 
         return false; // Path is clear
@@ -222,7 +227,7 @@ public class MannequinDemoGame : MonoBehaviour
     {
         if (animator != null)
         {
-            previousSpeed = animator.speed;
+            previousSpeed = animator.speed > 0f ? animator.speed : 1f;
             animator.speed = 0f;
         }
     }
@@ -230,27 +235,9 @@ public class MannequinDemoGame : MonoBehaviour
     {
         if (animator != null)
         {
-            animator.SetFloat("MoveBlend",1);
-            animator.speed = previousSpeed;
+            animator.SetFloat("MoveBlend", 1);
+            animator.speed = previousSpeed > 0f ? previousSpeed : 1f;
         }
-    }
-
-    private bool IsPlayerWithinRange()
-    {
-        if (playerTransform == null)
-            return false;
-
-        Collider[] overlaps = Physics.OverlapSphere(transform.position, contactThreshold);
-        foreach (Collider hit in overlaps)
-        {
-            Transform hitTransform = hit.transform;
-            if (hitTransform == playerTransform || hitTransform.IsChildOf(playerTransform) || playerTransform.IsChildOf(hitTransform))
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private void MoveTowardPlayer()
@@ -265,34 +252,45 @@ public class MannequinDemoGame : MonoBehaviour
             return; // Cannot move - path is blocked
         }
 
-        if (IsPlayerWithinRange())
+        if (navMeshAgent != null)
         {
-            // Player is physically inside the detection overlap - start catch animation
-            PlayCatchAnimation();
-            return;
+            navMeshAgent.isStopped = false;
+            navMeshAgent.SetDestination(playerTransform.position);
         }
 
-        // Use NavMeshAgent to set destination toward the player
-        ResumeAnimator();
-        navMeshAgent.SetDestination(playerTransform.position);
+        if (animator != null)
+        {
+            animator.SetFloat("MoveBlend", 1);
+        }
     }
 
     private void StopMovement()
     {
-        PauseAnimator();
         if (navMeshAgent != null)
         {
+            navMeshAgent.isStopped = true;
             navMeshAgent.velocity = Vector3.zero;
             navMeshAgent.ResetPath();
+        }
+
+        if (animator != null && !isAnimatingCatch)
+        {
+            animator.SetFloat("MoveBlend", 0);
         }
     }
     private void ReturnIdleAnimation()
     {
-        var randomIdle = Random.Range(0, idleAnimations.Count-1);
-        if(animator!=null)
+        if (animator != null)
         {
-            animator.SetFloat("MoveBlend",0);
-            animator.SetFloat("SelectedPose", randomIdle);
+            animator.SetFloat("MoveBlend", 0);
+
+            if (idleAnimations.Count > 0)
+            {
+                int randomIdle = Random.Range(0, idleAnimations.Count);
+                animator.SetFloat("SelectedPose", randomIdle);
+            }
+
+            animator.SetBool("Capture", false);
         }
     }
     private void ReturnToOriginalPosition()
@@ -305,7 +303,15 @@ public class MannequinDemoGame : MonoBehaviour
         // If not at original position, navigate back
         if (distanceToOrigin > stoppingDistance)
         {
-            navMeshAgent.SetDestination(originalPosition);
+            if (navMeshAgent != null)
+            {
+                navMeshAgent.isStopped = false;
+                navMeshAgent.SetDestination(originalPosition);
+            }
+            if (animator != null)
+            {
+                animator.SetFloat("MoveBlend", 1);
+            }
         }
         else
         {
@@ -316,7 +322,7 @@ public class MannequinDemoGame : MonoBehaviour
         }
     }
 
-    private void PlayCatchAnimation()
+    public void PlayCatchAnimation()
     {
         isAnimatingCatch = true;
         StopMovement();
@@ -326,33 +332,12 @@ public class MannequinDemoGame : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetFloat("MoveBlend",2);
+            animator.SetFloat("MoveBlend", 0);
+            animator.SetBool("Capture", true);
         }
 
         // Start coroutine to wait for animation to complete, then reset position
-        StartCoroutine(WaitForCatchAnimationAndReset());
-    }
-
-    private System.Collections.IEnumerator WaitForCatchAnimationAndReset()
-    {
-        // Wait for animation to start
-        yield return new WaitForSeconds(0.1f);
-
-        if (animator != null)
-        {
-            // Get the current animation state
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            
-            // Wait for the animation to complete
-            yield return new WaitForSeconds(stateInfo.length);
-        }
-        else
-        {
-            // Fallback delay if no animator
-            yield return new WaitForSeconds(2f);
-        }
-        
-
+        // StartCoroutine(WaitForCatchAnimationAndReset());
     }
     public void SwitchPlayerPerspective()
     {
@@ -367,12 +352,19 @@ public class MannequinDemoGame : MonoBehaviour
         // Reset NavMeshAgent
         if (navMeshAgent != null)
         {
+            navMeshAgent.isStopped = true;
             navMeshAgent.velocity = Vector3.zero;
             navMeshAgent.ResetPath();
         }
         
         isAnimatingCatch = false;
         wasMovingLastFrame = false;
+
+        if (animator != null)
+        {
+            animator.SetBool("Capture", false);
+            animator.SetFloat("MoveBlend", 0);
+        }
         
         // Trigger catch animation complete event
         OnCatchAnimationComplete?.Invoke();
