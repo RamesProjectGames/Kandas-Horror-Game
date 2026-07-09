@@ -14,4 +14,4 @@ SwitchCam(SideClassCam), Rotate(Player ^r 0)
 Teacher "Alright, calm down, everybody, save the questions for later." StopAmbience()
 "{a}\nNow, we need to start the class as we have a quiz today.{a}\nJessica, why don’t you sit over there?"
 Jessica "Okay." Objective(Class)
-[w]SwitchCam("Player Camera"), Rotate(Player ^r 90), [w]HidePlayerRig()
+[w]SwitchCam("Player Camera"), [w]Rotate(Player ^r 90), [w]HidePlayerRig()

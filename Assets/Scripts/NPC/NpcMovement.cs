@@ -57,9 +57,8 @@ public class NpcMovement : MovableObjects
         {
             moveMyself = true;
             agent.enabled = true;
-            //validPos = GetValidNavMeshPosition(pos);
-            agent.SetDestination(pos);
-            Debug.LogWarning($"Moving {gameObject.name} to ({pos.x}, {pos.y}, {pos.z})");
+            validPos = GetValidNavMeshPosition(pos);
+            agent.SetDestination(validPos);
         }
         animator.SetFloat("Blend", 1);
         yield return new WaitForEndOfFrame();
@@ -67,13 +66,13 @@ public class NpcMovement : MovableObjects
 
     public override IEnumerator Teleport(Vector3 pos)
     {
-        if (agent != null) agent.enabled = true;
-        agent.Warp(pos);
-        agent.ResetPath();
-        yield return new WaitForSeconds(.1f);
         if (agent != null)
         {
-            agent.enabled = movementAllowed && point.Length > 1;
+            agent.enabled = true;
+            agent.Warp(pos);
+            agent.ResetPath();
+            yield return new WaitForEndOfFrame();
+            agent.enabled = (movementAllowed || moveMyself) && point.Length > 1;
         }
         transform.position = pos;
         float state = 0;
@@ -130,33 +129,12 @@ public class NpcMovement : MovableObjects
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
                 transform.rotation = targetRotation;
             }
-            float state = 0;
-            animState = point[0].endState;
-            if (animState == NPCAnimationState.Sit)
-            {
-                agent.enabled = false;
-                if (DialogueSystem.Instance.isRunningConvo)
-                {
-                    state = UnityEngine.Random.Range(5, 7);
-                }
-                else
-                    state = 4;
-            }
-            else if (animState == NPCAnimationState.Stand)
-            {
-                if (DialogueSystem.Instance.isRunningConvo)
-                {
-                    state = UnityEngine.Random.Range(2, 4);
-                }
-                else
-                    state = UnityEngine.Random.Range(0, 2);
-            }
-            animator.SetFloat("Blend", state / 7f);
+            moveMyself = false;
+            HandleAnimationEndState();
             transform.position = point[idxPoint].position;
         }
         if (point.Length > 1)
             idxPoint = ++idxPoint % point.Length;
-        moveMyself = false;
     }
 
     public void TeleportToWaypoint(int index = 0)
@@ -172,28 +150,8 @@ public class NpcMovement : MovableObjects
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
                 transform.rotation = targetRotation;
             }
-            float state = 0;
-            animState = point[index].endState;
-            if (animState == NPCAnimationState.Sit)
-            {
-                agent.enabled = false;
-                if (DialogueSystem.Instance.isRunningConvo)
-                {
-                    state = UnityEngine.Random.Range(5, 7);
-                }
-                else
-                    state = 4;
-            }
-            else if (animState == NPCAnimationState.Stand)
-            {
-                if (DialogueSystem.Instance.isRunningConvo)
-                {
-                    state = UnityEngine.Random.Range(2, 4);
-                }
-                else
-                    state = UnityEngine.Random.Range(0, 2);
-            }
-            animator.SetFloat("Blend", state / 7f);
+            moveMyself = false;
+            HandleAnimationEndState();
             transform.position = point[index].position;
         }
         if (point.Length > 1)
@@ -271,8 +229,6 @@ public class NpcMovement : MovableObjects
     // Update is called once per frame
     void Update()
     {
-        if (HandlePauseState() || (!movementAllowed && !moveMyself)) return;
-
         if (moveMyself)
         {
             if (!agent.enabled)
@@ -284,19 +240,24 @@ public class NpcMovement : MovableObjects
         {
             return;
         }
+        if (HandlePauseState() || !movementAllowed) return;
+
+        if (animState == NPCAnimationState.Sit)
+            return;
 
         if (agent.remainingDistance <= agent.stoppingDistance)
         {
+            if (point.Length == 0)
+            {
+                HandleAnimationEndState();
+                moveMyself = false;
+                return;
+            }
             if (animState != NPCAnimationState.Walk)
             {
                 currIdleTime -= Time.deltaTime;
                 if (currIdleTime <= 0)
                 {
-                    if (point.Length == 0)
-                    {
-                        moveMyself = false;
-                        return;
-                    }
                     if (++idxPoint >= point.Length)
                     {
                         if (loopMovement)
@@ -339,39 +300,45 @@ public class NpcMovement : MovableObjects
                     transform.rotation = targetRotation;
                 }
             }
-            //Handle Animation End State
-            {
-                float state = 0;
-                animState = point[idxPoint].endState;
-                if (animState == NPCAnimationState.Sit)
-                {
-                    if (DialogueSystem.Instance.isRunningConvo)
-                    {
-                        state = UnityEngine.Random.Range(5, 7);
-                    }
-                    else
-                        state = 4;
-                }
-                else if (animState == NPCAnimationState.Stand)
-                {
-                    if (DialogueSystem.Instance.isRunningConvo)
-                    {
-                        state = UnityEngine.Random.Range(2, 4);
-                    }
-                    else
-                        state = UnityEngine.Random.Range(0, 2);
-                }
-                animator.SetFloat("Blend", state / 7f);
-            }
+            HandleAnimationEndState();
             currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
         }
         else
         {
-            Debug.Log($"Agent {name} is {agent.remainingDistance}m away from it's target, point {idxPoint}, it's currently {(agent.remainingDistance <= agent.stoppingDistance ? "indeed" : "not")} stopped");
+            //Debug.Log($"Agent {name} is {agent.remainingDistance}m away from it's target, point {idxPoint}, it's currently {(agent.remainingDistance <= agent.stoppingDistance ? "indeed" : "not")} stopped");
             animator.SetFloat("Blend", 1f);
             agent.speed = speed;
         }
     }
+
+    void HandleAnimationEndState()
+    {
+        float state = 0;
+        if (point.Length > 0)
+            animState = point[idxPoint].endState;
+        else
+            animState = NPCAnimationState.Stand;
+        if (animState == NPCAnimationState.Sit)
+        {
+            if (DialogueSystem.Instance.isRunningConvo)
+            {
+                state = UnityEngine.Random.Range(5, 7);
+            }
+            else
+                state = 4;
+        }
+        else if (animState == NPCAnimationState.Stand)
+        {
+            if (DialogueSystem.Instance.isRunningConvo)
+            {
+                state = UnityEngine.Random.Range(2, 4);
+            }
+            else
+                state = UnityEngine.Random.Range(0, 2);
+        }
+        animator.SetFloat("Blend", state / 7f);
+    }
+
     void OnAnimatorMove()
     {
         if (animator == null) return;
@@ -438,7 +405,7 @@ public class NpcMovement : MovableObjects
             wasPausedLastFrame = true;
             return true;
         }
-        else if ((moveMyself || movementAllowed) && agent != null) agent.enabled = true;
+        else if (movementAllowed && agent != null) agent.enabled = true;
         if (wasPausedLastFrame)
         {
             wasPausedLastFrame = false;
