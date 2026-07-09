@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine.AI;
 /// Event-based system for interaction tracking
 /// </summary>
 
-public class MannequinDemoGame : MonoBehaviour
+public class MannequinDemoGame : MovableObjects
 {
     // ===== EVENTS =====
     public delegate void MannequinEvent();
@@ -47,6 +48,7 @@ public class MannequinDemoGame : MonoBehaviour
     [SerializeField] private float contactThreshold = 1f;
     private PlayerResetManager resetManager;
     private Vector3 originalPosition;
+    public Vector3 playerResetPosition;
 
     private bool isMovingTowardPlayer = false;
     private bool isAnimatingCatch = false;
@@ -303,14 +305,10 @@ public class MannequinDemoGame : MonoBehaviour
         // If not at original position, navigate back
         if (distanceToOrigin > stoppingDistance)
         {
-            if (navMeshAgent != null)
-            {
-                navMeshAgent.isStopped = false;
-                navMeshAgent.SetDestination(originalPosition);
-            }
+            Teleport(originalPosition);
             if (animator != null)
             {
-                animator.SetFloat("MoveBlend", 1);
+                animator.SetFloat("MoveBlend", 0);
             }
         }
         else
@@ -375,13 +373,52 @@ public class MannequinDemoGame : MonoBehaviour
     private void TriggerPlayerReset()
     {
         CameraManager.SwitchCamera(playerCamera);
-        var settingUI = FindAnyObjectByType<SettingsUI>();
-        if (settingUI != null)
+        if(playerResetPosition == Vector3.zero)
         {
-            settingUI.ShowGameover(true);
+            resetManager.ResetPlayer("Mannequin caught the player");
+            return;
+        }
+        var playerController = FindAnyObjectByType<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.Teleport(playerResetPosition);
         }
     }
+    #region Agent (auto) Movement
+    public override IEnumerator Teleport(Vector3 pos)
+    {
+        agent.enabled = false;
+        transform.position = pos;
+        //agent.Warp(pos);
+        yield return new WaitForSeconds(.1f);
+        agent.enabled = true;
+        agent.ResetPath();
+    }
+    public override IEnumerator Rotate(float yrot)
+    {
+        Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
+        while (Quaternion.Angle(transform.rotation, targetRotation) > 5f)
+        {
+            // Putar secara bertahap dari rotasi saat ini ke rotasi target
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
+            yield return null;
+        }
+        // Snap to exact target
+        transform.rotation = targetRotation;
+    }
 
+    public override IEnumerator Move(Vector3 pos, float speed = 150f)
+    {
+        agent.SetDestination(pos);
+        agent.isStopped = false;
+        yield return new WaitForEndOfFrame();
+    }
+
+    public bool CanUseAgent()
+    {
+        return agent != null && agent.enabled && agent.isOnNavMesh;
+    }
+    #endregion
     private void OnDrawGizmos()
     {
         // Draw detection box with offset

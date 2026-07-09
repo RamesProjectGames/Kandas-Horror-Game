@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
+using Unity.Cinemachine;
 using UnityEngine;
 
 /// <summary>
@@ -26,10 +27,13 @@ public class MannequinFullGame : MonoBehaviour
     private PlayerSightInteraction playerSight;
     private Transform playerTransform;
 
+    [Header("Camera Control")]
+    [SerializeField] private CinemachineCamera chokeCamera;
+    private CinemachineCamera playerCamera;
 
     [Header("Animator Poses")]
-    [SerializeField] private string[] poseAnimations = new string[] { "Pose1", "Pose2", "Pose3" };
-    private Animator animator;
+    [SerializeField] private List<string> poseAnimations = new List<string> { "Pose1", "Pose2", "Pose3" };
+    [SerializeField] private Animator animator;
     private int currentPoseIndex = 0;
 
     [Header("Pose Behavior")]
@@ -54,6 +58,7 @@ public class MannequinFullGame : MonoBehaviour
 
     private bool isInPose = false;
     private bool wasLightOnLastFrame = true;
+    private bool hasIdlePoseSelected = false;
     private int correctStrikesNeeded = 1; // Number of correct strikes needed to defeat all limbs
     private int correctStrikesReceived = 0;
 
@@ -61,7 +66,7 @@ public class MannequinFullGame : MonoBehaviour
     {
         playerSight = FindAnyObjectByType<PlayerSightInteraction>();
         playerTransform = playerSight?.transform;
-        animator = GetComponent<Animator>();
+        // animator = GetComponent<Animator>();
         strikeCollider = GetComponent<Collider>();
         resetManager = FindAnyObjectByType<PlayerResetManager>();
         poseSoundEvent = AudioManager.Instance.CreateInstance(PoseSound);
@@ -72,7 +77,7 @@ public class MannequinFullGame : MonoBehaviour
 
         if (animator == null)
         {
-            Debug.LogError("Mannequin JOJO POSE: No Animator component found!");
+            Debug.LogError("Mannequin : No Animator component found!");
         }
 
         // Initialize limbColliders dictionary with child colliders
@@ -84,6 +89,7 @@ public class MannequinFullGame : MonoBehaviour
 
         poseTimer = timeBetweenPoses;
         correctStrikesReceived = 0;
+        SetRandomIdlePose();
     }
 
     void Update()
@@ -148,13 +154,18 @@ public class MannequinFullGame : MonoBehaviour
             // Trying to strike a non-destroyable mannequin - trigger wrong strike
             OnWrongStrike?.Invoke(limb);
             
+            if (animator != null)
+            {
+                animator.SetBool("Capture", true);
+            }
+
             // Reset all mannequins poses
-            ResetAllMannequinPoses();
+            // ResetAllMannequinPoses();
             
             // Trigger player reset
-            TriggerPlayerResetWrongStrike(limb);
+            // TriggerPlayerResetWrongStrike();
             
-            Debug.Log($"Cannot strike non-destroyable mannequin: {gameObject.name}");
+            // Debug.Log($"Cannot strike non-destroyable mannequin: {gameObject.name}");
             return;
         }
 
@@ -164,22 +175,24 @@ public class MannequinFullGame : MonoBehaviour
             // Wrong strike - trigger event
             OnWrongStrike?.Invoke(limb);
             
+            if (animator != null)
+            {
+                animator.SetBool("Capture", true);
+            }
+
             // Reset all mannequins poses
-            ResetAllMannequinPoses();
+            // ResetAllMannequinPoses();
             
-            // Trigger player reset
-            TriggerPlayerResetWrongStrike(limb);
+            // // Trigger player reset
+            // TriggerPlayerResetWrongStrike();
             
-            Debug.Log($"Wrong mannequin! This one is NOT the correct one!");
+            // Debug.Log($"Wrong mannequin! This one is NOT the correct one!");
         }
         else
         {
             // Correct strike - trigger event
             OnCorrectStrike?.Invoke(limb);
-            
-            // Disable the struck limb collider
-            RemoveLimb(limb);
-            
+                        
             correctStrikesReceived++;
             Debug.Log($"Correct mannequin destroyed! This was the RIGHT one!");
             
@@ -195,24 +208,23 @@ public class MannequinFullGame : MonoBehaviour
             }
         }
     }
-
-    /// <summary>
-    /// Removes/disables a limb collider when struck correctly
-    /// </summary>
-    private void RemoveLimb(string limbName)
+    public void SwitchPlayerPerspective()
     {
-        if (limbColliders.ContainsKey(limbName))
-        {
-            Collider limbCollider = limbColliders[limbName];
-            limbCollider.enabled = false;
-            Debug.Log($"Limb '{limbName}' removed from mannequin");
-        }
-        else
-        {
-            Debug.LogWarning($"Limb '{limbName}' not found in limbColliders dictionary");
-        }
+        playerCamera = CameraManager.currentActiveCamera;
+        CameraManager.SwitchCamera(chokeCamera);
     }
-
+    public void TriggerResetDoll()
+    {
+        if (animator != null)
+        {
+            animator.SetBool("Capture", false);
+        }
+        // Reset all mannequins poses
+        ResetAllMannequinPoses();
+        // Trigger player reset
+        TriggerPlayerResetWrongStrike();
+    }
+    
     /// <summary>
     /// Called when all limbs have been defeated
     /// </summary>
@@ -231,7 +243,8 @@ public class MannequinFullGame : MonoBehaviour
         foreach (MannequinFullGame mannequin in allMannequins)
         {
             mannequin.ForceResetPose();            // Trigger all poses reset event on each mannequin
-            mannequin.OnAllPosesReset?.Invoke();        }
+            mannequin.OnAllPosesReset?.Invoke();        
+        }
         
         Debug.Log("All mannequin poses reset!");
     }
@@ -241,18 +254,26 @@ public class MannequinFullGame : MonoBehaviour
     /// </summary>
     public void ForceResetPose()
     {
+        hasIdlePoseSelected = false;
         ResetToIdle();
         isInPose = false;
     }
 
-    private void UpdatePoseSequence()
+    private void UpdatePoseSequence(bool skipTimer = false)
     {
-        poseTimer -= Time.deltaTime;
+        if (!skipTimer)
+        {
+            poseTimer -= Time.deltaTime;
+        }
+        else
+        {
+            poseTimer = 0f;
+        }
 
         if (poseTimer <= 0f)
         {
             // Switch to next pose
-            currentPoseIndex = (currentPoseIndex + 1) % poseAnimations.Length;
+            currentPoseIndex = (currentPoseIndex + 1) % poseAnimations.Count;
             string poseName = poseAnimations[currentPoseIndex];
 
             PlayPoseSound();
@@ -269,7 +290,8 @@ public class MannequinFullGame : MonoBehaviour
     {
         if (animator != null)
         {
-            animator.SetTrigger(poseName);
+            animator.SetFloat("SelectedPose", currentPoseIndex);
+            hasIdlePoseSelected = false;
             // Trigger pose started event
             OnPoseStarted?.Invoke(currentPoseIndex, poseName);
         }
@@ -284,16 +306,30 @@ public class MannequinFullGame : MonoBehaviour
     {
         if (animator != null)
         {
-            animator.SetTrigger("Idle");
+            animator.SetFloat("MoveBlend", 0);
+            if (!hasIdlePoseSelected)
+            {
+                SetRandomIdlePose();
+            }
         }
         poseTimer = timeBetweenPoses;
     }
 
-    private void TriggerPlayerResetWrongStrike(string hitLimb)
+    private void SetRandomIdlePose()
+    {
+        if (animator != null && poseAnimations.Count > 0)
+        {
+            int randomIdle = Random.Range(0, poseAnimations.Count);
+            animator.SetFloat("SelectedPose", randomIdle);
+            hasIdlePoseSelected = true;
+        }
+    }
+
+    private void TriggerPlayerResetWrongStrike()
     {
         if (resetManager != null)
         {
-            resetManager.ResetPlayer($"Wrong strike on {hitLimb}!");
+            resetManager.ResetPlayer($"Wrong strike !");
         }
     }
 
@@ -320,7 +356,5 @@ public class MannequinFullGame : MonoBehaviour
     {
         strikeSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
-
-    
 }
 
