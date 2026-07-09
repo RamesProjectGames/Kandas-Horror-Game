@@ -64,7 +64,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/BGM.bank
   Name: BGM
   StudioPath: bank:/BGM
-  lastModified: 639114229676683472
+  lastModified: 639192146260964117
   FileSizes:
   - Name: Desktop
     Value: 506
@@ -196,6 +196,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 506
   Exists: 1
+--- !u!114 &-6801844172610267941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/WomanCry
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/WomanCry
+  Guid:
+    Data1: 69287451
+    Data2: 1137378561
+    Data3: 793231782
+    Data4: 1379817338
+  Banks:
+  - {fileID: -84114609574138668}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 34515
 --- !u!114 &-5633297307830457483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +293,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639183499036805842
+  lastModified: 639192146260977466
   FileSizes:
   - Name: Desktop
     Value: 1670
@@ -489,10 +516,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 639180918074101973
+  lastModified: 639192146260944053
   FileSizes:
   - Name: Desktop
-    Value: 767520
+    Value: 1127136
   Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -536,13 +563,14 @@ MonoBehaviour:
   - {fileID: -219522304673146145}
   - {fileID: 5448810224667033649}
   - {fileID: 7454540365068080637}
+  - {fileID: -6801844172610267941}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4634749821997254833}
   StringsBanks:
   - {fileID: 2402750766380479616}
   cacheVersion: 131858
-  cacheTime: 639185945146042515
+  cacheTime: 639192146263353189
   SerializableEventsDict:
   - key: event:/SFX/ChaserFootsteps
     index: 0
@@ -739,10 +767,10 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639185945145990892
+  lastModified: 639192146260987504
   FileSizes:
   - Name: Desktop
-    Value: 2196
+    Value: 2234
   Exists: 1
 --- !u!114 &3269528981090473387
 MonoBehaviour:
@@ -786,7 +814,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639185945146042515
+  lastModified: 639192146263029847
   FileSizes:
   - Name: Desktop
     Value: 844096
@@ -806,7 +834,7 @@ MonoBehaviour:
   Path: Assets/Audio/KandasTest/Build/Desktop/Voice.bank
   Name: Voice
   StudioPath: bank:/Voice
-  lastModified: 639185945146031228
+  lastModified: 639192146263353189
   FileSizes:
   - Name: Desktop
     Value: 533408

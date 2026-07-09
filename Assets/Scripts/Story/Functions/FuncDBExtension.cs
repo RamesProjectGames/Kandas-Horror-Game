@@ -75,6 +75,7 @@ namespace TestingPurposes
             db.AddFunction("HidePlayerRig", new Action(HidePlayerRig));
             db.AddFunction("ShowPlayerRig", new Action(ShowPlayerRig));
             db.AddFunction("ToggleDoor", new Action(ToggleDoor));
+            db.AddFunction("RattleDoor", new Action(RattleDoor));
             db.AddFunction("CloseDoor", new Action(CloseDoor));
             db.AddFunction("OpenDoor", new Action(OpenDoor));
             db.AddFunction("ToggleSpecificDoor", new Action<string>(ToggleSpecificDoor));
@@ -361,6 +362,14 @@ namespace TestingPurposes
         private static void ToggleDoor()
         {
             UnityEngine.Object.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.GetComponent<Door>().ToggleDoor();
+        }
+
+        private static void RattleDoor()
+        {
+            EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
+
+            Vector3 pos = GameObject.Find("Player").transform.position;
+            AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
         }
 
         private static void ToggleSpecificDoor(string arg = "")
