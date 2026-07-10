@@ -1,10 +1,14 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MovingObject : MonoBehaviour
 {
     public Vector3 From;
     public Vector3 To;
+
+    public UnityEvent onComplete;
+    public UnityEvent<float> onProgress;
 
     Vector3 originalPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -12,7 +16,7 @@ public class MovingObject : MonoBehaviour
     {
         originalPosition = transform.position;
     }
-    public void MoveToTarget(float speed = 1f,Action onComplete = null, Action<float> onProgress = null)
+    public void MoveToTarget(float speed = 1f)
     {
         transform.LeanMove(To, speed)
         .setOnComplete(() =>
@@ -24,7 +28,7 @@ public class MovingObject : MonoBehaviour
             onProgress?.Invoke(progress);
         });
     }
-    public void MoveBackToOriginal(float speed = 1f, Action onComplete = null, Action<float> onProgress = null)
+    public void MoveBackToOriginal(float speed = 1f)
     {
         transform.LeanMove(originalPosition, speed)
         .setOnComplete(() =>

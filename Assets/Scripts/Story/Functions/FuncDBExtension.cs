@@ -39,6 +39,8 @@ namespace TestingPurposes
             db.AddFunction("TeleportToWaypoint", new Action<string[]>(TeleportToWaypoint));
             db.AddFunction("Rotate", new Func<string[], IEnumerator>(RotateObject));
             db.AddFunction("Move", new Func<string[], IEnumerator>(MoveObject));
+            db.AddFunction("MoveToTarget", new Func<string[], IEnumerator>(MoveToTargetWrapper));
+            db.AddFunction("MoveBackToOriginal", new Func<string[], IEnumerator>(MoveBackToOriginalWrapper));
             db.AddFunction("PlayerFaceFront", new Action(PlayerFaceFront));
             db.AddFunction("AllowNPCMovement", new Action<string>(AllowNPCMovement));
             db.AddFunction("Fadein", new Func<string, IEnumerator>(FadeIn));
@@ -182,6 +184,73 @@ namespace TestingPurposes
         private static void MovePrep()
         {
             NpcMovement.MovePrep.Invoke();
+        }
+
+        private static IEnumerator MoveToTargetWrapper(string[] args)
+        {
+            GameObject movableObject = GameObject.Find(args[0]);
+            FunctionParams funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^s" }, out float speed, defaultValue: 1f);
+
+            movableObject.TryGetComponent(out MovingObject moveScript);
+            if (moveScript != null)
+            {
+                bool completed = false;
+                float progress = 0f;
+
+                // Subscribe to UnityEvents to track progress and completion
+                moveScript.onComplete.AddListener(() =>
+                {
+                    completed = true;
+                    Debug.Log("MoveToTarget completed, calling OpenDoor()");
+                    OpenDoor();
+                });
+
+                moveScript.onProgress.AddListener((float progressValue) =>
+                {
+                    progress = progressValue;
+                    Debug.Log($"MoveToTarget Progress: {progress:P2}");
+                });
+
+                moveScript.MoveToTarget(speed);
+
+                while (!completed)
+                    yield return null;
+
+            }
+        }
+
+        private static IEnumerator MoveBackToOriginalWrapper(string[] args)
+        {
+            GameObject movableObject = GameObject.Find(args[0]);
+            FunctionParams funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^s" }, out float speed, defaultValue: 1f);
+
+            movableObject.TryGetComponent(out MovingObject moveScript);
+            if (moveScript != null)
+            {
+                bool completed = false;
+                float progress = 0f;
+
+                // Subscribe to UnityEvents to track progress and completion
+                moveScript.onComplete.AddListener(() =>
+                {
+                    completed = true;
+                    Debug.Log("MoveBackToOriginal completed");
+                });
+
+                moveScript.onProgress.AddListener((float progressValue) =>
+                {
+                    progress = progressValue;
+                    Debug.Log($"MoveBackToOriginal Progress: {progress:P2}");
+                });
+
+                moveScript.MoveBackToOriginal(speed);
+
+                while (!completed)
+                    yield return null;
+
+            }
         }
         #endregion
 
