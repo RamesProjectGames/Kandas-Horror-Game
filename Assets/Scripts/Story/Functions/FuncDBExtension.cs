@@ -73,7 +73,9 @@ namespace TestingPurposes
             db.AddFunction("PrepLunch", new Func<IEnumerator>(PrepLunch));
             db.AddFunction("EatLunch", new Func<IEnumerator>(EatLunch));
             db.AddFunction("HidePlayerRig", new Action(HidePlayerRig));
+            db.AddFunction("HideNpcRig", new Action<string[]>(HideNpcRig));
             db.AddFunction("ShowPlayerRig", new Action(ShowPlayerRig));
+            db.AddFunction("ShowNpcRig", new Action<string>(ShowNpcRig));
             db.AddFunction("ToggleDoor", new Action(ToggleDoor));
             db.AddFunction("RattleDoor", new Action(RattleDoor));
             db.AddFunction("CloseDoor", new Action(CloseDoor));
@@ -357,6 +359,27 @@ namespace TestingPurposes
         private static void ShowPlayerRig()
         {
             GameObject.Find("Player").GetComponent<PlayerController>().ToggleRig(true);
+        }
+
+        private static void HideNpcRig(string[] args)
+        {
+            Debug.Log("Hiding NPC Rig");
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^t" }, out float delay, defaultValue: 0);
+            NpcMovement chara = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == args[0]);
+            if(chara != null)
+            {
+                chara.StartCoroutine(chara.ToggleRig(false, delay));
+            }
+        }
+
+        private static void ShowNpcRig(string arg)
+        {
+            NpcMovement chara = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == arg);
+            if (chara != null)
+            {
+                chara.StartCoroutine(chara.ToggleRig(true, 0));
+            }
         }
 
         private static void ToggleDoor()

@@ -103,7 +103,7 @@ public class NpcMovement : MovableObjects
 
         while (Quaternion.Angle(transform.rotation, targetRotation) >= 10f)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 3 * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 5 * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
     }
@@ -129,7 +129,6 @@ public class NpcMovement : MovableObjects
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
                 transform.rotation = targetRotation;
             }
-            moveMyself = false;
             HandleAnimationEndState();
             transform.position = point[idxPoint].position;
         }
@@ -150,12 +149,38 @@ public class NpcMovement : MovableObjects
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
                 transform.rotation = targetRotation;
             }
-            moveMyself = false;
-            HandleAnimationEndState();
             transform.position = point[index].position;
         }
-        if (point.Length > 1)
-            idxPoint = (index + 1) % point.Length;
+        if (moveMyself && point.Length > 1)
+        {
+            if (++index >= point.Length)
+            {
+                if (loopMovement)
+                {
+                    idxPoint = index % point.Length;
+                    agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
+                    animState = NPCAnimationState.Walk;
+                    animator.SetFloat("Blend", 1f);
+                }
+                else
+                {
+                    moveMyself = false;
+                    HandleAnimationEndState();
+                    return;
+                }
+            }
+            else
+            {
+                idxPoint = index % point.Length;
+                agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
+                animState = NPCAnimationState.Walk;
+                animator.SetFloat("Blend", 1f);
+            }
+        }
+        else
+        {
+            HandleAnimationEndState();
+        }
     }
     #endregion
 
@@ -231,16 +256,16 @@ public class NpcMovement : MovableObjects
     {
         if (moveMyself)
         {
-            if (!agent.enabled)
+            if (agent != null && !agent.enabled)
             {
-                if (agent != null) agent.enabled = true;
+                agent.enabled = true;
             }
         }
         else
         {
             return;
         }
-        if (HandlePauseState() || !movementAllowed) return;
+        if (HandlePauseState()) return;
 
         if (animState == NPCAnimationState.Sit)
             return;
@@ -283,13 +308,14 @@ public class NpcMovement : MovableObjects
                 }
                 return; // Exit early while idling
             }
+            currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
             if (point[idxPoint].faceTowards != null)
             {
                 //Rotate
                 Vector3 targetPos = point[idxPoint].faceTowards.position;
                 targetPos.y = transform.position.y;
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 5 * Time.deltaTime);
 
                 if (Quaternion.Angle(transform.rotation, targetRotation) > 5f)
                 {
@@ -301,11 +327,10 @@ public class NpcMovement : MovableObjects
                 }
             }
             HandleAnimationEndState();
-            currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
         }
         else
         {
-            //Debug.Log($"Agent {name} is {agent.remainingDistance}m away from it's target, point {idxPoint}, it's currently {(agent.remainingDistance <= agent.stoppingDistance ? "indeed" : "not")} stopped");
+            //Debug.Log($"Character {name} is {agent.remainingDistance}m away from it's target, point {idxPoint}, it's currently {(agent.remainingDistance <= agent.stoppingDistance ? "indeed" : "not")} stopped");
             animator.SetFloat("Blend", 1f);
             agent.speed = speed;
         }
@@ -346,6 +371,23 @@ public class NpcMovement : MovableObjects
         // agent.nextPosition to the transform so the NavMesh stays consistent.
         agent.nextPosition = transform.position;
     }
+
+    public IEnumerator ToggleRig(bool active, float delay)
+    {
+        float elapsedTime = 0;
+        while (elapsedTime < delay)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        Debug.Log($"{(active? "Showing": "Hiding")} NPC Rig furreal");
+
+        foreach (SkinnedMeshRenderer rig in GetComponentsInChildren<SkinnedMeshRenderer>(true))
+        {
+            rig.gameObject.SetActive(active);
+        }
+    }
+
     public void SynchronizeAnimatorAndAgent()
     {
         if (animator == null) return;
@@ -409,10 +451,7 @@ public class NpcMovement : MovableObjects
         if (wasPausedLastFrame)
         {
             wasPausedLastFrame = false;
-            //if (agent.enabled && point.Length > 0)
-            //{
-            //    agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
-            //}
+
         }
         return false;
     }
@@ -427,7 +466,7 @@ public class NpcMovement : MovableObjects
 
         while (Quaternion.Angle(transform.rotation, targetRotation) >= 1f)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 3 * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 5 * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
         transform.rotation = targetRotation;

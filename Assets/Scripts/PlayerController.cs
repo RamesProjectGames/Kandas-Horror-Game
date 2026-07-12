@@ -29,7 +29,6 @@ public class PlayerController : MovableObjects
 
     [Header("Input Action")]
     private Vector3 input;
-    private Vector3 up;
     [SerializeField] private InputActionReference moveAction, lookAction, sprintAction, crouchAction, unlockAction;
 
     [Header("Numeric Values")]
@@ -605,7 +604,7 @@ public class PlayerController : MovableObjects
         while (Quaternion.Angle(transform.rotation, targetRotation) > 10f)
         {
             // Putar secara bertahap dari rotasi saat ini ke rotasi target
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5.0f);
             yield return null;
         }
         // Snap to exact target

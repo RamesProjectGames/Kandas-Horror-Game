@@ -17651,6 +17651,39 @@ MonoBehaviour:
     LimitedAfterObjective: Lunch
     ObjectiveObject: {fileID: 0}
     Chapter: 1
+  - Name: Alya1
+    Description: Follow Me
+    IsCompleted: 0
+    isHidden: 1
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - SubmitQuiz
+    LimitedAfterObjective: Bathroom
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: Alya2
+    Description: Follow Me
+    IsCompleted: 0
+    isHidden: 1
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - Alya1
+    LimitedAfterObjective: Bathroom
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: Alya3
+    Description: Follow Me
+    IsCompleted: 0
+    isHidden: 1
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - Alya2
+    LimitedAfterObjective: Bathroom
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
   - Name: RattleDoor
     Description: Rattle the Corner Bathroom Door
     IsCompleted: 0
@@ -17693,17 +17726,6 @@ MonoBehaviour:
     requirements:
     - SubmitQuiz
     LimitedAfterObjective: Lunch
-    ObjectiveObject: {fileID: 0}
-    Chapter: 1
-  - Name: Fragment1
-    Description: News Letter
-    IsCompleted: 0
-    isHidden: 0
-    isDemo: 0
-    fragmentData: {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
-    requirements:
-    - SubmitQuiz
-    LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   - Name: NurseReport
@@ -17825,6 +17847,17 @@ MonoBehaviour:
     requirements:
     - BackToClass2
     LimitedAfterObjective: SitDesk
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: Fragment1
+    Description: News Letter
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
+    requirements:
+    - SubmitQuiz
+    LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   ObjectivePrefab: {fileID: 4575612503608170280, guid: d23d41e198abf6d4bafe61812b8a5261, type: 3}
