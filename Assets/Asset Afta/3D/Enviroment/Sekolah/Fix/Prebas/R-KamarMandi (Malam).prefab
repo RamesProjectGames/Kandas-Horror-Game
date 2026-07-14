@@ -1,5 +1,83 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+<<<<<<<< HEAD:Assets/Asset Afta/3D/Enviroment/Sekolah/Fix/Prebas/R-KamarMandi (Malam).prefab
+========
+--- !u!1 &256362950492195701
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 91910031160673221}
+  - component: {fileID: 4836415849683005090}
+  - component: {fileID: 8584462046763825461}
+  m_Layer: 11
+  m_Name: Pickup Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &91910031160673221
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256362950492195701}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5316240134850041521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0.25, y: 0}
+  m_SizeDelta: {x: -0.5, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4836415849683005090
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256362950492195701}
+  m_CullTransparentMesh: 1
+--- !u!114 &8584462046763825461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256362950492195701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: bd835d75bfc492548927512025cc7a05, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+>>>>>>>> bb2d0790 (Update Last (BETA) 3):Assets/Asset Afta/3D/Enviroment/Sekolah/Fix/Prebas/R-KamarMandi (Pagi).prefab
 --- !u!1 &742677035083261973
 GameObject:
   m_ObjectHideFlags: 0
@@ -1011,7 +1089,11 @@ GameObject:
   m_Component:
   - component: {fileID: 78653085657556775}
   m_Layer: 0
+<<<<<<<< HEAD:Assets/Asset Afta/3D/Enviroment/Sekolah/Fix/Prebas/R-KamarMandi (Malam).prefab
   m_Name: R-KamarMandi (Malam)
+========
+  m_Name: R-KamarMandi (Pagi)
+>>>>>>>> bb2d0790 (Update Last (BETA) 3):Assets/Asset Afta/3D/Enviroment/Sekolah/Fix/Prebas/R-KamarMandi (Pagi).prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1055,12 +1137,116 @@ Transform:
   - {fileID: 2061391812696644952}
   - {fileID: 3802570522678191320}
   - {fileID: 829708081539387461}
+<<<<<<<< HEAD:Assets/Asset Afta/3D/Enviroment/Sekolah/Fix/Prebas/R-KamarMandi (Malam).prefab
   - {fileID: 8335847210159686972}
   - {fileID: 4612303416339975581}
   - {fileID: 717674823423459704}
   - {fileID: 6554699778424449456}
+========
+  - {fileID: 4175368378568756481}
+  - {fileID: 746808300904990112}
+  - {fileID: 4875906115824978245}
+  - {fileID: 8445944420977341297}
+>>>>>>>> bb2d0790 (Update Last (BETA) 3):Assets/Asset Afta/3D/Enviroment/Sekolah/Fix/Prebas/R-KamarMandi (Pagi).prefab
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5940368876959252590
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8445944420977341297}
+  - component: {fileID: 2043135129383828806}
+  m_Layer: 0
+  m_Name: Point Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8445944420977341297
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5940368876959252590}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.70710677, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -10.128326, y: 2.6247578, z: 6.313386}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 78653085657556775}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &2043135129383828806
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5940368876959252590}
+  m_Enabled: 1
+  serializedVersion: 11
+  m_Type: 2
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &6084772605379176013
 GameObject:
   m_ObjectHideFlags: 0
@@ -14702,84 +14888,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7945977316063339013, guid: a8026682ac3a84748978bec36001839d, type: 3}
   m_PrefabInstance: {fileID: 6641693185471104886}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &6736331457556336219
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 78653085657556775}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 100.000015
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 100.000015
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 100.000015
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -10.465
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.931
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 8.733
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.0000015795231
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.0000015199184
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_Name
-      value: LampuKelas (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
---- !u!4 &6554699778424449456 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
-  m_PrefabInstance: {fileID: 6736331457556336219}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7071207430699113987
 PrefabInstance:
