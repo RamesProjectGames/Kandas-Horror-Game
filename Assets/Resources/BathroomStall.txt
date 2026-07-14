@@ -1,7 +1,7 @@
 TryOpenDoor()
 if(DoorAttempts() == 1)
 {
-	Jessica "Huh."
+	Jessica "Huh." MoveToTarget("WallSamping-KamarMandi (1)" ^s 10), MoveToTarget("WallSamping-KamarMandi (2)" ^s 10)
 }
 if(DoorAttempts() == 4)
 {
