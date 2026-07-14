@@ -33,7 +33,7 @@ public class NpcMovement : MovableObjects
             allowMovement = value;
         }
     }
-    float speed = 1f;
+    [SerializeField] float speed = 1f;
     float idleTime = 5f, currIdleTime;
     bool wasPausedLastFrame = false;
     float lastFootstep;
