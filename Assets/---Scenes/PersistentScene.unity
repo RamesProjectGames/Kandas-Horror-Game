@@ -15600,7 +15600,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Escape
+  m_text: Esc
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a689d5f143bcc7d449b37f31cbd56b63, type: 2}
   m_sharedMaterial: {fileID: 7174644295773688519, guid: a689d5f143bcc7d449b37f31cbd56b63, type: 2}
@@ -17588,7 +17588,7 @@ MonoBehaviour:
   objectiveDatas:
   - Name: Class
     Description: Go to the class
-    IsCompleted: 1
+    IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
@@ -17598,7 +17598,7 @@ MonoBehaviour:
     Chapter: 1
   - Name: Desk
     Description: Sit on your desk.
-    IsCompleted: 1
+    IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
@@ -17609,7 +17609,7 @@ MonoBehaviour:
     Chapter: 1
   - Name: DoQuiz
     Description: Finish the Math Quiz
-    IsCompleted: 1
+    IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
@@ -17620,7 +17620,7 @@ MonoBehaviour:
     Chapter: 1
   - Name: SubmitQuiz
     Description: "Submit your quiz paper on the teacher\u2019s desk"
-    IsCompleted: 1
+    IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
@@ -17645,25 +17645,69 @@ MonoBehaviour:
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
-    fragmentData: {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
-    requirements:
-    - SubmitQuiz
-    LimitedAfterObjective: Lunch
-    ObjectiveObject: {fileID: 0}
-    Chapter: 1
-  - Name: Laidback
-    Description: Talk to the Laid-back student
-    IsCompleted: 0
-    isHidden: 1
-    isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
     - SubmitQuiz
     LimitedAfterObjective: Lunch
     ObjectiveObject: {fileID: 0}
     Chapter: 1
-  - Name: Diligent
-    Description: Talk to the Diligent student
+  - Name: Alya1
+    Description: Follow Me
+    IsCompleted: 0
+    isHidden: 1
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - SubmitQuiz
+    LimitedAfterObjective: Bathroom
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: Alya2
+    Description: Follow Me
+    IsCompleted: 0
+    isHidden: 1
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - Alya1
+    LimitedAfterObjective: Bathroom
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: Alya3
+    Description: Follow Me
+    IsCompleted: 0
+    isHidden: 1
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - Alya2
+    LimitedAfterObjective: Bathroom
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: RattleDoor
+    Description: Rattle the Corner Bathroom Door
+    IsCompleted: 0
+    isHidden: 1
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - SubmitQuiz
+    LimitedAfterObjective: EatLunch
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: ToiletCry
+    Description: Leave the Bathroom
+    IsCompleted: 0
+    isHidden: 1
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - RattleDoor
+    LimitedAfterObjective: EatLunch
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: Laidback
+    Description: Talk to the Laid-back student
     IsCompleted: 0
     isHidden: 1
     isDemo: 0
@@ -17684,20 +17728,9 @@ MonoBehaviour:
     LimitedAfterObjective: Lunch
     ObjectiveObject: {fileID: 0}
     Chapter: 1
-  - Name: Fragment1
-    Description: News Letter
-    IsCompleted: 0
-    isHidden: 0
-    isDemo: 0
-    fragmentData: {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
-    requirements:
-    - SubmitQuiz
-    LimitedAfterObjective: Bathroom
-    ObjectiveObject: {fileID: 0}
-    Chapter: 1
   - Name: NurseReport
     Description: Read the report in the Nurse Office
-    IsCompleted: 0
+    IsCompleted: 1
     isHidden: 1
     isDemo: 0
     fragmentData: {fileID: 0}
@@ -17814,6 +17847,17 @@ MonoBehaviour:
     requirements:
     - BackToClass2
     LimitedAfterObjective: SitDesk
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: Fragment1
+    Description: News Letter
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 11400000, guid: f48bc97d47af51e41a699ea0ea44f6db, type: 2}
+    requirements:
+    - SubmitQuiz
+    LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   ObjectivePrefab: {fileID: 4575612503608170280, guid: d23d41e198abf6d4bafe61812b8a5261, type: 3}
@@ -19459,6 +19503,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Jessica
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e7d286001bdc1f94499806ee4b55eab7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: e7d286001bdc1f94499806ee4b55eab7, type: 3}
       propertyPath: m_Controller
       value: 
@@ -19935,7 +19983,7 @@ MonoBehaviour:
   PivotOffset: {x: 0, y: 0, z: 0}
   AmplitudeGain: 0.5
   FrequencyGain: 0.5
-  m_NoiseOffsets: {x: 0, y: 0, z: 0}
+  m_NoiseOffsets: {x: -402.4397, y: 177.01257, z: 477.2551}
 --- !u!114 &1252175988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25903,7 +25951,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Left Shift
+  m_text: Shift
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a689d5f143bcc7d449b37f31cbd56b63, type: 2}
   m_sharedMaterial: {fileID: 7174644295773688519, guid: a689d5f143bcc7d449b37f31cbd56b63, type: 2}
@@ -28474,8 +28522,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761790445}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15, y: 0.6, z: -5}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -28485,7 +28533,7 @@ Transform:
   - {fileID: 890258805}
   - {fileID: 1234470049}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &1761790461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28503,7 +28551,7 @@ MonoBehaviour:
   eyeOffset: 1.5
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 9985
   enemyTag: Enemy
   visibleEnemies: []
   canSeeAnyEnemy: 0
