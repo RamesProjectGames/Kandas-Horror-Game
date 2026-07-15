@@ -11,6 +11,11 @@ public class ConfirmationUI : MonoBehaviour
     public Button confirmButton;
     void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(Instance.gameObject);
+            Instance = null;
+        }
         Instance = this;
     }
     void Start()

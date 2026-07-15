@@ -1733,7 +1733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterPanel: {fileID: 1940191588}
-  mainmenuPanel: {fileID: 0}
+  mainmenuPanel: {fileID: 406953651}
   chapters:
   - {fileID: 843994988}
   - {fileID: 903546710}
@@ -8767,6 +8767,15 @@ MonoBehaviour:
     m_SceneName: Chapter 3-Villa
   - m_SceneAsset: {fileID: 102900000, guid: 074cf16857a479e48aa043dd07e75395, type: 3}
     m_SceneName: Chapter 3-Villa
+  allScenes:
+  - m_SceneAsset: {fileID: 102900000, guid: ccc2859e885a3a84dbb8afbf70a877aa, type: 3}
+    m_SceneName: Test-Chapter 1
+  - m_SceneAsset: {fileID: 102900000, guid: b9d454d0acb8238499c153757f09aa5c, type: 3}
+    m_SceneName: Chapter 1 (Malam)
+  - m_SceneAsset: {fileID: 102900000, guid: 3308fad8b00ebbf478fdc3857bf27c04, type: 3}
+    m_SceneName: Chapter 2-RumahMC
+  - m_SceneAsset: {fileID: 102900000, guid: 074cf16857a479e48aa043dd07e75395, type: 3}
+    m_SceneName: Chapter 3-Villa
   saveFileName: chapter_progress.json
 --- !u!1 &520389694
 GameObject:
@@ -11602,6 +11611,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57afa8ac0e044ab4f97c0f6638a9dc26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentChapterScene:
+    m_SceneAsset: {fileID: 0}
+    m_SceneName: 
+  persistentScene:
+    m_SceneAsset: {fileID: 102900000, guid: 7859279b44f88de4994ec505c7c71dd5, type: 3}
+    m_SceneName: PersistentScene
 --- !u!1 &755785594
 GameObject:
   m_ObjectHideFlags: 0

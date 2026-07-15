@@ -8,6 +8,7 @@ using System;
 using UnityEngine.InputSystem.Samples.RebindUI;
 using Unity.Mathematics;
 using UnityEngine.SceneManagement;
+using Dialogue;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -362,7 +363,11 @@ public class SettingsUI : MonoBehaviour
             if(PausePanel != null) PausePanel.SetActive(false);
         }
     }
-    public void BackToMainMenu() { SceneManager.LoadScene("Main Menu"); }
+    public void BackToMainMenu()
+    {
+        DialogueSystem.Instance.StopDialogue();
+        SceneManager.LoadScene("Main Menu");
+    }
     public void ShowGameover(bool open)
     { 
         GameoverPanel.SetActive(open); 

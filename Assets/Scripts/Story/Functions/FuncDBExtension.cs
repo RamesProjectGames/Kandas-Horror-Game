@@ -4,9 +4,11 @@ using FMODUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Dialogue.Functions
 {
@@ -69,6 +71,7 @@ namespace TestingPurposes
             #endregion
             #region Misc Events
             db.AddFunction("PlayCutsceneVideo", new Action<string[]>(PlayCutscene));
+            db.AddFunction("SwitchScene", new Action<string>(SwitchScene));
             db.AddFunction("InspectFragment", new Action<string[]>(InspectFragment));
             db.AddFunction("StartQuiz", new Action(StartQuiz));
             db.AddFunction("EndQuiz", new Action(EndQuiz));
@@ -206,6 +209,10 @@ namespace TestingPurposes
                     completed = true;
                     Debug.Log("MoveToTarget completed, calling OpenDoor()");
                     OpenDoor();
+                    ShowNpcRig("Alya Bathroom");
+                    DialogueSystem.Instance.StartCoroutine(DialogueSystem.Instance.FadeToBlack(1));
+                    SwitchScene("Chapter 1 (Malam)");
+                    DialogueSystem.Instance.StartCoroutine(DialogueSystem.Instance.FadeFromBlack(1));
                 });
 
                 moveScript.onProgress.AddListener((float progressValue) =>
@@ -383,6 +390,25 @@ namespace TestingPurposes
 
         }
 
+        private static void SwitchScene(string arg)
+        {
+            if (ChapterDataManager.Instance == null)
+                return;
+
+            SceneField nextScene = ChapterDataManager.Instance.GetSceneByName(arg);
+            Debug.LogWarning(nextScene.SceneName);
+            if (nextScene == null)
+                return;
+
+            List<SceneField> scenesToLoad = new List<SceneField> { nextScene };
+            List<SceneField> scenesToUnload = new List<SceneField> { AsyncSceneLoader.Instance.currentChapterScene };
+
+            if (SceneManager.GetActiveScene().name != nextScene.SceneName)
+            {
+                AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, nextScene);
+            }
+        }
+
         private static void MoveSpecificNPC(string arg)
         {
             Debug.Log($"Moving {arg}");
@@ -520,17 +546,11 @@ namespace TestingPurposes
 
         private static IEnumerator TryOpenDoor()
         {
-            if(++DoorAttempts < 10)
-            {
-                EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
+            ++DoorAttempts;
+            EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
 
-                Vector3 pos = GameObject.Find("Player").transform.position;
-                AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
-            }
-            else
-            {
-                OpenDoor();
-            }
+            Vector3 pos = GameObject.Find("Player").transform.position;
+            AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
             yield return null;
         }
 

@@ -17714,7 +17714,7 @@ MonoBehaviour:
     fragmentData: {fileID: 0}
     requirements:
     - SubmitQuiz
-    LimitedAfterObjective: Lunch
+    LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   - Name: LoveLetter
@@ -17725,7 +17725,7 @@ MonoBehaviour:
     fragmentData: {fileID: 0}
     requirements:
     - SubmitQuiz
-    LimitedAfterObjective: Lunch
+    LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   - Name: NurseReport
@@ -17736,7 +17736,7 @@ MonoBehaviour:
     fragmentData: {fileID: 0}
     requirements:
     - SubmitQuiz
-    LimitedAfterObjective: Lunch
+    LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   - Name: WaitingFood
@@ -19872,6 +19872,8 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: 0}
         Gain: 0
+        LegacyInput: 
+        LegacyGain: 1
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -19883,6 +19885,8 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
         Gain: -1
+        LegacyInput: 
+        LegacyGain: 1
         CancelDeltaTime: 0
       InputValue: 0
       Driver:

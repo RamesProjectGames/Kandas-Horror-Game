@@ -153,7 +153,7 @@ public class ObjectiveManager : MonoBehaviour
     }
     public bool IsObjectiveAvailable(ObjectiveData data)
     {
-        return data.Chapter == currentChapter &&
+        return data.Chapter >= currentChapter &&
                (isDemoBuild || !data.isDemo);
     }
 
@@ -162,14 +162,10 @@ public class ObjectiveManager : MonoBehaviour
         if (ChapterDataManager.Instance == null)
             return;
 
-        List<ObjectiveData> chapterObjectives = objectiveDatas.FindAll(x => x.Chapter == currentChapter);
-        if (chapterObjectives.Count == 0)
-            return;
-
-        bool allCompleted = chapterObjectives.All(x => x.IsCompleted);
-        if (allCompleted)
+        if (Objectives.Count(obj => currentObjectives.Contains(obj.objectiveData.Name) && obj.objectiveData.Chapter != currentChapter) > 0)
         {
             ChapterDataManager.Instance.UnlockChapter(currentChapter + 1);
+            UpdateCurrentObjectives();
             LoadNextChapterScene();
         }
     }

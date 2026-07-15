@@ -11,6 +11,7 @@ public class ChapterDataManager : MonoBehaviour
     public int currentChapterIndex = 0;
     public List<int> collectedFragments = new List<int>();
     public List<SceneField> chapterScenes = new List<SceneField>();
+    public List<SceneField> allScenes = new List<SceneField>();
 
     [SerializeField] private string saveFileName = "chapter_progress.json";
 
@@ -111,6 +112,11 @@ public class ChapterDataManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public SceneField GetSceneByName(string sceneName)
+    {
+        return allScenes.Find(x => x.SceneName == sceneName);
     }
 
     private void OnApplicationQuit()

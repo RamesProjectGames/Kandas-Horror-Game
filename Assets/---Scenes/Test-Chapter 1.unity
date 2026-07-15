@@ -2971,7 +2971,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
@@ -2979,7 +2979,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
-      value: Mini_LaidBack
+      value: Mini_Studying
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_Studying
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].objective.Array.size
@@ -2987,7 +2991,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
@@ -2995,11 +3003,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
-      value: LaidBack
+      value: LunchTable
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[1]'
       value: Lunch
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 4052277561989464709, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: m_Layer
@@ -39592,15 +39604,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
-      value: Mini_LaidbackDefault
+      value: Mini_Laidback
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
-      value: Mini_Laidback
+      value: Mini_LaidbackDefault
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_LaidbackDefault
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[3].dialogueAsset
+      value: Mini_LaidbackDefault
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].objective.Array.size
@@ -39608,11 +39628,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[3].objective.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
-      value: Lunch
+      value: Laidback
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[1]'
@@ -39625,6 +39653,14 @@ PrefabInstance:
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[1]'
       value: Laidback
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: LunchTable
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[3].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 5419978666489933097, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
@@ -57334,7 +57370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
@@ -73933,14 +73969,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
       value: Mini_LazyDelinquent
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
+      value: Mini_LazyDelinquent
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_LazyDelinquent
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
@@ -73950,6 +74002,14 @@ PrefabInstance:
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[1]'
       value: Studying
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
+      value: LunchTable
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 5419978666489933097, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
@@ -78058,14 +78118,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
       value: Mini_CompeSmart
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
+      value: Mini_CompeSmart
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_CompeSmart
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
@@ -78075,6 +78151,14 @@ PrefabInstance:
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[1]'
       value: Studying
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
+      value: LunchTable
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 5419978666489933097, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
@@ -79354,10 +79438,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1448325132644624539, guid: 8ec4ca0c5fd847042b765399cde5a8fa, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1448325132644624539, guid: 8ec4ca0c5fd847042b765399cde5a8fa, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
+      value: Mini_TeacherStudent
+      objectReference: {fileID: 0}
+    - target: {fileID: 1448325132644624539, guid: 8ec4ca0c5fd847042b765399cde5a8fa, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
+      value: Mini_TeacherStudent
+      objectReference: {fileID: 0}
+    - target: {fileID: 1448325132644624539, guid: 8ec4ca0c5fd847042b765399cde5a8fa, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
       value: Mini_TeacherStudent
       objectReference: {fileID: 0}
     - target: {fileID: 1448325132644624539, guid: 8ec4ca0c5fd847042b765399cde5a8fa, type: 3}
@@ -79365,8 +79457,24 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1448325132644624539, guid: 8ec4ca0c5fd847042b765399cde5a8fa, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1448325132644624539, guid: 8ec4ca0c5fd847042b765399cde5a8fa, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1448325132644624539, guid: 8ec4ca0c5fd847042b765399cde5a8fa, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
       value: Lunch
+      objectReference: {fileID: 0}
+    - target: {fileID: 1448325132644624539, guid: 8ec4ca0c5fd847042b765399cde5a8fa, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
+      value: LunchTable
+      objectReference: {fileID: 0}
+    - target: {fileID: 1448325132644624539, guid: 8ec4ca0c5fd847042b765399cde5a8fa, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 1614373321673768933, guid: 8ec4ca0c5fd847042b765399cde5a8fa, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -87300,7 +87408,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
@@ -87308,7 +87416,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
-      value: Mini_LaidBack
+      value: Mini_TeacherStudent
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_TeacherStudent
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].objective.Array.size
@@ -87316,7 +87428,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
@@ -87324,11 +87440,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
-      value: LaidBack
+      value: LunchTable
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[1]'
       value: Lunch
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 4052277561989464709, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: m_Layer
@@ -111902,14 +112022,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
       value: Mini_Lovestruck
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
+      value: Mini_Lovestruck
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_Lovestruck
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
@@ -111919,6 +112055,14 @@ PrefabInstance:
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[1]'
       value: Studying
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
+      value: LunchTable
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 5419978666489933097, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
@@ -125074,7 +125218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
@@ -125082,7 +125226,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
-      value: Mini_LaidBack
+      value: Mini_SoftChatty
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_SoftChatty
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].objective.Array.size
@@ -125090,7 +125238,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
@@ -125098,11 +125250,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
-      value: LaidBack
+      value: LunchTable
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[1]'
       value: Lunch
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 4052277561989464709, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: m_Layer
@@ -168802,7 +168958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
@@ -168810,7 +168966,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
-      value: Mini_LaidBack
+      value: Mini_CompeSmart
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_CompeSmart
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].objective.Array.size
@@ -168818,7 +168978,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
@@ -168830,11 +168994,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
-      value: LaidBack
+      value: LunchTable
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[1]'
       value: Lunch
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 4052277561989464709, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: m_Layer
@@ -176742,6 +176910,10 @@ PrefabInstance:
     - target: {fileID: 78653085657556775, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 137182216265452233, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: From.z
+      value: 6.07
       objectReference: {fileID: 0}
     - target: {fileID: 442590546092075810, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: m_Mesh
@@ -231870,7 +232042,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
@@ -231878,7 +232050,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
-      value: Mini_LaidBack
+      value: Mini_SoftChatty
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_SoftChatty
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].objective.Array.size
@@ -231886,7 +232062,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
@@ -231894,11 +232074,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
-      value: LaidBack
+      value: LunchTable
       objectReference: {fileID: 0}
     - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[1]'
       value: Lunch
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986244990524958789, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 4052277561989464709, guid: ec78dded37ccc554f9ea8736218942ee, type: 3}
       propertyPath: m_Layer
@@ -277379,14 +277563,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
       value: Mini_LazyDelinquent
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
+      value: Mini_LazyDelinquent
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_LazyDelinquent
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
@@ -277396,6 +277596,14 @@ PrefabInstance:
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[1]'
       value: Studying
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
+      value: LunchTable
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 5419978666489933097, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
@@ -291383,15 +291591,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
       value: Mini_Diligent
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
+      value: Mini_Diligent
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_Diligent
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].objective.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
@@ -291400,6 +291624,18 @@ PrefabInstance:
     - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[1]'
       value: Diligent
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
+      value: LunchTable
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[1]'
+      value: Diligent
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 5419978666489933097, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
@@ -294157,6 +294393,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6452266432751415832, guid: 92aea5560bc7f49428137807d2bbe8e5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6452266432751415832, guid: 92aea5560bc7f49428137807d2bbe8e5, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -294413,6 +294653,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1143520192334309197, guid: 92aea5560bc7f49428137807d2bbe8e5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1143520192334309197, guid: 92aea5560bc7f49428137807d2bbe8e5, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -294602,7 +294846,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 92aea5560bc7f49428137807d2bbe8e5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 92aea5560bc7f49428137807d2bbe8e5, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -294722,6 +294966,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3720665903277325164, guid: 92aea5560bc7f49428137807d2bbe8e5, type: 3}
       propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4221809808946700384, guid: 92aea5560bc7f49428137807d2bbe8e5, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4221809808946700384, guid: 92aea5560bc7f49428137807d2bbe8e5, type: 3}
@@ -295148,7 +295396,7 @@ MonoBehaviour:
   foot: {fileID: 554384256}
   groundMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   currentSurface: 0
   animState: 1
   speed: 1
