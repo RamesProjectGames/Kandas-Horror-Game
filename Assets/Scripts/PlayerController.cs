@@ -544,7 +544,10 @@ public class PlayerController : MovableObjects
             HandleCrouch();
             controller.SimpleMove(moveSpd * input);
             anim.SetFloat("MoveBlend", Mathf.CeilToInt(input.magnitude));
-            agent.nextPosition = transform.position;
+            if(input.magnitude != 0)
+            {
+                agent.nextPosition = transform.position;
+            }
         }
     }
 
