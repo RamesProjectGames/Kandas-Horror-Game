@@ -16848,6 +16848,7 @@ Transform:
   - {fileID: 268443621}
   - {fileID: 1409828932}
   - {fileID: 1515251016}
+  - {fileID: 2102581998}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1062230017
@@ -28421,6 +28422,7 @@ MonoBehaviour:
   sprintAction: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   crouchAction: {fileID: 7040659881675835329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   unlockAction: {fileID: 3787204763737618428, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  isActivePlayer: 1
   jumpPow: 2
   gravity: 9.81
   groundDist: 0.25
@@ -32120,6 +32122,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2101202450}
   m_CullTransparentMesh: 1
+--- !u!1 &2102581997
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2102581998}
+  - component: {fileID: 2102581999}
+  m_Layer: 0
+  m_Name: Player Switch manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2102581998
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102581997}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1056521399}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2102581999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102581997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15d4be268953dda408be231359d36293, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  switchPlayerKey: 9
+  switchPlayerAction: {fileID: 0}
+  selectedPlayerToSwitchTo: {fileID: 0}
 --- !u!1 &2109471245
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,6 +31,9 @@ public class PlayerController : MovableObjects
     private Vector3 input;
     [SerializeField] private InputActionReference moveAction, lookAction, sprintAction, crouchAction, unlockAction;
 
+    [Header("Player State")]
+    [SerializeField] private bool isActivePlayer = true;
+
     [Header("Numeric Values")]
     [SerializeField] private float jumpPow;
     [SerializeField] private float gravity = 9.81f, groundDist = 1f, speed = 150f, sprintMulti = 2.0f, jumpCd, maxStamina, staminaDecayRate;
@@ -102,7 +105,7 @@ public class PlayerController : MovableObjects
         controller = GetComponent<CharacterController>();
         Hiding = GetComponent<PlayerHiding>();
         audioSrc = GetComponent<AudioSource>();
-        CameraManager.SwitchCamera(playerCam);
+        RegisterWithSwitchManager();
         originalFollowTarget = playerCam.Follow;
         originalLookTarget = playerCam.LookAt;
 
@@ -164,6 +167,15 @@ public class PlayerController : MovableObjects
     // Update is called once per frame
     void Update()
     {
+        if (!isActivePlayer)
+        {
+            SetInputActionsEnabled(false);
+            ResetMovementState();
+            return;
+        }
+
+        SetInputActionsEnabled(true);
+
         //Mouse Lock - Unlock when holding Alt
         {
             if (CameraManager.currentActiveCamera != playerCam)
@@ -405,6 +417,58 @@ public class PlayerController : MovableObjects
         // }
     }
 
+    private void RegisterWithSwitchManager()
+    {
+        if (PlayerSwitchManager.Instance != null)
+        {
+            PlayerSwitchManager.Instance.RegisterPlayer(this);
+        }
+    }
+
+    public void SetActivePlayer(bool active)
+    {
+        isActivePlayer = active;
+
+        if (active)
+        {
+            if (playerCam != null)
+            {
+                CameraManager.SwitchCamera(playerCam);
+            }
+        }
+
+        SetInputActionsEnabled(active);
+    }
+
+    private void SetInputActionsEnabled(bool enabled)
+    {
+        if (moveAction != null && moveAction.action != null)
+        {
+            if (enabled) moveAction.action.Enable(); else moveAction.action.Disable();
+        }
+
+        if (lookAction != null && lookAction.action != null)
+        {
+            if (enabled) lookAction.action.Enable(); else lookAction.action.Disable();
+        }
+
+        if (sprintAction != null && sprintAction.action != null)
+        {
+            if (enabled) sprintAction.action.Enable(); else sprintAction.action.Disable();
+        }
+
+        if (crouchAction != null && crouchAction.action != null)
+        {
+            if (enabled) crouchAction.action.Enable(); else crouchAction.action.Disable();
+        }
+
+        if (unlockAction != null && unlockAction.action != null)
+        {
+            if (enabled) unlockAction.action.Enable(); else unlockAction.action.Disable();
+        }
+
+    }
+
     private void ApplyLookSensitivity()
     {
         if (inputController == null || SettingManager.Instance == null || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || SettingManager.Instance.settings == null)
@@ -468,6 +532,11 @@ public class PlayerController : MovableObjects
 
     private void LateUpdate()
     {
+        if (!isActivePlayer)
+        {
+            return;
+        }
+
         if (controller.enabled && !SettingManager.Instance.isPaused && !DialogueSystem.Instance.isRunningConvo)
         {
             // Rotate body left/right using Look X input
