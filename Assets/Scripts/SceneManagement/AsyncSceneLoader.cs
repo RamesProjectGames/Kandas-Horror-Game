@@ -15,6 +15,10 @@ public class AsyncSceneLoader : MonoBehaviour
     public event Action<float> ProgressUpdated;
     public event Action Completed;
 
+    public SceneField currentChapterScene;
+
+    public SceneField persistentScene;
+
     private void Awake()
     {
         transform.SetParent(null);
@@ -56,6 +60,9 @@ public class AsyncSceneLoader : MonoBehaviour
         {
             if (scene == null || string.IsNullOrEmpty(scene.SceneName))
                 continue;
+
+            if(scene != persistentScene)
+                currentChapterScene = scene;
 
             Scene sceneToLoad = SceneManager.GetSceneByName(scene.SceneName);
             if (!sceneToLoad.isLoaded)

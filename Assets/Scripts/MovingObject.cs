@@ -14,11 +14,11 @@ public class MovingObject : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        originalPosition = transform.position;
+        originalPosition = transform.localPosition;
     }
     public void MoveToTarget(float speed = 1f)
     {
-        transform.LeanMove(To, speed)
+        transform.LeanMoveLocal(To, speed)
         .setOnComplete(() =>
         {
             onComplete?.Invoke();
@@ -30,7 +30,7 @@ public class MovingObject : MonoBehaviour
     }
     public void MoveBackToOriginal(float speed = 1f)
     {
-        transform.LeanMove(originalPosition, speed)
+        transform.LeanMoveLocal(originalPosition, speed)
         .setOnComplete(() =>
         {
             onComplete?.Invoke();
