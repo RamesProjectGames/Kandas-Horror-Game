@@ -1,4 +1,4 @@
+PlaySFX(RattleDoor ^v 0.6), [w]Wait(1)
 Jessica "No! Why is it locked?!"
-Jessica "(Tries to jiggle the door again)"
-Jessica "Shit!"
-Jessica "Is there a key anywhere?"
+HideDialogue(), PlaySFX(RattleDoor), [w]Wait(1), PlaySFX(RattleDoor), [w]Wait(1 ^v 0.8), PlaySFX(RattleDoor), [w]Wait(1 ^v 1)
+Jessica "Is there a key anywhere?" Objective(BackToClass1)

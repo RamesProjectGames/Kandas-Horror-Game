@@ -79,6 +79,8 @@ namespace TestingPurposes
             db.AddFunction("EatLunch", new Func<IEnumerator>(EatLunch));
             db.AddFunction("HidePlayerRig", new Action(HidePlayerRig));
             db.AddFunction("HideNpcRig", new Action<string[]>(HideNpcRig));
+            db.AddFunction("ShowObject", new Action<string>(ShowObject));
+            db.AddFunction("HideObject", new Action<string>(HideObject));
             db.AddFunction("ShowPlayerRig", new Action(ShowPlayerRig));
             db.AddFunction("ShowNpcRig", new Action<string>(ShowNpcRig));
             db.AddFunction("ToggleDoor", new Action(ToggleDoor));
@@ -207,12 +209,7 @@ namespace TestingPurposes
                 moveScript.onComplete.AddListener(() =>
                 {
                     completed = true;
-                    Debug.Log("MoveToTarget completed, calling OpenDoor()");
                     OpenDoor();
-                    ShowNpcRig("Alya Bathroom");
-                    DialogueSystem.Instance.StartCoroutine(DialogueSystem.Instance.FadeToBlack(1));
-                    SwitchScene("Chapter 1 (Malam)");
-                    DialogueSystem.Instance.StartCoroutine(DialogueSystem.Instance.FadeFromBlack(1));
                 });
 
                 moveScript.onProgress.AddListener((float progressValue) =>
@@ -466,6 +463,15 @@ namespace TestingPurposes
             {
                 chara.StartCoroutine(chara.ToggleRig(false, delay));
             }
+        }
+        private static void ShowObject(string arg)
+        {
+            UnityEngine.Object.FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == arg).SetActive(true);
+        }
+
+        private static void HideObject(string arg)
+        {
+            GameObject.Find(arg).SetActive(false);
         }
 
         private static void ShowNpcRig(string arg)

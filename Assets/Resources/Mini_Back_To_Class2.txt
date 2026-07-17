@@ -1,6 +1,9 @@
-Jessica "(Open the door)"
+PlaySFX(RattleDoor ^v 0.6), [w]Wait(1), [w]SwitchScene("Test-Chapter 1"), Move(Player ^x 210 ^z 318.5)
 Jessica "(Panting) I feel... strange..."
-Jessica "(Turns around)"
-Narrator "Class has returned to normal, a few students are hanging out on their desk, and some are writing something down like before.{c} The sky has turn back to daytime."
+[w]Rotate(Player ^r 180), [w]Wait(1), [w]Rotate(Player ^r 0)
 Jessica "!!!"
 Jessica "What the... hell is happening...?"
+Teacher "Is there a matter, Jessica?"
+Jessica "Oh, uh, no. There's nothing miss.\nI apologize for arriving late"
+Teacher "It's not a good image for you to return to class late on your first day.{a}\nGood thing for you we just barely started, so you didn't miss anything.\nPlease, sit down so we can begin."
+Jessica "Okay miss." Objective(BackToClass2)

@@ -22268,6 +22268,78 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25df3d7c42058374fa583f0b13609696, type: 3}
+--- !u!1 &153638629
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 153638630}
+  - component: {fileID: 153638632}
+  - component: {fileID: 153638631}
+  m_Layer: 0
+  m_Name: AlyaBathroomTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 18
+  m_IsActive: 1
+--- !u!4 &153638630
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153638629}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 16.5, y: -3, z: 60.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1431198799}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &153638631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153638629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5505156249b9574ab89a71028366b36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectiveDialoguePair:
+  - objective:
+    - OpenBathroomStall
+    dialogueAsset: Mini_AlyaAppearance
+  relatedObjectives:
+  - OpenBathroomStall
+--- !u!65 &153638632
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153638629}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.75, y: 5, z: 4}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!43 &154290799
 Mesh:
   m_ObjectHideFlags: 0
@@ -48498,6 +48570,7 @@ GameObject:
   m_Component:
   - component: {fileID: 351326846}
   - component: {fileID: 351326848}
+  - component: {fileID: 351326849}
   - component: {fileID: 351326847}
   m_Layer: 0
   m_Name: ToiletCam
@@ -48515,7 +48588,7 @@ Transform:
   m_GameObject: {fileID: 351326845}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 278.1253, y: 1.88, z: 327.908}
+  m_LocalPosition: {x: 278.793, y: 2, z: 325.709}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48553,7 +48626,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 0}
+    TrackingTarget: {fileID: 415251452}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -48576,6 +48649,23 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &351326849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351326845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoiseProfile: {fileID: 11400000, guid: 554b0ed52734c154eab51f6cedd3a7d7, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 2
+  FrequencyGain: 5
+  m_NoiseOffsets: {x: 609.7674, y: 99.87866, z: 584.5756}
 --- !u!43 &352429236
 Mesh:
   m_ObjectHideFlags: 0
@@ -55465,6 +55555,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414690400}
   m_CullTransparentMesh: 1
+--- !u!4 &415251452 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8968190186232262908, guid: 92aea5560bc7f49428137807d2bbe8e5, type: 3}
+  m_PrefabInstance: {fileID: 2062806897}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &417143037
 Mesh:
   m_ObjectHideFlags: 0
@@ -176770,6 +176865,26 @@ PrefabInstance:
       propertyPath: From.z
       value: 6.07
       objectReference: {fileID: 0}
+    - target: {fileID: 402604238057554707, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Size.x
+      value: 0.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 402604238057554707, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
+      objectReference: {fileID: 0}
+    - target: {fileID: 402604238057554707, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 402604238057554707, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Center.y
+      value: -0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 402604238057554707, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 442590546092075810, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -176826,6 +176941,26 @@ PrefabInstance:
       propertyPath: m_SelectedVertices.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1607564249037430387, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Size.x
+      value: 0.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607564249037430387, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607564249037430387, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607564249037430387, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Center.y
+      value: -0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607564249037430387, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1715968498655479778, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
@@ -176870,12 +177005,52 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 4633
       objectReference: {fileID: 0}
+    - target: {fileID: 2118517955162326235, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Size.x
+      value: 0.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118517955162326235, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118517955162326235, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118517955162326235, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Center.y
+      value: -0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118517955162326235, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2236630868434658146, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 870541239}
     - target: {fileID: 2346956037559501497, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: m_Intensity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347659883593883023, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347659883593883023, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347659883593883023, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347659883593883023, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347659883593883023, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2428316252800066710, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
@@ -176957,6 +177132,22 @@ PrefabInstance:
     - target: {fileID: 4368909648007909969, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: m_Name
       value: Pintu-KamarMandi
+      objectReference: {fileID: 0}
+    - target: {fileID: 4462173754431553157, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
+      value: ToiletEvents
+      objectReference: {fileID: 0}
+    - target: {fileID: 4462173754431553157, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
+      value: Mini_ToggleDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 4462173754431553157, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
+      value: Bathroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 4462173754431553157, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4481061981198830688, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: m_Enabled
@@ -177184,27 +177375,51 @@ PrefabInstance:
       objectReference: {fileID: 560978956}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
-      propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
+      propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
       value: Mini_RattleDoor
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
-      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
+      value: Mini_ToggleDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[3].dialogueAsset
+      value: Mini_ToggleDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[4].dialogueAsset
+      value: Mini_ToggleDoor
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[2].objective.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
-      propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
+      propertyPath: objectiveDialoguePair.Array.data[3].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: objectiveDialoguePair.Array.data[4].objective.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
       value: RattleDoor
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
-      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
       value: ToiletCry
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
+      propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
+      value: Lunch
       objectReference: {fileID: 0}
     - target: {fileID: 9055643090011719700, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -202599,7 +202814,7 @@ Transform:
   m_GameObject: {fileID: 1405841662}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11, y: -4, z: 58.6}
+  m_LocalPosition: {x: 11.5, y: -3.2, z: 59.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -202642,8 +202857,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.6, y: 4.15, z: 3.6}
-  m_Center: {x: 0.4, y: 0.8, z: 0.75}
+  m_Size: {x: 2.5, y: 4.15, z: 3.6}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!43 &1409251878
 Mesh:
   m_ObjectHideFlags: 0
@@ -205391,6 +205606,7 @@ Transform:
   - {fileID: 1165387427}
   - {fileID: 1862566705}
   - {fileID: 1405841663}
+  - {fileID: 153638630}
   m_Father: {fileID: 1985160192}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1431520130
