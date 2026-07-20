@@ -33,6 +33,13 @@ public class EnemyAttack : MonoBehaviour
         playerTarget.y = 0;
         distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
+        if(SettingManager.Instance.gameOver)
+        {
+            animator.SetFloat("UpperBody", 0f);
+            canAttackPlayer = false;
+            return;
+        }
+
         if (distanceToPlayer < attackRange)
         {
             if (!Physics.Raycast(transform.position, playerTarget, distanceToPlayer, obstacleMask))

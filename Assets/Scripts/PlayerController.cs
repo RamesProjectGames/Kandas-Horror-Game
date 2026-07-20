@@ -193,7 +193,7 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if (SettingManager.Instance.isPaused || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
+                if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
                 {
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;

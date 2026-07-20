@@ -32,7 +32,6 @@ public class PlayerSightInteraction : MonoBehaviour
     {
         DetectEnemies();
     }
-
     /// <summary>
     /// Main detection method that checks for enemies in the field of view
     /// </summary>
@@ -142,6 +141,10 @@ public class PlayerSightInteraction : MonoBehaviour
     public void ResetToStartingPosition()
     {
         transform.position = startingPosition;
+    }
+    public void SetStartingPosition(Vector3 newPosition)
+    {
+        startingPosition = newPosition;
     }
 
     /// <summary>

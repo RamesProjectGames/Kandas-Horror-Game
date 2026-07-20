@@ -9,7 +9,7 @@ public class EnemySightDetection : MonoBehaviour
     [SerializeField] private float baseViewRadius = 8f;
     [SerializeField] private float maxViewRadius = 14f;
     [SerializeField] private float radiusChangeSpeed = 4f;
-
+    
     [Range(0, 360)]
     public float viewAngle;
 
@@ -22,6 +22,8 @@ public class EnemySightDetection : MonoBehaviour
     public GameObject playerMesh;
 
     public bool canSeePlayer;
+    [Header("Stop Zone")]
+    public bool canSeePlayerWhileInStopZone = false;
     
     [Header("Hiding Spot Tracking")]
     [SerializeField] private bool playerWasSpottedWhileHiding = false;
@@ -36,8 +38,15 @@ public class EnemySightDetection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+        // if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+        //     return;
+
+        if (!canSeePlayerWhileInStopZone)
+        {
+            ChangePlayerMaterial(Color.white);
+            canSeePlayer = false;
             return;
+        }
 
         float targetRadius = canSeePlayer ? maxViewRadius : baseViewRadius;
         viewRadius = Mathf.MoveTowards(viewRadius, targetRadius, radiusChangeSpeed * Time.deltaTime);
@@ -71,7 +80,17 @@ public class EnemySightDetection : MonoBehaviour
 
             if(distanceToPlayer < viewRadius)
             {
-                if(!Physics.Raycast(transform.position, playerTarget, distanceToPlayer, obstacleMask))
+                bool hasObstacle = false;
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, playerTarget, out hit, distanceToPlayer, obstacleMask, QueryTriggerInteraction.Ignore))
+                {
+                    if (hit.collider != null && hit.collider.transform != player.transform)
+                    {
+                        hasObstacle = true;
+                    }
+                }
+
+                if (!hasObstacle)
                 {
                     ChangePlayerMaterial(Color.green);
                     canSeePlayer = true;
@@ -94,6 +113,16 @@ public class EnemySightDetection : MonoBehaviour
             canSeePlayer = false;
         }
     }
+    public void SetCanSeePlayerInStopZone(bool canSee)
+    {
+        canSeePlayerWhileInStopZone = canSee;
+        if (!canSee)
+        {
+            ChangePlayerMaterial(Color.white);
+            canSeePlayer = false;
+        }
+    }
+
     public void ChangePlayerMaterial(Color newColor)
     {
         playerMesh.GetComponent<Renderer>().material.color = newColor;
