@@ -8,11 +8,19 @@ public class EnemyHitTrigger : MonoBehaviour
     public UnityEvent registeredLeaveEvent;
     public UnityEvent HitEvent;
     public UnityEvent LeaveEvent;
-    
+
+    private EnemyMovement enemyMovement;
+
+    private void Awake()
+    {
+        enemyMovement = GetComponentInParent<EnemyMovement>();
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("EnemyStop"))
         {
+            enemyMovement?.OnEnterEnemyStopZone(true);
             HitEvent?.Invoke();
         }
         if (other.gameObject.CompareTag(registeredHitLayerName))
@@ -20,10 +28,12 @@ public class EnemyHitTrigger : MonoBehaviour
             registeredHitEvent?.Invoke();
         }
     }
+
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("EnemyStop"))
         {
+            enemyMovement?.OnEnterEnemyStopZone(false);
             LeaveEvent?.Invoke();
         }
         else if (other.gameObject.CompareTag(registeredHitLayerName))

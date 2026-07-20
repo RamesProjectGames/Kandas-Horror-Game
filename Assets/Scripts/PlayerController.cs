@@ -492,10 +492,10 @@ public class PlayerController : MovableObjects
             {
                 controller.Input.Gain = -sliderValue;
             }
-            //else if (controller.Name == "Look X (Pan)")
-            //{
-            //    controller.Input.Gain = sliderValue;
-            //}
+            else if (controller.Name == "Look X (Pan)")
+            {
+               controller.Input.Gain = sliderValue;
+            }
 
             controller.Driver.AccelTime = 0f;
             controller.Driver.DecelTime = 0f;

@@ -381,7 +381,7 @@ public class MannequinDemoGame : MovableObjects
         var playerController = FindAnyObjectByType<PlayerController>();
         if (playerController != null)
         {
-            playerController.Teleport(playerResetPosition);
+            StartCoroutine(playerController.Teleport(playerResetPosition));
         }
     }
     #region Agent (auto) Movement
