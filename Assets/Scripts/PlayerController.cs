@@ -193,7 +193,7 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if (SettingManager.Instance.isPaused || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
+                if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
                 {
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -492,10 +492,10 @@ public class PlayerController : MovableObjects
             {
                 controller.Input.Gain = -sliderValue;
             }
-            //else if (controller.Name == "Look X (Pan)")
-            //{
-            //    controller.Input.Gain = sliderValue;
-            //}
+            else if (controller.Name == "Look X (Pan)")
+            {
+               controller.Input.Gain = sliderValue;
+            }
 
             controller.Driver.AccelTime = 0f;
             controller.Driver.DecelTime = 0f;

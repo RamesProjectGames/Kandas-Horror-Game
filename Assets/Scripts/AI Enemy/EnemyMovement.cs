@@ -8,6 +8,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 {
     [SerializeField] Waypoint[] point;
     [SerializeField] int idxPoint = 0;
+    [SerializeField] private float roamRadius = 8f;
     [SerializeField] EnemySightDetection fov;
     [SerializeField] EnemyAttack attack;
     [SerializeField] Animator animator;
@@ -56,10 +57,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
         currIdleTime = idleTime;
 
-        if (point != null && point.Length > 0)
-        {
-            agent.SetDestination(point[idxPoint].position);
-        }
+        SetPatrolOrRoamDestination();
 
         // footsteps helper
         if (footstepManager == null)
@@ -68,18 +66,25 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
         if(animator != null)
         {
-            animator.applyRootMotion = true;
-            agent.updatePosition = false;
+            animator.applyRootMotion = false;
+            agent.updatePosition = true;
+            agent.updateRotation = true;
+        }
+        else
+        {
+            agent.updatePosition = true;
             agent.updateRotation = true;
         }
     }
     void OnAnimatorMove()
     {
         if(animator == null) return;
-        Vector3 rootPosition = animator.rootPosition;
-        rootPosition.y = agent.nextPosition.y;
-        transform.position = rootPosition;
-        agent.nextPosition = rootPosition;
+
+        // Let the NavMeshAgent drive movement directly so patrol and roam destinations are followed.
+        if (agent != null && agent.enabled)
+        {
+            agent.nextPosition = transform.position;
+        }
     }
 
     // Update is called once per frame
@@ -110,17 +115,35 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                 agent.speed = speed;
 
                 isStunned = false;
+                
             }
             return; // Exit early while idling
         }
 
         if (isInEnemyStopZone)
         {
+            if (fov != null)
+            {
+                fov.SetCanSeePlayerInStopZone(false);
+            }
+
             // stop any pursuit/investigation while inside an EnemyStop zone
-            if (detectedSound || isDiscoveringSpot || (fov != null && fov.canSeePlayer))
+            // if (detectedSound || isDiscoveringSpot || (fov != null && fov.canSeePlayer))
             {
                 ReturnToPatrol();
             }
+            HandleNavigation();
+            return;
+        }
+
+        if (fov != null)
+        {
+            fov.SetCanSeePlayerInStopZone(true);
+        }
+
+        if (fov == null || fov.player == null)
+        {
+            HandleNavigation();
             return;
         }
 
@@ -144,8 +167,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             // Update animator to show running/moving while pursuing
             if (animator != null)
             {
-                animator.SetFloat("LowerBody", 0.11f);
-                animator.SetBool("move", true);
+                animator.SetFloat("LowerBody", 1f);
+                // animator.SetBool("move", true);
             }
 
             // Move directly towards player
@@ -217,7 +240,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             wasPausedLastFrame = false;
             // Force recalculate destination on unpause
             if (detectedSound) agent.SetDestination(soundSource);
-            else agent.SetDestination(point[idxPoint].position);
+            else SetPatrolOrRoamDestination();
         }
         return false;
     }
@@ -230,10 +253,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         currIdleTime = idleTime; // Wait at the spot to "look around"
         
         // Queue up the next patrol point so it's ready when idle ends
-        if (point.Length > 0)
-        {
-            agent.SetDestination(point[idxPoint].position);
-        }
+        SetPatrolOrRoamDestination();
     }
     public void TriggerKillPlayer(Transform player)
     {
@@ -297,41 +317,51 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             }
             return; // Exit early while idling
         }
+
         // Only proceed if agent has finished calculating and reached destination
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
+            isInEnemyStopZone = false;
+            fov.SetCanSeePlayerInStopZone(true);
             if (detectedSound || isDiscoveringSpot || isKilling)
             {
                 // Arrived at the noise source
                 FinishSoundInvestigation();
             }
-            else
+            else if (HasPatrolWaypoints())
             {
-                if (point[idxPoint].faceTowards != null)
+                var currentWaypoint = point[idxPoint];
+                if (currentWaypoint != null && currentWaypoint.faceTowards != null)
                 {
-                    Vector3 targetPos = point[idxPoint].faceTowards.position;
+                    Vector3 targetPos = currentWaypoint.faceTowards.position;
                     targetPos.y = transform.position.y;
                     Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
                     transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
 
                     if (Quaternion.Angle(transform.rotation, targetRotation) <= 5f)
                     {
-                        currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
-                        idxPoint = ++idxPoint % point.Length;
+                        currIdleTime = currentWaypoint.endPosition ? idleTime : 0.5f;
+                        idxPoint = (idxPoint + 1) % point.Length;
                         agent.SetDestination(point[idxPoint].position);
                         agent.isStopped = true;
                     }
                 }
                 else
                 {
-                    currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
-                    idxPoint = ++idxPoint % point.Length;
+                    currIdleTime = currentWaypoint != null && currentWaypoint.endPosition ? idleTime : 0.5f;
+                    idxPoint = (idxPoint + 1) % point.Length;
                     agent.SetDestination(point[idxPoint].position);
                     agent.isStopped = true;
                 }
-                SynchronizeAnimatorAndAgent();
+            }
+            else
+            {
+                currIdleTime = 0.5f;
+                agent.isStopped = false;
+                SetPatrolOrRoamDestination();
             }
         }
+        SynchronizeAnimatorAndAgent();
     }
     public void SynchronizeAnimatorAndAgent()
     {
@@ -356,14 +386,16 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             );
         }
 
-        shouldMove = Velocity.magnitude > 0.5f 
+        bool isMovingAlongPath = !agent.isStopped
+            && agent.enabled
+            && agent.hasPath
             && agent.remainingDistance > agent.stoppingDistance;
 
+        shouldMove = isMovingAlongPath;
 
-        // animator.SetBool("move", shouldMove);
         if(shouldMove)
         {
-            animator.SetFloat("LowerBody", 0.11f);
+            animator.SetFloat("LowerBody", 1f);
         }
         else
         {
@@ -468,6 +500,53 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     public void OnEnterEnemyStopZone(bool isInZone)
     {
         isInEnemyStopZone = isInZone;
+
+        if (agent == null) return;
+
+        if (isInZone)
+        {
+            agent.isStopped = true;
+            agent.ResetPath();
+
+            if (animator != null)
+            {
+                animator.SetFloat("LowerBody", 0f);
+            }
+        }
+        else
+        {
+            agent.isStopped = false;
+            agent.speed = speed;
+            // agent.ResetPath();
+
+            if (fov != null)
+            {
+                fov.SetCanSeePlayerInStopZone(true);
+            }
+
+            SetPatrolOrRoamDestination();
+        }
+    }
+
+    private bool HasPatrolWaypoints()
+    {
+        return point != null && point.Length > 0 && point[idxPoint] != null;
+    }
+
+    private void SetPatrolOrRoamDestination()
+    {
+        if (agent == null) return;
+
+        if (HasPatrolWaypoints())
+        {
+            agent.SetDestination(point[idxPoint].position);
+            return;
+        }
+
+        Vector3 roamDestination = GetValidNavMeshPosition(transform.position + (Vector3)Random.insideUnitSphere * roamRadius);
+        agent.isStopped = false;
+        agent.speed = speed;
+        agent.SetDestination(roamDestination);
     }
 
     /// <summary>
@@ -484,11 +563,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         agent.speed = speed;     // Return to normal walking speed
 
         // 3. Set Destination
-        if (point != null && point.Length > 0)
-        {
-            // Ensure we are targeting the current waypoint index
-            agent.SetDestination(point[idxPoint].position);
-        }
+        SetPatrolOrRoamDestination();
     }
 
     void StartAgentMovement()
@@ -578,6 +653,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
     private void OnDrawGizmos()
     {
+        Debug.DrawLine(transform.position, agent.destination, Color.green, .1f);
         // Draw alert indicator when enemy detected sound
         if (detectedSound)
         {
