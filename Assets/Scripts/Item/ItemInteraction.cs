@@ -9,6 +9,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
+//[RequireComponent(typeof(ParticleSystem))]
 public class ItemInteraction : MonoBehaviour
 {
     [Header("Throwing")]
@@ -67,6 +68,10 @@ public class ItemInteraction : MonoBehaviour
     private Renderer[] originalRenderers;
     private AudioSource cachedAudioSource;
 
+    //Particle System
+    //[SerializeField] ParticleSystem marker;
+    //public static Action toggleMarkers;
+
     // State
     private bool hasBeenThrown;
     private bool isBroken;
@@ -79,6 +84,16 @@ public class ItemInteraction : MonoBehaviour
     private static readonly Collider[] alertHitsBuffer = new Collider[32];
 
     #region Unity Lifecycle
+
+    //private void OnEnable()
+    //{
+    //    toggleMarkers += ToggleMarker;
+    //}
+
+    //private void OnDisable()
+    //{
+    //    toggleMarkers -= ToggleMarker;
+    //}
 
     private void Awake()
     {
@@ -167,6 +182,20 @@ public class ItemInteraction : MonoBehaviour
         if (pickupUI != null)
             pickupUI.SetActive(false);
     }
+
+    //private void ToggleMarker()
+    //{
+    //    if (GetComponent<NpcMovement>() != null)
+    //        return;
+    //    if(IsDialogueRelevant())
+    //    {
+    //        marker.Play();
+    //    }
+    //    else
+    //    {
+    //        marker.Stop();
+    //    }
+    //}
 
     #endregion
 

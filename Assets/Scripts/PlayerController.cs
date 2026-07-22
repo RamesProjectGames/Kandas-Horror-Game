@@ -138,6 +138,7 @@ public class PlayerController : MovableObjects
             agent.enabled = true;
         }
         agent.updateRotation = false;
+        agent.updatePosition = false;
 
         targetControllerHeight = standingHeight;
         targetCameraY = standingCameraY;
@@ -391,6 +392,8 @@ public class PlayerController : MovableObjects
             {
                 Vector3 posPoint = agent.destination - transform.position;
                 playerCam.ForceCameraPosition(posPoint, Quaternion.identity);
+                agent.updatePosition = false;
+                agent.updateRotation = false;
                 agent.isStopped = true;
             }
         }
@@ -544,7 +547,7 @@ public class PlayerController : MovableObjects
             HandleCrouch();
             controller.SimpleMove(moveSpd * input);
             anim.SetFloat("MoveBlend", Mathf.CeilToInt(input.magnitude));
-            if(input != Vector3.zero)
+            if(input == Vector3.zero)
             {
                 agent.nextPosition = transform.position;
             }
@@ -663,7 +666,8 @@ public class PlayerController : MovableObjects
         yield return new WaitForEndOfFrame();
         agent.enabled = false;
         transform.position = pos;
-        //agent.Warp(pos);
+        agent.Warp(pos);
+        agent.nextPosition = transform.position;
         yield return new WaitForSeconds(.1f);
         agent.enabled = true;
         agent.ResetPath();
@@ -685,6 +689,8 @@ public class PlayerController : MovableObjects
 
     public override IEnumerator Move(Vector3 pos, float speed = 150f)
     {
+        agent.updatePosition = true;
+        agent.updateRotation = true;
         agent.SetDestination(pos);
         agent.isStopped = false;
         yield return new WaitForEndOfFrame();

@@ -1,0 +1,3 @@
+[w]FadeOut(1), [w]Wait(0.5), [w]SwitchCam(EndGameCam), [w]Teleport(Player ^x 216.65 ^z 321.369), [w]Rotate(Player ^r -90), [w]ShowPlayerRig(), [w]Wait(1), [w]FadeIn(1)
+Narration "What happened back then...?"
+HideDialogue(), DemoComplete()

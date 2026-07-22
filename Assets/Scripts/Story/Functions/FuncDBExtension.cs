@@ -68,6 +68,7 @@ namespace TestingPurposes
             db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
             db.AddFunction("Objective", new Action<string>(CompleteObjective));
             db.AddFunction("StopWithoutObj", new Action<string>(ConditionalStopDialogue));
+            db.AddFunction("DemoComplete", new Action(DemoComplete));
             #endregion
             #region Misc Events
             db.AddFunction("PlayCutsceneVideo", new Action<string[]>(PlayCutscene));
@@ -273,7 +274,7 @@ namespace TestingPurposes
         {
             if (float.TryParse(arg, out float duration))
             {
-                yield return DialogueSystem.Instance.StartCoroutine(DialogueSystem.Instance.FadeFromBlack(duration));
+                yield return DialogueSystem.Instance.FadeFromBlack(duration);
             }
         }
 
@@ -281,7 +282,7 @@ namespace TestingPurposes
         {
             if (float.TryParse(arg, out float duration))
             {
-                yield return DialogueSystem.Instance.StartCoroutine(DialogueSystem.Instance.FadeToBlack(duration));
+                yield return DialogueSystem.Instance.FadeToBlack(duration);
             }
         }
 
@@ -296,6 +297,11 @@ namespace TestingPurposes
             {
                 StopDialogue();
             }
+        }
+
+        private static void DemoComplete()
+        {
+            UnityEngine.Object.FindAnyObjectByType<SettingsUI>().ShowDemoEnd();
         }
 
         private static IEnumerator ShowDialogue(string arg)

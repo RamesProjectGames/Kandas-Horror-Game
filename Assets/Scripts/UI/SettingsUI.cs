@@ -1,14 +1,15 @@
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+using Dialogue;
 using FMOD;
 using FMODUnity;
-using System.Collections.Generic;
 using System;
-using UnityEngine.InputSystem.Samples.RebindUI;
+using System.Collections.Generic;
+using TMPro;
 using Unity.Mathematics;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Samples.RebindUI;
 using UnityEngine.SceneManagement;
-using Dialogue;
+using UnityEngine.UI;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -328,11 +329,12 @@ public class SettingsUI : MonoBehaviour
     #region UI Navigation
 
     [Header("UI Navigation")]
-    public GameObject PausePanel;
-    public GameObject SettingPanel;
-    public GameObject GameoverPanel;
-    public List<GameObject> scrollings = new List<GameObject>();
-    public List<Button> sectionButtons = new List<Button>();
+    [SerializeField] private GameObject PausePanel;
+    [SerializeField] private GameObject SettingPanel;
+    [SerializeField] private GameObject GameoverPanel;
+    [SerializeField] private GameObject demoEndPanel;
+    [SerializeField] private List<GameObject> scrollings = new List<GameObject>();
+    [SerializeField] private List<Button> sectionButtons = new List<Button>();
 
     public void ScrollToSection(int index)
     {
@@ -366,13 +368,28 @@ public class SettingsUI : MonoBehaviour
     public void BackToMainMenu()
     {
         DialogueSystem.Instance.StopDialogue();
+        GameoverPanel.SetActive(false);
+        demoEndPanel.SetActive(false);
         SceneManager.LoadScene("Main Menu");
     }
     public void ShowGameover(bool open)
     { 
-        GameoverPanel.SetActive(open); 
+        GameoverPanel.SetActive(open);
         settingManager.gameOver = open;
     }
+
+    public void ShowDemoEnd()
+    {
+        demoEndPanel.SetActive(true);
+        settingManager.gameOver = true;
+    }
+
+    public void VisitSteamPage()
+    {
+        Application.OpenURL($"https://store.steampowered.com/");
+    }
+
+
     public void TryAgain()
     {
         var playerReset = FindAnyObjectByType<PlayerResetManager>();

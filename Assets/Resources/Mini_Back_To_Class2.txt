@@ -1,4 +1,4 @@
-PlaySFX(RattleDoor ^v 0.6), [w]Wait(1), [w]SwitchScene("Test-Chapter 1"), Move(Player ^x 210 ^z 318.5)
+PlaySFX(RattleDoor ^v 0.6), [w]FadeOut(0.5), [w]SwitchScene("Test-Chapter 1"), [w]Teleport(Player ^x 211 ^z 318.5), [w]Rotate(Player ^r 0), [w]Wait(0.5), [w]FadeIn(0.5)
 Jessica "(Panting) I feel... strange..."
 [w]Rotate(Player ^r 180), [w]Wait(1), [w]Rotate(Player ^r 0)
 Jessica "!!!"
