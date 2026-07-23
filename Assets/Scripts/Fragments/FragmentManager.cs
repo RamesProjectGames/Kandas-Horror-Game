@@ -34,7 +34,6 @@ public class FragmentManager : MonoBehaviour
         fragmentObject.name = fragment.fragmentName;
         Fragment fragmentComponent = fragmentObject.GetComponent<Fragment>();
         fragmentComponent.SetFragmentData(fragment);
-        // allFragments.Add(fragment);
         fragmentGOs.Add(fragmentComponent);
     }
 
