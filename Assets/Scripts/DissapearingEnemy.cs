@@ -19,11 +19,11 @@ public class DissapearingEnemy : MonoBehaviour
         }
         if (playerSightInteraction.CanSeeAnyEnemy())
         {
-            ObjectToDisable.SetActive(false);
+            ObjectToDisable.transform.LeanMoveY(-11.77f, 0.5f);
         }
         else
         {
-            ObjectToDisable.SetActive(true);
+            ObjectToDisable.transform.LeanMoveY(11.77f, 0.5f);
         }
     }
 }

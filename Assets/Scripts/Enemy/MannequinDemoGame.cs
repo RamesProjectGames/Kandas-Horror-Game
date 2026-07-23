@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Dialogue;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
@@ -41,6 +42,8 @@ public class MannequinDemoGame : MovableObjects
     [SerializeField] private List<string> idleAnimations = new List<string>();
     [SerializeField] private Animator animator;
     [SerializeField] private CinemachineCamera chokeCamera;
+    [SerializeField] private float captureFadeDuration = 0.2f;
+    [SerializeField] private float releaseFadeDuration = 0.35f;
     private CinemachineCamera playerCamera;
     private float previousSpeed;
 
@@ -343,9 +346,15 @@ public class MannequinDemoGame : MovableObjects
 
     public void PlayCatchAnimation()
     {
+        if(IsPlayerLooking())
+        {
+            Debug.Log("Cannot play catch animation while player is looking.");
+            return;
+        }
         isAnimatingCatch = true;
         StopMovement();
         ResumeAnimator();
+        TriggerCaptureBlackScreen();
 
         // Trigger catch animation start event
         OnCatchAnimationStart?.Invoke();
@@ -393,6 +402,9 @@ public class MannequinDemoGame : MovableObjects
         
         // Trigger player reset
         TriggerPlayerReset();
+
+        // Show the world again after camera/player reset has been applied
+        TriggerReleaseBlackScreen();
     }
     private void TriggerPlayerReset()
     {
@@ -406,6 +418,22 @@ public class MannequinDemoGame : MovableObjects
         if (playerController != null)
         {
             StartCoroutine(playerController.Teleport(playerResetPosition));
+        }
+    }
+
+    private void TriggerCaptureBlackScreen()
+    {
+        if (DialogueSystem.Instance != null)
+        {
+            StartCoroutine(DialogueSystem.Instance.FadeToBlack(captureFadeDuration));
+        }
+    }
+
+    private void TriggerReleaseBlackScreen()
+    {
+        if (DialogueSystem.Instance != null)
+        {
+            StartCoroutine(DialogueSystem.Instance.FadeFromBlack(releaseFadeDuration));
         }
     }
     #region Agent (auto) Movement

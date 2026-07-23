@@ -8,6 +8,7 @@ public class EnemyAttack : MonoBehaviour
     public LayerMask obstacleMask;
 
     public GameObject player;
+    public Collider batCollider;
 
     public bool canAttackPlayer;
 
@@ -18,6 +19,10 @@ public class EnemyAttack : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         // animator = GetComponent<Animator>();
+        if (batCollider != null)
+        {
+            batCollider.enabled = false;
+        }
     }
 
     // Update is called once per frame
@@ -25,6 +30,17 @@ public class EnemyAttack : MonoBehaviour
     {
         // if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
         //     return;
+        var batColliderValue = animator.GetFloat("ColliderActivation");
+
+        if(Mathf.Abs(batColliderValue) < 0.0001f)
+        {
+            batColliderValue = 0f;
+        }
+
+        if (batCollider != null)
+        {
+            batCollider.enabled = batColliderValue >= 1f;
+        }
             
         Vector3 enemyPos = transform.position;
         Vector3 playerPos = player.transform.position;
