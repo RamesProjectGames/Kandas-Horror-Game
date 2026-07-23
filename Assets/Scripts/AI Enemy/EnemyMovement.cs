@@ -32,6 +32,21 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     // Pause tracking: used to detect pause/unpause transitions
     private bool wasPausedLastFrame = false;
 
+    [Header("Monster Audio")]
+    [SerializeField] private EnemyAudioManager enemyAudioManager;
+    [SerializeField] private string roamingGrowlAction = "Roaming";
+    [SerializeField] private string noticeScreechAction = "Noticed";
+    [SerializeField] private string stunnedGruntAction = "Stunned";
+    [SerializeField] private string chasingLaughAction = "Chasing";
+    [SerializeField] private float roamingGrowlCooldown = 6f;
+    [SerializeField] private float chasingLaughCooldown = 4f;
+    [SerializeField, Range(0f, 1f)] private float chasingLaughChance = 0.35f;
+
+    private float nextRoamingGrowlTime;
+    private float nextChasingLaughTime;
+    private bool wasChasingLastFrame;
+    private Coroutine stunnedAudioRoutine;
+
     [Header("Footsteps")]
     // reference to the centralized sound manager – typically on the same GameObject
     public FootstepsSoundManager footstepManager;
@@ -75,6 +90,9 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             agent.updatePosition = true;
             agent.updateRotation = true;
         }
+
+        if (enemyAudioManager == null)
+            enemyAudioManager = GetComponent<EnemyAudioManager>();
     }
     void OnAnimatorMove()
     {
@@ -91,6 +109,25 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     void Update()
     {
         if (HandlePauseState()) return;
+        bool isChasingNow = fov != null && fov.canSeePlayer;
+
+        if (isChasingNow && !wasChasingLastFrame)
+        {
+            PlayMonsterAction(noticeScreechAction, true);
+            nextChasingLaughTime = Time.time;
+        }
+
+        if (isChasingNow)
+        {
+            TryPlayChasingLaugh();
+        }
+        else
+        {
+            TryPlayRoamingGrowl();
+        }
+
+        wasChasingLastFrame = isChasingNow;
+
         if (attack != null && attack.canAttackPlayer)
         {
             attackMovementHalted = true;
@@ -188,6 +225,58 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             // PATROL OR INVESTIGATION
             HandleNavigation();
         }
+    }
+
+    private void TryPlayRoamingGrowl()
+    {
+        if (enemyAudioManager == null || Time.time < nextRoamingGrowlTime)
+            return;
+
+        if (isStunned || isKilling || detectedSound || isDiscoveringSpot || (attack != null && attack.canAttackPlayer))
+            return;
+
+        bool isRoaming = agent != null && agent.enabled && !agent.isStopped;
+        if (!isRoaming)
+            return;
+
+        PlayMonsterAction(roamingGrowlAction, true);
+        nextRoamingGrowlTime = Time.time + roamingGrowlCooldown;
+    }
+
+    private void TryPlayChasingLaugh()
+    {
+        if (enemyAudioManager == null || Time.time < nextChasingLaughTime)
+            return;
+
+        if (Random.value <= chasingLaughChance)
+        {
+            PlayMonsterAction(chasingLaughAction, true);
+        }
+        nextChasingLaughTime = Time.time + chasingLaughCooldown;
+    }
+
+    private void PlayMonsterAction(string actionName, bool forcePlay = false)
+    {
+        if (enemyAudioManager == null || string.IsNullOrWhiteSpace(actionName))
+            return;
+
+        if (!forcePlay && !enemyAudioManager.IsActionAudioCompleted(actionName))
+            return;
+
+        enemyAudioManager.PlayActionAudio(actionName);
+    }
+
+    private IEnumerator PlayStunnedAudioSequence()
+    {
+        if (enemyAudioManager == null)
+            yield break;
+
+        if (!string.IsNullOrWhiteSpace(stunnedGruntAction))
+        {
+            PlayMonsterAction(stunnedGruntAction, true);
+        }
+
+        yield break;
     }
 
     private void FixedUpdate()
@@ -696,6 +785,10 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         isStunned = true;
         agent.isStopped = true;
         currIdleTime = idleTime * PlayerGrabInteraction.GetThrowCharge();
+
+        if (stunnedAudioRoutine != null)
+            StopCoroutine(stunnedAudioRoutine);
+        stunnedAudioRoutine = StartCoroutine(PlayStunnedAudioSequence());
     }
     #endregion
 }
