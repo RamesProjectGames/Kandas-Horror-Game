@@ -87,6 +87,8 @@ public class MannequinDemoGame : MovableObjects
 
         if (!isPlayerLooking)
         {
+            ResumeAnimator();
+
             if(canRoamAround)
             {
                 if(sightDetection == null)
@@ -169,6 +171,14 @@ public class MannequinDemoGame : MovableObjects
         else
         {
             // Player IS looking - freeze in place (Weeping Angel style)
+            if (!isAnimatingCatch)
+            {
+                PauseAnimator();
+            }
+            else
+            {
+                ResumeAnimator();
+            }
             if (isMovingTowardPlayer)
             {
                 OnStoppedMoving?.Invoke();
@@ -182,7 +192,23 @@ public class MannequinDemoGame : MovableObjects
 
     private bool IsPlayerLooking()
     {
-        return playerSight.GetVisibleEnemies().Contains(transform);
+        if (playerSight == null)
+            return false;
+
+        Transform mannequinRoot = transform.root;
+
+        foreach (Transform visibleEnemy in playerSight.GetVisibleEnemies())
+        {
+            if (visibleEnemy == null)
+                continue;
+
+            if (visibleEnemy == transform || visibleEnemy == mannequinRoot || visibleEnemy.IsChildOf(transform) || transform.IsChildOf(visibleEnemy))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private bool IsPlayerInDetectionBox()
@@ -210,13 +236,14 @@ public class MannequinDemoGame : MovableObjects
             return false;
 
         // Cast a ray from enemy to player to check for obstructions
-        Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
-        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
+        Vector3 directionToPlayer = (playerTransform.position - rayOrigin).normalized;
+        float distanceToPlayer = Vector3.Distance(rayOrigin, playerTransform.position);
 
-        if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit, distanceToPlayer, obstacleMask, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(rayOrigin, directionToPlayer, out RaycastHit hit, distanceToPlayer, obstacleMask, QueryTriggerInteraction.Ignore))
         {
-            // Ignore the player itself and the mannequin's own colliders
-            if (hit.transform == playerTransform || hit.transform == transform)
+            // Ignore the player itself and anything on the mannequin hierarchy
+            if (hit.transform == playerTransform || hit.transform == transform || hit.transform.IsChildOf(transform))
             {
                 return false;
             }
@@ -237,7 +264,6 @@ public class MannequinDemoGame : MovableObjects
     {
         if (animator != null)
         {
-            animator.SetFloat("MoveBlend", 1);
             animator.speed = previousSpeed > 0f ? previousSpeed : 1f;
         }
     }
@@ -273,11 +299,6 @@ public class MannequinDemoGame : MovableObjects
             navMeshAgent.isStopped = true;
             navMeshAgent.velocity = Vector3.zero;
             navMeshAgent.ResetPath();
-        }
-
-        if (animator != null && !isAnimatingCatch)
-        {
-            animator.SetFloat("MoveBlend", 0);
         }
     }
     private void ReturnIdleAnimation()
@@ -324,6 +345,7 @@ public class MannequinDemoGame : MovableObjects
     {
         isAnimatingCatch = true;
         StopMovement();
+        ResumeAnimator();
 
         // Trigger catch animation start event
         OnCatchAnimationStart?.Invoke();
@@ -363,6 +385,8 @@ public class MannequinDemoGame : MovableObjects
             animator.SetBool("Capture", false);
             animator.SetFloat("MoveBlend", 0);
         }
+
+        ResumeAnimator();
         
         // Trigger catch animation complete event
         OnCatchAnimationComplete?.Invoke();

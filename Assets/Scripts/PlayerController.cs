@@ -93,7 +93,7 @@ public class PlayerController : MovableObjects
     public PlayerHiding Hiding;
 
     [Header("Stamina")]
-    public Image staminaFillImage;
+    public Slider staminaFillImage;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -343,7 +343,7 @@ public class PlayerController : MovableObjects
             if (stamina < maxStamina)
             {
                 staminaFillImage.gameObject.SetActive(true);
-                staminaFillImage.fillAmount = stamina / maxStamina;
+                staminaFillImage.value = stamina / maxStamina;
             }
             else
             {
