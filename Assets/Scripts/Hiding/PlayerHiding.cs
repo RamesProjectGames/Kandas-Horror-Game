@@ -1,6 +1,7 @@
 using Dialogue;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.PostProcessing;
 
@@ -26,7 +27,7 @@ public class PlayerHiding : MonoBehaviour
     private Vector3 hidingPosition;
     private Rigidbody playerRigidbody;
     private Collider playerCollider;
-    private CharacterController characterController;
+    private NavMeshAgent agent;
     private Animator animator;
     [SerializeField] private InputActionReference interactAction;
     private float hidingAnimationTimer = 0f;
@@ -35,7 +36,7 @@ public class PlayerHiding : MonoBehaviour
     {
         playerRigidbody = GetComponent<Rigidbody>();
         playerCollider = GetComponent<Collider>();
-        characterController = GetComponent<CharacterController>();
+        agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
     }
 
@@ -172,9 +173,9 @@ public class PlayerHiding : MonoBehaviour
         {
             playerCollider.enabled = false;
         }
-        if (characterController != null)
+        if (agent != null)
         {
-            characterController.enabled = false;
+            agent.enabled = false;
         }
 
         // Move player to hiding position (can be done instantly or smoothly depending on animation)
@@ -234,9 +235,9 @@ public class PlayerHiding : MonoBehaviour
         {
             playerCollider.enabled = true;
         }
-        if (characterController != null)
+        if (agent != null)
         {
-            characterController.enabled = true;
+            agent.enabled = true;
         }
 
         currentHidingSpot = null;
@@ -284,9 +285,9 @@ public class PlayerHiding : MonoBehaviour
         {
             playerCollider.enabled = true;
         }
-        if (characterController != null)
+        if (agent != null)
         {
-            characterController.enabled = true;
+            agent.enabled = true;
         }
 
         // Debug.Log("Player has been discovered and forced to unhide!");

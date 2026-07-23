@@ -9,12 +9,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.GPUSort;
 
-//[RequireComponent (typeof(CharacterController), typeof(Animator))]
-[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MovableObjects
 {
     [Header("Main Components")]
-    [SerializeField] private CharacterController controller;
     [SerializeField] private AudioSource audioSrc;
     [SerializeField] private GameObject face;
     [SerializeField] private Animator anim;
@@ -102,7 +99,6 @@ public class PlayerController : MovableObjects
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        controller = GetComponent<CharacterController>();
         Hiding = GetComponent<PlayerHiding>();
         audioSrc = GetComponent<AudioSource>();
         RegisterWithSwitchManager();
@@ -144,7 +140,7 @@ public class PlayerController : MovableObjects
         targetCameraY = standingCameraY;
 
         // Force initial values
-        controller.height = standingHeight;
+        agent.height = standingHeight;
 
         if (cameraHeightTarget != null)
         {
@@ -354,36 +350,6 @@ public class PlayerController : MovableObjects
                 stamina = maxStamina;
                 staminaFillImage.gameObject.SetActive(false);
             }
-
-            //float targetAmplitude = 0f;
-            //float targetFrequency = 0f;
-
-            //bool crouchTransitioning = IsCrouchTransitioning();
-
-            //if (input != Vector3.zero && !crouchTransitioning)
-            //{
-            //    float headBobMultiplier = 1f;
-
-            //    if (isCrouching)
-            //        headBobMultiplier = crouchBobMultiplier;
-
-            //    if (isSprinting && !isCrouching)
-            //    {
-            //        headBobMultiplier = sprintBobMultiplier;
-
-            //        stamina -= staminaDecayRate * Time.deltaTime;
-            //        if (stamina <= 0f)
-            //            stamina = 0f;
-            //    }
-
-            //    targetAmplitude = headBobAmplitude * headBobMultiplier;
-            //    targetFrequency = headBobFrequency * headBobMultiplier;
-            //}
-
-            // Smoothly apply noise instead of snapping
-            //_noise.AmplitudeGain = Mathf.Lerp(_noise.AmplitudeGain, targetAmplitude, Time.deltaTime * 8f);
-            //_noise.FrequencyGain = Mathf.Lerp(_noise.FrequencyGain, targetFrequency, Time.deltaTime * 8f);
-
         }
         else
         {
@@ -397,27 +363,6 @@ public class PlayerController : MovableObjects
                 agent.isStopped = true;
             }
         }
-
-
-        // Player body rotation is handled by Cinemachine camera - do not force rotation here
-        // Uncomment only if you need manual body rotation separate from camera
-        // if (Cursor.lockState == CursorLockMode.Locked)
-        // {
-        //     transform.rotation = Quaternion.Euler(0, playerCam.transform.eulerAngles.y, 0);
-        // }
-        //Rotation
-        // {
-        //     Vector2 lookInput = lookAction != null ? lookAction.ReadValue<Vector2>() : Vector2.zero;
-        //     yaw = transform.localEulerAngles.y + lookInput.x * SettingManager.Instance.settings.MouseSensitivity * lookSensitivity;
-
-        //     pitch -= SettingManager.Instance.settings.MouseSensitivity * lookInput.y * lookSensitivity;
-
-        //     // Clamp pitch between lookAngle
-        //     pitch = Mathf.Clamp(pitch, minVerticalAngle, maxVerticalAngle);
-
-        //     transform.localEulerAngles = new Vector3(0, yaw, 0);
-        //     face.transform.localEulerAngles = new Vector3(pitch, 0, 0);
-        // }
     }
 
     private void RegisterWithSwitchManager()
@@ -540,17 +485,17 @@ public class PlayerController : MovableObjects
             return;
         }
 
-        if (controller.enabled && !SettingManager.Instance.isPaused && !DialogueSystem.Instance.isRunningConvo)
+        if (agent.enabled && !SettingManager.Instance.isPaused && !DialogueSystem.Instance.isRunningConvo)
         {
-            // Rotate body left/right using Look X input
+            //// Rotate body left/right using Look X input
             transform.Rotate(Vector3.up * lookAction.action.ReadValue<Vector2>().x * SettingManager.Instance.settings.MouseSensitivity * lookSensitivity * Time.deltaTime);
             HandleCrouch();
-            controller.SimpleMove(moveSpd * input);
-            anim.SetFloat("MoveBlend", Mathf.CeilToInt(input.magnitude));
-            if(input == Vector3.zero)
+            if (input != Vector3.zero)
             {
-                agent.nextPosition = transform.position;
+                agent.Move(moveSpd * Time.deltaTime * input);
+                transform.position = agent.nextPosition;
             }
+            anim.SetFloat("MoveBlend", Mathf.CeilToInt(input.magnitude));
         }
     }
 
@@ -662,7 +607,6 @@ public class PlayerController : MovableObjects
     #region Agent (auto) Movement
     public override IEnumerator Teleport(Vector3 pos)
     {
-        controller.enabled = false;
         yield return new WaitForEndOfFrame();
         agent.enabled = false;
         transform.position = pos;
@@ -672,7 +616,6 @@ public class PlayerController : MovableObjects
         agent.enabled = true;
         agent.ResetPath();
         yield return new WaitForEndOfFrame();
-        controller.enabled = true;
     }
     public override IEnumerator Rotate(float yrot)
     {
@@ -707,7 +650,7 @@ public class PlayerController : MovableObjects
         stamina = maxStamina;
         staminaFillImage.gameObject.SetActive(false);
 
-        controller.height = standingHeight;
+        agent.height = standingHeight;
 
         if (cameraHeightTarget != null)
         {
@@ -715,6 +658,14 @@ public class PlayerController : MovableObjects
             localPos.y = standingCameraY;
             cameraHeightTarget.localPosition = localPos;
         }
+    }
+
+    private Vector3 GetValidNavMeshPosition(Vector3 target)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(target, out hit, 2.0f, NavMesh.AllAreas)) return hit.position;
+        if (NavMesh.SamplePosition(target, out hit, 10.0f, NavMesh.AllAreas)) return hit.position;
+        return transform.position;
     }
     #endregion
 

@@ -16154,7 +16154,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -20522,7 +20522,7 @@ MonoBehaviour:
   Lens:
     FieldOfView: 60
     OrthographicSize: 10
-    NearClipPlane: 0.3
+    NearClipPlane: 0.01
     FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
@@ -29101,7 +29101,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1761790460}
   - component: {fileID: 1761790457}
-  - component: {fileID: 1761790456}
   - component: {fileID: 1761790455}
   - component: {fileID: 1761790454}
   - component: {fileID: 1761790446}
@@ -29113,6 +29112,7 @@ GameObject:
   - component: {fileID: 1761790448}
   - component: {fileID: 1761790447}
   - component: {fileID: 1761790461}
+  - component: {fileID: 1761790462}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -29529,7 +29529,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 1761790451}
-  controller: {fileID: 1761790456}
   audioSrc: {fileID: 1761790454}
   face: {fileID: 890258804}
   anim: {fileID: 1234470051}
@@ -29596,31 +29595,6 @@ MonoBehaviour:
   baseStepDistance: 2
   Hiding: {fileID: 1761790452}
   staminaFillImage: {fileID: 1467813918}
---- !u!143 &1761790456
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1761790445}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 1.6
-  m_Radius: 0.2
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.075, z: 0}
 --- !u!136 &1761790457
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -29640,7 +29614,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.2
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.86, z: 0}
@@ -29686,6 +29660,33 @@ MonoBehaviour:
   visibleEnemies: []
   canSeeAnyEnemy: 0
   playerCamera: {fileID: 1010298958}
+--- !u!54 &1761790462
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761790445}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &1770699694
 GameObject:
   m_ObjectHideFlags: 0

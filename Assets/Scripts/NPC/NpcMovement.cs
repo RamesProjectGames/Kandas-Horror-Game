@@ -9,7 +9,7 @@ public class NpcMovement : MovableObjects
     public Waypoint[] point;
     public int idxPoint = 0;
     [SerializeField] Animator animator;
-    [SerializeField] bool loopMovement; //WIP
+    [SerializeField] bool loopMovement;
 
     [Header("Footsteps")]
     [SerializeField] FootstepsSoundManager footstepManager;
