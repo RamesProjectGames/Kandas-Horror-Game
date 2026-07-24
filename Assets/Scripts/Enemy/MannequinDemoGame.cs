@@ -44,6 +44,7 @@ public class MannequinDemoGame : MovableObjects
     [SerializeField] private CinemachineCamera chokeCamera;
     [SerializeField] private float captureFadeDuration = 0.2f;
     [SerializeField] private float releaseFadeDuration = 0.35f;
+    [SerializeField] private float postResetBlackHoldDuration = 0.05f;
     private CinemachineCamera playerCamera;
     private float previousSpeed;
 
@@ -354,7 +355,6 @@ public class MannequinDemoGame : MovableObjects
         isAnimatingCatch = true;
         StopMovement();
         ResumeAnimator();
-        TriggerCaptureBlackScreen();
 
         // Trigger catch animation start event
         OnCatchAnimationStart?.Invoke();
@@ -399,13 +399,58 @@ public class MannequinDemoGame : MovableObjects
         
         // Trigger catch animation complete event
         OnCatchAnimationComplete?.Invoke();
-        
-        // Trigger player reset
+
+        StartCoroutine(ResetPlayerBehindBlackScreen());
+    }
+
+    private IEnumerator ResetPlayerBehindBlackScreen()
+    {
+        TriggerCaptureBlackScreen();
+
+        if (DialogueSystem.Instance != null)
+        {
+            // Wait until fade-to-black has fully finished before switching perspective.
+            while (DialogueSystem.Instance.screenCo != null)
+            {
+                yield return null;
+            }
+        }
+
         TriggerPlayerReset();
 
-        // Show the world again after camera/player reset has been applied
+        yield return StartCoroutine(WaitForCinemachineBlendToFinish());
+
+        // Hold black briefly so camera priority changes are never visible.
+        if (postResetBlackHoldDuration > 0f)
+        {
+            yield return new WaitForSeconds(postResetBlackHoldDuration);
+        }
+        else
+        {
+            yield return null;
+        }
+
         TriggerReleaseBlackScreen();
     }
+
+    private IEnumerator WaitForCinemachineBlendToFinish()
+    {
+        CinemachineBrain brain = FindAnyObjectByType<CinemachineBrain>();
+        if (brain == null)
+        {
+            // No brain found: continue immediately so gameplay is not blocked.
+            yield break;
+        }
+
+        while (brain.IsBlending)
+        {
+            yield return null;
+        }
+
+        // Wait one extra frame to ensure final camera state is applied.
+        yield return null;
+    }
+
     private void TriggerPlayerReset()
     {
         CameraManager.SwitchCamera(playerCamera);

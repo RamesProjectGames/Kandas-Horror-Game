@@ -4487,8 +4487,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 37.5}
-  m_SizeDelta: {x: 0, y: 75}
+  m_AnchoredPosition: {x: 0, y: 15}
+  m_SizeDelta: {x: -100, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &277385105
 MonoBehaviour:
@@ -19973,7 +19973,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1202161558
 MonoBehaviour:
@@ -26657,8 +26657,8 @@ MonoBehaviour:
   VertexJitterMat: {fileID: 2100000, guid: 48755e82535867e47bc1b1eff93f8886, type: 2}
   minimumMicrophoneVolume: 0.25
   maximumMicrophoneVolume: 1
-  minimumMouseSensitivity: 0.5
-  maximumMouseSensitivity: 2
+  minimumMouseSensitivity: 1
+  maximumMouseSensitivity: 3
 --- !u!114 &1624481260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29750,10 +29750,10 @@ MonoBehaviour:
   gravity: 9.81
   groundDist: 0.25
   speed: 5
-  sprintMulti: 1.25
+  sprintMulti: 2.25
   jumpCd: 0
   maxStamina: 25
-  staminaDecayRate: 5
+  staminaDecayRate: 3.75
   isExhausted: 0
   isSprinting: 0
   isCrouching: 0
@@ -29826,7 +29826,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761790445}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -29837,7 +29837,7 @@ Transform:
   - {fileID: 890258805}
   - {fileID: 1234470049}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1761790461
 MonoBehaviour:
   m_ObjectHideFlags: 0
