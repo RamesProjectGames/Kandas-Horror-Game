@@ -403,9 +403,9 @@ public class SettingsUI : MonoBehaviour
         }
         if(SettingManager.Instance.isPaused)
         {
-            PausePanelToggle(false);
             ObjectiveManager.Instance.objectiveDatas.ForEach(x => x.IsCompleted = false);
             DialogueSystem.Instance.OpenDialogue($"Chapter{ChapterDataManager.Instance.currentChapterIndex}");
+            PausePanelToggle(false);
         }
     }
     #endregion
