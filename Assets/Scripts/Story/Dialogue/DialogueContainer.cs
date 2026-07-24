@@ -117,6 +117,7 @@ namespace Dialogue
             while (cg.alpha != targetOpac)
             {
                 cg.alpha = Mathf.MoveTowards(cg.alpha, targetOpac, Time.deltaTime * fadeSpeed);
+                cg.blocksRaycasts = targetOpac > 0f ? true : false;
                 yield return null;
             }
 
