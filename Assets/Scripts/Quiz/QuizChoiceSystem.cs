@@ -20,6 +20,7 @@ public class QuizChoiceSystem : MonoBehaviour
     [Header("UI Elements")]
     public Canvas quizCanvas;
     public GameObject quizPanel;
+    public GameObject quizPaper;
     public GameObject quizUIBlocker;
     public TMP_Text questionText;
     public TMP_Text timerText;
@@ -30,6 +31,12 @@ public class QuizChoiceSystem : MonoBehaviour
     public UnityEvent onQuestionChanged;
 
     [SerializeField]List<string> answers = new List<string>();
+    List<string> prefixanswers = new List<string>(){
+        "A. ",
+        "B. ",
+        "C. ",
+        "D. "
+    };
     List<string> correctAnswers = new List<string>();
     List<string> wrongAnswers = new List<string>();
     [SerializeField] int currentQuestionIndex = 0;
@@ -72,7 +79,14 @@ public class QuizChoiceSystem : MonoBehaviour
         if (quizPanel != null)
             quizPanel.SetActive(open);
         if(quizCanvas != null)
-            quizCanvas.gameObject.SetActive(open);        
+            quizCanvas.gameObject.SetActive(open);   
+        if(quizPaper != null)
+        {
+            if(open)
+                quizPaper.transform.rotation = Quaternion.Euler(-90,90,0);
+            else
+                quizPaper.transform.rotation = Quaternion.Euler(90,90,0);
+        }
         isQuizActive = open;
         SettingManager.Instance.isPaused = open;
         if(open)
@@ -143,9 +157,10 @@ public class QuizChoiceSystem : MonoBehaviour
             {
                 QuizButton quizButton = choiceTexts[i];
                 quizButton.quizButton.image.color = Color.white;
+                string prefix = prefixanswers[i];
                 string answer = answers[i]; // Capture the current answer in a local variable for the lambda
                 bool isCorrect = currentQuestion.IsCorrect(answer);
-                quizButton.quizAnswerText.text = answers[i];
+                quizButton.quizAnswerText.text = prefix + answer;
                 quizButton.quizButton.onClick.RemoveAllListeners();
                 quizButton.quizButton.onClick.AddListener(() =>
                 {
