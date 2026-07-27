@@ -26,8 +26,13 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     [Header("Hiding Spot Detection")]
     [SerializeField] private float hidingSpotDetectionRadius = 15f;
     [SerializeField] private LayerMask hidingSpotLayer;
+    [SerializeField] private float detectionCooldown = 1f;
     private HidingSpot targetHidingSpot;
     private bool isDiscoveringSpot = false;
+    private bool hasLastSeenPlayerPosition = false;
+    private Vector3 lastSeenPlayerPosition;
+    private float nextDetectionTime = 0f;
+    private bool isPlayerDetected = false;
 
     // Pause tracking: used to detect pause/unpause transitions
     private bool wasPausedLastFrame = false;
@@ -109,24 +114,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     void Update()
     {
         if (HandlePauseState()) return;
-        bool isChasingNow = fov != null && fov.canSeePlayer;
-
-        if (isChasingNow && !wasChasingLastFrame)
-        {
-            PlayMonsterAction(noticeScreechAction, true);
-            nextChasingLaughTime = Time.time;
-        }
-
-        if (isChasingNow)
-        {
-            TryPlayChasingLaugh();
-        }
-        else
-        {
-            TryPlayRoamingGrowl();
-        }
-
-        wasChasingLastFrame = isChasingNow;
 
         if (attack != null && attack.canAttackPlayer)
         {
@@ -180,6 +167,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
         if (fov == null || fov.player == null)
         {
+            isPlayerDetected = false;
             HandleNavigation();
             return;
         }
@@ -187,13 +175,33 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         // 1. Check if player is currently hiding
         PlayerHiding checkHiding = fov.player.GetComponent<PlayerHiding>();
         bool isPlayerHiding = checkHiding != null && checkHiding.IsHiding();
+        UpdatePlayerDetection(isPlayerHiding);
+
+        bool isChasingNow = isPlayerDetected;
+
+        if (isChasingNow && !wasChasingLastFrame)
+        {
+            PlayMonsterAction(noticeScreechAction, true);
+            nextChasingLaughTime = Time.time;
+        }
+
+        if (isChasingNow)
+        {
+            TryPlayChasingLaugh();
+        }
+        else
+        {
+            TryPlayRoamingGrowl();
+        }
+
+        wasChasingLastFrame = isChasingNow;
 
         // 2. State Logic
         if (isDiscoveringSpot && targetHidingSpot != null)
         {
             HandleHidingSpotDiscovery();
         }
-        else if (fov.canSeePlayer && !isPlayerHiding)
+        else if (isPlayerDetected && !isPlayerHiding)
         {
             // PURSUIT: Follow player directly without SetDestination
             isDiscoveringSpot = false; // Ensure we exit discovery if we see the player again
@@ -214,6 +222,10 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             // If we've stopped moving for some reason, ensure animator resets
             // (will be re-evaluated by other branches or SynchronizeAnimatorAndAgent)
         }
+        else if (hasLastSeenPlayerPosition)
+        {
+            MoveToLastSeenPlayerPosition();
+        }
         else if (isPlayerHiding && fov.PlayerWasSpottedWhileHiding && !isDiscoveringSpot)
         {
             // TRANSITION TO DISCOVERY: Player hid while in view
@@ -225,6 +237,37 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             // PATROL OR INVESTIGATION
             HandleNavigation();
         }
+    }
+
+    private void UpdatePlayerDetection(bool isPlayerHiding)
+    {
+        if (Time.time < nextDetectionTime)
+            return;
+
+        nextDetectionTime = Time.time + Mathf.Max(0.05f, detectionCooldown);
+        isPlayerDetected = fov != null && fov.canSeePlayer && !isPlayerHiding;
+
+        if (isPlayerDetected && fov != null && fov.player != null)
+        {
+            lastSeenPlayerPosition = GetValidNavMeshPosition(fov.player.transform.position);
+            hasLastSeenPlayerPosition = true;
+        }
+    }
+
+    private void MoveToLastSeenPlayerPosition()
+    {
+        agent.isStopped = false;
+        agent.speed = pursueSpeed;
+        agent.SetDestination(lastSeenPlayerPosition);
+
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            hasLastSeenPlayerPosition = false;
+            agent.speed = speed;
+            SetPatrolOrRoamDestination();
+        }
+
+        SynchronizeAnimatorAndAgent();
     }
 
     private void TryPlayRoamingGrowl()
@@ -646,6 +689,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         detectedSound = false;
         isDiscoveringSpot = false;
         targetHidingSpot = null;
+        hasLastSeenPlayerPosition = false;
+        isPlayerDetected = false;
 
         // 2. Reset Movement State
         agent.isStopped = false; // Essential: Unpause the NavMeshAgent
