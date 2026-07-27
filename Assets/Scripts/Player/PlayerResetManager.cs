@@ -8,6 +8,7 @@ public class PlayerResetManager : MonoBehaviour
 {
     private PlayerSightInteraction playerSight;
     [SerializeField] private float resetDelay = 1f;
+    [SerializeField] private Transform startingPositionTransform;
     private float resetTimer = 0f;
     private bool shouldReset = false;
     private string resetReason = "";
@@ -53,7 +54,7 @@ public class PlayerResetManager : MonoBehaviour
         if (playerSight != null)
         {
             Debug.Log($"Executing reset: {resetReason}");
-            playerSight.ResetToStartingPosition();
+            playerSight.ResetToStartingPosition(startingPositionTransform != null ? startingPositionTransform.position : default);
         }
         else
         {

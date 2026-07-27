@@ -3,6 +3,7 @@ using FMOD;
 using FMODUnity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
@@ -394,8 +395,18 @@ public class SettingsUI : MonoBehaviour
     {
         var playerReset = FindAnyObjectByType<PlayerResetManager>();
         if(playerReset == null) return;
+        UnityEngine.Debug.Log("Player Reset Triggered");
         playerReset.ResetPlayer($"Getting Hit by Monster Bat!");
-        settingManager.gameOver = false;
+        if(SettingManager.Instance.gameOver)
+        {
+            ShowGameover(false);
+        }
+        if(SettingManager.Instance.isPaused)
+        {
+            ObjectiveManager.Instance.objectiveDatas.ForEach(x => x.IsCompleted = false);
+            DialogueSystem.Instance.OpenDialogue($"Chapter{ChapterDataManager.Instance.currentChapterIndex}");
+            PausePanelToggle(false);
+        }
     }
     #endregion
 

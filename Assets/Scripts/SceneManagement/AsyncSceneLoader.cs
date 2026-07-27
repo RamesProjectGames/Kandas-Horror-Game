@@ -31,7 +31,7 @@ public class AsyncSceneLoader : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
+    
     public static AsyncSceneLoader GetOrCreateInstance()
     {
         if (Instance == null)

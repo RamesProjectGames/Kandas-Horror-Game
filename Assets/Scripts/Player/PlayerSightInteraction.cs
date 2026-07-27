@@ -138,9 +138,9 @@ public class PlayerSightInteraction : MonoBehaviour
     /// <summary>
     /// Resets player to starting position
     /// </summary>
-    public void ResetToStartingPosition()
+    public void ResetToStartingPosition(Vector3 dedicatedStartPos = default)
     {
-        transform.position = startingPosition;
+        transform.position = dedicatedStartPos == default ? startingPosition : dedicatedStartPos;
     }
     public void SetStartingPosition(Vector3 newPosition)
     {

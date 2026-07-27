@@ -18,7 +18,9 @@ public class QuizChoiceSystem : MonoBehaviour
     public List<QuizChoiceData> quizQuestions = new List<QuizChoiceData>();
     public float quizTimer = 10f;
     [Header("UI Elements")]
+    public Canvas quizCanvas;
     public GameObject quizPanel;
+    public GameObject quizPaper;
     public GameObject quizUIBlocker;
     public TMP_Text questionText;
     public TMP_Text timerText;
@@ -29,6 +31,12 @@ public class QuizChoiceSystem : MonoBehaviour
     public UnityEvent onQuestionChanged;
 
     [SerializeField]List<string> answers = new List<string>();
+    List<string> prefixanswers = new List<string>(){
+        "A. ",
+        "B. ",
+        "C. ",
+        "D. "
+    };
     List<string> correctAnswers = new List<string>();
     List<string> wrongAnswers = new List<string>();
     [SerializeField] int currentQuestionIndex = 0;
@@ -38,6 +46,15 @@ public class QuizChoiceSystem : MonoBehaviour
     {
         Instance = this;
     }
+    void OnEnable()
+    {
+        AsyncSceneLoader.Instance.Completed += ()=>{
+            TryAssignQuizCamera();
+            
+            if (quizCanvas != null)
+                quizCanvas.gameObject.SetActive(false);
+        };
+    }
     void Start()
     {
         isQuizActive = false;
@@ -45,7 +62,7 @@ public class QuizChoiceSystem : MonoBehaviour
     void Update()
     {
         if(isQuizActive)
-        {
+        {            
             if (currentTimer > 0 )
             {
                 currentTimer -= Time.deltaTime;
@@ -61,10 +78,48 @@ public class QuizChoiceSystem : MonoBehaviour
     {
         if (quizPanel != null)
             quizPanel.SetActive(open);
+        if(quizCanvas != null)
+            quizCanvas.gameObject.SetActive(open);   
+        if(quizPaper != null)
+        {
+            if(open)
+                quizPaper.transform.rotation = Quaternion.Euler(-90,90,0);
+            else
+                quizPaper.transform.rotation = Quaternion.Euler(90,90,0);
+        }
         isQuizActive = open;
         SettingManager.Instance.isPaused = open;
         if(open)
+        {
             PopulateQuizUI();
+        }
+    }
+
+    bool TryAssignQuizCamera()
+    {
+        if (quizCanvas == null)
+        {
+            Debug.LogError("Quiz canvas is not assigned.");
+            return false;
+        }
+        quizCanvas.renderMode = RenderMode.WorldSpace;
+        Camera targetCamera = Camera.main;
+        if (targetCamera == null)
+        {
+            GameObject mainCameraObject = GameObject.FindGameObjectWithTag("MainCamera");
+            if (mainCameraObject != null)
+            {
+                mainCameraObject.TryGetComponent(out targetCamera);
+            }
+        }
+
+        if (targetCamera == null)
+        {
+            return false;
+        }
+
+        quizCanvas.worldCamera = targetCamera;
+        return true;
     }
     void PopulateQuizUI()
     {
@@ -102,9 +157,10 @@ public class QuizChoiceSystem : MonoBehaviour
             {
                 QuizButton quizButton = choiceTexts[i];
                 quizButton.quizButton.image.color = Color.white;
+                string prefix = prefixanswers[i];
                 string answer = answers[i]; // Capture the current answer in a local variable for the lambda
                 bool isCorrect = currentQuestion.IsCorrect(answer);
-                quizButton.quizAnswerText.text = answers[i];
+                quizButton.quizAnswerText.text = prefix + answer;
                 quizButton.quizButton.onClick.RemoveAllListeners();
                 quizButton.quizButton.onClick.AddListener(() =>
                 {

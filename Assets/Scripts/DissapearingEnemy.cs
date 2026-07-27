@@ -17,7 +17,7 @@ public class DissapearingEnemy : MonoBehaviour
         {
             return;
         }
-        if (playerSightInteraction.CanSeeAnyEnemy())
+        if (!playerSightInteraction.GetVisibleEnemies().Contains(ObjectToDisable.transform) )
         {
             ObjectToDisable.transform.LeanMoveY(-11.77f, 0.5f);
         }
