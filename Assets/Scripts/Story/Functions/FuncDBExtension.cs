@@ -60,6 +60,7 @@ namespace TestingPurposes
             db.AddFunction("StopAmbience", new Action(StopAmbience));
             db.AddFunction("PlayVoice", new Action<string[]>(PlayVoice));
             db.AddFunction("StopVoice", new Action(StopVoice));
+            db.AddFunction("StopAudioByName", new Action<string[]>(StopAudioByName));
             #endregion
             #region Dialogue Progression
             db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
@@ -351,6 +352,66 @@ namespace TestingPurposes
         private static void StopAmbience()
         {
             AudioManager.Instance.StopAllAmbience();
+        }
+
+        private static IEnumerable<string> ResolveAudioStopPaths(string eventName, string category)
+        {
+            if (string.IsNullOrWhiteSpace(eventName))
+            {
+                return Enumerable.Empty<string>();
+            }
+
+            if (eventName.StartsWith("event:/", StringComparison.OrdinalIgnoreCase))
+            {
+                return new[] { eventName };
+            }
+
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                switch (category.Trim().ToLowerInvariant())
+                {
+                    case "sfx":
+                        return new[] { sfxPath + eventName };
+                    case "bgm":
+                    case "music":
+                        return new[] { bgmPath + eventName };
+                    case "ambience":
+                    case "ambient":
+                        return new[] { ambiencePath + eventName };
+                    case "voice":
+                        return new[] { voicePath + eventName };
+                }
+            }
+
+            return new[]
+            {
+                sfxPath + eventName,
+                bgmPath + eventName,
+                ambiencePath + eventName,
+                voicePath + eventName
+            };
+        }
+
+        private static void StopAudioByName(string[] args)
+        {
+            if (args == null || args.Length == 0 || string.IsNullOrWhiteSpace(args[0]))
+            {
+                return;
+            }
+
+            var funcParams = ConvertArgsToParams(args);
+            string eventName = args[0];
+            funcParams.TryGetValue(new string[] { "^cat", "^type" }, out string category, defaultValue: string.Empty);
+            funcParams.TryGetValue(new string[] { "^mode", "^m" }, out string stopModeArg, defaultValue: "fade");
+            FMOD.Studio.STOP_MODE stopMode = stopModeArg.Equals("immediate", StringComparison.OrdinalIgnoreCase)
+                ? FMOD.Studio.STOP_MODE.IMMEDIATE
+                : FMOD.Studio.STOP_MODE.ALLOWFADEOUT;
+
+            foreach (string path in ResolveAudioStopPaths(eventName, category))
+            {
+                EventReference sound = RuntimeManager.PathToEventReference(path);
+                AudioManager.Instance.StopSoundInstance(sound, stopMode);
+            }
         }
 
         private static void PlayBGM(string[] args)
