@@ -50,6 +50,7 @@ namespace TestingPurposes
             db.AddFunction("SwitchCam", new Action<string>(SwitchCamera));
             db.AddFunction("Despawn", new Action<string>(Despawn));
             db.AddFunction("MovePrep", new Action(MovePrep));
+            db.AddFunction("WaitForInput", new Action(WaitForInput));
             #endregion
             #region Audio
             db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
@@ -94,12 +95,10 @@ namespace TestingPurposes
             db.AddFunction("CloseAllDoors", new Action(CloseAllDoors));
             db.AddFunction("OpenAllDoors", new Action(OpenAllDoors));
             db.AddFunction("TryOpenDoor", new Func<IEnumerator>(TryOpenDoor));
-            db.AddFunction("TryOpenDoorAt", new Func<string[], IEnumerator>(TryOpenDoorAt));
             db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
             db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
             db.AddFunction("CrossGate", new Func<IEnumerator>(CrossSchoolGate));
             db.AddFunction("MoveSpecificNPC", new Action<string>(MoveSpecificNPC));
-            db.AddFunction("RattleDoorAt", new Action<string[]>(RattleDoorAt));
             #endregion
         }
 
@@ -328,34 +327,6 @@ namespace TestingPurposes
         #endregion
 
         #region Audio
-        private static Vector3 ResolveAudioPosition(string[] args, string fallbackObjectName = "Player")
-        {
-            string objectName = fallbackObjectName;
-
-            if (args != null)
-            {
-                for (int i = 0; i < args.Length - 1; i++)
-                {
-                    if (args[i].Equals("^go", StringComparison.OrdinalIgnoreCase) ||
-                        args[i].Equals("^obj", StringComparison.OrdinalIgnoreCase) ||
-                        args[i].Equals("^target", StringComparison.OrdinalIgnoreCase))
-                    {
-                        objectName = args[i + 1];
-                        break;
-                    }
-                }
-            }
-
-            GameObject sourceObject = GameObject.Find(objectName);
-            if (sourceObject != null)
-            {
-                return sourceObject.transform.position;
-            }
-
-            GameObject fallbackObject = GameObject.Find(fallbackObjectName);
-            return fallbackObject != null ? fallbackObject.transform.position : Vector3.zero;
-        }
-
         private static void PlaySFX(string[] args)
         {
             var funcParams = ConvertArgsToParams(args);
@@ -363,7 +334,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
-            Vector3 pos = ResolveAudioPosition(args);
+            Vector3 pos = GameObject.Find("Player").transform.position;
             AudioManager.Instance.PlayOneShot(sfx, volume, pitch, pos);
         }
 
@@ -389,7 +360,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
-            Vector3 pos = ResolveAudioPosition(args);
+            Vector3 pos = GameObject.Find("Player").transform.position;
             AudioManager.Instance.PlayOneShot(bgm, volume, pitch, pos);
         }
 
@@ -401,7 +372,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
-            Vector3 pos = ResolveAudioPosition(args);
+            Vector3 pos = GameObject.Find("Player").transform.position;
             AudioManager.Instance.PlayOneShot(ambience, volume, pitch, pos);
         }
 
@@ -412,7 +383,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
-            Vector3 pos = ResolveAudioPosition(args);
+            Vector3 pos = GameObject.Find("Player").transform.position;
             AudioManager.Instance.PlayOneShot(voice, volume, pitch, pos);
         }
         #endregion
@@ -526,14 +497,9 @@ namespace TestingPurposes
 
         private static void RattleDoor()
         {
-            RattleDoorAt(Array.Empty<string>());
-        }
-
-        private static void RattleDoorAt(string[] args)
-        {
             EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
 
-            Vector3 pos = ResolveAudioPosition(args);
+            Vector3 pos = GameObject.Find("Player").transform.position;
             AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
         }
 
@@ -593,11 +559,6 @@ namespace TestingPurposes
 
         private static IEnumerator TryOpenDoor()
         {
-            yield return TryOpenDoorAt(Array.Empty<string>());
-        }
-
-        private static IEnumerator TryOpenDoorAt(string[] args)
-        {
             if(++DoorAttempts == 1)
             {
                 DialogueSystem.Instance.StartCoroutine(MoveToTargetWrapper(new string[] { "WallSamping-KamarMandi (1)", "^s", "5" }));
@@ -605,7 +566,7 @@ namespace TestingPurposes
             }
             EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
 
-            Vector3 pos = ResolveAudioPosition(args);
+            Vector3 pos = GameObject.Find("Player").transform.position;
             AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
             yield return null;
         }
