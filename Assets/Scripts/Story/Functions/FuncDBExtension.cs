@@ -50,7 +50,7 @@ namespace TestingPurposes
             db.AddFunction("SwitchCam", new Action<string>(SwitchCamera));
             db.AddFunction("Despawn", new Action<string>(Despawn));
             db.AddFunction("MovePrep", new Action(MovePrep));
-            db.AddFunction("WaitForInput", new Action(WaitForInput));
+            //db.AddFunction("WaitForInput", new Action(WaitForInput));
             #endregion
             #region Audio
             db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
