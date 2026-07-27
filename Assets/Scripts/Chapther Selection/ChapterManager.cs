@@ -18,12 +18,23 @@ public class ChapterManager : MonoBehaviour
     {
         ChapterSelect(0);
         SetChapterUnlocked();
+        SetDemoChapterUnlocked();
     }
 
     public void ChangePanelState(bool state) 
     { 
         chapterPanel.SetActive(state);
         mainmenuPanel.SetActive(!state);
+    }
+    public void SetDemoChapterUnlocked()
+    {
+        if(SettingManager.Instance != null && SettingManager.Instance.isDemo)
+        {
+            for (int i = 0; i < chapters.Count; i++)
+            {
+                chapters[i].interactable = i < 1;
+            }
+        }
     }
     public void SetChapterUnlocked()
     {

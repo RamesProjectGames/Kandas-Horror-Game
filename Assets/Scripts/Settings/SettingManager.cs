@@ -14,6 +14,7 @@ public class SettingManager : MonoBehaviour
     private SettingsUI settingsUI;
     public bool isPaused = false;
     public bool gameOver;
+    public bool isDemo;
     void Awake()
     {
         transform.SetParent(null);
