@@ -29,6 +29,14 @@ public class OutOfBound : MonoBehaviour
             TriggerDialogue();
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.CompareTag("Player"))
+        {
+            TriggerDialogue();
+        }
+    }
     public void TriggerDialogue()
     {
         if (ObjectiveManager.Instance == null) return;

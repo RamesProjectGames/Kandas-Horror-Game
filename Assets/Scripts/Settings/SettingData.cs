@@ -27,9 +27,6 @@ public class SettingData
 	public bool MotionBlur = false;
 	public bool VertexJitter = true;
 
-	public enum TextureQualityLevel { Low = 0 , Medium = 1 , High = 2 }
-	public TextureQualityLevel TextureQuality = TextureQualityLevel.Low;
-
 	// Control Settings
 	public string AudioInputDeviceName = ""; // Name of the selected input device
 	public int AudioOutputDeviceIndex = 0; // Index in available outputs (if supported)
@@ -37,6 +34,7 @@ public class SettingData
 	public float MouseSensitivity = .5f; // 1.0 = default
 	public bool SprintToggle = false; // false = hold to sprint, true = toggle
 	public bool CrouchToggle = false;
+	public float gamma = 1.0f;
 
     // Audio Settings
     [Range(0, 1)]

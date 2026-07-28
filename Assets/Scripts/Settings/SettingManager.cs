@@ -1,12 +1,8 @@
 using FMOD;
 using FMODUnity;
 using System;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Samples.RebindUI;
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
 public class SettingManager : MonoBehaviour
 {
@@ -59,8 +55,8 @@ public class SettingManager : MonoBehaviour
     public SettingData settings = new SettingData();
     private string savePath;
     int[] rates = new int[] { 24, 30, 60, 120 };
-    public float minimumFogDistance = .05f;
-    public float maximumFogDistance = .125f;
+    public float minimumGammaIntensity = 0f;
+    public float maximumGammaIntensity = 1f;
     public Material DefaultMat;
     public Material VertexJitterMat;
 
@@ -114,8 +110,9 @@ public class SettingManager : MonoBehaviour
         ApplyGraphicsSettings();
         SaveSettings();
     }
-    public void SetFogValue(float val) {
-        settings.Fog = Mathf.Lerp(minimumFogDistance, maximumFogDistance, val);
+    public void SetGammaValue(float val)
+    {
+        settings.gamma = Mathf.Clamp(val, minimumGammaIntensity, maximumGammaIntensity);
         ApplyGraphicsSettings();
         SaveSettings();
     }
@@ -126,21 +123,6 @@ public class SettingManager : MonoBehaviour
     }
     public void ToggleVertexJitter() {
         settings.VertexJitter = !settings.VertexJitter;
-        ApplyGraphicsSettings();
-        SaveSettings();
-    }
-
-    public void NextTextureQuality() {
-        int max = System.Enum.GetValues(typeof(SettingData.TextureQualityLevel)).Length;
-        int idx = ((int)settings.TextureQuality + 1) % max;
-        settings.TextureQuality = (SettingData.TextureQualityLevel)idx;
-        ApplyGraphicsSettings();
-        SaveSettings();
-    }
-    public void PrevTextureQuality() {
-        int max = System.Enum.GetValues(typeof(SettingData.TextureQualityLevel)).Length;
-        int idx = ((int)settings.TextureQuality - 1 + max) % max;
-        settings.TextureQuality = (SettingData.TextureQualityLevel)idx;
         ApplyGraphicsSettings();
         SaveSettings();
     }
@@ -210,9 +192,6 @@ public class SettingManager : MonoBehaviour
         // V-Sync
         QualitySettings.vSyncCount = settings.VSync ? 1 : 0;
 
-        RenderSettings.fog = true;
-        RenderSettings.fogDensity = settings.Fog;
-
         var postProcessVolumes = FindObjectsByType<PostProcessVolume>(FindObjectsSortMode.None);
         
         foreach (PostProcessVolume volume in postProcessVolumes)
@@ -224,26 +203,16 @@ public class SettingManager : MonoBehaviour
                 continue;
             }
 
+            if (volume.profile.TryGetSettings<ColorGrading>(out var colorGrading))
+            {
+                Vector4 tempGamma = colorGrading.gamma;
+                tempGamma.w = settings.gamma;
+                colorGrading.gamma.Override(tempGamma);
+            }
             if (volume.profile.TryGetSettings<RetroPostProcessEffect>(out var retro))
             {
                 retro.active = true;
                 retro.DitherThreshold.value = settings.Dithering ? 0.5f : 0f;
-
-                switch (settings.TextureQuality)
-                {
-                    case SettingData.TextureQualityLevel.Low:
-                        if(volume.gameObject.layer == LayerMask.NameToLayer("UI"))
-                            retro.FixedVerticalResolution.value = 360;
-                        else
-                            retro.FixedVerticalResolution.value = 240;
-                        break;
-                    case SettingData.TextureQualityLevel.Medium:
-                        retro.FixedVerticalResolution.value = 360;
-                        break;
-                    case SettingData.TextureQualityLevel.High:
-                        retro.FixedVerticalResolution.value = 480;
-                        break;
-                }
             }
             if (volume.profile.TryGetSettings<Bloom>(out var bloom))
             {
@@ -319,16 +288,11 @@ public class SettingManager : MonoBehaviour
         // VSync: on for most
         settings.VSync = true;
 
-        // Texture Quality: lower for low VRAM
-        if (vram < 1500) settings.TextureQuality = SettingData.TextureQualityLevel.Low;
-        else if (vram < 3000) settings.TextureQuality = SettingData.TextureQualityLevel.Medium;
-        else settings.TextureQuality = SettingData.TextureQualityLevel.High;
-
         // Effects: enable/disable based on RAM/VRAM
         settings.Dithering = true;
         settings.Bloom = vram >= 2000;
         settings.Grain = true;
-        settings.Fog = minimumFogDistance;
+        settings.gamma = minimumGammaIntensity;
         settings.MotionBlur = vram >= 2000;
         settings.VertexJitter = true;
 
