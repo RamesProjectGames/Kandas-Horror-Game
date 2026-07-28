@@ -45,6 +45,9 @@ public class MannequinDemoGame : MovableObjects
     [SerializeField] private float captureFadeDuration = 0.2f;
     [SerializeField] private float releaseFadeDuration = 0.35f;
     [SerializeField] private float postResetBlackHoldDuration = 0.05f;
+    [Header("Footsteps")]
+    [SerializeField] private FootstepsSoundManager footstepManager;
+    private float lastFootstepValue;
     private CinemachineCamera playerCamera;
     private float previousSpeed;
 
@@ -68,6 +71,11 @@ public class MannequinDemoGame : MovableObjects
         playerTransform = playerSight?.transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
         resetManager = FindAnyObjectByType<PlayerResetManager>();
+
+        if (footstepManager == null)
+        {
+            footstepManager = GetComponent<FootstepsSoundManager>();
+        }
 
         if (navMeshAgent == null)
         {
@@ -272,6 +280,31 @@ public class MannequinDemoGame : MovableObjects
         }
     }
 
+    private void HandleFootstepAudio()
+    {
+        if (footstepManager == null || animator == null || isAnimatingCatch || !isMovingTowardPlayer)
+        {
+            if (!isMovingTowardPlayer)
+            {
+                lastFootstepValue = 0f;
+            }
+            return;
+        }
+
+        float footstep = animator.GetFloat("Footstep");
+        if (Mathf.Abs(footstep) < 0.00001f)
+        {
+            footstep = 0f;
+        }
+
+        if ((footstep > 0f && lastFootstepValue < 0f) || (footstep < 0f && lastFootstepValue > 0f))
+        {
+            footstepManager.PlayFootstep();
+        }
+
+        lastFootstepValue = footstep;
+    }
+
     private void MoveTowardPlayer()
     {
         if (playerTransform == null || isAnimatingCatch)
@@ -294,6 +327,8 @@ public class MannequinDemoGame : MovableObjects
         {
             animator.SetFloat("MoveBlend", 1);
         }
+
+        HandleFootstepAudio();
     }
 
     private void StopMovement()
@@ -304,6 +339,13 @@ public class MannequinDemoGame : MovableObjects
             navMeshAgent.velocity = Vector3.zero;
             navMeshAgent.ResetPath();
         }
+
+        if (footstepManager != null)
+        {
+            footstepManager.StopFootstep();
+        }
+
+        lastFootstepValue = 0f;
     }
     private void ReturnIdleAnimation()
     {
@@ -319,6 +361,13 @@ public class MannequinDemoGame : MovableObjects
 
             animator.SetBool("Capture", false);
         }
+
+        if (footstepManager != null)
+        {
+            footstepManager.StopFootstep();
+        }
+
+        lastFootstepValue = 0f;
     }
     private void ReturnToOriginalPosition()
     {
@@ -365,6 +414,13 @@ public class MannequinDemoGame : MovableObjects
             animator.SetBool("Capture", true);
         }
 
+        if (footstepManager != null)
+        {
+            footstepManager.StopFootstep();
+        }
+
+        lastFootstepValue = 0f;
+
         // Start coroutine to wait for animation to complete, then reset position
         // StartCoroutine(WaitForCatchAnimationAndReset());
     }
@@ -394,6 +450,13 @@ public class MannequinDemoGame : MovableObjects
             animator.SetBool("Capture", false);
             animator.SetFloat("MoveBlend", 0);
         }
+
+        if (footstepManager != null)
+        {
+            footstepManager.StopFootstep();
+        }
+
+        lastFootstepValue = 0f;
 
         ResumeAnimator();
         
