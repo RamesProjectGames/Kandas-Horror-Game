@@ -328,6 +328,22 @@ namespace TestingPurposes
         #endregion
 
         #region Audio
+        private static Vector3 ResolveAudioPosition(FunctionParams funcParams, string fallbackObjectName = "Player")
+        {
+            if (funcParams.TryGetValue(new string[] { "^go" , "^target", "^obj" }, out string targetObjectName, defaultValue: string.Empty) &&
+                !string.IsNullOrWhiteSpace(targetObjectName))
+            {
+                GameObject targetObject = GameObject.Find(targetObjectName);
+                if (targetObject != null)
+                {
+                    return targetObject.transform.position;
+                }
+            }
+
+            GameObject fallbackObject = GameObject.Find(fallbackObjectName);
+            return fallbackObject != null ? fallbackObject.transform.position : Vector3.zero;
+        }
+
         private static void PlaySFX(string[] args)
         {
             var funcParams = ConvertArgsToParams(args);
@@ -335,22 +351,25 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
-            Vector3 pos = GameObject.Find("Player").transform.position;
+            Vector3 pos = ResolveAudioPosition(funcParams);
             AudioManager.Instance.PlayOneShot(sfx, volume, pitch, pos);
         }
 
         private static void StopSFX()
         {
+            Debug.Log("Stopping SFX");
             AudioManager.Instance.StopAllSfx();
         }
 
         private static void StopVoice()
         {
+            Debug.Log("Stopping Voice");
             AudioManager.Instance.StopAllVoice();
         }
 
         private static void StopAmbience()
         {
+            Debug.Log("Stopping Ambience");
             AudioManager.Instance.StopAllAmbience();
         }
 
@@ -421,7 +440,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
-            Vector3 pos = GameObject.Find("Player").transform.position;
+            Vector3 pos = ResolveAudioPosition(funcParams);
             AudioManager.Instance.PlayOneShot(bgm, volume, pitch, pos);
         }
 
@@ -433,7 +452,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
-            Vector3 pos = GameObject.Find("Player").transform.position;
+            Vector3 pos = ResolveAudioPosition(funcParams);
             AudioManager.Instance.PlayOneShot(ambience, volume, pitch, pos);
         }
 
@@ -444,7 +463,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
-            Vector3 pos = GameObject.Find("Player").transform.position;
+            Vector3 pos = ResolveAudioPosition(funcParams);
             AudioManager.Instance.PlayOneShot(voice, volume, pitch, pos);
         }
         #endregion

@@ -15,6 +15,7 @@ Rotate("NPC Boy (1)" ^r -45), Rotate("NPC Girl" ^r 45)
 Jessica "Oh, uhh... You guys go ahead, I'll catch up later."
 Student A "Okay then, don't forget to get ur lunch. Let's go guys!"
 Student C "Alright, catch you later Jess~"
-[w]FadeOut(1), [w]Wait(1), TeleportToWaypoint("NPC Boy (1)" ^idx 1), TeleportToWaypoint("NPC Boy" ^idx 1), TeleportToWaypoint("NPC Girl" ^idx 1), [w]Rotate(Player ^r -90), [w]Wait(0.1), [w]FadeIn(1)
+[w]FadeOut(1), [w]Wait(1), TeleportToWaypoint("NPC Boy (1)" ^idx 1), TeleportToWaypoint("NPC Boy" ^idx 1), TeleportToWaypoint("NPC Girl" ^idx 1), [w]Rotate(Player ^r -90), [w]Wait(0.1), StopAudioByName(SchoolAmbience ^type ambience ^mode immediate), [w]FadeIn(1)
 Jessica "Hmm, maybe I do need to catch a grub, Thankfully lunch is far from over.\nI think I'll order some fried rice." Objective(SubmitQuiz)
+PlayAmbience(SchoolAmbience ^go SchoolAmbianceTarget), PlayAmbience(CanteenAmbience ^go CanteenAmbianceTarget)
 AllowNPCMovement(true)
