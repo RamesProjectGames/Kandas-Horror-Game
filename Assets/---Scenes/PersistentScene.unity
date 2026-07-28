@@ -29826,10 +29826,10 @@ MonoBehaviour:
   jumpPow: 2
   gravity: 9.81
   groundDist: 0.25
-  speed: 5
-  sprintMulti: 2.25
+  speed: 2.3
+  sprintMulti: 1.75
   jumpCd: 0
-  maxStamina: 25
+  maxStamina: 15
   staminaDecayRate: 3.75
   isExhausted: 0
   isSprinting: 0
@@ -31112,7 +31112,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 1010298958}
-  m_PlaneDistance: 0.1
+  m_PlaneDistance: 0.2
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
