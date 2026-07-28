@@ -1,2 +1,2 @@
 Teacher "Okay everyone, {wa 0.5}put your pencils down.{c}Submit your papers to my desk." Objective(DoQuiz)
-[w]SwitchCam("Player Camera"), [w]Rotate(Player ^r -90)
+[w]FadeOut(1), [w]Wait(.5), [w]SwitchCam("Player Camera"), [w]Wait(1), [w]FadeIn(1), [w]Rotate(Player ^r -90)
