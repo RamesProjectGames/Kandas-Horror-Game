@@ -519,6 +519,16 @@ public class PlayerController : MovableObjects
     public IEnumerator PrepLunch()
     {
         ToggleRig(true);
+        var bowl = GameObject.Find("Bowl");
+        for (int i = 0; i < 3; i++)
+        {
+            if (bowl != null)
+            {
+                bowl.transform.GetChild(i).gameObject.SetActive(i==lunchProgress);
+            }
+        }
+        bowl?.SetActive(true);
+        GameObject.Find("SpoonPos")?.SetActive(true);
         anim.SetBool("Lunch", true);
         CameraManager.SwitchCamera(GameObject.Find("LunchCam").GetComponent<CinemachineCamera>());
         yield return new WaitForSeconds(1f);
@@ -535,8 +545,20 @@ public class PlayerController : MovableObjects
     public void EatFood()
     {
         anim.SetTrigger("EatLunch");
-        if (lunchProgress++ == 2)
+        lunchProgress++;
+        var bowl = GameObject.Find("Bowl");
+        for (int i = 0; i < 3; i++)
         {
+            if (bowl != null)
+            {
+                bowl.transform.GetChild(i).gameObject.SetActive(i==lunchProgress);
+            }
+        }
+        if (lunchProgress == 2)
+        {
+            bowl?.SetActive(false);
+            GameObject.Find("SpoonPos")?.SetActive(false);
+            GameObject.Find("Pill")?.SetActive(true);
             anim.SetBool("Meds", true);
             anim.SetBool("Lunch", false);
             GetComponent<PlayerGrabInteraction>().currentItem.ChangeInteractionText("EatMeds");
