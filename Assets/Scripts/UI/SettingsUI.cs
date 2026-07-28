@@ -3,11 +3,8 @@ using FMOD;
 using FMODUnity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Samples.RebindUI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -77,9 +74,9 @@ public class SettingsUI : MonoBehaviour
         microphoneSensitivitySlider.minValue = settingManager.minimumMicrophoneVolume;
         microphoneSensitivitySlider.maxValue = settingManager.maximumMicrophoneVolume;
         microphoneSensitivitySlider.value = s.MicrophoneSensitivity;
-        // mouseSensitivitySlider.minValue = settingManager.minimumMouseSensitivity;
-        // mouseSensitivitySlider.maxValue = settingManager.maximumMouseSensitivity;
-        mouseSensitivitySlider.value = Mathf.InverseLerp(settingManager.minimumMouseSensitivity, settingManager.maximumMouseSensitivity, s.MouseSensitivity);
+        mouseSensitivitySlider.minValue = settingManager.minimumMouseSensitivity;
+        mouseSensitivitySlider.maxValue = settingManager.maximumMouseSensitivity;
+        mouseSensitivitySlider.value = s.MouseSensitivity;
         sprintToggleText.text = s.SprintToggle ? "Toggle" : "Hold";
         crouchToggleText.text = s.CrouchToggle ? "Toggle" : "Hold";
         // Set selected audio input device in dropdown
@@ -107,9 +104,9 @@ public class SettingsUI : MonoBehaviour
     {
         switch (quality)
         {
-            case SettingData.TextureQualityLevel.Low: return "240p";
-            case SettingData.TextureQualityLevel.Medium: return "360p";
-            case SettingData.TextureQualityLevel.High: return "480p";
+            case SettingData.TextureQualityLevel.Low: return "Low";
+            case SettingData.TextureQualityLevel.Medium: return "Medium";
+            case SettingData.TextureQualityLevel.High: return "High";
             default: return quality.ToString();
         }
     }

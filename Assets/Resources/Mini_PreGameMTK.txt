@@ -1,4 +1,4 @@
-[w]SwitchCam(QuizCam)
+[w]FadeOut(1), [w]Wait(.5), [w]SwitchCam(QuizCam), [w]Wait(1), [w]FadeIn(1)
 Teacher "So, {wa 0.5}here is the math quiz for today." Teleport(Player ^x 216.65 ^z 321.65)
 Teacher "You have to finish it in 3 minutes."
 Teacher "This quiz will contribute to 50% of your final grade for this semester.{a}\nSo, take it seriously." Objective(Desk)

@@ -1,12 +1,13 @@
-using System.Collections.Generic;
+using FMOD;
 using FMODUnity;
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.InputSystem.Samples.RebindUI;
 using UnityEngine.InputSystem;
-using System;
-using FMOD;
+using UnityEngine.InputSystem.Samples.RebindUI;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.PostProcessing;
 public class SettingManager : MonoBehaviour
 {
     public static SettingManager Instance { get; private set; }
@@ -168,7 +169,6 @@ public class SettingManager : MonoBehaviour
 
     public void ApplyGraphicsSettings()
     {
-        var postProcessVolume = FindAnyObjectByType<PostProcessVolume>();
         // Resolution
         switch (settings.GameResolution)
         {
@@ -210,50 +210,65 @@ public class SettingManager : MonoBehaviour
         // V-Sync
         QualitySettings.vSyncCount = settings.VSync ? 1 : 0;
 
-        // The following settings require post-processing or custom shaders/scripts
-        // These are placeholders for integration with your effects pipeline
-
-        // Dithering, Bloom, Grain, Fog, Motion Blur, Vertex Jitter
-        // Example: Enable/disable post-processing effects here
-        // You will need to reference your post-processing volumes or custom scripts
-        if(postProcessVolume != null)
-        {
-            postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().DitherThreshold.value = settings.Dithering ? 0.5f : 0f;
-            postProcessVolume.profile.GetSetting<Bloom>().intensity.value = settings.Bloom ? 5f : 0f;
-            postProcessVolume.profile.GetSetting<Grain>().intensity.value = settings.Grain ? .5f : 0f;
-            postProcessVolume.profile.GetSetting<MotionBlur>().sampleCount.value = settings.MotionBlur ? 10 : 0;
-            // Vertex Jitter would require a custom shader or script to implement, so this is just a placeholder
-            switch (settings.TextureQuality)
-            {
-                case SettingData.TextureQualityLevel.Low:
-                    postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 240;
-                    break;
-                case SettingData.TextureQualityLevel.Medium:
-                    postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 360;
-                    break;
-                case SettingData.TextureQualityLevel.High:
-                    postProcessVolume.profile.GetSetting<RetroPostProcessEffect>().FixedVerticalResolution.value = 480;
-                    break;
-            }
-        }
+        RenderSettings.fog = true;
         RenderSettings.fogDensity = settings.Fog;
-        MeshRenderer[] all = FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None);
 
-        foreach (var mr in all)
+        var postProcessVolumes = FindObjectsByType<PostProcessVolume>(FindObjectsSortMode.None);
+        
+        foreach (PostProcessVolume volume in postProcessVolumes)
         {
-            if (mr.CompareTag("Environment") || mr.CompareTag("Enemy"))
+            UnityEngine.Debug.Log($"Modifying Volume {volume.gameObject.name}");
+            if (volume == null || volume.profile == null)
             {
-                if(settings.VertexJitter)
+                UnityEngine.Debug.Log($"Invalid Volume {volume.gameObject.name}");
+                continue;
+            }
+
+            if (volume.profile.TryGetSettings<RetroPostProcessEffect>(out var retro))
+            {
+                retro.active = true;
+                retro.DitherThreshold.value = settings.Dithering ? 0.5f : 0f;
+
+                switch (settings.TextureQuality)
                 {
-                    mr.material = VertexJitterMat;
+                    case SettingData.TextureQualityLevel.Low:
+                        if(volume.gameObject.layer == LayerMask.NameToLayer("UI"))
+                            retro.FixedVerticalResolution.value = 360;
+                        else
+                            retro.FixedVerticalResolution.value = 240;
+                        break;
+                    case SettingData.TextureQualityLevel.Medium:
+                        retro.FixedVerticalResolution.value = 360;
+                        break;
+                    case SettingData.TextureQualityLevel.High:
+                        retro.FixedVerticalResolution.value = 480;
+                        break;
                 }
-                else
+            }
+            if (volume.profile.TryGetSettings<Bloom>(out var bloom))
+            {
+                bloom.intensity.value = settings.Bloom ? 5f : 0f;
+            }
+            if (volume.profile.TryGetSettings<Grain>(out var grain))
+            {
+                grain.intensity.value = settings.Grain ? .5f : 0f;
+            }
+            if (volume.profile.TryGetSettings<MotionBlur>(out var motBlur))
+            {
+                motBlur.sampleCount.value = settings.MotionBlur ? 10 : 0;
+            }
+
+
+            MeshRenderer[] all = FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None);
+
+            foreach (var mr in all)
+            {
+                if (mr.CompareTag("Environment") || mr.CompareTag("Enemy"))
                 {
-                    mr.material = DefaultMat;
+                    mr.material = settings.VertexJitter ? VertexJitterMat : DefaultMat;
                 }
             }
         }
-        
     }
 
     public void ChangeResolution(int index)
