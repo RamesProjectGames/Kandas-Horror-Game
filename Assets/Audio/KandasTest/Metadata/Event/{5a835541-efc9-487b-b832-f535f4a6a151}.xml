@@ -56,7 +56,11 @@
 			<destination>{27555ef1-10a9-486d-80e2-aef2ee19effd}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{61aa3924-f275-4ce7-b79e-9f9e531a670e}" />
+	<object class="EventAutomatableProperties" id="{61aa3924-f275-4ce7-b79e-9f9e531a670e}">
+		<property name="maximumDistance">
+			<value>40</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{06c93805-0b00-4f86-b9fa-f53daed7aa86}" />
 	<object class="Timeline" id="{1475a1cd-53e9-41b9-b949-bb8ce86f0821}">
 		<relationship name="modules">
@@ -81,7 +85,6 @@
 		<property name="length">
 			<value>54.260874999999999</value>
 		</property>
-		<property name="name" />
 		<relationship name="audioFile">
 			<destination>{eba39300-ca87-43ff-af91-7a2af7718a13}</destination>
 		</relationship>

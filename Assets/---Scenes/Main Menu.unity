@@ -11423,7 +11423,6 @@ GameObject:
   m_Component:
   - component: {fileID: 363621908}
   - component: {fileID: 363621907}
-  - component: {fileID: 363621909}
   - component: {fileID: 363621911}
   - component: {fileID: 363621910}
   m_Layer: 0
@@ -11499,14 +11498,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 28.028, y: 45.136, z: -5.051}
---- !u!81 &363621909
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 363621905}
-  m_Enabled: 1
 --- !u!114 &363621910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14867,6 +14858,46 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 568003162}
   m_CullTransparentMesh: 1
+--- !u!1 &577886929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 577886931}
+  - component: {fileID: 577886930}
+  m_Layer: 0
+  m_Name: Audio Listener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!81 &577886930
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577886929}
+  m_Enabled: 1
+--- !u!4 &577886931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577886929}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 214.8288, y: 2.53, z: 261.45758}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &578847523
 GameObject:
   m_ObjectHideFlags: 0
@@ -16098,6 +16129,7 @@ MonoBehaviour:
   gameObjectsToDestroy:
   - {fileID: 828618759}
   - {fileID: 565558039}
+  - {fileID: 577886929}
   persistentScene:
     m_SceneAsset: {fileID: 102900000, guid: 7859279b44f88de4994ec505c7c71dd5, type: 3}
     m_SceneName: PersistentScene
@@ -41863,6 +41895,7 @@ SceneRoots:
   - {fileID: 791399195}
   - {fileID: 163287406}
   - {fileID: 363621908}
+  - {fileID: 577886931}
   - {fileID: 1054486344}
   - {fileID: 901959165}
   - {fileID: 1002241378}

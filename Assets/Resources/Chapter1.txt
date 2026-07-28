@@ -11,7 +11,7 @@ Student B "<style=\"Whispering\">You think you’d get a chance with her?</style
 Student C "<style=\"Whispering\">Why is she transferring here in the middle of the semester?</style>"
 Student D "<style=\"Whispering\">Hahaha, maybe she got dropped out of her previous school?</style>"
 SwitchCam(SideClassCam), Rotate(Player ^r 0)
-Teacher "Alright, calm down, everybody, save the questions for later." StopAmbience()
+Teacher "Alright, calm down, everybody, save the questions for later." StopAudioByName(Chatter ^type ambience ^mode immediate)
 "{a}\nNow, we need to start the class as we have a quiz today.{a}\nJessica, why don’t you sit over there?"
 Jessica "Okay." Objective(Class)
-[w]SwitchCam("Player Camera"), [w]Rotate(Player ^r 90), [w]HidePlayerRig(), PlayAmbience(SchoolAmbiance ^v 0.5 ^p 1 ^go SchoolAmbianceTarget), PlayAmbience(CanteenAmbiance ^v 0.75 ^p 1 ^go CanteenAmbianceTarget)
+[w]SwitchCam("Player Camera"), [w]Rotate(Player ^r 90), [w]HidePlayerRig()

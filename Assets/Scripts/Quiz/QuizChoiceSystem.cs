@@ -150,6 +150,11 @@ public class QuizChoiceSystem : MonoBehaviour
         QuizChoiceData currentQuestion = quizQuestions[currentQuestionIndex];
         questionText.text = currentQuestion.questionText;
         answers = currentQuestion.GetAnswers();
+        for (int i = 0; i < choiceTexts.Count; i++)
+        {
+            QuizButton quizButton = choiceTexts[i];
+            quizButton.quizAnswerText.text = $"{prefixanswers[i]} ";
+        }
         choiceTexts = choiceTexts.OrderBy(x => Random.value).ToList();
         for (int i = 0; i < answers.Count; i++)
         {
@@ -157,10 +162,9 @@ public class QuizChoiceSystem : MonoBehaviour
             {
                 QuizButton quizButton = choiceTexts[i];
                 quizButton.quizButton.image.color = Color.white;
-                string prefix = prefixanswers[i];
                 string answer = answers[i]; // Capture the current answer in a local variable for the lambda
                 bool isCorrect = currentQuestion.IsCorrect(answer);
-                quizButton.quizAnswerText.text = prefix + answer;
+                quizButton.quizAnswerText.text += answer;
                 quizButton.quizButton.onClick.RemoveAllListeners();
                 quizButton.quizButton.onClick.AddListener(() =>
                 {
