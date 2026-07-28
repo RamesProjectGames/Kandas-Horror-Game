@@ -1,3 +1,3 @@
 ToggleDoor(), Rotate(Player ^r -90), [w]FadeOut(1), [w]Move(Player ^x 270 ^z 327), [w]FadeIn(1), [w]Rotate(Player ^r 225), PrepChase(), [w]Wait(2)
 Jessica "The school... looks different..." [w]Rotate(Player ^r 135), [w]Wait(2), [w]Rotate(Player ^r 225), [w]Wait(2), [w]Rotate(Player ^r 180)
-"{a}\nSomething's not right.{c}Where did everybody go?{wa 0.2}\nAre they in class already?{wa 0.2}\nI should head there.", Objective(LeaveBathroom)
+"{a}\nSomething's not right.{c}Where did everybody go?{wa 0.2}\nAre they in class already?{wa 0.2}\nI should head there.", Objective(LeaveBathroom), PlayAmbiance(SchoolHorrorAmbiance)
