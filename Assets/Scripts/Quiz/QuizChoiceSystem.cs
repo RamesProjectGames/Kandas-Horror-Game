@@ -22,6 +22,7 @@ public class QuizChoiceSystem : MonoBehaviour
     public GameObject quizPanel;
     public GameObject quizPaper;
     public GameObject quizUIBlocker;
+    public GameObject quizAnswerParent;
     public TMP_Text questionText;
     public TMP_Text timerText;
     public List<QuizButton> choiceTexts = new List<QuizButton>();
@@ -150,12 +151,8 @@ public class QuizChoiceSystem : MonoBehaviour
         QuizChoiceData currentQuestion = quizQuestions[currentQuestionIndex];
         questionText.text = currentQuestion.questionText;
         answers = currentQuestion.GetAnswers();
-        for (int i = 0; i < choiceTexts.Count; i++)
-        {
-            QuizButton quizButton = choiceTexts[i];
-            quizButton.quizAnswerText.text = $"{prefixanswers[i]} ";
-        }
         choiceTexts = choiceTexts.OrderBy(x => Random.value).ToList();
+        SetPrefixAnswers();
         for (int i = 0; i < answers.Count; i++)
         {
             if (i < answers.Count && i < choiceTexts.Count)
@@ -190,7 +187,17 @@ public class QuizChoiceSystem : MonoBehaviour
         }
         quizUIBlocker.SetActive(false);
     }
-
+    public void SetPrefixAnswers()
+    {
+        var answerQuiz = quizAnswerParent.GetComponentsInChildren<TMP_Text>();
+        for (int i = 0; i < answerQuiz.Length; i++)
+        {
+            if (answerQuiz[i] != null)
+            {
+                answerQuiz[i].text = prefixanswers[i];
+            }
+        }
+    }
     void NextQuestion()
     {
         currentQuestionIndex++;
