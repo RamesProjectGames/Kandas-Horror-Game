@@ -30727,6 +30727,7 @@ GameObject:
   - component: {fileID: 1761790447}
   - component: {fileID: 1761790461}
   - component: {fileID: 1761790462}
+  - component: {fileID: 1761790463}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -31301,6 +31302,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1761790463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761790445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41344a0aec034a142abe99242d51f7c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bpmSound:
+    Guid:
+      Data1: -1491422743
+      Data2: 1145809983
+      Data3: -1834630002
+      Data4: -1344984258
+    Path: event:/SFX/Heartbeat
+  bpmParameterName: BPM
+  bpm: 70
+  playOnStart: 1
+  loop: 1
+  volume: 1
 --- !u!1 &1770699694
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,6 +21,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     private bool isKilling = false;
     private bool isStunned = false;
     private bool isInEnemyStopZone = false;
+    private bool isResumingAfterStopZone = false;
     public bool shouldMove;
 
     [Header("Hiding Spot Detection")]
@@ -151,13 +152,40 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                 fov.SetCanSeePlayerInStopZone(false);
             }
 
-            // stop any pursuit/investigation while inside an EnemyStop zone
-            // if (detectedSound || isDiscoveringSpot || (fov != null && fov.canSeePlayer))
+            if (agent != null)
             {
-                ReturnToPatrol();
+                agent.isStopped = true;
+                agent.ResetPath();
             }
-            HandleNavigation();
+
+            if (animator != null)
+            {
+                animator.SetFloat("LowerBody", 0f);
+            }
+
             return;
+        }
+
+        if (isResumingAfterStopZone)
+        {
+            if (fov != null)
+            {
+                fov.SetCanSeePlayerInStopZone(false);
+            }
+
+            if (agent != null && !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                isResumingAfterStopZone = false;
+                if (fov != null)
+                {
+                    fov.SetCanSeePlayerInStopZone(true);
+                }
+            }
+            else
+            {
+                HandleNavigation();
+                return;
+            }
         }
 
         if (fov != null)
@@ -453,8 +481,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         // Only proceed if agent has finished calculating and reached destination
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
-            isInEnemyStopZone = false;
-            fov.SetCanSeePlayerInStopZone(true);
             if (detectedSound || isDiscoveringSpot || isKilling)
             {
                 // Arrived at the noise source
@@ -631,14 +657,31 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     }
     public void OnEnterEnemyStopZone(bool isInZone)
     {
+        if (isInEnemyStopZone == isInZone)
+        {
+            return;
+        }
+
         isInEnemyStopZone = isInZone;
 
         if (agent == null) return;
 
         if (isInZone)
         {
+            isResumingAfterStopZone = false;
+            detectedSound = false;
+            isDiscoveringSpot = false;
+            targetHidingSpot = null;
+            hasLastSeenPlayerPosition = false;
+            isPlayerDetected = false;
+
             agent.isStopped = true;
             agent.ResetPath();
+
+            if (fov != null)
+            {
+                fov.SetCanSeePlayerInStopZone(false);
+            }
 
             if (animator != null)
             {
@@ -647,13 +690,13 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         }
         else
         {
+            isResumingAfterStopZone = true;
             agent.isStopped = false;
             agent.speed = speed;
-            // agent.ResetPath();
 
             if (fov != null)
             {
-                fov.SetCanSeePlayerInStopZone(true);
+                fov.SetCanSeePlayerInStopZone(false);
             }
 
             SetPatrolOrRoamDestination();
