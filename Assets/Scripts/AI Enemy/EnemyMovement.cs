@@ -24,6 +24,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     private bool isStunned = false;
     private bool isInEnemyStopZone = false;
     private bool isResumingAfterStopZone = false;
+    [SerializeField] private float stopZoneHoldTime = 1.5f;
+    private float stopZoneReleaseTime;
     public bool shouldMove;
 
     [Header("Hiding Spot Detection")]
@@ -168,6 +170,12 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                 animator.SetFloat("LowerBody", 0f);
             }
 
+            if (Time.time >= stopZoneReleaseTime)
+            {
+                OnEnterEnemyStopZone(false);
+                return;
+            }
+
             return;
         }
 
@@ -178,7 +186,12 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                 fov.SetCanSeePlayerInStopZone(false);
             }
 
-            if (agent != null && !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            if (agent != null)
+            {
+                agent.isStopped = false;
+            }
+
+            if (agent != null && !agent.pathPending && agent.hasPath && agent.remainingDistance <= agent.stoppingDistance)
             {
                 isResumingAfterStopZone = false;
                 if (fov != null)
@@ -188,6 +201,11 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             }
             else
             {
+                if (agent != null && !agent.hasPath)
+                {
+                    SetPatrolOrRoamDestination();
+                }
+
                 HandleNavigation();
                 return;
             }
@@ -721,6 +739,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             targetHidingSpot = null;
             hasLastSeenPlayerPosition = false;
             isPlayerDetected = false;
+            stopZoneReleaseTime = Time.time + stopZoneHoldTime;
 
             agent.isStopped = true;
             agent.ResetPath();
@@ -740,6 +759,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             isResumingAfterStopZone = true;
             agent.isStopped = false;
             agent.speed = speed;
+            agent.ResetPath();
+            stopZoneReleaseTime = 0f;
 
             if (fov != null)
             {

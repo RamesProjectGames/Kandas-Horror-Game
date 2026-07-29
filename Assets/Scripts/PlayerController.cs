@@ -519,7 +519,8 @@ public class PlayerController : MovableObjects
     public IEnumerator PrepLunch()
     {
         ToggleRig(true);
-        var bowl = GameObject.Find("Bowl");
+        var bowlParent = GameObject.Find("BangkuKantin (10)");
+        var bowl = bowlParent?.transform.Find("Bowl")?.gameObject;
         for (int i = 0; i < 3; i++)
         {
             if (bowl != null)
@@ -528,7 +529,8 @@ public class PlayerController : MovableObjects
             }
         }
         bowl?.SetActive(true);
-        GameObject.Find("SpoonPos")?.SetActive(true);
+        var spoonParent = GameObject.Find("SpoonPos");
+        spoonParent.transform.Find("Spoon")?.gameObject.SetActive(true);
         anim.SetBool("Lunch", true);
         CameraManager.SwitchCamera(GameObject.Find("LunchCam").GetComponent<CinemachineCamera>());
         yield return new WaitForSeconds(1f);
@@ -546,7 +548,8 @@ public class PlayerController : MovableObjects
     {
         anim.SetTrigger("EatLunch");
         lunchProgress++;
-        var bowl = GameObject.Find("Bowl");
+        var bowlParent = GameObject.Find("BangkuKantin (10)");
+        var bowl = bowlParent?.transform.Find("Bowl")?.gameObject;
         for (int i = 0; i < 3; i++)
         {
             if (bowl != null)
@@ -556,9 +559,10 @@ public class PlayerController : MovableObjects
         }
         if (lunchProgress == 2)
         {
-            bowl?.SetActive(false);
-            GameObject.Find("SpoonPos")?.SetActive(false);
-            GameObject.Find("Pill")?.SetActive(true);
+            var spoonParent = GameObject.Find("SpoonPos");
+            spoonParent?.transform.Find("Spoon")?.gameObject.SetActive(true);
+            var pills = GameObject.Find("Pills");
+            pills?.transform.Find("Pill")?.gameObject.SetActive(true);
             anim.SetBool("Meds", true);
             anim.SetBool("Lunch", false);
             GetComponent<PlayerGrabInteraction>().currentItem.ChangeInteractionText("EatMeds");
@@ -568,6 +572,9 @@ public class PlayerController : MovableObjects
     public void EatMeds()
     {
         anim.SetTrigger("EatMeds");
+        var bowlParent = GameObject.Find("BangkuKantin (10)");
+        var bowl = bowlParent?.transform.Find("Bowl")?.gameObject;
+        bowl?.SetActive(false);
         DialogueSystem.Instance.convoManager.Enqueue(FileReader.ReadAsset("PostLunch"));
     }
     #endregion
