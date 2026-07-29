@@ -35,7 +35,7 @@ public class SettingsUI : MonoBehaviour
     public TextMeshProUGUI ditheringText;
     public TextMeshProUGUI bloomText;
     public TextMeshProUGUI grainText;
-    public Slider fogText;
+    public Slider gammaIntensity;
     public TextMeshProUGUI motionBlurText;
     public TextMeshProUGUI vertexJitterText;
     public TextMeshProUGUI textureQualityText;
@@ -50,11 +50,9 @@ public class SettingsUI : MonoBehaviour
     public void ToggleDithering() { settingManager.ToggleDithering(); UpdateUI(); }
     public void ToggleBloom() { settingManager.ToggleBloom(); UpdateUI(); }
     public void ToggleGrain() { settingManager.ToggleGrain(); UpdateUI(); }
-    public void SetFogDensity(float value) { settingManager.SetFogValue(value); UpdateUI(); }
+    public void SetGammaIntensity(float value) { settingManager.SetGammaValue(value); UpdateUI(); }
     public void ToggleMotionBlur() { settingManager.ToggleMotionBlur(); UpdateUI(); }
     public void ToggleVertexJitter() { settingManager.ToggleVertexJitter(); UpdateUI(); }
-    public void NextTextureQuality() { settingManager.NextTextureQuality(); UpdateUI(); }
-    public void PrevTextureQuality() { settingManager.PrevTextureQuality(); UpdateUI(); }
 
     public void UpdateUI()
     {
@@ -65,10 +63,9 @@ public class SettingsUI : MonoBehaviour
         ditheringText.text = s.Dithering ? "On" : "Off";
         bloomText.text = s.Bloom ? "On" : "Off";
         grainText.text = s.Grain ? "On" : "Off";
-        fogText.value = Mathf.InverseLerp(settingManager.minimumFogDistance, settingManager.maximumFogDistance, s.Fog);
+        gammaIntensity.value = Mathf.Clamp(s.gamma, settingManager.minimumGammaIntensity, settingManager.maximumGammaIntensity);
         motionBlurText.text = s.MotionBlur ? "On" : "Off";
         vertexJitterText.text = s.VertexJitter ? "On" : "Off";
-        textureQualityText.text = TextureQualityToString(s.TextureQuality);
 
         // Control Settings
         microphoneSensitivitySlider.minValue = settingManager.minimumMicrophoneVolume;
@@ -98,17 +95,6 @@ public class SettingsUI : MonoBehaviour
 
         // Language Settings
         languageDropdown.value = (int)s.GameLanguage;
-    }
-
-    private string TextureQualityToString(SettingData.TextureQualityLevel quality)
-    {
-        switch (quality)
-        {
-            case SettingData.TextureQualityLevel.Low: return "Low";
-            case SettingData.TextureQualityLevel.Medium: return "Medium";
-            case SettingData.TextureQualityLevel.High: return "High";
-            default: return quality.ToString();
-        }
     }
 
     private string ResolutionToString(SettingData.Resolution res)
