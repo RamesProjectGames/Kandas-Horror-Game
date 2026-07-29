@@ -1,5 +1,7 @@
 using Dialogue;
 using System.Collections;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Windows;
@@ -40,6 +42,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
     [Header("Monster Audio")]
     [SerializeField] private EnemyAudioManager enemyAudioManager;
+    [SerializeField] private EventReference monsterChaseAmbiance;
     [SerializeField] private string roamingGrowlAction = "Roaming";
     [SerializeField] private string noticeScreechAction = "Noticed";
     [SerializeField] private string stunnedGruntAction = "Stunned";
@@ -52,6 +55,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     private float nextChasingLaughTime;
     private bool wasChasingLastFrame;
     private Coroutine stunnedAudioRoutine;
+    private EventInstance chaseAmbianceEvent;
+    private bool isChaseAmbiancePlaying;
 
     [Header("Footsteps")]
     // reference to the centralized sound manager – typically on the same GameObject
@@ -210,7 +215,12 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         if (isChasingNow && !wasChasingLastFrame)
         {
             PlayMonsterAction(noticeScreechAction, true);
+            PlayChaseAmbiance();
             nextChasingLaughTime = Time.time;
+        }
+        else if (!isChasingNow && wasChasingLastFrame)
+        {
+            StopChaseAmbiance();
         }
 
         if (isChasingNow)
@@ -335,6 +345,43 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             return;
 
         enemyAudioManager.PlayActionAudio(actionName);
+    }
+
+    private void PlayChaseAmbiance()
+    {
+        if (monsterChaseAmbiance.IsNull)
+        {
+            Debug.LogWarning("Chase ambience event is not assigned.");
+            return;
+        }
+
+        if (isChaseAmbiancePlaying && chaseAmbianceEvent.isValid())
+            return;
+
+        if (chaseAmbianceEvent.isValid())
+        {
+            chaseAmbianceEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            chaseAmbianceEvent.release();
+        }
+
+        chaseAmbianceEvent = RuntimeManager.CreateInstance(monsterChaseAmbiance);
+        RuntimeManager.AttachInstanceToGameObject(chaseAmbianceEvent, gameObject, false);
+        chaseAmbianceEvent.start();
+        isChaseAmbiancePlaying = true;
+    }
+
+    private void StopChaseAmbiance()
+    {
+        if (!chaseAmbianceEvent.isValid())
+        {
+            isChaseAmbiancePlaying = false;
+            return;
+        }
+
+        chaseAmbianceEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        chaseAmbianceEvent.release();
+        chaseAmbianceEvent.clearHandle();
+        isChaseAmbiancePlaying = false;
     }
 
     private IEnumerator PlayStunnedAudioSequence()
