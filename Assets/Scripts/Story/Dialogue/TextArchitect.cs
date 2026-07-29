@@ -227,7 +227,7 @@ namespace Dialogue
                 {
                     if(vowels.Contains(tmpro.textInfo.characterInfo[tmpro.maxVisibleCharacters].character))
                         if (tmpro.maxVisibleCharacters - 1 > 0 && !vowels.Contains(tmpro.textInfo.characterInfo[tmpro.maxVisibleCharacters - 1].character))
-                            AudioManager.Instance.PlayOneShot(RuntimeManager.PathToEventReference("event:/Voice/DialogueVoice"), .33f, 1, GameObject.Find("Player").transform.position);
+                            AudioManager.Instance.PlayOneShot3D(RuntimeManager.PathToEventReference("event:/Voice/DialogueVoice"), .33f, 1, GameObject.Find("Player").transform.position);
                     tmpro.maxVisibleCharacters += speedUp ? charPerCycle * 5 : charPerCycle;
                     yield return new WaitForSeconds(.015f / speed);
                 }
@@ -281,7 +281,7 @@ namespace Dialogue
                     if (alphas[maxRange - 1] > alphaThreshold || lastCharInvisible)
                     {
                         if (vowels.Contains(textInfo.characterInfo[maxRange].character))
-                            AudioManager.Instance.PlayOneShot(RuntimeManager.PathToEventReference("event:/Voice/DialogueVoice"), .33f, 1, GameObject.Find("Player").transform.position);
+                            AudioManager.Instance.PlayOneShot3D(RuntimeManager.PathToEventReference("event:/Voice/DialogueVoice"), .33f, 1, GameObject.Find("Player").transform.position);
                         if (maxRange < textInfo.characterCount)
                         {
                             maxRange++;

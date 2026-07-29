@@ -88,7 +88,7 @@ public class PinSystem : MonoBehaviour
             {
                 if (pinTexts[i] != correctPins[i])
                 {
-                    AudioManager.Instance.PlayOneShot(incorrectPinSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
+                    AudioManager.Instance.PlayOneShot3D(incorrectPinSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
                     OnIncorrectPins?.Invoke();
 
                     EnemyMovement[] enemies = FindObjectsByType<EnemyMovement>(FindObjectsSortMode.None);
@@ -102,7 +102,7 @@ public class PinSystem : MonoBehaviour
                     return;
                 }
             }
-            AudioManager.Instance.PlayOneShot(correctPinSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
+            AudioManager.Instance.PlayOneShot3D(correctPinSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
             OnCorrectPins?.Invoke();
             ClosePanel();
             PlaySafeOpenedSound();
@@ -122,10 +122,10 @@ public class PinSystem : MonoBehaviour
     }
     public void PlayInputPinSound()
     {
-        AudioManager.Instance.PlayOneShot(inputPinSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
+        AudioManager.Instance.PlayOneShot3D(inputPinSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
     }
     public void PlaySafeOpenedSound()
     {
-        AudioManager.Instance.PlayOneShot(SafeOpenedSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
+        AudioManager.Instance.PlayOneShot3D(SafeOpenedSound,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
     }
 }

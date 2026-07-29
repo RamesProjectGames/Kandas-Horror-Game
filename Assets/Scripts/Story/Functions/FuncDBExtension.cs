@@ -352,7 +352,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
             Vector3 pos = ResolveAudioPosition(funcParams);
-            AudioManager.Instance.PlayOneShot(sfx, volume, pitch, pos);
+            AudioManager.Instance.PlayOneShot3D(sfx, volume, pitch, pos);
         }
 
         private static void StopSFX()
@@ -441,7 +441,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
             Vector3 pos = ResolveAudioPosition(funcParams);
-            AudioManager.Instance.PlayOneShot(bgm, volume, pitch, pos);
+            AudioManager.Instance.PlayOneShot3D(bgm, volume, pitch, pos);
         }
 
         private static void PlayAmbience(string[] args)
@@ -453,7 +453,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
             Vector3 pos = ResolveAudioPosition(funcParams);
-            AudioManager.Instance.PlayOneShot(ambience, volume, pitch, pos);
+            AudioManager.Instance.PlayOneShot3D(ambience, volume, pitch, pos);
         }
 
         private static void PlayVoice(string[] args)
@@ -464,7 +464,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
 
             Vector3 pos = ResolveAudioPosition(funcParams);
-            AudioManager.Instance.PlayOneShot(voice, volume, pitch, pos);
+            AudioManager.Instance.PlayOneShot3D(voice, volume, pitch, pos);
         }
         #endregion
 
@@ -580,7 +580,7 @@ namespace TestingPurposes
             EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
 
             Vector3 pos = GameObject.Find("Player").transform.position;
-            AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
+            AudioManager.Instance.PlayOneShot3D(sfx, 1, 1, pos);
         }
 
         private static void ToggleSpecificDoor(string arg = "")
@@ -647,7 +647,7 @@ namespace TestingPurposes
             EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
 
             Vector3 pos = GameObject.Find("Player").transform.position;
-            AudioManager.Instance.PlayOneShot(sfx, 1, 1, pos);
+            AudioManager.Instance.PlayOneShot3D(sfx, 1, 1, pos);
             yield return null;
         }
 

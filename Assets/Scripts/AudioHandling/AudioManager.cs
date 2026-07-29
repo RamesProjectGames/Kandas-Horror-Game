@@ -12,10 +12,16 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance != null)
-            Destroy(Instance.gameObject);
-        
-        Instance = this;
+        if (Instance == null)
+        {
+            transform.SetParent(null);
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         eventInstances = new List<EventInstance>();
         eventInstancesBySound = new Dictionary<string, EventInstance>();
@@ -27,22 +33,34 @@ public class AudioManager : MonoBehaviour
         ambienceBus = RuntimeManager.GetBus("bus:/Ambience");
     }
 
-    private void Update()
+    void Update()
+    {
+        RemoveStoppedInstances();
+    }
+
+    public void UpdateVolumeSettings()
     {
         masterVolumeBus.setVolume(SettingManager.Instance.settings.MasterVolume);
         bgmBus.setVolume(SettingManager.Instance.settings.MusicVolume);
         sfxBus.setVolume(SettingManager.Instance.settings.SoundEffectVolume);
         voiceBus.setVolume(SettingManager.Instance.settings.MobVolume);
-
-        RemoveStoppedInstances();
     }
 
-    public void PlayOneShot(EventReference sound, float volume, float pitch, Vector3 position = default)
+    public void PlayOneShot3D(EventReference sound, float volume, float pitch, Vector3 position = default)
     {
         var instance = CreateInstance(sound, true);
         instance.setVolume(volume);
         instance.setPitch(pitch);
         instance.set3DAttributes(RuntimeUtils.To3DAttributes(position));
+        instance.start();
+        instance.release();
+    }
+
+    public void PlayOneShot2D(EventReference sound, float volume, float pitch, Vector3 position = default)
+    {
+        var instance = CreateInstance(sound, true);
+        instance.setVolume(volume);
+        instance.setPitch(pitch);
         instance.start();
         instance.release();
     }

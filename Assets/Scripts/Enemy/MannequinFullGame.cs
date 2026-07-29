@@ -335,7 +335,7 @@ public class MannequinFullGame : MonoBehaviour
 
     public void PlayPoseSound()
     {        
-        AudioManager.Instance.PlayOneShot(PoseSound, SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
+        AudioManager.Instance.PlayOneShot3D(PoseSound, SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
     }
     public void StopPoseSound()
     {
@@ -343,7 +343,7 @@ public class MannequinFullGame : MonoBehaviour
     }
     public void PlayStrikeSound()
     {
-        AudioManager.Instance.PlayOneShot(StrikeSound, SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
+        AudioManager.Instance.PlayOneShot3D(StrikeSound, SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
     }
     void OnCollisionEnter(Collision collision)
     {

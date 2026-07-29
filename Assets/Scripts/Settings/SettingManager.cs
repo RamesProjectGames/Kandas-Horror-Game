@@ -402,6 +402,7 @@ public class SettingManager : MonoBehaviour
     public void SetMasterVolume(float volume)
     {
         settings.MasterVolume = volume;
+        AudioManager.Instance.UpdateVolumeSettings();
         SaveSettings();
     }
     public void SetMusicVolume(float volume)

@@ -338,7 +338,8 @@ public class SettingsUI : MonoBehaviour
     public void OpenSettings() { SettingPanel.SetActive(true); if(PausePanel != null) PausePanel.SetActive(false); }
     public void CloseSettings() { SettingPanel.SetActive(false); if(PausePanel != null) PausePanel.SetActive(true);}
     public void PausePanelToggle(bool state = false) 
-    { 
+    {
+        UIAudioManager.Instance.PlayCancelSound();
         settingManager.isPaused = state;
         if(!SettingPanel.activeInHierarchy)
         {
