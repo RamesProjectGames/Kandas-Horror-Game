@@ -7,8 +7,7 @@ using UnityEngine.Rendering.PostProcessing;
 public class SettingManager : MonoBehaviour
 {
     public static SettingManager Instance { get; private set; }
-    private InputAction pauseAction;
-    private SettingsUI settingsUI;
+    [SerializeField] private InputActionReference pauseAction;
     public bool isPaused = false;
     public bool gameOver;
     public bool isDemo;
@@ -30,20 +29,13 @@ public class SettingManager : MonoBehaviour
     }
     void Start()
     {
-        settingsUI = FindAnyObjectByType<SettingsUI>();
-        settingsUI.PausePanelToggle();
-        var inputActions = GetComponent<PlayerInput>();
-        if (inputActions != null)
-        {            
-            pauseAction = inputActions.actions.FindAction("Pause");
-        }
+        pauseAction.action.performed += TogglePauseStatus;
     }
-    void Update()
+    void TogglePauseStatus(InputAction.CallbackContext ctx)
     {
-        if (pauseAction != null && pauseAction.WasCompletedThisFrame() && !isRebinding)
+        if (!isRebinding)
         {
-            isPaused = true;
-            settingsUI.PausePanelToggle(isPaused);
+            FindAnyObjectByType<SettingsUI>().PausePanelToggle();
         }
     }
     void OnDestroy()
@@ -310,7 +302,7 @@ public class SettingManager : MonoBehaviour
     public float minimumMicrophoneVolume = .25f;
     public float maximumMicrophoneVolume = 1f;
     public float minimumMouseSensitivity = 0.1f;
-    public float maximumMouseSensitivity = 1f;
+    public float maximumMouseSensitivity = 10f;
     bool isRebinding = false;
     public void SetRebind(bool isRebinding) => this.isRebinding = isRebinding;
     
@@ -368,12 +360,12 @@ public class SettingManager : MonoBehaviour
     }
     public void SetMicrophoneSensitivity(float sensitivity)
     {
-        settings.MicrophoneSensitivity = Mathf.Lerp(minimumMicrophoneVolume, maximumMicrophoneVolume, sensitivity);
+        settings.MicrophoneSensitivity = Mathf.Clamp(sensitivity, minimumMicrophoneVolume, maximumMicrophoneVolume);
         SaveSettings();
     }
     public void SetMouseSensitivity(float sensitivity)
     {
-        settings.MouseSensitivity = Mathf.Lerp(minimumMouseSensitivity, maximumMouseSensitivity, sensitivity);
+        settings.MouseSensitivity = Mathf.Clamp(sensitivity, minimumMouseSensitivity, maximumMouseSensitivity);
         SaveSettings();
     }
     public void ToggleSprintToggle() {

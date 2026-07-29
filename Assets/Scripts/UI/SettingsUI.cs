@@ -2,6 +2,7 @@ using Dialogue;
 using FMOD;
 using FMODUnity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -11,17 +12,14 @@ using UnityEngine.UI;
 
 public class SettingsUI : MonoBehaviour
 {
-    public SettingManager settingManager;
     void Start()
     {
-        settingManager = SettingManager.Instance;
         UpdateUI();
         PopulateAudioInputDevices();
         PopulateAudioOutputDevices();
         PopulateLanguageOptions();
         ScrollToSection(0);
         HighlightSectionButton(0);
-        CloseSettings();
     }
     void Update()
     {
@@ -42,37 +40,37 @@ public class SettingsUI : MonoBehaviour
     
 
 
-    public void NextResolution() { settingManager.NextResolution(); UpdateUI(); }
-    public void PrevResolution() { settingManager.PrevResolution(); UpdateUI(); }
-    public void NextFrameRate() { settingManager.NextFrameRate(); UpdateUI(); }
-    public void PrevFrameRate() { settingManager.PrevFrameRate(); UpdateUI(); }
-    public void ToggleVSync() { settingManager.ToggleVSync(); UpdateUI(); }
-    public void ToggleDithering() { settingManager.ToggleDithering(); UpdateUI(); }
-    public void ToggleBloom() { settingManager.ToggleBloom(); UpdateUI(); }
-    public void ToggleGrain() { settingManager.ToggleGrain(); UpdateUI(); }
-    public void SetGammaIntensity(float value) { settingManager.SetGammaValue(value); UpdateUI(); }
-    public void ToggleMotionBlur() { settingManager.ToggleMotionBlur(); UpdateUI(); }
-    public void ToggleVertexJitter() { settingManager.ToggleVertexJitter(); UpdateUI(); }
+    public void NextResolution() { SettingManager.Instance.NextResolution(); UpdateUI(); }
+    public void PrevResolution() { SettingManager.Instance.PrevResolution(); UpdateUI(); }
+    public void NextFrameRate() { SettingManager.Instance.NextFrameRate(); UpdateUI(); }
+    public void PrevFrameRate() { SettingManager.Instance.PrevFrameRate(); UpdateUI(); }
+    public void ToggleVSync() { SettingManager.Instance.ToggleVSync(); UpdateUI(); }
+    public void ToggleDithering() { SettingManager.Instance.ToggleDithering(); UpdateUI(); }
+    public void ToggleBloom() { SettingManager.Instance.ToggleBloom(); UpdateUI(); }
+    public void ToggleGrain() { SettingManager.Instance.ToggleGrain(); UpdateUI(); }
+    public void SetGammaIntensity(float value) { SettingManager.Instance.SetGammaValue(value); UpdateUI(); }
+    public void ToggleMotionBlur() { SettingManager.Instance.ToggleMotionBlur(); UpdateUI(); }
+    public void ToggleVertexJitter() { SettingManager.Instance.ToggleVertexJitter(); UpdateUI(); }
 
     public void UpdateUI()
     {
-        var s = settingManager.settings;
+        var s = SettingManager.Instance.settings;
         resolutionText.text = ResolutionToString(s.GameResolution);
         frameRateText.text = s.FrameRate + " FPS";
         vSyncText.text = s.VSync ? "On" : "Off";
         ditheringText.text = s.Dithering ? "On" : "Off";
         bloomText.text = s.Bloom ? "On" : "Off";
         grainText.text = s.Grain ? "On" : "Off";
-        gammaIntensity.value = Mathf.Clamp(s.gamma, settingManager.minimumGammaIntensity, settingManager.maximumGammaIntensity);
+        gammaIntensity.value = Mathf.Clamp(s.gamma, SettingManager.Instance.minimumGammaIntensity, SettingManager.Instance.maximumGammaIntensity);
         motionBlurText.text = s.MotionBlur ? "On" : "Off";
         vertexJitterText.text = s.VertexJitter ? "On" : "Off";
 
         // Control Settings
-        microphoneSensitivitySlider.minValue = settingManager.minimumMicrophoneVolume;
-        microphoneSensitivitySlider.maxValue = settingManager.maximumMicrophoneVolume;
+        microphoneSensitivitySlider.minValue = SettingManager.Instance.minimumMicrophoneVolume;
+        microphoneSensitivitySlider.maxValue = SettingManager.Instance.maximumMicrophoneVolume;
         microphoneSensitivitySlider.value = s.MicrophoneSensitivity;
-        mouseSensitivitySlider.minValue = settingManager.minimumMouseSensitivity;
-        mouseSensitivitySlider.maxValue = settingManager.maximumMouseSensitivity;
+        mouseSensitivitySlider.minValue = SettingManager.Instance.minimumMouseSensitivity;
+        mouseSensitivitySlider.maxValue = SettingManager.Instance.maximumMouseSensitivity;
         mouseSensitivitySlider.value = s.MouseSensitivity;
         sprintToggleText.text = s.SprintToggle ? "Toggle" : "Hold";
         crouchToggleText.text = s.CrouchToggle ? "Toggle" : "Hold";
@@ -114,7 +112,7 @@ public class SettingsUI : MonoBehaviour
             default: return res.ToString();
         }
     }
-    public void ResetToDefaults() { settingManager.ResetGrapichsToDefaults(); UpdateUI(); }
+    public void ResetToDefaults() { SettingManager.Instance.ResetGrapichsToDefaults(); UpdateUI(); }
     public void ConfirmResetSettings() {ConfirmationUI.Instance.SetConfirmationUI("Reset Setting to defaults?", () => ResetToDefaults());}
     #endregion
 
@@ -128,7 +126,16 @@ public class SettingsUI : MonoBehaviour
     public TextMeshProUGUI sprintToggleText;  
     public TextMeshProUGUI crouchToggleText;  
     [SerializeField] private List<RebindActionUI> rebindActions = new List<RebindActionUI>();
-    public void SetRebinding(bool isRebinding) => settingManager.SetRebind(isRebinding);
+    public void SetRebinding(bool isRebinding) => StartCoroutine(RebindCoroutine(isRebinding));
+
+    public IEnumerator RebindCoroutine(bool isRebinding)
+    {
+        while(SettingManager.Instance == null)
+        {
+            yield return null;
+        }
+        SettingManager.Instance.SetRebind(isRebinding);
+    }
     public void PopulateAudioInputDevices()
     {
         var core = RuntimeManager.CoreSystem;
@@ -173,9 +180,9 @@ public class SettingsUI : MonoBehaviour
         microphoneDropdown.ClearOptions();
         microphoneDropdown.AddOptions(options);
 
-        if(string.IsNullOrEmpty(settingManager.settings.AudioInputDeviceName))
+        if(string.IsNullOrEmpty(SettingManager.Instance.settings.AudioInputDeviceName))
         {
-            if(options.Count > 0) settingManager.settings.AudioInputDeviceName = options[0];
+            if(options.Count > 0) SettingManager.Instance.settings.AudioInputDeviceName = options[0];
         }
         
         // if(Microphone.devices.Length == 0)
@@ -228,32 +235,32 @@ public class SettingsUI : MonoBehaviour
     }
     public void SetAudioInput(int index)
     {
-        settingManager.SelectAudioInputDevice(index);
+        SettingManager.Instance.SelectAudioInputDevice(index);
     }
     public void SetAudioOutput(int index)
     {
-        settingManager.SelectAudioOutputDevice(index);
+        SettingManager.Instance.SelectAudioOutputDevice(index);
     }
     public void SetMicrophoneSensitivity(float value)
     {
-        settingManager.SetMicrophoneSensitivity(value);
+        SettingManager.Instance.SetMicrophoneSensitivity(value);
     }
     public void SetMouseSensitivity(float value)
     {
-        settingManager.SetMouseSensitivity(value);
+        SettingManager.Instance.SetMouseSensitivity(value);
     }
     public void ToggleSprintMode() {
-        settingManager.ToggleSprintToggle();
-        sprintToggleText.text = settingManager.settings.SprintToggle ? "Toggle" : "Hold";
+        SettingManager.Instance.ToggleSprintToggle();
+        sprintToggleText.text = SettingManager.Instance.settings.SprintToggle ? "Toggle" : "Hold";
     }
     public void ToggleCrouchMode()
     {
-        settingManager.ToggleCrouch();
-        crouchToggleText.text = settingManager.settings.CrouchToggle ? "Toggle" : "Hold";
+        SettingManager.Instance.ToggleCrouch();
+        crouchToggleText.text = SettingManager.Instance.settings.CrouchToggle ? "Toggle" : "Hold";
     }
     public void ResetControlSettingsToDefaults() 
     { 
-        settingManager.ResetControlsToDefaults();
+        SettingManager.Instance.ResetControlsToDefaults();
         foreach (var rebindUI in rebindActions)
         {
             rebindUI.ResetToDefault();
@@ -275,21 +282,21 @@ public class SettingsUI : MonoBehaviour
 
     public void SetMasterVolume(float value)
     {
-        settingManager.SetMasterVolume(value);
+        SettingManager.Instance.SetMasterVolume(value);
     }
     public void SetMusicVolume(float value)
     {
-        settingManager.SetMusicVolume(value);
+        SettingManager.Instance.SetMusicVolume(value);
     }
     public void SetSoundEffectVolume(float value)
     {
-        settingManager.SetSoundEffectVolume(value);
+        SettingManager.Instance.SetSoundEffectVolume(value);
     }
     public void SetMobVolume(float value)
     {
-        settingManager.SetMobVolume(value);
+        SettingManager.Instance.SetMobVolume(value);
     }
-    public void ResetAudioSettingsToDefaults() { settingManager.ResetAudioToDefaults(); UpdateUI(); }
+    public void ResetAudioSettingsToDefaults() { SettingManager.Instance.ResetAudioToDefaults(); UpdateUI(); }
     public void ConfirmResetAudio() { ConfirmationUI.Instance.SetConfirmationUI("Reset audio to defaults?", () => ResetAudioSettingsToDefaults()); }
 
     #endregion
@@ -305,8 +312,8 @@ public class SettingsUI : MonoBehaviour
             languageDropdown.options.Add(new TMP_Dropdown.OptionData(lang));
         }
     }
-    public void SetLanguage(int index) { settingManager.SetLanguage(index); }
-    public void ResetLanguageToDefault() { settingManager.ResetLanguageToDefault(); UpdateUI(); }
+    public void SetLanguage(int index) { SettingManager.Instance.SetLanguage(index); }
+    public void ResetLanguageToDefault() { SettingManager.Instance.ResetLanguageToDefault(); UpdateUI(); }
     public void ConfirmResetLanguage() { ConfirmationUI.Instance.SetConfirmationUI("Reset language to default?", () => ResetLanguageToDefault()); }
     #endregion
 
@@ -337,17 +344,31 @@ public class SettingsUI : MonoBehaviour
     }
     public void OpenSettings() { SettingPanel.SetActive(true); if(PausePanel != null) PausePanel.SetActive(false); }
     public void CloseSettings() { SettingPanel.SetActive(false); if(PausePanel != null) PausePanel.SetActive(true);}
-    public void PausePanelToggle(bool state = false) 
+    public void PausePanelToggle() 
     {
-        UIAudioManager.Instance.PlayCancelSound();
-        settingManager.isPaused = state;
-        if(!SettingPanel.activeInHierarchy)
+        if(FindAnyObjectByType<ConfirmationUI>() != null && FindAnyObjectByType<ConfirmationUI>().transform.localScale.x > 0)
         {
-            if(PausePanel != null) PausePanel.SetActive(state);            
+            UIAudioManager.Instance.PlayCancelSound();
+            FindAnyObjectByType<ConfirmationUI>().Cancel();
+        }
+        else if(FindAnyObjectByType<ChapterManager>() != null && FindAnyObjectByType<ChapterManager>().chapterPanel.activeInHierarchy)
+        {
+            UIAudioManager.Instance.PlayCancelSound();
+            FindAnyObjectByType<ChapterManager>().ChangePanelState(false);
+        }
+        else if(SettingPanel.activeInHierarchy)
+        {
+            UIAudioManager.Instance.PlayCancelSound();
+            CloseSettings();
         }
         else
         {
-            if(PausePanel != null) PausePanel.SetActive(false);
+            if (PausePanel != null)
+            {
+                UIAudioManager.Instance.PlayCancelSound();
+                SettingManager.Instance.isPaused = !SettingManager.Instance.isPaused;
+                PausePanel.SetActive(SettingManager.Instance.isPaused);
+            }
         }
     }
     public void BackToMainMenu()
@@ -355,18 +376,19 @@ public class SettingsUI : MonoBehaviour
         DialogueSystem.Instance.StopDialogue();
         GameoverPanel.SetActive(false);
         demoEndPanel.SetActive(false);
+        SettingManager.Instance.isPaused = false;
         SceneManager.LoadScene("Main Menu");
     }
     public void ShowGameover(bool open)
     { 
         GameoverPanel.SetActive(open);
-        settingManager.gameOver = open;
+        SettingManager.Instance.gameOver = open;
     }
 
     public void ShowDemoEnd()
     {
         demoEndPanel.SetActive(true);
-        settingManager.gameOver = true;
+        SettingManager.Instance.gameOver = true;
     }
 
     public void VisitSteamPage()
@@ -389,7 +411,11 @@ public class SettingsUI : MonoBehaviour
         {
             ObjectiveManager.Instance.objectiveDatas.ForEach(x => x.IsCompleted = false);
             DialogueSystem.Instance.OpenDialogue($"Chapter{ChapterDataManager.Instance.currentChapterIndex}");
-            PausePanelToggle(false);
+            if(PausePanel.activeInHierarchy)
+            {
+                SettingManager.Instance.isPaused = true;
+                PausePanelToggle();
+            }
         }
     }
     #endregion
