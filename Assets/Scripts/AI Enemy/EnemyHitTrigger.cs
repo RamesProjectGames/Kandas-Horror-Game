@@ -34,7 +34,7 @@ public class EnemyHitTrigger : MonoBehaviour
     {
         if (other.gameObject.CompareTag("EnemyStop"))
         {
-            // enemyMovement?.OnEnterEnemyStopZone(false);
+            enemyMovement?.OnEnterEnemyStopZone(false);
             LeaveEvent?.Invoke();
         }
         else if (other.gameObject.CompareTag(registeredHitLayerName))
