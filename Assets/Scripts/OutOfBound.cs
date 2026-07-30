@@ -6,9 +6,22 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class OutOfBound : MonoBehaviour
 {
+    public enum TriggerTargetType
+    {
+        Player,
+        Tag,
+        GameObjectName
+    }
+
     public List<ObjectiveDialoguePair> objectiveDialoguePair = new List<ObjectiveDialoguePair>(); // List of dialogue pairs for different objectives
     public List<string> relatedObjectives = new List<string>(); // List of objective IDs related to this out-of-bounds area
-    BoxCollider col;
+
+    [SerializeField] private TriggerTargetType triggerTargetType = TriggerTargetType.Player;
+    [SerializeField] private string targetTag = "Player";
+    [SerializeField] private string targetObjectName = "";
+
+    private BoxCollider col;
+
     void Start()
     {
         col = GetComponent<BoxCollider>();
@@ -17,26 +30,46 @@ public class OutOfBound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(ObjectiveManager.Instance == null)
+        if (ObjectiveManager.Instance == null)
             return;
+
         col.enabled = relatedObjectives.Any(x => ObjectiveManager.Instance.currentObjectives.Contains(x));
     }
+
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (ShouldTrigger(other.gameObject))
         {
-            // Handle player entering the out-of-bounds area
             TriggerDialogue();
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.CompareTag("Player"))
+        if (ShouldTrigger(collision.collider.gameObject))
         {
             TriggerDialogue();
         }
     }
+
+    private bool ShouldTrigger(GameObject otherObject)
+    {
+        switch (triggerTargetType)
+        {
+            case TriggerTargetType.Player:
+                return otherObject.CompareTag("Player");
+
+            case TriggerTargetType.Tag:
+                return !string.IsNullOrWhiteSpace(targetTag) && otherObject.CompareTag(targetTag);
+
+            case TriggerTargetType.GameObjectName:
+                return !string.IsNullOrWhiteSpace(targetObjectName) && otherObject.name == targetObjectName;
+
+            default:
+                return false;
+        }
+    }
+
     public void TriggerDialogue()
     {
         if (ObjectiveManager.Instance == null) return;

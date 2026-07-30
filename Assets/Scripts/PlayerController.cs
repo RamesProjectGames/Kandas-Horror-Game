@@ -644,7 +644,6 @@ public class PlayerController : MovableObjects
         yield return new WaitForSeconds(.1f);
         agent.enabled = true;
         agent.ResetPath();
-        yield return new WaitForEndOfFrame();
     }
     public override IEnumerator Rotate(float yrot)
     {

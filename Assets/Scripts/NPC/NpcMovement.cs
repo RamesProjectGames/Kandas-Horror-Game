@@ -106,6 +106,7 @@ public class NpcMovement : MovableObjects
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 5 * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
+
     }
 
     public void ToggleNPCMovement()
