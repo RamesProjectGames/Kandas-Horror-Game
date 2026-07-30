@@ -14,4 +14,4 @@ Student D "<style=\"Whispering\">Hahaha, maybe she got dropped out of her previo
 Teacher "Alright, calm down, everybody, save the questions for later." StopAudioByName(Chatter ^type ambience ^mode immediate)
 "{a}\nNow, we need to start the class as we have a quiz today.{a}\nJessica, why don’t you sit over there?"
 Jessica "Okay." Objective(Class)
-[w]FadeOut(1), [w]Wait(.5), [w]SwitchCam("Player Camera"), [w]Wait(1), [w]FadeIn(1), [w]Rotate(Player ^r 90), [w]HidePlayerRig(), PlayAmbience(SchoolAmbiance ^v 0.5 ^p 1 ^go SchoolAmbianceTarget), PlayAmbience(CanteenAmbiance ^v 0.75 ^p 1 ^go CanteenAmbianceTarget)
+[w]FadeOut(1), [w]Wait(.5), [w]SwitchCam("Player Camera"), [w]Wait(1), [w]FadeIn(1), [w]Rotate(Player ^r 90), [w]HidePlayerRig(), PlayAmbience(SchoolAmbience ^v 0.5 ^p 1 ^go SchoolAmbianceTarget), PlayAmbience(CanteenAmbience ^v 0.75 ^p 1 ^go CanteenAmbianceTarget)

@@ -229,7 +229,7 @@ public class NpcMovement : MovableObjects
         }
 
         if(head == null)
-            head = transform.Find(headPath).gameObject;
+            head = transform.Find(headPath)?.gameObject;
 
         float state = 0;
         if (animState == NPCAnimationState.Sit)
