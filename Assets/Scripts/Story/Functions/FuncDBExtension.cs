@@ -97,6 +97,7 @@ namespace TestingPurposes
             db.AddFunction("CloseAllDoors", new Action(CloseAllDoors));
             db.AddFunction("OpenAllDoors", new Action(OpenAllDoors));
             db.AddFunction("TryOpenDoor", new Func<IEnumerator>(TryOpenDoor));
+            db.AddFunction("ClosingInWalls", new Action(ClosingInWalls));
             db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
             db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
             db.AddFunction("CrossGate", new Func<IEnumerator>(CrossSchoolGate));
@@ -654,12 +655,7 @@ namespace TestingPurposes
         }
 
         private static IEnumerator TryOpenDoor()
-        {
-            if(++DoorAttempts == 1)
-            {
-                DialogueSystem.Instance.StartCoroutine(MoveToTargetWrapper(new string[] { "WallSamping-KamarMandi (1)", "^s", "5" }));
-                DialogueSystem.Instance.StartCoroutine(MoveToTargetWrapper(new string[] { "WallSamping-KamarMandi (2)", "^s", "5" }));
-            }
+        {            
             if(DoorAttempts < 9)
             {
                 EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
@@ -668,6 +664,14 @@ namespace TestingPurposes
                 AudioManager.Instance.PlayOneShot3D(sfx, 1, 1, pos);
             }
             yield return null;
+        }
+        private static void ClosingInWalls()
+        {
+            if(++DoorAttempts == 1)
+            {
+                DialogueSystem.Instance.StartCoroutine(MoveToTargetWrapper(new string[] { "WallSamping-KamarMandi (1)", "^s", "5" }));
+                DialogueSystem.Instance.StartCoroutine(MoveToTargetWrapper(new string[] { "WallSamping-KamarMandi (2)", "^s", "5" }));
+            }
         }
 
         private static void SpawnNurseOfficeMannequin()
