@@ -6286,7 +6286,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0030899048}
+  m_AnchoredPosition: {x: 0, y: 0.0033340454}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -7581,7 +7581,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1105572348}
         m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
         m_MethodName: PausePanelToggle
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8883,7 +8883,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Control
+  m_text: Ctrl
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a689d5f143bcc7d449b37f31cbd56b63, type: 2}
   m_sharedMaterial: {fileID: 7174644295773688519, guid: a689d5f143bcc7d449b37f31cbd56b63, type: 2}
@@ -18348,7 +18348,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb5a6839dde40b54696bf4b9dfaa0a7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settingManager: {fileID: 0}
   resolutionText: {fileID: 221855930}
   frameRateText: {fileID: 870589650}
   vSyncText: {fileID: 1473826417}

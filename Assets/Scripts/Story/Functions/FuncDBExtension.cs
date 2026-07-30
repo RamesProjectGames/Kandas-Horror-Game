@@ -40,6 +40,7 @@ namespace TestingPurposes
             db.AddFunction("Teleport", new Func<string[], IEnumerator>(TeleportObject));
             db.AddFunction("TeleportToWaypoint", new Action<string[]>(TeleportToWaypoint));
             db.AddFunction("Rotate", new Func<string[], IEnumerator>(RotateObject));
+            db.AddFunction("RotateHead", new Func<string[], IEnumerator>(RotateNpcHead));
             db.AddFunction("Move", new Func<string[], IEnumerator>(MoveObject));
             db.AddFunction("MoveToTarget", new Func<string[], IEnumerator>(MoveToTargetWrapper));
             db.AddFunction("MoveBackToOriginal", new Func<string[], IEnumerator>(MoveBackToOriginalWrapper));
@@ -141,18 +142,33 @@ namespace TestingPurposes
 
         private static IEnumerator RotateObject(string[] args)
         {
-            float rot;
+            float rot, rotSpd;
             GameObject movableObject = GameObject.Find(args[0]);
             var funcParams = ConvertArgsToParams(args);
             funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: movableObject.transform.rotation.y);
+            funcParams.TryGetValue(new string[] { "^r" }, out rotSpd, defaultValue: 5f);
             movableObject.TryGetComponent(out MovableObjects moveScript);
             if (moveScript != null)
             {
-                yield return moveScript.StartCoroutine(moveScript.Rotate(rot));
+                yield return moveScript.StartCoroutine(moveScript.Rotate(rot, rotSpd));
             }
             else
             {
                 yield return movableObject.transform.rotation = Quaternion.Euler(0, rot, 0);
+            }
+        }
+
+        private static IEnumerator RotateNpcHead(string[] args)
+        {
+            float rot, rotSpd;
+            GameObject npcObject = GameObject.Find(args[0]);
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: npcObject.transform.rotation.y);
+            funcParams.TryGetValue(new string[] { "^r" }, out rotSpd, defaultValue: 5f);
+            npcObject.TryGetComponent(out NpcMovement npcController);
+            if (npcController != null)
+            {
+                yield return npcController.StartCoroutine(npcController.RotateHead(rot, rotSpd));
             }
         }
 

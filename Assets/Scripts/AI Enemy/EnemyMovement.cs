@@ -694,13 +694,14 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         yield return new WaitForEndOfFrame();
     }
 
-    public override IEnumerator Rotate(float yrot)
+    public override IEnumerator Rotate(float yrot, float rotSpd = 5f)
     {
+        rotSpd = Mathf.Min(rotSpd, 1f);
         Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
 
         while (Quaternion.Angle(transform.rotation, targetRotation) >= 10f)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 3 * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpd * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
 

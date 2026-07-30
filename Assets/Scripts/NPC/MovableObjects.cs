@@ -11,5 +11,5 @@ public abstract class MovableObjects : MonoBehaviour
 
     public abstract IEnumerator Move(Vector3 pos, float speed = 3f);
 
-    public abstract IEnumerator Rotate(float yrot);
+    public abstract IEnumerator Rotate(float yrot, float rotSpd = 5f);
 }
