@@ -554,13 +554,14 @@ public class MannequinDemoGame : MovableObjects
         agent.enabled = true;
         agent.ResetPath();
     }
-    public override IEnumerator Rotate(float yrot)
+    public override IEnumerator Rotate(float yrot, float rotSpd = 5f)
     {
+        rotSpd = Mathf.Min(rotSpd, 1f);
         Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
         while (Quaternion.Angle(transform.rotation, targetRotation) > 5f)
         {
             // Putar secara bertahap dari rotasi saat ini ke rotasi target
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotSpd);
             yield return null;
         }
         // Snap to exact target

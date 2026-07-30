@@ -232,12 +232,6 @@ public class PlayerController : MovableObjects
                 if (sprintAction != null && sprintAction.action.IsPressed() && !isExhausted)
                 {
                     isSprinting = true;
-                    stamina -= staminaDecayRate * Time.deltaTime;
-                    if (stamina <= 0f)
-                    {
-                        stamina = 0;
-                        isExhausted = true;
-                    }
                 }
                 else
                 {
@@ -249,11 +243,6 @@ public class PlayerController : MovableObjects
                 if (sprintAction != null && sprintAction.action.WasPressedThisFrame() && !isExhausted)
                 {
                     isSprinting = true;
-                    if (stamina <= 0f)
-                    {
-                        stamina = 0;
-                        isExhausted = true;
-                    }
                 }
                 else
                 {
@@ -492,6 +481,15 @@ public class PlayerController : MovableObjects
             HandleCrouch();
             if (input != Vector3.zero)
             {
+                if(isSprinting)
+                {
+                    stamina -= staminaDecayRate * Time.deltaTime;
+                    if (stamina <= 0f)
+                    {
+                        stamina = 0;
+                        isExhausted = true;
+                    }
+                }
                 agent.Move(moveSpd * Time.deltaTime * input);
                 transform.position = agent.nextPosition;
             }
@@ -646,13 +644,14 @@ public class PlayerController : MovableObjects
         agent.ResetPath();
         yield return new WaitForEndOfFrame();
     }
-    public override IEnumerator Rotate(float yrot)
+    public override IEnumerator Rotate(float yrot, float rotSpd = 5f)
     {
+        rotSpd = Mathf.Min(rotSpd, 1f);
         Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
         while (Quaternion.Angle(transform.rotation, targetRotation) > 10f)
         {
             // Putar secara bertahap dari rotasi saat ini ke rotasi target
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5.0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotSpd);
             yield return null;
         }
         // Snap to exact target

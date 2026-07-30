@@ -10,6 +10,7 @@ public class NpcMovement : MovableObjects
     public int idxPoint = 0;
     [SerializeField] Animator animator;
     [SerializeField] bool loopMovement;
+    [SerializeField] GameObject head;
 
     [Header("Footsteps")]
     [SerializeField] FootstepsSoundManager footstepManager;
@@ -17,7 +18,7 @@ public class NpcMovement : MovableObjects
     public LayerMask groundMask;
     public GroundSurface currentSurface;
     [SerializeField] private NPCAnimationState animState;
-
+    private static string headPath = "rig.001/DEF-spine/DEF-spine.001/DEF-spine.002/DEF-spine.003/DEF-spine.004/DEF-spine.005";
     private static bool allowMovement = false;
     public static Action NPCMovementTrigger, MovePrep;
     public static bool movementAllowed
@@ -97,15 +98,29 @@ public class NpcMovement : MovableObjects
         animator.SetFloat("Blend", state / 7f);
         yield return new WaitForEndOfFrame();
     }
-    public override IEnumerator Rotate(float yrot)
+    public override IEnumerator Rotate(float yrot, float rotSpd = 5f)
     {
+        rotSpd = Mathf.Min(rotSpd, 1f);
         Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
 
         while (Quaternion.Angle(transform.rotation, targetRotation) >= 10f)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 5 * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpd * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
+        transform.rotation = targetRotation;
+    }
+    public IEnumerator RotateHead(float yrot, float rotSpd = 5f)
+    {
+        yrot = Mathf.Clamp(yrot, -45f, 45f);
+        Quaternion targetRotation = Quaternion.Euler(head.transform.rotation.x, yrot, head.transform.rotation.z);
+
+        while (Quaternion.Angle(head.transform.rotation, targetRotation) >= 10f)
+        {
+            head.transform.rotation = Quaternion.Slerp(head.transform.rotation, targetRotation, rotSpd * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+        head.transform.rotation = targetRotation;
     }
 
     public void ToggleNPCMovement()
@@ -213,6 +228,9 @@ public class NpcMovement : MovableObjects
             animator.applyRootMotion = true;
         }
 
+        if(head == null)
+            head = transform.Find(headPath).gameObject;
+
         float state = 0;
         if (animState == NPCAnimationState.Sit)
         {
@@ -283,6 +301,7 @@ public class NpcMovement : MovableObjects
                 currIdleTime -= Time.deltaTime;
                 if (currIdleTime <= 0)
                 {
+                    StartCoroutine(RotateHead(0f));
                     if (++idxPoint >= point.Length)
                     {
                         if (loopMovement)
@@ -315,16 +334,10 @@ public class NpcMovement : MovableObjects
                 Vector3 targetPos = point[idxPoint].faceTowards.position;
                 targetPos.y = transform.position.y;
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * 5 * Time.deltaTime);
-
-                if (Quaternion.Angle(transform.rotation, targetRotation) > 5f)
-                {
-                    return;
-                }
+                if (targetRotation.y >= -45f && targetRotation.y <= 45f)
+                    StartCoroutine(RotateHead(targetRotation.y));
                 else
-                {
-                    transform.rotation = targetRotation;
-                }
+                    StartCoroutine(Rotate(targetRotation.y));
             }
             HandleAnimationEndState();
         }
