@@ -96,6 +96,7 @@ namespace TestingPurposes
             db.AddFunction("OpenSpecificDoor", new Action<string>(OpenSpecificDoor));
             db.AddFunction("CloseAllDoors", new Action(CloseAllDoors));
             db.AddFunction("OpenAllDoors", new Action(OpenAllDoors));
+            db.AddFunction("ResetDoorAttempts", new Action(ResetDoorAttempts));
             db.AddFunction("TryOpenDoor", new Func<IEnumerator>(TryOpenDoor));
             db.AddFunction("ClosingInWalls", new Action(ClosingInWalls));
             db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
@@ -653,7 +654,10 @@ namespace TestingPurposes
                 door.OpenDoor();
             }
         }
-
+        public static void ResetDoorAttempts()
+        {
+            DoorAttempts = 0;
+        }
         private static IEnumerator TryOpenDoor()
         {            
             if(DoorAttempts < 9)
