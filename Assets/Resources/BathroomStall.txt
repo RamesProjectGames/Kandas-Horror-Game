@@ -2,6 +2,7 @@ TryOpenDoor()
 if(DoorAttempts() == 1)
 {
 	Jessica "Huh."
+	ClosingInWalls()
 }
 if(DoorAttempts() == 4)
 {
