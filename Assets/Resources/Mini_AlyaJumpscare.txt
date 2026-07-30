@@ -1,2 +1,2 @@
-[w]Wait(1), FadeIn(0), [w]FadeOut(1), [w]Wait(1), StopAudioByName(DogBark ^type sfx), [w]SwitchScene("Chapter 1 (Malam)"), [w]Wait(2), [w]FadeIn(3)
+[w]Wait(1), FadeIn(0), [w]FadeOut(1), [w]Wait(1), StopAudioByName(DogBark ^type sfx), [w]SwitchScene("Chapter 1 (Malam)"), ResetDoorAttempts(), [w]Wait(2), [w]FadeIn(3)
 Jessica ".{wa 0.2}.{wa 0.2}.{wa 0.2}?{c}How did I end up here again?{c}Oh right, I went here after lunch.{wa 0.2}\nBut why is it so dark now?{c}I should check outside." Objective(OpenBathroomStall)
