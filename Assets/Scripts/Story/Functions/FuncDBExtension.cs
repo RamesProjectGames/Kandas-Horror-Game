@@ -4,7 +4,6 @@ using FMODUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -498,6 +497,7 @@ namespace TestingPurposes
                 return;
 
             SceneField nextScene = ChapterDataManager.Instance.GetSceneByName(arg);
+            SceneField reloadScene = AsyncSceneLoader.Instance.persistentScene;
             Debug.LogWarning(nextScene.SceneName);
             if (nextScene == null)
                 return;
@@ -507,7 +507,7 @@ namespace TestingPurposes
 
             if (SceneManager.GetActiveScene().name != nextScene.SceneName)
             {
-                AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, nextScene);
+                AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, reloadScene);
             }
         }
 

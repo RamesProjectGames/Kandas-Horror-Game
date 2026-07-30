@@ -188,10 +188,8 @@ public class SettingManager : MonoBehaviour
         
         foreach (PostProcessVolume volume in postProcessVolumes)
         {
-            UnityEngine.Debug.Log($"Modifying Volume {volume.gameObject.name}");
             if (volume == null || volume.profile == null)
             {
-                UnityEngine.Debug.Log($"Invalid Volume {volume.gameObject.name}");
                 continue;
             }
 

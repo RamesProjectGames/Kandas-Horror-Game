@@ -645,7 +645,7 @@ public class PlayerController : MovableObjects
     }
     public override IEnumerator Rotate(float yrot, float rotSpd = 5f)
     {
-        rotSpd = Mathf.Min(rotSpd, 1f);
+        rotSpd = Mathf.Max(rotSpd, 1f);
         Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
         while (Quaternion.Angle(transform.rotation, targetRotation) > 10f)
         {

@@ -181,13 +181,14 @@ public class ObjectiveManager : MonoBehaviour
             return;
 
         SceneField nextScene = ChapterDataManager.Instance.GetChapterScene(nextChapterIndex);
+        SceneField reloadScene = AsyncSceneLoader.Instance.persistentScene;
         if (nextScene == null)
             return;
 
         List<SceneField> scenesToLoad = new List<SceneField> { nextScene };
         List<SceneField> scenesToUnload = new List<SceneField>();
 
-        SceneField currentChapterScene = ChapterDataManager.Instance.GetChapterScene(currentChapter);
+        SceneField currentChapterScene = AsyncSceneLoader.Instance.currentChapterScene;
         if (currentChapterScene != null)
         {
             scenesToUnload.Add(currentChapterScene);
@@ -195,7 +196,7 @@ public class ObjectiveManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name != nextScene.SceneName)
         {
-            AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, nextScene);
+            AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, reloadScene);
         }
     }
 }
