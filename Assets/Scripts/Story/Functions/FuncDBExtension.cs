@@ -660,10 +660,13 @@ namespace TestingPurposes
                 DialogueSystem.Instance.StartCoroutine(MoveToTargetWrapper(new string[] { "WallSamping-KamarMandi (1)", "^s", "5" }));
                 DialogueSystem.Instance.StartCoroutine(MoveToTargetWrapper(new string[] { "WallSamping-KamarMandi (2)", "^s", "5" }));
             }
-            EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
+            if(DoorAttempts < 9)
+            {
+                EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
 
-            Vector3 pos = GameObject.Find("Player").transform.position;
-            AudioManager.Instance.PlayOneShot3D(sfx, 1, 1, pos);
+                Vector3 pos = GameObject.Find("Player").transform.position;
+                AudioManager.Instance.PlayOneShot3D(sfx, 1, 1, pos);
+            }
             yield return null;
         }
 

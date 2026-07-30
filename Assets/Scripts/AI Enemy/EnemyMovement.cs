@@ -704,6 +704,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpd * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
+
     }
 
     public override IEnumerator Move(Vector3 pos, float speed = 3f)
