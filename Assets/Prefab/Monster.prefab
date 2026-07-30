@@ -68,13 +68,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d959081025e075468f47c7be2e505ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registeredHitLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  registeredHitLayerName: Player
   registeredHitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  registeredLeaveEvent:
     m_PersistentCalls:
       m_Calls: []
   HitEvent:
@@ -173,13 +171,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d959081025e075468f47c7be2e505ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registeredHitLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
+  registeredHitLayerName: Player
   registeredHitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  registeredLeaveEvent:
     m_PersistentCalls:
       m_Calls: []
   HitEvent:
@@ -586,11 +582,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 989cee9c559c17e4eb8bdcdfcff59b9e, type: 3}
       propertyPath: m_Name
-      value: Trial Monster
+      value: Monster
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 989cee9c559c17e4eb8bdcdfcff59b9e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1503024422856331008, guid: 989cee9c559c17e4eb8bdcdfcff59b9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1144,17 +1140,37 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   idxPoint: 0
+  roamRadius: 8
   fov: {fileID: 8973598184640685423}
+  attack: {fileID: 0}
   animator: {fileID: 8500946979220426579}
   soundSource: {x: 0, y: 0, z: 0}
   speed: 3
   pursueSpeed: 4
   idleTime: 5
   currIdleTime: 0
+  stopZoneHoldTime: 1.5
+  shouldMove: 0
   hidingSpotDetectionRadius: 15
   hidingSpotLayer:
     serializedVersion: 2
     m_Bits: 1024
+  detectionCooldown: 1
+  enemyAudioManager: {fileID: 0}
+  monsterChaseAmbiance:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  roamingGrowlAction: Roaming
+  noticeScreechAction: Noticed
+  stunnedGruntAction: Stunned
+  chasingLaughAction: Chasing
+  roamingGrowlCooldown: 6
+  chasingLaughCooldown: 4
+  chasingLaughChance: 0.35
   footstepManager: {fileID: 0}
   baseStepDistance: 2
 --- !u!114 &8973598184640685423
@@ -1170,6 +1186,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewRadius: 45
+  baseViewRadius: 8
+  maxViewRadius: 14
+  radiusChangeSpeed: 4
   viewAngle: 360
   face: {fileID: 7199209037560651425}
   targetMask:
@@ -1181,6 +1200,7 @@ MonoBehaviour:
   player: {fileID: 0}
   playerMesh: {fileID: 0}
   canSeePlayer: 0
+  canSeePlayerWhileInStopZone: 0
   playerWasSpottedWhileHiding: 0
 --- !u!114 &513004240182969886
 MonoBehaviour:
@@ -1258,8 +1278,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 12032
   player: {fileID: 0}
+  batCollider: {fileID: 0}
   canAttackPlayer: 0
   animator: {fileID: 8500946979220426579}
+  distanceToPlayer: 0
 --- !u!4 &7199209037560651425 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4072588942492816285, guid: 989cee9c559c17e4eb8bdcdfcff59b9e, type: 3}
