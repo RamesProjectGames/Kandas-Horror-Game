@@ -406,16 +406,31 @@ public class SettingsUI : MonoBehaviour
         if(SettingManager.Instance.gameOver)
         {
             ShowGameover(false);
-        }
+        }        
+    }
+    public void RestartChapter()
+    {
         if(SettingManager.Instance.isPaused)
         {
             ObjectiveManager.Instance.objectiveDatas.ForEach(x => x.IsCompleted = false);
-            DialogueSystem.Instance.OpenDialogue($"Chapter{ChapterDataManager.Instance.currentChapterIndex}");
-            if(PausePanel.activeInHierarchy)
+            StartCoroutine(DialogueSystem.Instance.FadeToBlack(0));
+            GameObject.Find("Player").GetComponent<PlayerController>().ToggleRig(true);
+
+            SceneField currentChapterScene = ChapterDataManager.Instance.GetChapterScene(ChapterDataManager.Instance.currentChapterIndex);
+            if (currentChapterScene != null)
             {
-                SettingManager.Instance.isPaused = true;
-                PausePanelToggle();
+                List<SceneField> scenesToLoad = new List<SceneField> { currentChapterScene };
+                List<SceneField> scenesToUnload = new List<SceneField>();
+                AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, currentChapterScene, () =>
+                {
+                    DialogueSystem.Instance.OpenDialogue($"Chapter{ChapterDataManager.Instance.currentChapterIndex + 1}");
+                });
             }
+            else
+            {
+                DialogueSystem.Instance.OpenDialogue($"Chapter{ChapterDataManager.Instance.currentChapterIndex + 1}");
+            }
+            PausePanelToggle();
         }
     }
     #endregion
