@@ -38,6 +38,7 @@ public class OutOfBound : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"ShouldTrigger: {ShouldTrigger(other.gameObject)}");
         if (ShouldTrigger(other.gameObject))
         {
             TriggerDialogue();
@@ -72,8 +73,23 @@ public class OutOfBound : MonoBehaviour
 
     public void TriggerDialogue()
     {
-        if (ObjectiveManager.Instance == null) return;
-        if (objectiveDialoguePair == null) return;
+        if (ObjectiveManager.Instance == null)
+        {
+            Debug.Log("OutOfBound.TriggerDialogue skipped because ObjectiveManager is missing.");
+            return;
+        }
+
+        if (DialogueSystem.Instance == null)
+        {
+            Debug.Log("OutOfBound.TriggerDialogue skipped because DialogueSystem is missing.");
+            return;
+        }
+
+        if (objectiveDialoguePair == null || objectiveDialoguePair.Count == 0)
+        {
+            Debug.Log("OutOfBound.TriggerDialogue skipped because no dialogue pairs were assigned.");
+            return;
+        }
 
         var bestMatch = objectiveDialoguePair
             .Select(pair => new
@@ -93,15 +109,25 @@ public class OutOfBound : MonoBehaviour
 
         if (bestMatch != null)
         {
+            Debug.Log($"OutOfBound opening objective dialogue: {bestMatch.Pair.dialogueAsset}");
             DialogueSystem.Instance.OpenDialogue(bestMatch.Pair.dialogueAsset);
+            return;
+        }
+
+        ObjectiveDialoguePair fallback = objectiveDialoguePair.Find(x => x?.objective != null && x.objective.Length > 0 && x.objective[0] == string.Empty);
+        if (fallback == null)
+        {
+            fallback = objectiveDialoguePair.Find(x => x?.objective != null && x.objective.Length == 0);
+        }
+
+        if (fallback != null)
+        {
+            Debug.Log($"OutOfBound opening fallback dialogue: {fallback.dialogueAsset}");
+            DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset);
         }
         else
         {
-            ObjectiveDialoguePair fallback = objectiveDialoguePair.Find(x => x.objective.Length == 0);
-            if (fallback != null)
-            {
-                DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset);
-            }
+            Debug.LogWarning("OutOfBound could not find a matching or fallback dialogue entry.");
         }
     }
 }

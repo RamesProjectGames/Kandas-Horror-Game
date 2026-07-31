@@ -177,16 +177,39 @@ namespace TestingPurposes
             float x, y, z;
             GameObject movableObject = GameObject.Find(args[0]);
             FunctionParams funcParams = ConvertArgsToParams(args);
+            var targetTransform = ResolvePosition(funcParams);
+            funcParams.TryGetValue(new string[] { "^s" }, out float speed, defaultValue: 3f);
             funcParams.TryGetValue(new string[] { "^x" }, out x, defaultValue: movableObject.transform.position.x);
             funcParams.TryGetValue(new string[] { "^y" }, out y, defaultValue: movableObject.transform.position.y);
             funcParams.TryGetValue(new string[] { "^z" }, out z, defaultValue: movableObject.transform.position.z);
             movableObject.TryGetComponent(out MovableObjects moveScript);
             if (moveScript != null)
             {
-                yield return moveScript.StartCoroutine(moveScript.Move(new Vector3(x, y, z)));
+                if(targetTransform != Vector3.zero)
+                {
+                    yield return moveScript.StartCoroutine(moveScript.Move(targetTransform, speed));
+                }
+                else
+                {
+                    yield return moveScript.StartCoroutine(moveScript.Move(new Vector3(x, y, z), speed));
+                }
             }
         }
+        private static Vector3 ResolvePosition(FunctionParams funcParams)
+        {
+            if (funcParams.TryGetValue(new string[] { "^go" , "^target", "^obj" }, out string targetObjectName, defaultValue: string.Empty) &&
+                !string.IsNullOrWhiteSpace(targetObjectName))
+            {
+                GameObject targetObject = GameObject.Find(targetObjectName);
+                if (targetObject != null)
+                {
+                    return targetObject.transform.position;
+                }
+            }
 
+            GameObject fallbackObject = null;
+            return fallbackObject != null ? fallbackObject.transform.position : Vector3.zero;
+        }
         private static void Despawn(string arg)
         {
             GameObject obj = GameObject.Find(arg);
@@ -229,7 +252,7 @@ namespace TestingPurposes
                 moveScript.onComplete.AddListener(() =>
                 {
                     completed = true;
-                    OpenDoor();
+                    // OpenDoor();
                 });
 
                 moveScript.onProgress.AddListener((float progressValue) =>
@@ -513,7 +536,7 @@ namespace TestingPurposes
 
         private static void MoveSpecificNPC(string arg)
         {
-            Debug.Log($"Moving {arg}");
+            Debug.Log($"Moving {arg}");            
             UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name.Contains(arg)).GetComponent<NpcMovement>().agent.enabled = true;
             foreach(NpcMovement npc in UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name.Contains(arg)).Select(x => x.GetComponent<NpcMovement>()))
             {
@@ -659,9 +682,10 @@ namespace TestingPurposes
             DoorAttempts = 0;
         }
         private static IEnumerator TryOpenDoor()
-        {            
-            if(DoorAttempts < 9)
+        {
+            if(DoorAttempts <= 9)
             {
+                DoorAttempts++;
                 EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
 
                 Vector3 pos = GameObject.Find("Player").transform.position;
@@ -671,7 +695,7 @@ namespace TestingPurposes
         }
         private static void ClosingInWalls()
         {
-            if(++DoorAttempts == 1)
+            if(DoorAttempts == 1)
             {
                 DialogueSystem.Instance.StartCoroutine(MoveToTargetWrapper(new string[] { "WallSamping-KamarMandi (1)", "^s", "5" }));
                 DialogueSystem.Instance.StartCoroutine(MoveToTargetWrapper(new string[] { "WallSamping-KamarMandi (2)", "^s", "5" }));

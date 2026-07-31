@@ -59,6 +59,7 @@ public class NpcMovement : MovableObjects
         {
             moveMyself = true;
             agent.enabled = true;
+            agent.speed = speed;
             validPos = GetValidNavMeshPosition(pos);
             agent.SetDestination(validPos);
         }
