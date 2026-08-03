@@ -1,11 +1,12 @@
 
+using FMODUnity;
 using System.Collections;
 using UnityEngine;
 
 public class LightningEffect : MonoBehaviour
 {
     private Light lightningLight;
-    private AudioSource thunderAudio; // Variabel untuk audio petir
+    private StudioEventEmitter thunderAudio; // Variabel untuk audio petir
     private float defaultIntensity;
 
     [Header("Pengaturan Durasi & Interval")]
@@ -15,7 +16,7 @@ public class LightningEffect : MonoBehaviour
     void Start()
     {
         lightningLight = GetComponent<Light>();
-        thunderAudio = GetComponent<AudioSource>(); // Mengambil komponen Audio Source di objek yang sama
+        thunderAudio = GetComponent<StudioEventEmitter>(); // Mengambil komponen Audio Source di objek yang sama
 
         defaultIntensity = lightningLight.intensity;
         StartCoroutine(LightningRoutine());
@@ -40,7 +41,7 @@ public class LightningEffect : MonoBehaviour
             lightningLight.intensity = defaultIntensity;
 
             // Putar suara petir saat kilatan terjadi (bisa diberi sedikit delay jika ingin mensimulasikan jarak suara)
-            if (thunderAudio != null && thunderAudio.clip != null)
+            if (thunderAudio != null && !thunderAudio.EventReference.IsNull)
             {
                 thunderAudio.Play();
             }

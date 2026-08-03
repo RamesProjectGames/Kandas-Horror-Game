@@ -14,16 +14,13 @@ public class SettingsUI : MonoBehaviour
 {
     void Start()
     {
-        UpdateUI();
         PopulateAudioInputDevices();
         PopulateAudioOutputDevices();
         PopulateLanguageOptions();
         ScrollToSection(0);
         HighlightSectionButton(0);
     }
-    void Update()
-    {
-    }
+
     #region Graphics Settings UI Elements
     [Header("Graphics Settings UI Elements")]
     // UI Texts for displaying current values

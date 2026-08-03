@@ -42,6 +42,7 @@ public class AudioManager : MonoBehaviour
     {
         masterVolumeBus.setVolume(SettingManager.Instance.settings.MasterVolume);
         bgmBus.setVolume(SettingManager.Instance.settings.MusicVolume);
+        ambienceBus.setVolume(SettingManager.Instance.settings.MusicVolume);
         sfxBus.setVolume(SettingManager.Instance.settings.SoundEffectVolume);
         voiceBus.setVolume(SettingManager.Instance.settings.MobVolume);
     }

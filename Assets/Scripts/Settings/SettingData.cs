@@ -31,7 +31,7 @@ public class SettingData
 	public string AudioInputDeviceName = ""; // Name of the selected input device
 	public int AudioOutputDeviceIndex = 0; // Index in available outputs (if supported)
 	public float MicrophoneSensitivity = 100f; // 1.0 = default
-	public float MouseSensitivity = .5f; // 1.0 = default
+	public float MouseSensitivity = 1.0f; // 1.0 = default
 	public bool SprintToggle = false; // false = hold to sprint, true = toggle
 	public bool CrouchToggle = false;
 	public float gamma = 1.0f;

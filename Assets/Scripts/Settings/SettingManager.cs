@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
 public class SettingManager : MonoBehaviour
 {
     public static SettingManager Instance { get; private set; }
@@ -29,8 +30,21 @@ public class SettingManager : MonoBehaviour
     }
     void Start()
     {
+        ApplyGraphicsSettings();
+        FindAnyObjectByType<SettingsUI>().UpdateUI();
+        AudioManager.Instance.UpdateVolumeSettings();
+    }
+
+    private void OnEnable()
+    {
         pauseAction.action.performed += TogglePauseStatus;
     }
+
+    private void OnDisable()
+    {
+        pauseAction.action.performed -= TogglePauseStatus;
+    }
+
     void TogglePauseStatus(InputAction.CallbackContext ctx)
     {
         if (!isRebinding)
@@ -42,6 +56,28 @@ public class SettingManager : MonoBehaviour
     {
         Instance = null;
     }
+    #region Common Settings
+    public void SaveSettings()
+    {
+        string json = JsonUtility.ToJson(settings, true);
+        System.IO.File.WriteAllText(savePath, json);
+    }
+
+    public void LoadSettings()
+    {
+        if (System.IO.File.Exists(savePath))
+        {
+            string json = System.IO.File.ReadAllText(savePath);
+            settings = JsonUtility.FromJson<SettingData>(json);
+        }
+        else
+        {
+            settings = new SettingData();
+            AutoAdjustGraphicsSettings();
+        }
+    }
+    #endregion
+
     #region Graphics Settings Methods
 
     public SettingData settings = new SettingData();
@@ -117,28 +153,6 @@ public class SettingManager : MonoBehaviour
         settings.VertexJitter = !settings.VertexJitter;
         ApplyGraphicsSettings();
         SaveSettings();
-    }
-
-    public void SaveSettings()
-    {
-        string json = JsonUtility.ToJson(settings, true);
-        System.IO.File.WriteAllText(savePath, json);
-    }
-
-    public void LoadSettings()
-    {
-        if (System.IO.File.Exists(savePath))
-        {
-            string json = System.IO.File.ReadAllText(savePath);
-            settings = JsonUtility.FromJson<SettingData>(json);
-        }
-        else
-        {
-            settings = new SettingData();
-            AutoAdjustGraphicsSettings();
-        }
-        ApplyGraphicsSettings();
-
     }
 
     public void ApplyGraphicsSettings()
@@ -279,7 +293,7 @@ public class SettingManager : MonoBehaviour
         settings.VSync = true;
 
         // Effects: enable/disable based on RAM/VRAM
-        settings.Dithering = true;
+        settings.Dithering = false;
         settings.Bloom = vram >= 2000;
         settings.Grain = true;
         settings.gamma = minimumGammaIntensity;
@@ -300,10 +314,10 @@ public class SettingManager : MonoBehaviour
     public float minimumMicrophoneVolume = .25f;
     public float maximumMicrophoneVolume = 1f;
     public float minimumMouseSensitivity = 0.1f;
-    public float maximumMouseSensitivity = 10f;
+    public float maximumMouseSensitivity = 100f;
     bool isRebinding = false;
+
     public void SetRebind(bool isRebinding) => this.isRebinding = isRebinding;
-    
     public void SelectAudioInputDevice(int index)
     {
         string micName = GetMicName(index);
@@ -398,16 +412,19 @@ public class SettingManager : MonoBehaviour
     public void SetMusicVolume(float volume)
     {
         settings.MusicVolume = volume;
+        AudioManager.Instance.UpdateVolumeSettings();
         SaveSettings();
     }
     public void SetSoundEffectVolume(float volume)
     {
         settings.SoundEffectVolume = volume;
+        AudioManager.Instance.UpdateVolumeSettings();
         SaveSettings();
     }
     public void SetMobVolume(float volume)
     {
         settings.MobVolume = volume;
+        AudioManager.Instance.UpdateVolumeSettings();
         SaveSettings();
     }
     public void ResetAudioToDefaults()
