@@ -104,6 +104,6 @@ public class FragmentManager : MonoBehaviour
 
     public GameObject GetFragmentGO(int fragIdx)
     {
-        return fragmentGOs[fragIdx].gameObject;
+        return fragmentGOs[fragIdx].itemInspect.gameObject;
     }
 }
