@@ -106,9 +106,28 @@ namespace Dialogue
         public void OpenDialogue(string assetName, bool allowCam = false)
         {
             cameraControl = allowCam;
-            if (isRunningConvo)
+
+            if (string.IsNullOrWhiteSpace(assetName))
+            {
+                Debug.LogWarning("DialogueSystem.OpenDialogue received an empty asset name.");
                 return;
-            convoManager.StartConvo(FileReader.ReadAsset(assetName));
+            }
+
+            if (isRunningConvo)
+            {
+                Debug.LogWarning($"DialogueSystem.OpenDialogue skipped because a conversation is already running: {assetName}");
+                return;
+            }
+
+            Convo convo = FileReader.ReadAsset(assetName);
+            if (convo == null)
+            {
+                Debug.LogError($"DialogueSystem.OpenDialogue could not load dialogue asset: {assetName}");
+                return;
+            }
+
+            Debug.Log($"DialogueSystem.OpenDialogue starting: {assetName}");
+            convoManager.StartConvo(convo);
         }
         public void StopDialogue()
         {

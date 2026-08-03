@@ -8,6 +8,7 @@ public class Fragment : ItemInteraction
 {
     FragmentData fragmentData;
     public Transform itemParent;
+    public Transform itemInspect;
     public InspectData inspectDetails;
     public Color fragmentColor = new Color(1f,1f,1f,1f);
     public void SetFragmentData(FragmentData fragData)
