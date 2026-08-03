@@ -31,7 +31,6 @@ public class SettingManager : MonoBehaviour
     void Start()
     {
         ApplyGraphicsSettings();
-        FindAnyObjectByType<SettingsUI>().UpdateUI();
         AudioManager.Instance.UpdateVolumeSettings();
     }
 

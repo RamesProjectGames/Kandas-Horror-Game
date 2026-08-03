@@ -19,6 +19,7 @@ public class SettingsUI : MonoBehaviour
         PopulateLanguageOptions();
         ScrollToSection(0);
         HighlightSectionButton(0);
+        UpdateUI();
     }
 
     #region Graphics Settings UI Elements
@@ -83,6 +84,8 @@ public class SettingsUI : MonoBehaviour
         }
 
         // Audio Settings
+        microphoneDropdown.value = microphoneDropdown.options.IndexOf(microphoneDropdown.options.Find(x => x.text == s.AudioInputDeviceName));
+        outputDropdown.value = s.AudioOutputDeviceIndex;
         masterVolumeSlider.value = s.MasterVolume;
         musicVolumeSlider.value = s.MusicVolume;
         soundEffectVolumeSlider.value = s.SoundEffectVolume;
