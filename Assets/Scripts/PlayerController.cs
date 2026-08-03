@@ -557,13 +557,16 @@ public class PlayerController : MovableObjects
         }
         if (lunchProgress == 2)
         {
-            var spoonParent = GameObject.Find("SpoonPos");
-            spoonParent?.transform.Find("Spoon")?.gameObject.SetActive(true);
-            var pills = GameObject.Find("Pills");
-            pills?.transform.Find("Pill")?.gameObject.SetActive(true);
-            anim.SetBool("Meds", true);
-            anim.SetBool("Lunch", false);
-            GetComponent<PlayerGrabInteraction>().currentItem.ChangeInteractionText("EatMeds");
+            DialogueSystem.Instance.convoManager.Enqueue(FileReader.ReadAsset("PostLunch"));
+
+            // For Full Game with Take Meds
+            //var spoonParent = GameObject.Find("SpoonPos");
+            //spoonParent?.transform.Find("Spoon")?.gameObject.SetActive(true);
+            //var pills = GameObject.Find("Pills");
+            //pills?.transform.Find("Pill")?.gameObject.SetActive(true);
+            //anim.SetBool("Meds", true);
+            //anim.SetBool("Lunch", false);
+            //GetComponent<PlayerGrabInteraction>().currentItem.ChangeInteractionText("Take Meds");
         }
     }
 

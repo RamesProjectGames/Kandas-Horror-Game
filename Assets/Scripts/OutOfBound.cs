@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Dialogue;
 using UnityEngine;
+using UnityEngine.AI;
 
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(BoxCollider), typeof(NavMeshObstacle))]
 public class OutOfBound : MonoBehaviour
 {
     public enum TriggerTargetType
@@ -21,10 +22,12 @@ public class OutOfBound : MonoBehaviour
     [SerializeField] private string targetObjectName = "";
 
     private BoxCollider col;
+    private NavMeshObstacle obs;
 
     void Start()
     {
         col = GetComponent<BoxCollider>();
+        obs = GetComponent<NavMeshObstacle>();
     }
 
     // Update is called once per frame
@@ -34,6 +37,7 @@ public class OutOfBound : MonoBehaviour
             return;
 
         col.enabled = relatedObjectives.Any(x => ObjectiveManager.Instance.currentObjectives.Contains(x));
+        obs.enabled = col.enabled && !col.isTrigger;
     }
 
     void OnTriggerEnter(Collider other)

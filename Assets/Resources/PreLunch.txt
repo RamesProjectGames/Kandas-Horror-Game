@@ -3,7 +3,7 @@ Student C "<style=\"Whispering\">Forget it, {a}you’d get a low score no matter
 PlaySFX(SchoolBell)
 Teacher "We’re just on time.{a} Tomorrow, I will announce the scores." MoveSpecificNPC(Teacher)
 "{a}\nYou are all dismissed."
-[w]FadeOut(1), [w]Wait(1), MovePrep(), [w]Teleport(Player ^x 216.65 ^y .0.655 ^z 321.65), [w]Wait(0.1), [w]Rotate(Player ^r 180), [w]Wait(1), [w]FadeIn(1), PlayAmbience(SchoolAmbience)
+[w]FadeOut(1), [w]Wait(1), OpenSpecificDoor(PintuKiri), OpenSpecificDoor(PintuKanan), MovePrep(), [w]Teleport(Player ^x 216.65 ^y .0.655 ^z 321.65), [w]SwitchCam(ClassConvoCam), [w]Wait(0.1), [w]Rotate(Player ^r 180), [w]Wait(1), [w]FadeIn(1), PlayAmbience(SchoolAmbience)
 Student A "Hey, so what are you having for lunch?"
 Student B "I don't know, maybe the usual porridge from the canteen lady?"
 Student A "Ehhh, let's try something new!{a}\nI heard there's a new stall in the canteen that sells gado-gado."
@@ -15,7 +15,7 @@ Rotate("NPC Boy (1)" ^r -45), Rotate("NPC Girl" ^r 45)
 Jessica "Oh, uhh... You guys go ahead, I'll catch up later."
 Student A "Okay then, don't forget to get ur lunch. Let's go guys!"
 Student C "Alright, catch you later Jess~"
-[w]FadeOut(1), [w]Wait(1), TeleportToWaypoint("NPC Boy (1)" ^idx 1), TeleportToWaypoint("NPC Boy" ^idx 1), TeleportToWaypoint("NPC Girl" ^idx 1), [w]Rotate(Player ^r -90), [w]Wait(0.1), StopAudioByName(SchoolAmbience ^type ambience ^mode immediate), [w]FadeIn(1)
+[w]FadeOut(1), [w]Wait(1), TeleportToWaypoint("NPC Boy (1)" ^idx 1), TeleportToWaypoint("NPC Boy" ^idx 1), TeleportToWaypoint("NPC Girl" ^idx 1), [w]Rotate(Player ^r -90), [w]SwitchCam("Player Camera"), [w]Wait(0.1), StopAudioByName(SchoolAmbience ^type ambience ^mode immediate), [w]FadeIn(1)
 Jessica "Hmm, maybe I do need to catch a grub, Thankfully lunch is far from over.\nI think I'll order some fried rice." Objective(SubmitQuiz)
 PlayAmbience(SchoolAmbience ^go SchoolAmbianceTarget), PlayAmbience(CanteenAmbience ^go CanteenAmbianceTarget)
 AllowNPCMovement(true)
