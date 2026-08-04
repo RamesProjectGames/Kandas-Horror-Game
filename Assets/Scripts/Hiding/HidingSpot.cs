@@ -39,7 +39,7 @@ public class HidingSpot : MonoBehaviour
     {
         if (inputController != null)
         {
-            float sliderValue = SettingManager.Instance.settings.MouseSensitivity ;
+            float sliderValue = SettingManager.Instance.settings.MouseSensitivity;
             float calculatedGain = Mathf.Clamp(sliderValue, SettingManager.Instance.minimumMouseSensitivity, SettingManager.Instance.maximumMouseSensitivity) * playerController.lookSensitivity * 2;
 
             // Controllers is a list. Usually: Index 0 = Pan, Index 1 = Tilt

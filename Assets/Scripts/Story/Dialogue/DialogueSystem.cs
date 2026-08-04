@@ -30,13 +30,12 @@ namespace Dialogue
         //Initialize System
         private void Awake()
         {
-            if (Instance == null)
+            if (Instance != null && Instance != this)
             {
-                Instance = this;
-                Init();
+                Destroy(Instance.gameObject);
             }
-            else
-                Destroy(gameObject);
+            Instance = this;
+            Init();
         }
 
         bool initialized = false;

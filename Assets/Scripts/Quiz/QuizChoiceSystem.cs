@@ -45,17 +45,24 @@ public class QuizChoiceSystem : MonoBehaviour
     bool isQuizActive = false;
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(Instance.gameObject);
+        }
         Instance = this;
     }
+
     void OnEnable()
     {
-        AsyncSceneLoader.Instance.Completed += ()=>{
-            TryAssignQuizCamera();
-            
-            if (quizCanvas != null)
-                quizCanvas.gameObject.SetActive(false);
-        };
+        AsyncSceneLoader.Instance.Completed += TryAssignQuizCamera;
     }
+
+    void OnDisable()
+    {
+        if (AsyncSceneLoader.Instance != null)
+            AsyncSceneLoader.Instance.Completed -= TryAssignQuizCamera;
+    }
+
     void Start()
     {
         isQuizActive = false;
@@ -96,31 +103,34 @@ public class QuizChoiceSystem : MonoBehaviour
         }
     }
 
-    bool TryAssignQuizCamera()
+    void TryAssignQuizCamera()
     {
         if (quizCanvas == null)
         {
             Debug.LogError("Quiz canvas is not assigned.");
-            return false;
+            return;
         }
-        quizCanvas.renderMode = RenderMode.WorldSpace;
-        Camera targetCamera = Camera.main;
-        if (targetCamera == null)
+        else
         {
-            GameObject mainCameraObject = GameObject.FindGameObjectWithTag("MainCamera");
-            if (mainCameraObject != null)
+            quizCanvas.renderMode = RenderMode.WorldSpace;
+            Camera targetCamera = Camera.main;
+            if (targetCamera == null)
             {
-                mainCameraObject.TryGetComponent(out targetCamera);
+                GameObject mainCameraObject = GameObject.FindGameObjectWithTag("MainCamera");
+                if (mainCameraObject != null)
+                {
+                    mainCameraObject.TryGetComponent(out targetCamera);
+                }
+            }
+
+            if (targetCamera != null)
+            {
+                quizCanvas.worldCamera = targetCamera;
             }
         }
 
-        if (targetCamera == null)
-        {
-            return false;
-        }
-
-        quizCanvas.worldCamera = targetCamera;
-        return true;
+        if (quizCanvas != null)
+            quizCanvas.gameObject.SetActive(false);
     }
     void PopulateQuizUI()
     {

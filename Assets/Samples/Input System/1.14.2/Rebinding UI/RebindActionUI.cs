@@ -229,7 +229,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             {
                 action.RemoveBindingOverride(bindingIndex);
             }
-            SaveControlBinding();
             UpdateBindingDisplay();
         }
 
@@ -263,6 +262,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             {
                 m_RebindOperation?.Dispose();
                 m_RebindOperation = null;
+                SaveControlBinding();
 
             }
 
@@ -306,7 +306,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                             action.RemoveBindingOverride(bindingIndex);
                             CleanUp();
                             PerformInteractiveRebind(action,bindingIndex, allCompositeParts);
-                            SaveControlBinding();
                             return;
                         }
 
@@ -321,7 +320,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                             if (nextBindingIndex < action.bindings.Count && action.bindings[nextBindingIndex].isPartOfComposite)
                                 PerformInteractiveRebind(action, nextBindingIndex, true);
                         }
-                        SaveControlBinding();
                     });
 
             // If it's a part binding, show the name of the part in the UI.
@@ -506,21 +504,27 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 m_ActionLabel.text = action != null ? action.name : string.Empty;
             }
         }
-        private void Start()
+        private void Awake()
         {
             LoadControlBinding();
         }
+
+        private void Start()
+        {
+            UpdateBindingDisplay();
+        }
+
         private void SaveControlBinding()
         {
-            var currentBinding = m_Action.action.actionMap.SaveBindingOverridesAsJson();
+            var currentBinding = actionReference.action.actionMap.SaveBindingOverridesAsJson();
             PlayerPrefs.SetString(m_Action.action.name + m_BindingId, currentBinding);
         }
         private void LoadControlBinding()
         {
-            var savedBinding = PlayerPrefs.GetString(m_Action.action.name + m_BindingId, string.Empty);
-            if (!string.IsNullOrEmpty(savedBinding))
-                actionReference.action.actionMap.LoadBindingOverridesFromJson(savedBinding);
-            
+            var savedBindings = PlayerPrefs.GetString(m_Action.action.name + m_BindingId, string.Empty);
+            Debug.Log(savedBindings);
+            if (!string.IsNullOrEmpty(savedBindings))
+                actionReference.action.actionMap.LoadBindingOverridesFromJson(savedBindings);
         }
 
         [Serializable]

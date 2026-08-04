@@ -16,23 +16,22 @@ namespace Dialogue.Functions
         private FunctionsDatabase db;
         void Awake()
         {
-            if (Instance == null)
+            if (Instance != null && Instance != this)
             {
-                Instance = this;
-
-                db = new FunctionsDatabase();
-
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                Type[] extTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(FuncDBExtension))).ToArray();
-
-                foreach (Type extension in extTypes)
-                {
-                    MethodInfo extendMethod = extension.GetMethod("Extend");
-                    extendMethod.Invoke(null, new object[] { db });
-                }
+                Destroy(Instance.gameObject);
             }
-            else
-                DestroyImmediate(gameObject);
+            Instance = this;
+
+            db = new FunctionsDatabase();
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            Type[] extTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(FuncDBExtension))).ToArray();
+
+            foreach (Type extension in extTypes)
+            {
+                MethodInfo extendMethod = extension.GetMethod("Extend");
+                extendMethod.Invoke(null, new object[] { db });
+            }
         }
 
         public Coroutine Execute(string functionName, params string[] args)

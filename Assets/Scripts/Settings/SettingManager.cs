@@ -20,10 +20,11 @@ public class SettingManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
+        else if(Instance != this)
         {
             Destroy(gameObject);
         }
+
         // rebindActions = new List<RebindActionUI>(FindObjectsByType<RebindActionUI>(sortMode: FindObjectsSortMode.None));
         savePath = Application.persistentDataPath + "/settings.json";
         LoadSettings();
@@ -53,8 +54,12 @@ public class SettingManager : MonoBehaviour
     }
     void OnDestroy()
     {
-        Instance = null;
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
+
     #region Common Settings
     public void SaveSettings()
     {

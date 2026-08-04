@@ -72,7 +72,10 @@ public class SettingsUI : MonoBehaviour
         mouseSensitivitySlider.value = s.MouseSensitivity;
         sprintToggleText.text = s.SprintToggle ? "Toggle" : "Hold";
         crouchToggleText.text = s.CrouchToggle ? "Toggle" : "Hold";
-        // Set selected audio input device in dropdown
+
+        // Audio Settings
+        microphoneDropdown.value = microphoneDropdown.options.IndexOf(microphoneDropdown.options.Find(x => x.text == s.AudioInputDeviceName));
+        outputDropdown.value = s.AudioOutputDeviceIndex;
         int micIndex = System.Array.IndexOf(Microphone.devices, s.AudioInputDeviceName);
         if (micIndex >= 0)
         {
@@ -82,10 +85,6 @@ public class SettingsUI : MonoBehaviour
         {
             microphoneDropdown.value = 0; // Default to first device if not found
         }
-
-        // Audio Settings
-        microphoneDropdown.value = microphoneDropdown.options.IndexOf(microphoneDropdown.options.Find(x => x.text == s.AudioInputDeviceName));
-        outputDropdown.value = s.AudioOutputDeviceIndex;
         masterVolumeSlider.value = s.MasterVolume;
         musicVolumeSlider.value = s.MusicVolume;
         soundEffectVolumeSlider.value = s.SoundEffectVolume;
@@ -267,10 +266,7 @@ public class SettingsUI : MonoBehaviour
         }
         UpdateUI(); 
     }
-    public void ConfirmResetControls()
-    {
-        ConfirmationUI.Instance.SetConfirmationUI("Are you sure you want to reset your controls?", () => ResetControlSettingsToDefaults());
-    }
+    public void ConfirmResetControls() { ConfirmationUI.Instance.SetConfirmationUI("Are you sure you want to reset your controls?", () => ResetControlSettingsToDefaults()); }
     #endregion
 
     #region Audio Settings UI Elements
@@ -371,6 +367,9 @@ public class SettingsUI : MonoBehaviour
             }
         }
     }
+
+    public void ConfirmMainMenu() { ConfirmationUI.Instance.SetConfirmationUI("Return to Main Menu?", () => BackToMainMenu()); }
+
     public void BackToMainMenu()
     {
         DialogueSystem.Instance.StopDialogue();

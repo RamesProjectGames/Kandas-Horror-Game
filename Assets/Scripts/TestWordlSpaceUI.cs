@@ -16,29 +16,22 @@ public class TestWordlSpaceUI : MonoBehaviour
         if(AsyncSceneLoader.Instance == null)
         {
             Debug.LogError("[TestWordlSpaceUI] AsyncSceneLoader instance missing.", this);
-            bool flowControl = SetupWorldSpaceUI();
+            SetupWorldSpaceUI();
             return;
         }
         else
         {
 
-            AsyncSceneLoader.Instance.Completed += () =>
-            {
-                bool flowControl = SetupWorldSpaceUI();
-                if (!flowControl)
-                {
-                    return;
-                }
-            };
+            AsyncSceneLoader.Instance.Completed += SetupWorldSpaceUI;
         }
     }
 
-    private bool SetupWorldSpaceUI()
+    private void SetupWorldSpaceUI()
     {
         if (!canvas)
         {
             Debug.LogError("[EnemyEmbeddedUI] Canvas reference missing.", this);
-            return false;
+            return;
         }
 
         if (!player) player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -52,8 +45,6 @@ public class TestWordlSpaceUI : MonoBehaviour
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => Debug.Log($"[{name}] Click me"));
         }
-
-        return true;
     }
 
     void OnDisable() {}

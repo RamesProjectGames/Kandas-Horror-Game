@@ -20,7 +20,7 @@ public class UIAudioManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
+        else if(Instance != this)
         {
             Destroy(gameObject);
         }

@@ -16,14 +16,11 @@ public class ObjectiveManager : MonoBehaviour
 
     void Awake()
     {
-        if(Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
+            Destroy(Instance.gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
     }
     void Start()
     {
