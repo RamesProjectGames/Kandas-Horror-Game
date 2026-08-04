@@ -18921,6 +18921,17 @@ MonoBehaviour:
     LimitedAfterObjective: FindKey
     ObjectiveObject: {fileID: 0}
     Chapter: 1
+  - Name: FindGateKey
+    Description: Look for Gate key
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 1
+    fragmentData: {fileID: 0}
+    requirements:
+    - BackToClass1
+    LimitedAfterObjective: FindKey
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
   - Name: BackToClass2
     Description: Go back to the classroom
     IsCompleted: 0
@@ -18928,7 +18939,7 @@ MonoBehaviour:
     isDemo: 1
     fragmentData: {fileID: 0}
     requirements:
-    - FindKey
+    - FindGateKey
     LimitedAfterObjective: BackToClass2
     ObjectiveObject: {fileID: 0}
     Chapter: 1
@@ -30998,7 +31009,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.4
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.86, z: 0}
