@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: 860b109d4204c204bb80f402972cbdae
+guid: cdf22e503669fed43a0ee600d8e5f8fe
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.008
-    second: {fileID: 2100000, guid: ca901e90f6b665a4d864ea09bc873817, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -38,46 +33,46 @@ ModelImporter:
     - serializedVersion: 16
       name: Mannequin_Idle
       takeName: Mannequin_Poses
+      internalID: 6444850560855347221
+      firstFrame: 0
+      lastFrame: 0.20000002
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Mannequin_Poses
+      takeName: Mannequin_Poses
       internalID: 3587285501027719330
-      firstFrame: 10
-      lastFrame: 10.2
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 1
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 10
-    - serializedVersion: 16
-      name: Mannequin_Pose 1
-      takeName: Mannequin_Poses
-      internalID: -1235159898458850620
-      firstFrame: 11
-      lastFrame: 11.2
+      firstFrame: 0
+      lastFrame: 70
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -92,226 +87,11 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 10
-    - serializedVersion: 16
-      name: Mannequin_Pose 2
-      takeName: Mannequin_Poses
-      internalID: 1609651149009529794
-      firstFrame: 22
-      lastFrame: 22.2
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 10
-    - serializedVersion: 16
-      name: Mannequin_Pose 3
-      takeName: Mannequin_Poses
-      internalID: 8935059538686741865
-      firstFrame: 33
-      lastFrame: 33.2
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 10
-    - serializedVersion: 16
-      name: Mannequin_Pose 4
-      takeName: Mannequin_Poses
-      internalID: -2640243314452824139
-      firstFrame: 45
-      lastFrame: 45.2
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 10
-    - serializedVersion: 16
-      name: Mannequin_Pose 5
-      takeName: Mannequin_Poses
-      internalID: 1338560720484824002
-      firstFrame: 58
-      lastFrame: 58.199997
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 10
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Mannequin_Chase
       takeName: Mannequin_Chase
-      internalID: -84293209253884648
-      firstFrame: 0
-      lastFrame: 65
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves:
-      - name: Footstep
-        curve:
-          serializedVersion: 2
-          curve:
-          - serializedVersion: 3
-            time: 0
-            value: 0.99668324
-            inSlope: 0
-            outSlope: -12.61728
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 0.079
-            value: -0.00008188188
-            inSlope: -12.61728
-            outSlope: -2.233664
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.3442941
-          - serializedVersion: 3
-            time: 0.232
-            value: -0.0033167452
-            inSlope: 1.624642
-            outSlope: -3.7313433
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0.23350792
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.5
-            value: -1.0033168
-            inSlope: -3.7313433
-            outSlope: 34.482777
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 0.529
-            value: -0.0033167452
-            inSlope: 34.482777
-            outSlope: -1.4107186
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.2364468
-          - serializedVersion: 3
-            time: 0.79250246
-            value: -0.0033167452
-            inSlope: 1.489071
-            outSlope: 4.8193345
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0.16483413
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 1
-            value: 0.99668324
-            inSlope: 4.8193345
-            outSlope: 0
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          preInfinity: 3
-          postInfinity: 3
-          rotationOrder: 4
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 10
-    - serializedVersion: 16
-      name: Mannequin_Chase.Alt
-      takeName: Mannequin_Chase.Alt
-      internalID: -84293209253884648
+      internalID: 6811990628526618840
       firstFrame: 0
       lastFrame: 65
       wrapMode: 0
@@ -331,86 +111,45 @@ ModelImporter:
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves:
-      - name: Footstep
-        curve:
-          serializedVersion: 2
-          curve:
-          - serializedVersion: 3
-            time: 0
-            value: 0.99668324
-            inSlope: 0
-            outSlope: -12.61728
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 0.079
-            value: -0.00008188188
-            inSlope: -12.61728
-            outSlope: -2.233664
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.3442941
-          - serializedVersion: 3
-            time: 0.232
-            value: -0.0033167452
-            inSlope: 1.624642
-            outSlope: -3.7313433
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0.23350792
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.5
-            value: -1.0033168
-            inSlope: -3.7313433
-            outSlope: 34.482777
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 0.529
-            value: -0.0033167452
-            inSlope: 34.482777
-            outSlope: -1.4107186
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.2364468
-          - serializedVersion: 3
-            time: 0.79250246
-            value: -0.0033167452
-            inSlope: 1.489071
-            outSlope: 4.8193345
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0.16483413
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 1
-            value: 0.99668324
-            inSlope: 4.8193345
-            outSlope: 0
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          preInfinity: 3
-          postInfinity: 3
-          rotationOrder: 4
+      curves: []
       events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 10
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Mannequin_Chase.Alt
+      takeName: Mannequin_Chase.Alt
+      internalID: -8873136191622468984
+      firstFrame: 0
+      lastFrame: 65
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Mannequin_Finisher
       takeName: Mannequin_Finisher
-      internalID: 3224093762463713453
+      internalID: -6454856771348357517
       firstFrame: 0
       lastFrame: 54
       wrapMode: 0
@@ -431,25 +170,156 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.09009009
-        functionName: TriggerAnimationStart
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.9217582
-        functionName: TriggerAnimationEnded
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 10
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Mannequin_Pose 1
+      takeName: Mannequin_Poses
+      internalID: -2446228478717853633
+      firstFrame: 11.9
+      lastFrame: 12.5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Mannequin_Pose 2
+      takeName: Mannequin_Poses
+      internalID: 5547805673667535391
+      firstFrame: 22.9
+      lastFrame: 23.5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Mannequin_Pose 3
+      takeName: Mannequin_Poses
+      internalID: -2640243314452824139
+      firstFrame: 33.9
+      lastFrame: 34.5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Mannequin_Pose 4
+      takeName: Mannequin_Poses
+      internalID: -1637753772531460363
+      firstFrame: 45.9
+      lastFrame: 46.5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Mannequin_Pose 5
+      takeName: Mannequin_Poses
+      internalID: 2512600696780512553
+      firstFrame: 58.9
+      lastFrame: 59.5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
