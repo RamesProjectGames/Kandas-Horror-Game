@@ -4,6 +4,7 @@ using FMODUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem.Samples.RebindUI;
@@ -35,7 +36,10 @@ public class SettingsUI : MonoBehaviour
     public TextMeshProUGUI motionBlurText;
     public TextMeshProUGUI vertexJitterText;
     public TextMeshProUGUI textureQualityText;
-    
+    [SerializeField] private GameObject loadingPanel;
+    [SerializeField] private List<LoadingBarPercentages> loadingPercentages = new List<LoadingBarPercentages>();
+    [SerializeField] private Image loadingBar;
+    float totalProgress;
 
 
     public void NextResolution() { SettingManager.Instance.NextResolution(); UpdateUI(); }
@@ -407,29 +411,62 @@ public class SettingsUI : MonoBehaviour
             ShowGameover(false);
         }        
     }
+
     public void RestartChapter()
     {
-        if(SettingManager.Instance.isPaused)
-        {
-            ObjectiveManager.Instance.objectiveDatas.ForEach(x => x.IsCompleted = false);
-            StartCoroutine(DialogueSystem.Instance.FadeToBlack(0));
-            GameObject.Find("Player").GetComponent<PlayerController>().ToggleRig(true);
+        StartCoroutine(RestartChapterCO());
+    }
 
-            SceneField currentChapterScene = ChapterDataManager.Instance.GetChapterScene(ChapterDataManager.Instance.currentChapterIndex);
-            if (currentChapterScene != null)
+    public IEnumerator RestartChapterCO()
+    {
+        ObjectiveManager.Instance.objectiveDatas.FindAll(x => x.Chapter == ObjectiveManager.Instance.currentChapter).ForEach(x => x.IsCompleted = false);
+        yield return StartCoroutine(DialogueSystem.Instance.FadeToBlack(0));
+        GameObject.Find("Player").GetComponent<PlayerController>().ToggleRig(true);
+
+        loadingPanel.SetActive(true);
+
+        SceneField currentChapterScene = ChapterDataManager.Instance.GetChapterScene(ChapterDataManager.Instance.currentChapterIndex);
+        if (currentChapterScene != null)
+        {
+            List<SceneField> scenesToLoad = new List<SceneField> { currentChapterScene };
+            List<SceneField> scenesToUnload = new List<SceneField> { currentChapterScene };
+            AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, AsyncSceneLoader.Instance.persistentScene, () =>
             {
-                List<SceneField> scenesToLoad = new List<SceneField> { currentChapterScene };
-                List<SceneField> scenesToUnload = new List<SceneField>();
-                AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, currentChapterScene, () =>
-                {
-                    DialogueSystem.Instance.OpenDialogue($"Chapter{ChapterDataManager.Instance.currentChapterIndex + 1}");
-                });
-            }
-            else
-            {
+                ObjectiveManager.Instance.UpdateCurrentObjectives();
+                if (DialogueSystem.Instance.isRunningConvo)
+                    DialogueSystem.Instance.StopDialogue();
+                loadingPanel.SetActive(false);
                 DialogueSystem.Instance.OpenDialogue($"Chapter{ChapterDataManager.Instance.currentChapterIndex + 1}");
-            }
+            }, async progress =>
+            {
+                totalProgress = progress;
+                UpdateLoadingSprite();
+            });
+        }
+        else
+        {
+            if (DialogueSystem.Instance.isRunningConvo)
+                DialogueSystem.Instance.StopDialogue();
+            loadingPanel.SetActive(false);
+            DialogueSystem.Instance.OpenDialogue($"Chapter{ChapterDataManager.Instance.currentChapterIndex + 1}");
+        }
+        if (SettingManager.Instance.isPaused)
+        {
             PausePanelToggle();
+        }
+    }
+    private void UpdateLoadingSprite()
+    {
+        if (loadingBar == null || loadingPercentages == null || loadingPercentages.Count == 0)
+            return;
+
+        foreach (var item in loadingPercentages.OrderBy(x => x.progresThreshold))
+        {
+            if (totalProgress >= item.progresThreshold)
+            {
+                if (item.loadingBarThreshold != null)
+                    loadingBar.sprite = item.loadingBarThreshold;
+            }
         }
     }
     #endregion

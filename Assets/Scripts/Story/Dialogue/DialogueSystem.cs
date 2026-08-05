@@ -125,7 +125,6 @@ namespace Dialogue
                 return;
             }
 
-            Debug.Log($"DialogueSystem.OpenDialogue starting: {assetName}");
             convoManager.StartConvo(convo);
         }
         public void StopDialogue()

@@ -47,7 +47,7 @@ namespace Dialogue
             float screenOpac = 1f;
             float elapsedTime = 0f;
             active = false;
-            while (elapsedTime < duration)
+            while (elapsedTime <= duration)
             {
                 elapsedTime += Time.deltaTime;
                 float percentage = elapsedTime / duration;
@@ -64,7 +64,7 @@ namespace Dialogue
         {
             float screenOpac = 0f;
             float elapsedTime = 0f;
-            while (elapsedTime < duration)
+            while (elapsedTime <= duration)
             {
                 elapsedTime += Time.deltaTime;
                 float percentage = elapsedTime / duration;

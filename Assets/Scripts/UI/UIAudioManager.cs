@@ -55,40 +55,59 @@ public class UIAudioManager : MonoBehaviour
 
         foreach (Button button in allButtons)
         {
-            // Filter out scene assets or prefabs that are not part of the active scene hierarchy
             if (button.gameObject.scene.name == null) continue;
 
-            // Get or add the EventTrigger component
-            EventTrigger trigger = button.GetComponent<EventTrigger>();
-            if (trigger == null)
+            //Add Hover Sound
+            if(button.GetComponentInParent<Canvas>() != null && button.GetComponentInParent<Canvas>().renderMode != RenderMode.WorldSpace)
             {
-                trigger = button.AddComponent<EventTrigger>();
+                EventTrigger trigger = button.GetComponent<EventTrigger>();
+                if (trigger == null)
+                {
+                    trigger = button.AddComponent<EventTrigger>();
+                }
+
+                trigger.triggers.RemoveAll(entry => entry.eventID == EventTriggerType.PointerEnter);
+
+                EventTrigger.Entry entry = new EventTrigger.Entry
+                {
+                    eventID = EventTriggerType.PointerEnter
+                };
+                entry.callback.AddListener((data) => { PlayHoverSound(); });
+
+                trigger.triggers.Add(entry);
+
+                //Add click for normal buttons and cancel for exit buttons
+                if (!cancelButtons.Contains(button.gameObject.name.Trim()))
+                {
+                    // Remove the listener first to prevent duplicating listeners if called multiple times
+                    button.onClick.RemoveListener(PlayClickSound);
+                    button.onClick.AddListener(PlayClickSound);
+                }
+                else
+                {
+                    // Remove the listener first to prevent duplicating listeners if called multiple times
+                    button.onClick.RemoveListener(PlayCancelSound);
+                    button.onClick.AddListener(PlayCancelSound);
+                }
             }
-
-            // Clean up existing PointerEnter entries to avoid duplication
-            trigger.triggers.RemoveAll(entry => entry.eventID == EventTriggerType.PointerEnter);
-
-            // Create the PointerEnter (Hover) entry
-            EventTrigger.Entry entry = new EventTrigger.Entry
-            {
-                eventID = EventTriggerType.PointerEnter
-            };
-            entry.callback.AddListener((data) => { PlayHoverSound(); });
-
-            // Add entry to the EventTrigger
-            trigger.triggers.Add(entry);
-
-            if(!cancelButtons.Contains(button.gameObject.name.Trim()))
-            {
-                // Remove the listener first to prevent duplicating listeners if called multiple times
-                button.onClick.RemoveListener(PlayClickSound);
-                button.onClick.AddListener(PlayClickSound);
-            }
+            //Add Click Sound for World Canvas instead
             else
             {
-                // Remove the listener first to prevent duplicating listeners if called multiple times
-                button.onClick.RemoveListener(PlayCancelSound);
-                button.onClick.AddListener(PlayCancelSound);
+                EventTrigger trigger = button.GetComponent<EventTrigger>();
+                if (trigger == null)
+                {
+                    trigger = button.AddComponent<EventTrigger>();
+                }
+
+                trigger.triggers.RemoveAll(entry => entry.eventID == EventTriggerType.PointerClick);
+
+                EventTrigger.Entry entry = new EventTrigger.Entry
+                {
+                    eventID = EventTriggerType.PointerClick
+                };
+                entry.callback.AddListener((data) => { PlayClickSound(); });
+
+                trigger.triggers.Add(entry);
             }
         }
     }

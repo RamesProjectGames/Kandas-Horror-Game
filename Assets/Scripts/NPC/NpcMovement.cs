@@ -83,7 +83,7 @@ public class NpcMovement : MovableObjects
         {
             if (DialogueSystem.Instance.isRunningConvo)
             {
-                state = UnityEngine.Random.Range(5, 7);
+                state = UnityEngine.Random.Range(4, 7);
             }
             else
                 state = 4;
@@ -92,7 +92,7 @@ public class NpcMovement : MovableObjects
         {
             if (DialogueSystem.Instance.isRunningConvo)
             {
-                state = UnityEngine.Random.Range(2, 4);
+                state = UnityEngine.Random.Range(0, 4);
             }
             else
                 state = UnityEngine.Random.Range(0, 2);
@@ -238,7 +238,7 @@ public class NpcMovement : MovableObjects
         {
             if (DialogueSystem.Instance.isRunningConvo)
             {
-                state = UnityEngine.Random.Range(5, 7);
+                state = UnityEngine.Random.Range(4, 7);
             }
             else
                 state = 4;
@@ -247,7 +247,7 @@ public class NpcMovement : MovableObjects
         {
             if (DialogueSystem.Instance.isRunningConvo)
             {
-                state = UnityEngine.Random.Range(2, 4);
+                state = UnityEngine.Random.Range(0, 4);
             }
             else
                 state = UnityEngine.Random.Range(0, 2);
@@ -362,7 +362,7 @@ public class NpcMovement : MovableObjects
         {
             if (DialogueSystem.Instance.isRunningConvo)
             {
-                state = UnityEngine.Random.Range(5, 7);
+                state = UnityEngine.Random.Range(4, 7);
             }
             else
                 state = 4;
@@ -371,7 +371,7 @@ public class NpcMovement : MovableObjects
         {
             if (DialogueSystem.Instance.isRunningConvo)
             {
-                state = UnityEngine.Random.Range(2, 4);
+                state = UnityEngine.Random.Range(0, 4);
             }
             else
                 state = UnityEngine.Random.Range(0, 2);
@@ -495,7 +495,7 @@ public class NpcMovement : MovableObjects
         {
             if (DialogueSystem.Instance.isRunningConvo)
             {
-                state = UnityEngine.Random.Range(5, 7);
+                state = UnityEngine.Random.Range(4, 7);
             }
             else
                 state = 4;
@@ -504,7 +504,7 @@ public class NpcMovement : MovableObjects
         {
             if (DialogueSystem.Instance.isRunningConvo)
             {
-                state = UnityEngine.Random.Range(2, 4);
+                state = UnityEngine.Random.Range(0, 4);
             }
             else
                 state = UnityEngine.Random.Range(0, 2);

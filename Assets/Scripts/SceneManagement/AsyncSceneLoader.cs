@@ -47,25 +47,58 @@ public class AsyncSceneLoader : MonoBehaviour
     {
         return GetOrCreateInstance().StartCoroutine(LoadScenesRoutine(scenesToLoad, scenesToUnload, activeScene, onComplete, onProgress));
     }
-
     private IEnumerator LoadScenesRoutine(List<SceneField> scenesToLoad, List<SceneField> scenesToUnload, SceneField activeScene, Action onComplete, Action<float> onProgress)
     {
         IsBusy = true;
         CurrentProgress = 0f;
 
-        List<AsyncOperation> loadOperations = new List<AsyncOperation>();
+        // 1. Store the currently active scene (the "old" one)
+        Scene oldActiveScene = SceneManager.GetActiveScene();
+
+        // ---------- Step A: Unload non‑active scenes (first) ----------
         List<AsyncOperation> unloadOperations = new List<AsyncOperation>();
+
+        foreach (SceneField scene in scenesToUnload ?? new List<SceneField>())
+        {
+            if (scene == null || string.IsNullOrEmpty(scene.SceneName))
+                continue;
+
+            Scene sceneToUnload = SceneManager.GetSceneByName(scene.SceneName);
+            if (!sceneToUnload.IsValid() || !sceneToUnload.isLoaded)
+                continue;
+
+            // Do NOT unload the currently active scene yet – keep it for later
+            if (sceneToUnload == oldActiveScene)
+                continue;
+
+            unloadOperations.Add(SceneManager.UnloadSceneAsync(sceneToUnload));
+        }
+
+        // Wait for these unloads to finish
+        while (unloadOperations.Any(op => !op.isDone))
+        {
+            float totalProgress = 0f;
+            foreach (var op in unloadOperations)
+                totalProgress += op.progress;
+            CurrentProgress = unloadOperations.Count > 0 ? totalProgress / unloadOperations.Count : 0.5f;
+            ProgressUpdated?.Invoke(CurrentProgress);
+            onProgress?.Invoke(CurrentProgress);
+            yield return null;
+        }
+
+        // ---------- Step B: Load new scenes ----------
+        List<AsyncOperation> loadOperations = new List<AsyncOperation>();
 
         foreach (SceneField scene in scenesToLoad ?? new List<SceneField>())
         {
             if (scene == null || string.IsNullOrEmpty(scene.SceneName))
                 continue;
 
-            if(scene != persistentScene)
+            if (scene != persistentScene)
                 currentChapterScene = scene;
 
-            Scene sceneToLoad = SceneManager.GetSceneByName(scene.SceneName);
-            if (!sceneToLoad.isLoaded)
+            Scene existing = SceneManager.GetSceneByName(scene.SceneName);
+            if (!existing.isLoaded)
             {
                 loadOperations.Add(SceneManager.LoadSceneAsync(scene.SceneName, LoadSceneMode.Additive));
             }
@@ -74,21 +107,15 @@ public class AsyncSceneLoader : MonoBehaviour
         while (loadOperations.Any(op => !op.isDone))
         {
             float totalProgress = 0f;
-            int progressCount = 0;
-
-            foreach (AsyncOperation operation in loadOperations)
-            {
-                totalProgress += operation.progress;
-                progressCount++;
-            }
-
-            CurrentProgress = progressCount > 0 ? totalProgress / progressCount : 0f;
+            foreach (var op in loadOperations)
+                totalProgress += op.progress;
+            CurrentProgress = loadOperations.Count > 0 ? totalProgress / loadOperations.Count : 0.8f;
             ProgressUpdated?.Invoke(CurrentProgress);
             onProgress?.Invoke(CurrentProgress);
-
             yield return null;
         }
 
+        // ---------- Step C: Set the new active scene ----------
         if (activeScene != null && !string.IsNullOrEmpty(activeScene.SceneName))
         {
             Scene targetScene = SceneManager.GetSceneByName(activeScene.SceneName);
@@ -98,36 +125,25 @@ public class AsyncSceneLoader : MonoBehaviour
             }
         }
 
-        foreach (SceneField scene in scenesToUnload ?? new List<SceneField>())
+        // ---------- Step D: Finally unload the old active scene ----------
+        // (only if it's still loaded and not the same as the new active)
+        if (oldActiveScene.IsValid() && oldActiveScene.isLoaded)
         {
-            if (scene == null || string.IsNullOrEmpty(scene.SceneName))
-                continue;
-
-            Scene sceneToUnload = SceneManager.GetSceneByName(scene.SceneName);
-            if (sceneToUnload.IsValid() && sceneToUnload.isLoaded && sceneToUnload != SceneManager.GetActiveScene())
+            Scene newActive = SceneManager.GetActiveScene();
+            if (oldActiveScene != newActive)
             {
-                unloadOperations.Add(SceneManager.UnloadSceneAsync(scene.SceneName));
+                AsyncOperation finalUnload = SceneManager.UnloadSceneAsync(oldActiveScene);
+                while (!finalUnload.isDone)
+                {
+                    CurrentProgress = 0.95f + 0.05f * finalUnload.progress;
+                    ProgressUpdated?.Invoke(CurrentProgress);
+                    onProgress?.Invoke(CurrentProgress);
+                    yield return null;
+                }
             }
         }
 
-        while (unloadOperations.Any(op => !op.isDone))
-        {
-            float totalProgress = 0f;
-            int progressCount = 0;
-
-            foreach (AsyncOperation operation in unloadOperations)
-            {
-                totalProgress += operation.progress;
-                progressCount++;
-            }
-
-            CurrentProgress = progressCount > 0 ? totalProgress / progressCount : 1f;
-            ProgressUpdated?.Invoke(CurrentProgress);
-            onProgress?.Invoke(CurrentProgress);
-
-            yield return null;
-        }
-
+        // ---------- Done ----------
         IsBusy = false;
         CurrentProgress = 1f;
         ProgressUpdated?.Invoke(CurrentProgress);

@@ -38,7 +38,6 @@ public class ObjectiveManager : MonoBehaviour
             objData.isHidden = true;
         }
         newObjective.objectiveData = objData;
-        newObjective.UpdateObjectiveText();
         Objectives.Add(newObjective);
     }
 
@@ -48,7 +47,6 @@ public class ObjectiveManager : MonoBehaviour
         if (obj != null && (string.IsNullOrEmpty(obj.objectiveData.LimitedAfterObjective) || !Objectives.Find(x => x.objectiveData.Name == obj.objectiveData.LimitedAfterObjective).objectiveData.IsCompleted))
         {
             obj.objectiveData.IsCompleted = true;
-            obj.UpdateObjectiveText();
         }
         UpdateCurrentObjectives();
         TryUnlockNextChapter();
@@ -70,11 +68,7 @@ public class ObjectiveManager : MonoBehaviour
                 if(!Objectives.Find(x => x.objectiveData.Name == req).objectiveData.IsCompleted)
                 {
                     isCurrent = false;
-                    currentObjectives.RemoveAll(objName =>
-                    {
-                        Objective obj = Objectives.Find(x => x.objectiveData.Name == objName);
-                        return obj == null || !IsObjectiveAvailable(obj.objectiveData);
-                    });
+                    currentObjectives.Remove(obj.objectiveData.Name);
                     break;
                 }
             }
@@ -122,6 +116,7 @@ public class ObjectiveManager : MonoBehaviour
             {
                 FragmentManager.Instance.UpdateFragmentState(obj.objectiveData.fragmentData);
             }
+            obj.UpdateObjectiveText();
         }
     }
 
