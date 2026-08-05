@@ -1,12 +1,13 @@
 using FMOD.Studio;
 using FMODUnity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     private List<EventInstance> eventInstances;
-    private Dictionary<string, EventInstance> eventInstancesBySound;
+    private Dictionary<string, List<EventInstance>> eventInstancesBySound;
     public static AudioManager Instance;
     private Bus masterVolumeBus, bgmBus, sfxBus, voiceBus, ambienceBus;
 
@@ -24,7 +25,7 @@ public class AudioManager : MonoBehaviour
         }
 
         eventInstances = new List<EventInstance>();
-        eventInstancesBySound = new Dictionary<string, EventInstance>();
+        eventInstancesBySound = new Dictionary<string, List<EventInstance>>();
 
         masterVolumeBus = RuntimeManager.GetBus("bus:/");
         bgmBus = RuntimeManager.GetBus("bus:/BGM");
@@ -47,23 +48,154 @@ public class AudioManager : MonoBehaviour
         voiceBus.setVolume(SettingManager.Instance.settings.MobVolume);
     }
 
-    public void PlayOneShot3D(EventReference sound, float volume, float pitch, Vector3 position = default)
+    public void PlayOneShot3D(EventReference sound, bool dup, float volume, float pitch, Vector3 position = default, float volumeIncreaseAmount = 0f, float pitchIncreaseAmount = 0f, float increaseDuration = 0f)
     {
-        var instance = CreateInstance(sound, true);
+        var instance = CreateInstance(sound, dup);
         instance.setVolume(volume);
         instance.setPitch(pitch);
         instance.set3DAttributes(RuntimeUtils.To3DAttributes(position));
         instance.start();
         instance.release();
+
+        if (volumeIncreaseAmount != 0f)
+        {
+            StartCoroutine(AnimateVolumeChange(instance, volume, volumeIncreaseAmount, increaseDuration));
+        }
+
+        if (pitchIncreaseAmount != 0f)
+        {
+            StartCoroutine(AnimatePitchChange(instance, pitch, pitchIncreaseAmount, increaseDuration));
+        }
     }
 
-    public void PlayOneShot2D(EventReference sound, float volume, float pitch, Vector3 position = default)
+    public void PlayOneShot2D(EventReference sound, float volume, float pitch, Vector3 position = default, float volumeIncreaseAmount = 0f, float pitchIncreaseAmount = 0f, float increaseDuration = 0f)
     {
         var instance = CreateInstance(sound, true);
         instance.setVolume(volume);
         instance.setPitch(pitch);
         instance.start();
         instance.release();
+
+        if (volumeIncreaseAmount != 0f)
+        {
+            StartCoroutine(AnimateVolumeChange(instance, volume, volumeIncreaseAmount, increaseDuration));
+        }
+
+        if (pitchIncreaseAmount != 0f)
+        {
+            StartCoroutine(AnimatePitchChange(instance, pitch, pitchIncreaseAmount, increaseDuration));
+        }
+    }
+
+    private IEnumerator AnimateVolumeChange(EventInstance instance, float startVolume, float increaseAmount, float duration)
+    {
+        if (!instance.isValid())
+        {
+            yield break;
+        }
+
+        float targetVolume = Mathf.Clamp01(startVolume + increaseAmount);
+
+        if (duration <= 0f)
+        {
+            instance.setVolume(targetVolume);
+            yield break;
+        }
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            if (!instance.isValid())
+            {
+                yield break;
+            }
+
+            float t = Mathf.Clamp01(elapsed / duration);
+            instance.setVolume(Mathf.Lerp(startVolume, targetVolume, t));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        if (instance.isValid())
+        {
+            instance.setVolume(targetVolume);
+        }
+    }
+
+    private IEnumerator AnimatePitchChange(EventInstance instance, float startPitch, float increaseAmount, float duration)
+    {
+        if (!instance.isValid())
+        {
+            yield break;
+        }
+
+        float targetPitch = startPitch + increaseAmount;
+
+        if (duration <= 0f)
+        {
+            instance.setPitch(targetPitch);
+            yield break;
+        }
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            if (!instance.isValid())
+            {
+                yield break;
+            }
+
+            float t = Mathf.Clamp01(elapsed / duration);
+            instance.setPitch(Mathf.Lerp(startPitch, targetPitch, t));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        if (instance.isValid())
+        {
+            instance.setPitch(targetPitch);
+        }
+    }
+
+    public bool TryGetEventInstance(EventReference sound, out EventInstance eventInstance)
+    {
+        eventInstance = default;
+        string soundKey = GetSoundKey(sound);
+
+        if (!eventInstancesBySound.TryGetValue(soundKey, out List<EventInstance> instancesForSound))
+            return false;
+
+        for (int i = instancesForSound.Count - 1; i >= 0; i--)
+        {
+            EventInstance candidate = instancesForSound[i];
+            if (!candidate.isValid() || !IsInstanceActive(candidate))
+                continue;
+
+            eventInstance = candidate;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void ChangeVolumeProgression(EventReference sound, float increaseAmount, float duration)
+    {
+        if (!TryGetEventInstance(sound, out EventInstance eventInstance))
+            return;
+
+        eventInstance.getVolume(out float currentVolume);
+        StartCoroutine(AnimateVolumeChange(eventInstance, currentVolume, increaseAmount, duration));
+    }
+
+    public void ChangePitchProgression(EventReference sound, float increaseAmount, float duration)
+    {
+        if (!TryGetEventInstance(sound, out EventInstance eventInstance))
+            return;
+
+        eventInstance.getPitch(out float currentPitch);
+        StartCoroutine(AnimatePitchChange(eventInstance, currentPitch, increaseAmount, duration));
     }
 
     public void StopAllSfx()
@@ -90,7 +222,32 @@ public class AudioManager : MonoBehaviour
     {
         string soundKey = GetSoundKey(sound);
 
-        if (eventInstancesBySound.TryGetValue(soundKey, out EventInstance existingInstance) && IsInstanceActive(existingInstance))
+        if (!eventInstancesBySound.TryGetValue(soundKey, out List<EventInstance> instancesForSound))
+        {
+            instancesForSound = new List<EventInstance>();
+            eventInstancesBySound[soundKey] = instancesForSound;
+        }
+
+        EventInstance existingInstance = default;
+        bool hasExistingInstance = false;
+        for (int i = instancesForSound.Count - 1; i >= 0; i--)
+        {
+            EventInstance candidate = instancesForSound[i];
+            if (!candidate.isValid())
+            {
+                instancesForSound.RemoveAt(i);
+                continue;
+            }
+
+            if (!IsInstanceActive(candidate))
+                continue;
+
+            existingInstance = candidate;
+            hasExistingInstance = true;
+            break;
+        }
+
+        if (hasExistingInstance)
         {
             if (!overrideDuplicate)
                 return existingInstance;
@@ -98,12 +255,12 @@ public class AudioManager : MonoBehaviour
             existingInstance.stop(stopMode);
             existingInstance.release();
             eventInstances.Remove(existingInstance);
-            eventInstancesBySound.Remove(soundKey);
+            RemoveInstanceFromMap(existingInstance);
         }
 
         EventInstance eventInstance = RuntimeManager.CreateInstance(sound);
         eventInstances.Add(eventInstance);
-        eventInstancesBySound[soundKey] = eventInstance;
+        instancesForSound.Add(eventInstance);
         return eventInstance;
     }
 
@@ -111,13 +268,24 @@ public class AudioManager : MonoBehaviour
     {
         string soundKey = GetSoundKey(sound);
 
-        if (!eventInstancesBySound.TryGetValue(soundKey, out EventInstance eventInstance))
+        if (!eventInstancesBySound.TryGetValue(soundKey, out List<EventInstance> instancesForSound))
             return;
 
-        eventInstance.stop(stopMode);
-        eventInstance.release();
-        eventInstances.Remove(eventInstance);
-        eventInstancesBySound.Remove(soundKey);
+        List<EventInstance> instancesToStop = new List<EventInstance>(instancesForSound);
+        foreach (EventInstance eventInstance in instancesToStop)
+        {
+            if (!eventInstance.isValid())
+                continue;
+
+            eventInstance.stop(stopMode);
+            eventInstance.release();
+        }
+
+        foreach (EventInstance eventInstance in instancesToStop)
+        {
+            eventInstances.Remove(eventInstance);
+            RemoveInstanceFromMap(eventInstance);
+        }
     }
 
     private string GetSoundKey(EventReference sound)
@@ -161,19 +329,26 @@ public class AudioManager : MonoBehaviour
 
     private void RemoveInstanceFromMap(EventInstance instance)
     {
-        string keyToRemove = null;
+        List<string> keysToRemove = new List<string>();
 
-        foreach (KeyValuePair<string, EventInstance> pair in eventInstancesBySound)
+        foreach (KeyValuePair<string, List<EventInstance>> pair in eventInstancesBySound)
         {
-            if (!pair.Value.Equals(instance))
-                continue;
+            List<EventInstance> instancesForSound = pair.Value;
+            for (int i = instancesForSound.Count - 1; i >= 0; i--)
+            {
+                if (!instancesForSound[i].Equals(instance))
+                    continue;
 
-            keyToRemove = pair.Key;
-            break;
+                instancesForSound.RemoveAt(i);
+                break;
+            }
+
+            if (instancesForSound.Count == 0)
+                keysToRemove.Add(pair.Key);
         }
 
-        if (keyToRemove != null)
-            eventInstancesBySound.Remove(keyToRemove);
+        foreach (string key in keysToRemove)
+            eventInstancesBySound.Remove(key);
     }
 
     private void CleanupEventInstances()
