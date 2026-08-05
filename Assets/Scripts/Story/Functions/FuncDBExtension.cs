@@ -61,6 +61,8 @@ namespace TestingPurposes
             db.AddFunction("PlayVoice", new Action<string[]>(PlayVoice));
             db.AddFunction("StopVoice", new Action(StopVoice));
             db.AddFunction("StopAudioByName", new Action<string[]>(StopAudioByName));
+            db.AddFunction("ChangeAudioVolumeProgression", new Action<string[]>(ChangeAudioVolumeProgression));
+            db.AddFunction("ChangeAudioPitchProgression", new Action<string[]>(ChangeAudioPitchProgression));
             #endregion
             #region Dialogue Progression
             db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
@@ -101,7 +103,7 @@ namespace TestingPurposes
             db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
             db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
             db.AddFunction("CrossGate", new Func<IEnumerator>(CrossSchoolGate));
-            db.AddFunction("MoveSpecificNPC", new Action<string>(MoveSpecificNPC));
+            db.AddFunction("MoveSpecificNPC", new Action<string[]>(MoveSpecificNPC));
             #endregion
         }
 
@@ -383,6 +385,65 @@ namespace TestingPurposes
             GameObject fallbackObject = GameObject.Find(fallbackObjectName);
             return fallbackObject != null ? fallbackObject.transform.position : Vector3.zero;
         }
+        private static void ChangeAudioVolumeProgression(string[] args)
+        {
+            if (args == null || args.Length == 0 || string.IsNullOrWhiteSpace(args[0]))
+            {
+                return;
+            }
+
+            var funcParams = ConvertArgsToParams(args);
+            string eventName = args[0];
+            funcParams.TryGetValue(new string[] { "^cat", "^type" }, out string category, defaultValue: string.Empty);
+            funcParams.TryGetValue(new string[] { "^vinc", "^volinc", "^volumelimit", "^volumeincrease", "^limit", "^l" }, out float increaseAmount, defaultValue: 0f);
+            funcParams.TryGetValue(new string[] { "^dur", "^duration", "^time" }, out float duration, defaultValue: 0f);
+
+            foreach (string path in ResolveAudioStopPaths(eventName, category))
+            {
+                EventReference sound = RuntimeManager.PathToEventReference(path);
+                AudioManager.Instance.ChangeVolumeProgression(sound, increaseAmount, duration);
+            }
+        }
+
+        private static void ChangeAudioPitchProgression(string[] args)
+        {
+            if (args == null || args.Length == 0 || string.IsNullOrWhiteSpace(args[0]))
+            {
+                return;
+            }
+
+            var funcParams = ConvertArgsToParams(args);
+            string eventName = args[0];
+            funcParams.TryGetValue(new string[] { "^cat", "^type" }, out string category, defaultValue: string.Empty);
+            funcParams.TryGetValue(new string[] { "^pinc", "^pitchinc", "^pitchlimit", "^pitchincrease", "^limit", "^l" }, out float increaseAmount, defaultValue: 0f);
+            funcParams.TryGetValue(new string[] { "^dur", "^duration", "^time" }, out float duration, defaultValue: 0f);
+
+            foreach (string path in ResolveAudioStopPaths(eventName, category))
+            {
+                EventReference sound = RuntimeManager.PathToEventReference(path);
+                AudioManager.Instance.ChangePitchProgression(sound, increaseAmount, duration);
+            }
+        }
+        private static void ParseAudioProgression(FunctionParams funcParams, out float volumeIncreaseLimit, out float pitchIncreaseLimit, out float increaseDuration)
+        {
+            funcParams.TryGetValue(new string[] { "^vinc", "^volinc", "^volumelimit", "^volumeincrease" }, out volumeIncreaseLimit, defaultValue: 0f);
+            funcParams.TryGetValue(new string[] { "^pinc", "^pitchinc", "^pitchlimit", "^pitchincrease" }, out pitchIncreaseLimit, defaultValue: 0f);
+            funcParams.TryGetValue(new string[] { "^dur", "^duration", "^time" }, out increaseDuration, defaultValue: 0f);
+
+            if (volumeIncreaseLimit == 0f || pitchIncreaseLimit == 0f)
+            {
+                funcParams.TryGetValue(new string[] { "^limit", "^l" }, out float genericLimit, defaultValue: 0f);
+                if (volumeIncreaseLimit == 0f)
+                {
+                    volumeIncreaseLimit = genericLimit;
+                }
+
+                if (pitchIncreaseLimit == 0f)
+                {
+                    pitchIncreaseLimit = genericLimit;
+                }
+            }
+        }
 
         private static void PlaySFX(string[] args)
         {
@@ -390,9 +451,11 @@ namespace TestingPurposes
             EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + args[0]);
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
+            funcParams.TryGetValue(new string[] { "^dup" }, out bool dup, defaultValue: false);
+            ParseAudioProgression(funcParams, out float volumeIncreaseLimit, out float pitchIncreaseLimit, out float increaseDuration);
 
             Vector3 pos = ResolveAudioPosition(funcParams);
-            AudioManager.Instance.PlayOneShot3D(sfx, volume, pitch, pos);
+            AudioManager.Instance.PlayOneShot3D(sfx, dup, volume, pitch, pos, volumeIncreaseLimit, pitchIncreaseLimit, increaseDuration);
         }
 
         private static void StopSFX()
@@ -479,9 +542,11 @@ namespace TestingPurposes
             EventReference bgm = RuntimeManager.PathToEventReference(bgmPath + args[0]);
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
+            funcParams.TryGetValue(new string[] { "^dup" }, out bool dup, defaultValue: false);
+            ParseAudioProgression(funcParams, out float volumeIncreaseLimit, out float pitchIncreaseLimit, out float increaseDuration);
 
             Vector3 pos = ResolveAudioPosition(funcParams);
-            AudioManager.Instance.PlayOneShot3D(bgm, volume, pitch, pos);
+            AudioManager.Instance.PlayOneShot3D(bgm, dup, volume, pitch, pos, volumeIncreaseLimit, pitchIncreaseLimit, increaseDuration);
         }
 
         private static void PlayAmbience(string[] args)
@@ -491,9 +556,11 @@ namespace TestingPurposes
             EventReference ambience = RuntimeManager.PathToEventReference(ambiencePath + args[0]);
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
+            funcParams.TryGetValue(new string[] { "^dup" }, out bool dup, defaultValue: false);
+            ParseAudioProgression(funcParams, out float volumeIncreaseLimit, out float pitchIncreaseLimit, out float increaseDuration);
 
             Vector3 pos = ResolveAudioPosition(funcParams);
-            AudioManager.Instance.PlayOneShot3D(ambience, volume, pitch, pos);
+            AudioManager.Instance.PlayOneShot3D(ambience, dup, volume, pitch, pos, volumeIncreaseLimit, pitchIncreaseLimit, increaseDuration);
         }
 
         private static void PlayVoice(string[] args)
@@ -502,9 +569,11 @@ namespace TestingPurposes
             EventReference voice = RuntimeManager.PathToEventReference(voicePath + args[0]);
             funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
             funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
+            funcParams.TryGetValue(new string[] { "^dup" }, out bool dup, defaultValue: false);
+            ParseAudioProgression(funcParams, out float volumeIncreaseLimit, out float pitchIncreaseLimit, out float increaseDuration);
 
             Vector3 pos = ResolveAudioPosition(funcParams);
-            AudioManager.Instance.PlayOneShot3D(voice, volume, pitch, pos);
+            AudioManager.Instance.PlayOneShot3D(voice, dup, volume, pitch, pos, volumeIncreaseLimit, pitchIncreaseLimit, increaseDuration);
         }
         #endregion
 
@@ -534,17 +603,36 @@ namespace TestingPurposes
             }
         }
 
-        private static void MoveSpecificNPC(string arg)
+        private static void MoveSpecificNPC(string[] args)
         {
-            Debug.Log($"Moving {arg}");            
-            UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name.Contains(arg)).GetComponent<NpcMovement>().agent.enabled = true;
-            foreach(NpcMovement npc in UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name.Contains(arg)).Select(x => x.GetComponent<NpcMovement>()))
+            if (args == null || args.Length == 0 || string.IsNullOrWhiteSpace(args[0]))
             {
+                return;
+            }
+
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^s" }, out float speed, defaultValue: 1f);
+            string npcName = args[0];
+
+            var matchingNpcs = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None)
+                .ToList()
+                .FindAll(x => x.gameObject.name.Contains(npcName))
+                .Select(x => x.GetComponent<NpcMovement>());
+
+            foreach (NpcMovement npc in matchingNpcs)
+            {
+                if (npc == null)
+                    continue;
+
                 npc.moveMyself = true;
                 npc.agent.enabled = true;
-                if(npc.point.Length>0) npc.agent.SetDestination(npc.point[npc.idxPoint].position);
+                npc.agent.speed = speed;
+
+                if (npc.point.Length > 0)
+                {
+                    npc.agent.SetDestination(npc.point[npc.idxPoint].position);
+                }
             }
-            //if(ObjectiveManager.Instance.isCompleted(""))
         }
 
         private static void SwitchCamera(string arg)
@@ -621,7 +709,7 @@ namespace TestingPurposes
             EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
 
             Vector3 pos = GameObject.Find("Player").transform.position;
-            AudioManager.Instance.PlayOneShot3D(sfx, 1, 1, pos);
+            AudioManager.Instance.PlayOneShot3D(sfx,true, 1, 1, pos);
         }
 
         private static void ToggleSpecificDoor(string arg = "")
@@ -689,7 +777,7 @@ namespace TestingPurposes
                 EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "RattleDoor");
 
                 Vector3 pos = GameObject.Find("Player").transform.position;
-                AudioManager.Instance.PlayOneShot3D(sfx, 1, 1, pos);
+                AudioManager.Instance.PlayOneShot3D(sfx,true, 1, 1, pos);
             }
             yield return null;
         }

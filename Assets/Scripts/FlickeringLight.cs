@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Light))]
+
 public class FlickeringLight : MonoBehaviour
 {
     [Header("Light")]

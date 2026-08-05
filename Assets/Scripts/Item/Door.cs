@@ -37,7 +37,7 @@ public class Door : MonoBehaviour
         EventReference closeSfx = RuntimeManager.PathToEventReference("event:/SFX/CloseDoor");
         AudioManager.Instance.StopSoundInstance(openSfx);
         AudioManager.Instance.StopSoundInstance(closeSfx);
-        AudioManager.Instance.PlayOneShot3D(openSfx, 1, 1, transform.position);
+        AudioManager.Instance.PlayOneShot3D(openSfx,true, 1, 1, transform.position);
         if (!canInteractWithDoor) return;
         transform.LeanRotate(openRotation, 0.5f);
         isOpen = true;
@@ -49,7 +49,7 @@ public class Door : MonoBehaviour
         EventReference closeSfx = RuntimeManager.PathToEventReference("event:/SFX/CloseDoor");
         AudioManager.Instance.StopSoundInstance(openSfx);
         AudioManager.Instance.StopSoundInstance(closeSfx);
-        AudioManager.Instance.PlayOneShot3D(closeSfx, 1, 1, transform.position);
+        AudioManager.Instance.PlayOneShot3D(closeSfx,true, 1, 1, transform.position);
         if (!canInteractWithDoor) return;
         transform.LeanRotate(closedRotation, 0.5f);
         isOpen = false;
