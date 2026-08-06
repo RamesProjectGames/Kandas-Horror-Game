@@ -22,6 +22,7 @@ public class MannequinDemoGame : MovableObjects
     public event MannequinEvent OnStoppedMoving;
     public event MannequinEvent OnCatchAnimationStart;
     public event MannequinEvent OnCatchAnimationComplete;
+    public List<string> relatedObjectives = new List<string>(){"NurseReport"};
     [Header("Detection")]
     public bool canRoamAround = false;
     [SerializeField] private Vector3 detectionBoxSize = new Vector3(20f, 5f, 20f);
@@ -91,7 +92,7 @@ public class MannequinDemoGame : MovableObjects
 
     void Update()
     {
-        if (playerSight == null || playerTransform == null || !ObjectiveManager.Instance.isCompleted("NurseReport") || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver)
+        if (playerSight == null || playerTransform == null || !CheckObjectives() || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver)
             return;
 
         // Check if player can see this enemy (Weeping Angel behavior: moves when NOT observed)
@@ -201,7 +202,17 @@ public class MannequinDemoGame : MovableObjects
             StopMovement();
         }
     }
-
+    public bool CheckObjectives()
+    {
+        foreach (string objective in relatedObjectives)
+        {
+            if (!ObjectiveManager.Instance.isCompleted(objective))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     private bool IsPlayerLooking()
     {
         if (playerSight == null)
