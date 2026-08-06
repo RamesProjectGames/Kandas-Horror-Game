@@ -50,6 +50,7 @@ namespace TestingPurposes
             db.AddFunction("SwitchCam", new Action<string>(SwitchCamera));
             db.AddFunction("Despawn", new Action<string>(Despawn));
             db.AddFunction("MovePrep", new Action(MovePrep));
+            db.AddFunction("ChangeInteractionText", new Action<string>(ChangeInteractionText));
             //db.AddFunction("WaitForInput", new Action(WaitForInput));
             #endregion
             #region Audio
@@ -303,6 +304,11 @@ namespace TestingPurposes
                     yield return null;
 
             }
+        }
+
+        private static void ChangeInteractionText(string arg)
+        {
+            UnityEngine.Object.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.ChangeInteractionText(arg);
         }
         #endregion
 
