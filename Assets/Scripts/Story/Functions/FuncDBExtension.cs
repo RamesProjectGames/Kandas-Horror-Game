@@ -104,6 +104,7 @@ namespace TestingPurposes
             db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
             db.AddFunction("CrossGate", new Func<IEnumerator>(CrossSchoolGate));
             db.AddFunction("MoveSpecificNPC", new Action<string[]>(MoveSpecificNPC));
+            db.AddFunction("StopSpecificNPC", new Action<string[]>(StopSpecificNPC));
             #endregion
         }
 
@@ -148,7 +149,7 @@ namespace TestingPurposes
             GameObject movableObject = GameObject.Find(args[0]);
             var funcParams = ConvertArgsToParams(args);
             funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: movableObject.transform.rotation.y);
-            funcParams.TryGetValue(new string[] { "^r" }, out rotSpd, defaultValue: 5f);
+            funcParams.TryGetValue(new string[] { "^rs" }, out rotSpd, defaultValue: 5f);
             movableObject.TryGetComponent(out MovableObjects moveScript);
             if (moveScript != null)
             {
@@ -166,7 +167,7 @@ namespace TestingPurposes
             GameObject npcObject = GameObject.Find(args[0]);
             var funcParams = ConvertArgsToParams(args);
             funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: npcObject.transform.rotation.y);
-            funcParams.TryGetValue(new string[] { "^r" }, out rotSpd, defaultValue: 5f);
+            funcParams.TryGetValue(new string[] { "^rs" }, out rotSpd, defaultValue: 5f);
             npcObject.TryGetComponent(out NpcMovement npcController);
             if (npcController != null)
             {
@@ -631,6 +632,35 @@ namespace TestingPurposes
                 if (npc.point.Length > 0)
                 {
                     npc.agent.SetDestination(npc.point[npc.idxPoint].position);
+                }
+            }
+        }
+
+        private static void StopSpecificNPC(string[] args)
+        {
+            if (args == null || args.Length == 0 || string.IsNullOrWhiteSpace(args[0]))
+            {
+                return;
+            }
+
+            string npcName = args[0];
+            var matchingNpcs = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None)
+                .ToList()
+                .FindAll(x => x.gameObject.name.Contains(npcName))
+                .Select(x => x.GetComponent<NpcMovement>());
+
+            foreach (NpcMovement npc in matchingNpcs)
+            {
+                if (npc == null)
+                    continue;
+
+                npc.moveMyself = false;
+                npc.agent.enabled = false;
+                npc.agent.ResetPath();
+
+                if (npc.TryGetComponent(out Animator animator))
+                {
+                    animator.SetFloat("Blend", 0f);
                 }
             }
         }
