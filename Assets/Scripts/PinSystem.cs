@@ -127,6 +127,6 @@ public class PinSystem : MonoBehaviour
     }
     public void PlaySafeOpenedSound()
     {
-        AudioManager.Instance.PlayOneShot3D(SafeOpenedSound,TrueTypeFontImporter,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
+        AudioManager.Instance.PlayOneShot3D(SafeOpenedSound,true,SettingManager.Instance.settings.SoundEffectVolume,1, transform.position);
     }
 }
