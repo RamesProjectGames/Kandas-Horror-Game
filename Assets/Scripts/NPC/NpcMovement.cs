@@ -146,8 +146,14 @@ public class NpcMovement : MovableObjects
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
                 transform.rotation = targetRotation;
             }
+            else
+            {
+                Quaternion targetRotation = transform.rotation;
+                targetRotation.y = point[0].transform.rotation.y;
+                transform.rotation = targetRotation;
+            }
             HandleAnimationEndState();
-            transform.position = point[idxPoint].position;
+            transform.position = point[0].position;
         }
         if (point.Length > 1)
             idxPoint = ++idxPoint % point.Length;
@@ -164,6 +170,12 @@ public class NpcMovement : MovableObjects
                 Vector3 targetPos = point[index].faceTowards.position;
                 targetPos.y = transform.position.y;
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+                transform.rotation = targetRotation;
+            }
+            else
+            {
+                Quaternion targetRotation = transform.rotation;
+                targetRotation.y = point[index].transform.rotation.y;
                 transform.rotation = targetRotation;
             }
             transform.position = point[index].position;
@@ -342,6 +354,10 @@ public class NpcMovement : MovableObjects
                 else
                     StartCoroutine(Rotate(targetRotation.y));
             }
+            else
+            {
+                StartCoroutine(Rotate(point[idxPoint].transform.rotation.y));
+            }
         }
         else
         {
@@ -354,7 +370,7 @@ public class NpcMovement : MovableObjects
     void HandleAnimationEndState()
     {
         float state = 0;
-        if (point.Length > 0)
+        if (point[idxPoint] != null)
             animState = point[idxPoint].endState;
         else
             animState = NPCAnimationState.Stand;

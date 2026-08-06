@@ -111,8 +111,6 @@ public class PlayerController : MovableObjects
         inputController = playerCam.GetComponent<CinemachineInputAxisController>();
         ApplyLookSensitivity();
 
-        Cursor.lockState = CursorLockMode.Locked;
-
         stamina = maxStamina;
         staminaFillImage.gameObject.SetActive(false);
 

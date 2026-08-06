@@ -6625,7 +6625,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0030136108}
+  m_AnchoredPosition: {x: 0, y: 0.00045776367}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -19299,7 +19299,6 @@ MonoBehaviour:
   loadingBar: {fileID: 675841824}
   microphoneDropdown: {fileID: 2095629859}
   outputDropdown: {fileID: 1588324652}
-  microphoneSensitivitySlider: {fileID: 2090106256}
   mouseSensitivitySlider: {fileID: 545956036}
   sprintToggleText: {fileID: 998133087}
   crouchToggleText: {fileID: 1920900262}
@@ -19312,6 +19311,7 @@ MonoBehaviour:
   - {fileID: 783174533}
   - {fileID: 377649318}
   - {fileID: 854271199}
+  microphoneSensitivitySlider: {fileID: 2090106256}
   masterVolumeSlider: {fileID: 930163846}
   musicVolumeSlider: {fileID: 1622427228}
   soundEffectVolumeSlider: {fileID: 554684109}
@@ -19735,6 +19735,17 @@ MonoBehaviour:
     LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
+  - Name: Leisurely
+    Description: Talk to the Leisure student
+    IsCompleted: 0
+    isHidden: 1
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - SubmitQuiz
+    LimitedAfterObjective: Bathroom
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
   - Name: LoveLetter
     Description: Read the Love Letter under the table
     IsCompleted: 0
@@ -19801,6 +19812,17 @@ MonoBehaviour:
     LimitedAfterObjective: EatLunch
     ObjectiveObject: {fileID: 0}
     Chapter: 1
+  - Name: AfterLunchClass
+    Description: Go back to Class
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 1
+    fragmentData: {fileID: 0}
+    requirements:
+    - EatLunch
+    LimitedAfterObjective: AfterLunchClass
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
   - Name: Bathroom
     Description: Go to the bathroom
     IsCompleted: 0
@@ -19808,7 +19830,7 @@ MonoBehaviour:
     isDemo: 1
     fragmentData: {fileID: 0}
     requirements:
-    - EatLunch
+    - AfterLunchClass
     LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1

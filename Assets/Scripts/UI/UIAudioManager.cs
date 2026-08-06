@@ -43,6 +43,7 @@ public class UIAudioManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         BindAllButtonsInScene();
+        SettingManager.Instance.isPaused = false;
     }
 
     /// <summary>

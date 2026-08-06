@@ -379,7 +379,6 @@ public class SettingsUI : MonoBehaviour
         DialogueSystem.Instance.StopDialogue();
         GameoverPanel.SetActive(false);
         demoEndPanel.SetActive(false);
-        SettingManager.Instance.isPaused = false;
         SceneManager.LoadScene("Main Menu");
     }
     public void ShowGameover(bool open)
