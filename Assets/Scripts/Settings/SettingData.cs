@@ -20,7 +20,7 @@ public class SettingData
 	public int FrameRate = 60; // e.g., 30, 60, 120
 	public bool VSync = false;
 
-	public bool Dithering = true;
+	public bool Dithering = false;
 	public bool Bloom = false;
 	public bool Grain = true;
 	public float Fog = .01f;
@@ -30,11 +30,14 @@ public class SettingData
 	// Control Settings
 	public string AudioInputDeviceName = ""; // Name of the selected input device
 	public int AudioOutputDeviceIndex = 0; // Index in available outputs (if supported)
-	public float MicrophoneSensitivity = 100f; // 1.0 = default
-	public float MouseSensitivity = 1.0f; // 1.0 = default
+    [Range(100, 500)]
+    public float MicrophoneSensitivity = 500f;
+    [Range(0.1f, 100)]
+    public float MouseSensitivity = 25.0f;
 	public bool SprintToggle = false; // false = hold to sprint, true = toggle
 	public bool CrouchToggle = false;
-	public float gamma = 1.0f;
+    [Range(-1, 1)]
+    public float gamma = 0f;
 
     // Audio Settings
     [Range(0, 1)]

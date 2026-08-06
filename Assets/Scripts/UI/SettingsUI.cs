@@ -68,9 +68,6 @@ public class SettingsUI : MonoBehaviour
         vertexJitterText.text = s.VertexJitter ? "On" : "Off";
 
         // Control Settings
-        microphoneSensitivitySlider.minValue = SettingManager.Instance.minimumMicrophoneVolume;
-        microphoneSensitivitySlider.maxValue = SettingManager.Instance.maximumMicrophoneVolume;
-        microphoneSensitivitySlider.value = s.MicrophoneSensitivity;
         mouseSensitivitySlider.minValue = SettingManager.Instance.minimumMouseSensitivity;
         mouseSensitivitySlider.maxValue = SettingManager.Instance.maximumMouseSensitivity;
         mouseSensitivitySlider.value = s.MouseSensitivity;
@@ -78,6 +75,9 @@ public class SettingsUI : MonoBehaviour
         crouchToggleText.text = s.CrouchToggle ? "Toggle" : "Hold";
 
         // Audio Settings
+        microphoneSensitivitySlider.minValue = SettingManager.Instance.minimumMicrophoneVolume;
+        microphoneSensitivitySlider.maxValue = SettingManager.Instance.maximumMicrophoneVolume;
+        microphoneSensitivitySlider.value = s.MicrophoneSensitivity;
         microphoneDropdown.value = microphoneDropdown.options.IndexOf(microphoneDropdown.options.Find(x => x.text == s.AudioInputDeviceName));
         outputDropdown.value = s.AudioOutputDeviceIndex;
         int micIndex = System.Array.IndexOf(Microphone.devices, s.AudioInputDeviceName);
@@ -115,7 +115,7 @@ public class SettingsUI : MonoBehaviour
             default: return res.ToString();
         }
     }
-    public void ResetToDefaults() { SettingManager.Instance.ResetGrapichsToDefaults(); UpdateUI(); }
+    public void ResetToDefaults() { SettingManager.Instance.ResetGraphicsToDefaults(); UpdateUI(); }
     public void ConfirmResetSettings() {ConfirmationUI.Instance.SetConfirmationUI("Reset Setting to defaults?", () => ResetToDefaults());}
     #endregion
 
@@ -124,7 +124,6 @@ public class SettingsUI : MonoBehaviour
     [Header("Control Settings UI Elements")]
     public TMP_Dropdown microphoneDropdown;
     public TMP_Dropdown outputDropdown;
-    public Slider microphoneSensitivitySlider;
     public Slider mouseSensitivitySlider;
     public TextMeshProUGUI sprintToggleText;  
     public TextMeshProUGUI crouchToggleText;  
@@ -275,6 +274,7 @@ public class SettingsUI : MonoBehaviour
 
     #region Audio Settings UI Elements
 
+    public Slider microphoneSensitivitySlider;
     public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
     public Slider soundEffectVolumeSlider;

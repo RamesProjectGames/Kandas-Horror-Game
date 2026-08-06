@@ -254,9 +254,8 @@ public class SettingManager : MonoBehaviour
         settings.GameResolution = resolution;
         ApplyGraphicsSettings();
     }
-    public void ResetGrapichsToDefaults()
+    public void ResetGraphicsToDefaults()
     {
-        settings = new SettingData();
         AutoAdjustGraphicsSettings();
         ApplyGraphicsSettings();
         SaveSettings();
