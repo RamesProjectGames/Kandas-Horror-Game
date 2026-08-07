@@ -370,7 +370,7 @@ public class NpcMovement : MovableObjects
     void HandleAnimationEndState()
     {
         float state = 0;
-        if (point[idxPoint] != null)
+        if (point.Length > 0 && point[idxPoint] != null)
             animState = point[idxPoint].endState;
         else
             animState = NPCAnimationState.Stand;
