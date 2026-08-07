@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.GPUSort;
 
 namespace Dialogue.Functions
 {
@@ -45,9 +47,8 @@ namespace TestingPurposes
             db.AddFunction("MoveBackToOriginal", new Func<string[], IEnumerator>(MoveBackToOriginalWrapper));
             db.AddFunction("PlayerFaceFront", new Action(PlayerFaceFront));
             db.AddFunction("AllowNPCMovement", new Action<string>(AllowNPCMovement));
-            db.AddFunction("Fadein", new Func<string, IEnumerator>(FadeIn));
-            db.AddFunction("fadeout", new Func<string, IEnumerator>(FadeOut));
             db.AddFunction("SwitchCam", new Action<string>(SwitchCamera));
+            db.AddFunction("ChangeCamFoV", new Func<string[], IEnumerator>(ChangeCamFoV));
             db.AddFunction("Despawn", new Action<string>(Despawn));
             db.AddFunction("MovePrep", new Action(MovePrep));
             db.AddFunction("ChangeInteractionText", new Action<string>(ChangeInteractionText));
@@ -66,17 +67,20 @@ namespace TestingPurposes
             db.AddFunction("ChangeAudioPitchProgression", new Action<string[]>(ChangeAudioPitchProgression));
             #endregion
             #region Dialogue Progression
+            db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
+            db.AddFunction("FadeIn", new Func<string, IEnumerator>(FadeIn));
+            db.AddFunction("FadeOut", new Func<string, IEnumerator>(FadeOut));
             db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
             db.AddFunction("HideDialogue", new Func<string, IEnumerator>(HideDialogue));
             db.AddFunction("NextDialogue", new Action(NextDialogue));
             db.AddFunction("StopDialogue", new Action(StopDialogue));
-            db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
             db.AddFunction("Objective", new Action<string>(CompleteObjective));
             db.AddFunction("StopWithoutObj", new Action<string>(ConditionalStopDialogue));
             db.AddFunction("DemoComplete", new Action(DemoComplete));
             #endregion
             #region Misc Events
-            db.AddFunction("PlayCutsceneVideo", new Action<string[]>(PlayCutscene));
+            db.AddFunction("PlayVideo", new Action<string[]>(PlayVideo));
+            db.AddFunction("PlayCutscene", new Action<string[]>(PlayCutscene));
             db.AddFunction("SwitchScene", new Action<string>(SwitchScene));
             db.AddFunction("InspectFragment", new Action<string[]>(InspectFragment));
             db.AddFunction("StartQuiz", new Action(StartQuiz));
@@ -309,6 +313,28 @@ namespace TestingPurposes
         private static void ChangeInteractionText(string arg)
         {
             UnityEngine.Object.FindAnyObjectByType<PlayerGrabInteraction>().currentItem.ChangeInteractionText(arg);
+        }
+
+        private static void SwitchCamera(string arg)
+        {
+            CameraManager.SwitchCamera(GameObject.Find(arg).GetComponent<CinemachineCamera>());
+        }
+
+        private static IEnumerator ChangeCamFoV(string[] args)
+        {
+            CinemachineCamera eventCam = GameObject.Find(args[0]).GetComponent<CinemachineCamera>();
+            FunctionParams funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new string[] { "^fov" }, out float targetFoV, defaultValue: eventCam.Lens.FieldOfView);
+            funcParams.TryGetValue(new string[] { "^t" }, out float duration, defaultValue: 1);
+            float startingFOV = eventCam.Lens.FieldOfView;
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                eventCam.Lens.FieldOfView = Mathf.Lerp(startingFOV, targetFoV, elapsed / duration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            eventCam.Lens.FieldOfView = targetFoV;
         }
         #endregion
 
@@ -585,9 +611,21 @@ namespace TestingPurposes
         #endregion
 
         #region Misc Events
-        private static void PlayCutscene(string[] args)
+        private static void PlayVideo(string[] args)
         {
 
+        }
+        private static void PlayCutscene(string[] args)
+        {
+            GameObject cutsceneGO = GameObject.Find(args[0]);
+            if(cutsceneGO != null)
+            {
+                PlayableDirector cutsceneManager = cutsceneGO.GetComponent<PlayableDirector>();
+                if(cutsceneManager != null)
+                {
+                    cutsceneManager.Play();
+                }
+            }
         }
 
         private static void SwitchScene(string arg)
@@ -669,11 +707,6 @@ namespace TestingPurposes
                     animator.SetFloat("Blend", 0f);
                 }
             }
-        }
-
-        private static void SwitchCamera(string arg)
-        {
-            CameraManager.SwitchCamera(GameObject.Find(arg).GetComponent<CinemachineCamera>());
         }
 
         private static IEnumerator PrepLunch()

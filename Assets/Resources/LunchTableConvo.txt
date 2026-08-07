@@ -1,5 +1,6 @@
-Narration "A group of students seems to be talking nearby."
 [w]FadeOut(1), [w]Wait(.5), [w]SwitchCam(GossipCam), [w]Wait(1), [w]FadeIn(1)
+Narration "A group of students seems to be talking nearby."
+[w]ChangeCamFoV(GossipCam ^fov 40 ^t 3)
 Gossiping Student "Have you heard of the horror story going viral in the internet these days?"
 Tired Student "No, I’ve been busy with assignments."
 Gossiping Student "Hehe, that’s why you have me! I can spill you all the tea!"
@@ -20,4 +21,4 @@ Gossiping Student "It’s because of the recent long public holiday. No one was 
 Nonchalant Student "Is this one of the internet urban legend you keep falling for?"
 [w]FadeOut(1), [w]Wait(.5), [w]SwitchCam("Player Camera"), [w]Wait(1), [w]FadeIn(1)
 Jessica "<style=\"Whispering\">Looks like my food’s ready...</style>"
-Objective(WaitingFood)
+[w]FadeOut(1), [w]Wait(.5), [w]Objective(WaitingFood), [w]Wait(1), [w]FadeIn(1)
