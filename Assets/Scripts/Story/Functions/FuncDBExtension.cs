@@ -70,8 +70,8 @@ namespace TestingPurposes
             db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
             db.AddFunction("FadeIn", new Func<string, IEnumerator>(FadeIn));
             db.AddFunction("FadeOut", new Func<string, IEnumerator>(FadeOut));
-            db.AddFunction("ShowDialogue", new Func<string, IEnumerator>(ShowDialogue));
-            db.AddFunction("HideDialogue", new Func<string, IEnumerator>(HideDialogue));
+            db.AddFunction("ShowDialogue", new Func<IEnumerator>(ShowDialogue));
+            db.AddFunction("HideDialogue", new Func<IEnumerator>(HideDialogue));
             db.AddFunction("NextDialogue", new Action(NextDialogue));
             db.AddFunction("StopDialogue", new Action(StopDialogue));
             db.AddFunction("Objective", new Action<string>(CompleteObjective));
@@ -381,12 +381,12 @@ namespace TestingPurposes
             UnityEngine.Object.FindAnyObjectByType<SettingsUI>().ShowDemoEnd();
         }
 
-        private static IEnumerator ShowDialogue(string arg)
+        private static IEnumerator ShowDialogue()
         {
             yield return DialogueSystem.Instance.dialogueContainer.ShowDialogue();
         }
 
-        private static IEnumerator HideDialogue(string arg)
+        private static IEnumerator HideDialogue()
         {
             yield return DialogueSystem.Instance.dialogueContainer.HideDialogue();
         }
@@ -623,6 +623,7 @@ namespace TestingPurposes
                 PlayableDirector cutsceneManager = cutsceneGO.GetComponent<PlayableDirector>();
                 if(cutsceneManager != null)
                 {
+                    Debug.Log($"Playing Cutscene: {args[0]}");
                     cutsceneManager.Play();
                 }
             }
