@@ -376,7 +376,7 @@ public class NpcMovement : MovableObjects
             animState = NPCAnimationState.Stand;
         if (animState == NPCAnimationState.Sit)
         {
-            if (DialogueSystem.Instance.isRunningConvo)
+            if (point.Length > 0 && point[idxPoint] != null && point[idxPoint].faceTowards != null)
             {
                 state = UnityEngine.Random.Range(4, 7);
             }
@@ -385,7 +385,7 @@ public class NpcMovement : MovableObjects
         }
         else if (animState == NPCAnimationState.Stand)
         {
-            if (DialogueSystem.Instance.isRunningConvo)
+            if (point.Length > 0 && point[idxPoint] != null && point[idxPoint].faceTowards != null)
             {
                 state = UnityEngine.Random.Range(0, 4);
             }
