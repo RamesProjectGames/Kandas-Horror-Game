@@ -9,7 +9,6 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
-using static UnityEngine.Rendering.GPUSort;
 
 namespace Dialogue.Functions
 {
