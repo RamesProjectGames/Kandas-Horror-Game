@@ -1,10 +1,10 @@
 TryOpenDoor()
 if(DoorAttempts() == 1)
 {	
-	Jessica "?" [w]Wait(2)
-	Jessica "Huh." [w]Wait(2)
-	Jessica "Why is it..." [w]Wait(2)
-	HideDialogue(), PlaySFX(DogBark ^dup false ^v .1 ^p 1 ^go DogBarkTarget1), PlaySFX(DogBark ^dup false ^v .1 ^p 1 ^go DogBarkTarget2), ChangeAudioVolumeProgression(DogBark ^type sfx ^limit 1 ^time 23)
+	Jessica "?" [w]Wait(2), PlaySFX(RattleDoor ^dup true ), PlaySFX(RattleDoor ^dup true )
+	Jessica "Huh." [w]Wait(2), PlaySFX(RattleDoor ^dup true )
+	Jessica "Why is it..." [w]Wait(2), PlaySFX(RattleDoor ^dup true )
+	HideDialogue(), PlaySFX(DogBark ^dup true ^v .1 ^p 1 ^go DogBarkTarget1), PlaySFX(DogBark ^dup true ^v .1 ^p 1 ^go DogBarkTarget2), ChangeAudioVolumeProgression(DogBark ^type sfx ^limit 1 ^time 23)
 	[w]Wait(3), ShowObject("Flickering Light Alya Jumpscare"), 
 	[w]Wait(3), PlayAmbience(WomanCry ^v .1 ^p 1 ^go WomanCryTarget), ChangeAudioVolumeProgression(WomanCry ^type sfx ^limit 1 ^time 12)
 	[w]Wait(11), ClosingInWalls(), PlaySFX("Tension20" ^v 0.1 ^p 1 ^go TensionTarget), ChangeAudioVolumeProgression(Tension20 ^type sfx ^limit 1 ^time 6)

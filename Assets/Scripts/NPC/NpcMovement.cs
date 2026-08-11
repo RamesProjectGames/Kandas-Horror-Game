@@ -40,6 +40,7 @@ public class NpcMovement : MovableObjects
     bool wasPausedLastFrame = false;
     float lastFootstep;
     [HideInInspector] public bool moveMyself = false;
+    [SerializeField] private bool cutsceneFlagLocked = false;
 
     private Vector2 Velocity;
     private Vector2 smoothDeltaPosition;
@@ -241,6 +242,7 @@ public class NpcMovement : MovableObjects
         {
             animator.applyRootMotion = true;
         }
+        PrintAllParameters();
 
         if(head == null)
             head = GetComponentsInChildren<Transform>().First(x => x.gameObject.name == headGOName);
@@ -284,8 +286,42 @@ public class NpcMovement : MovableObjects
 
     #region Update
     // Update is called once per frame
+    private bool HasAnimatorParameter(string parameterName)
+    {
+        return animator != null && animator.parameters.Any(parameter => parameter.name == parameterName);
+    }
+    public void PrintAllParameters()
+    {
+        if (animator == null)
+        {
+            Debug.LogWarning("Animator is not assigned.");
+            return;
+        }
+
+        foreach (var parameter in animator.parameters)
+        {
+            Debug.Log($"Parameter Name: {parameter.name}, Type: {parameter.type}");
+        }
+    }
+
     void Update()
     {
+        bool shouldStayInCutscene = cutsceneFlagLocked;
+
+        if (animator != null && HasAnimatorParameter("Cutscene"))
+        {
+            bool currentCutsceneState = animator.GetBool("Cutscene");
+            if (currentCutsceneState != shouldStayInCutscene)
+            {
+                animator.SetBool("Cutscene", shouldStayInCutscene);
+            }
+        }
+
+        if (cutsceneFlagLocked)
+        {
+            return;
+        }
+
         if (moveMyself)
         {
             if (agent != null && !agent.enabled)
@@ -297,11 +333,11 @@ public class NpcMovement : MovableObjects
         {
             return;
         }
-        if (HandlePauseState()) return;
+        if (HandlePauseState()) return;        
 
         if (animState == NPCAnimationState.Sit)
-            return;
-
+            return;        
+        
         if (agent.remainingDistance <= agent.stoppingDistance)
         {
             if (point.Length == 0)
@@ -527,6 +563,16 @@ public class NpcMovement : MovableObjects
         }
         animator.SetFloat("Blend", state / 7f);
         animator.SetFloat("Blend", state / 7f);
+    }
+    public void AllowMovement(bool allow)
+    {
+        movementAllowed = allow;
+        // ToggleNPCMovement();
+    }
+    public void TriggerCutscene(bool move)
+    {
+        cutsceneFlagLocked = move;
+        animator.SetBool("Cutscene", move);
     }
     #endregion
 }

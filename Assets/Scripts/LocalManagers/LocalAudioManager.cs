@@ -62,7 +62,7 @@ public class LocalAudioManager : MonoBehaviour
         foreach (string path in ResolveAudioPaths(audioName))
         {
             EventReference soundReference = RuntimeManager.PathToEventReference(path);
-            Vector3 playPosition = position ?? Vector3.zero;
+            Vector3 playPosition = position ?? GetDefaultPlayPosition();
             audioManager.PlayOneShot3D(soundReference, duplicate, volume, pitch, playPosition);
             break;
         }
@@ -118,6 +118,12 @@ public class LocalAudioManager : MonoBehaviour
         StopAudioByCategory(audioName, voicePath);
     }
 
+    private Vector3 GetDefaultPlayPosition()
+    {
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        return playerObject != null ? playerObject.transform.position : Vector3.zero;
+    }
+
     private void PlayAudioByCategory(string audioName, string basePath, bool duplicate, float volume, float pitch, Vector3? position)
     {
         if (audioManager == null)
@@ -134,7 +140,7 @@ public class LocalAudioManager : MonoBehaviour
 
         string fullPath = basePath + audioName;
         EventReference soundReference = RuntimeManager.PathToEventReference(fullPath);
-        Vector3 playPosition = position ?? Vector3.zero;
+        Vector3 playPosition = position ?? GetDefaultPlayPosition();
         audioManager.PlayOneShot3D(soundReference, duplicate, volume, pitch, playPosition);
     }
 
