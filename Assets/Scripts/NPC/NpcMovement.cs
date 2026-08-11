@@ -136,6 +136,7 @@ public class NpcMovement : MovableObjects
 
     private void TeleportToFirstWaypoint()
     {
+        idxPoint = 0;
         if (point.Length > 0 && point[0] != null)
         {
             animState = NPCAnimationState.Stand;
@@ -145,7 +146,8 @@ public class NpcMovement : MovableObjects
                 Vector3 targetPos = point[0].faceTowards.position;
                 targetPos.y = transform.position.y;
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-                transform.rotation = targetRotation;
+                if (animState != NPCAnimationState.Sit)
+                    transform.rotation = targetRotation;
             }
             else
             {
@@ -156,12 +158,13 @@ public class NpcMovement : MovableObjects
             HandleAnimationEndState();
             transform.position = point[0].position;
         }
-        if (point.Length > 1)
-            idxPoint = ++idxPoint % point.Length;
+        //if (point.Length > 1)
+        //    idxPoint = ++idxPoint % point.Length;
     }
 
     public void TeleportToWaypoint(int index = 0)
     {
+        idxPoint = index;
         if (point.Length > 0 && point[index] != null)
         {
             animState = NPCAnimationState.Stand;
@@ -171,7 +174,8 @@ public class NpcMovement : MovableObjects
                 Vector3 targetPos = point[index].faceTowards.position;
                 targetPos.y = transform.position.y;
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-                transform.rotation = targetRotation;
+                if (animState != NPCAnimationState.Sit)
+                    transform.rotation = targetRotation;
             }
             else
             {
@@ -181,36 +185,36 @@ public class NpcMovement : MovableObjects
             }
             transform.position = point[index].position;
         }
-        if (moveMyself && point.Length > 1)
-        {
-            if (++index >= point.Length)
-            {
-                if (loopMovement)
-                {
-                    idxPoint = index % point.Length;
-                    agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
-                    animState = NPCAnimationState.Walk;
-                    animator.SetFloat("Blend", 1f);
-                }
-                else
-                {
-                    moveMyself = false;
-                    HandleAnimationEndState();
-                    return;
-                }
-            }
-            else
-            {
-                idxPoint = index % point.Length;
-                agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
-                animState = NPCAnimationState.Walk;
-                animator.SetFloat("Blend", 1f);
-            }
-        }
-        else
-        {
+        //if (moveMyself && point.Length > 1)
+        //{
+        //    if (++index >= point.Length)
+        //    {
+        //        if (loopMovement)
+        //        {
+        //            idxPoint = index % point.Length;
+        //            agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
+        //            animState = NPCAnimationState.Walk;
+        //            animator.SetFloat("Blend", 1f);
+        //        }
+        //        else
+        //        {
+        //            moveMyself = false;
+        //            HandleAnimationEndState();
+        //            return;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        idxPoint = index % point.Length;
+        //        agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
+        //        animState = NPCAnimationState.Walk;
+        //        animator.SetFloat("Blend", 1f);
+        //    }
+        //}
+        //else
+        //{
             HandleAnimationEndState();
-        }
+        //}
     }
     #endregion
 
@@ -379,15 +383,13 @@ public class NpcMovement : MovableObjects
             }
             currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
             HandleAnimationEndState();
-            if (point[idxPoint].faceTowards != null && animState == NPCAnimationState.Sit)
+            if (point[idxPoint].faceTowards != null)
             {
                 //Rotate
                 Vector3 targetPos = point[idxPoint].faceTowards.position;
                 targetPos.y = transform.position.y;
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-                if (targetRotation.y >= -45f && targetRotation.y <= 45f)
-                    StartCoroutine(RotateHead(targetRotation.y));
-                else
+                if (animState != NPCAnimationState.Sit)
                     StartCoroutine(Rotate(targetRotation.y));
             }
             else
@@ -403,6 +405,21 @@ public class NpcMovement : MovableObjects
         }
     }
 
+    void LateUpdate()
+    {
+        if (point.Length > idxPoint && point[idxPoint].faceTowards != null && animState == NPCAnimationState.Sit)
+        {
+            //Rotate
+            Vector3 targetPos = point[idxPoint].faceTowards.position;
+            targetPos.y = transform.position.y;
+            Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+            if (Mathf.Abs(targetRotation.y - transform.rotation.y) <= 45f)
+            {
+                targetPos.y = head.position.y;
+                head.LookAt(targetPos);
+            }
+        }
+    }
     void HandleAnimationEndState()
     {
         float state = 0;
