@@ -6,9 +6,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Cinemachine;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.GPUSort;
 
 namespace Dialogue.Functions
 {
@@ -117,31 +119,35 @@ namespace TestingPurposes
         private static IEnumerator TeleportObject(string[] args)
         {
             float x, y, z, rot;
-            GameObject movableObject = GameObject.Find(args[0]);
+            var movableObjects = UnityEngine.Object.FindObjectsByType<MovableObjects>(sortMode: FindObjectsSortMode.None)
+                .ToList()
+                .FindAll(x => x.gameObject.name == args[0])
+                .Select(x => x.GetComponent<MovableObjects>());
             var funcParams = ConvertArgsToParams(args);
-            funcParams.TryGetValue(new string[] { "^x" }, out x, defaultValue: movableObject.transform.position.x);
-            funcParams.TryGetValue(new string[] { "^y" }, out y, defaultValue: movableObject.transform.position.y);
-            funcParams.TryGetValue(new string[] { "^z" }, out z, defaultValue: movableObject.transform.position.z);
-            funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: movableObject.transform.rotation.y);
-            movableObject.TryGetComponent(out MovableObjects moveScript);
-            if (moveScript != null)
+            foreach (MovableObjects moveScript in movableObjects)
             {
+                funcParams.TryGetValue(new string[] { "^x" }, out x, defaultValue: moveScript.transform.position.x);
+                funcParams.TryGetValue(new string[] { "^y" }, out y, defaultValue: moveScript.transform.position.y);
+                funcParams.TryGetValue(new string[] { "^z" }, out z, defaultValue: moveScript.transform.position.z);
+                funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: moveScript.transform.rotation.y);
                 yield return moveScript.StartCoroutine(moveScript.Teleport(new Vector3(x, y, z)));
             }
-            else
-            {
-                yield return movableObject.transform.position = new Vector3(x, y, z);
-            }
+            //else
+            //{
+            //    yield return movableObject.transform.position = new Vector3(x, y, z);
+            //}
         }
 
         private static void TeleportToWaypoint(string[] args)
         {
             int index;
-            GameObject movableObject = GameObject.Find(args[0]);
+            var movableObjects = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None)
+                .ToList()
+                .FindAll(x => x.gameObject.name == args[0])
+                .Select(x => x.GetComponent<NpcMovement>());
             var funcParams = ConvertArgsToParams(args);
             funcParams.TryGetValue(new string[] { "^idx" }, out index, defaultValue: 0);
-            movableObject.TryGetComponent(out NpcMovement moveScript);
-            if (moveScript != null)
+            foreach(NpcMovement moveScript in movableObjects)
             {
                 moveScript.TeleportToWaypoint(index);
             }
@@ -150,31 +156,35 @@ namespace TestingPurposes
         private static IEnumerator RotateObject(string[] args)
         {
             float rot, rotSpd;
-            GameObject movableObject = GameObject.Find(args[0]);
+            var movableObjects = UnityEngine.Object.FindObjectsByType<MovableObjects>(sortMode: FindObjectsSortMode.None)
+                .ToList()
+                .FindAll(x => x.gameObject.name == args[0])
+                .Select(x => x.GetComponent<MovableObjects>());
             var funcParams = ConvertArgsToParams(args);
-            funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: movableObject.transform.rotation.y);
-            funcParams.TryGetValue(new string[] { "^rs" }, out rotSpd, defaultValue: 5f);
-            movableObject.TryGetComponent(out MovableObjects moveScript);
-            if (moveScript != null)
+            foreach (MovableObjects moveScript in movableObjects)
             {
+                funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: moveScript.transform.rotation.y);
+                funcParams.TryGetValue(new string[] { "^rs" }, out rotSpd, defaultValue: 5f);
                 yield return moveScript.StartCoroutine(moveScript.Rotate(rot, rotSpd));
             }
-            else
-            {
-                yield return movableObject.transform.rotation = Quaternion.Euler(0, rot, 0);
-            }
+            //else
+            //{
+            //    yield return movableObject.transform.rotation = Quaternion.Euler(0, rot, 0);
+            //}
         }
 
         private static IEnumerator RotateNpcHead(string[] args)
         {
             float rot, rotSpd;
-            GameObject npcObject = GameObject.Find(args[0]);
+            var movableObjects = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None)
+                .ToList()
+                .FindAll(x => x.gameObject.name == args[0])
+                .Select(x => x.GetComponent<NpcMovement>());
             var funcParams = ConvertArgsToParams(args);
-            funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: npcObject.transform.rotation.y);
-            funcParams.TryGetValue(new string[] { "^rs" }, out rotSpd, defaultValue: 5f);
-            npcObject.TryGetComponent(out NpcMovement npcController);
-            if (npcController != null)
+            foreach (NpcMovement npcController in movableObjects)
             {
+                funcParams.TryGetValue(new string[] { "^r" }, out rot, defaultValue: npcController.transform.rotation.y);
+                funcParams.TryGetValue(new string[] { "^rs" }, out rotSpd, defaultValue: 5f);
                 yield return npcController.StartCoroutine(npcController.RotateHead(rot, rotSpd));
             }
         }
@@ -182,17 +192,19 @@ namespace TestingPurposes
         private static IEnumerator MoveObject(string[] args)
         {
             float x, y, z;
-            GameObject movableObject = GameObject.Find(args[0]);
+            var movableObjects = UnityEngine.Object.FindObjectsByType<MovableObjects>(sortMode: FindObjectsSortMode.None)
+                .ToList()
+                .FindAll(x => x.gameObject.name == args[0])
+                .Select(x => x.GetComponent<MovableObjects>());
             FunctionParams funcParams = ConvertArgsToParams(args);
-            var targetTransform = ResolvePosition(funcParams);
-            funcParams.TryGetValue(new string[] { "^s" }, out float speed, defaultValue: 3f);
-            funcParams.TryGetValue(new string[] { "^x" }, out x, defaultValue: movableObject.transform.position.x);
-            funcParams.TryGetValue(new string[] { "^y" }, out y, defaultValue: movableObject.transform.position.y);
-            funcParams.TryGetValue(new string[] { "^z" }, out z, defaultValue: movableObject.transform.position.z);
-            movableObject.TryGetComponent(out MovableObjects moveScript);
-            if (moveScript != null)
+            foreach (MovableObjects moveScript in movableObjects)
             {
-                if(targetTransform != Vector3.zero)
+                var targetTransform = ResolvePosition(funcParams);
+                funcParams.TryGetValue(new string[] { "^s" }, out float speed, defaultValue: 3f);
+                funcParams.TryGetValue(new string[] { "^x" }, out x, defaultValue: moveScript.transform.position.x);
+                funcParams.TryGetValue(new string[] { "^y" }, out y, defaultValue: moveScript.transform.position.y);
+                funcParams.TryGetValue(new string[] { "^z" }, out z, defaultValue: moveScript.transform.position.z);
+                if (targetTransform != Vector3.zero)
                 {
                     yield return moveScript.StartCoroutine(moveScript.Move(targetTransform, speed));
                 }
@@ -245,13 +257,15 @@ namespace TestingPurposes
 
         private static IEnumerator MoveToTargetWrapper(string[] args)
         {
-            GameObject movableObject = GameObject.Find(args[0]);
+            var movableObjects = UnityEngine.Object.FindObjectsByType<MovingObject>(sortMode: FindObjectsSortMode.None)
+                .ToList()
+                .FindAll(x => x.gameObject.name == args[0])
+                .Select(x => x.GetComponent<MovingObject>());
             FunctionParams funcParams = ConvertArgsToParams(args);
-            funcParams.TryGetValue(new string[] { "^s" }, out float speed, defaultValue: 1f);
-
-            movableObject.TryGetComponent(out MovingObject moveScript);
-            if (moveScript != null)
+            foreach (MovingObject moveScript in movableObjects)
             {
+                funcParams.TryGetValue(new string[] { "^s" }, out float speed, defaultValue: 1f);
+
                 bool completed = false;
                 float progress = 0f;
 
@@ -278,13 +292,14 @@ namespace TestingPurposes
 
         private static IEnumerator MoveBackToOriginalWrapper(string[] args)
         {
-            GameObject movableObject = GameObject.Find(args[0]);
+            var movableObjects = UnityEngine.Object.FindObjectsByType<MovingObject>(sortMode: FindObjectsSortMode.None)
+                .ToList()
+                .FindAll(x => x.gameObject.name == args[0])
+                .Select(x => x.GetComponent<MovingObject>());
             FunctionParams funcParams = ConvertArgsToParams(args);
-            funcParams.TryGetValue(new string[] { "^s" }, out float speed, defaultValue: 1f);
-
-            movableObject.TryGetComponent(out MovingObject moveScript);
-            if (moveScript != null)
+            foreach (MovingObject moveScript in movableObjects)
             {
+                funcParams.TryGetValue(new string[] { "^s" }, out float speed, defaultValue: 1f);
                 bool completed = false;
                 float progress = 0f;
 
@@ -316,12 +331,17 @@ namespace TestingPurposes
 
         private static void SwitchCamera(string arg)
         {
-            CameraManager.SwitchCamera(GameObject.Find(arg).GetComponent<CinemachineCamera>());
+            var eventCam = UnityEngine.Object.FindObjectsByType<CinemachineCamera>(sortMode: FindObjectsSortMode.None)
+                .ToList()
+                .Find(x => x.gameObject.name == arg).GetComponent<CinemachineCamera>();
+            CameraManager.SwitchCamera(eventCam);
         }
 
         private static IEnumerator ChangeCamFoV(string[] args)
         {
-            CinemachineCamera eventCam = GameObject.Find(args[0]).GetComponent<CinemachineCamera>();
+            var eventCam = UnityEngine.Object.FindObjectsByType<CinemachineCamera>(sortMode: FindObjectsSortMode.None)
+                .ToList()
+                .Find(x => x.gameObject.name == args[0]).GetComponent<CinemachineCamera>();
             FunctionParams funcParams = ConvertArgsToParams(args);
             funcParams.TryGetValue(new string[] { "^fov" }, out float targetFoV, defaultValue: eventCam.Lens.FieldOfView);
             funcParams.TryGetValue(new string[] { "^t" }, out float duration, defaultValue: 1);
@@ -661,7 +681,7 @@ namespace TestingPurposes
 
             var matchingNpcs = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None)
                 .ToList()
-                .FindAll(x => x.gameObject.name.Contains(npcName))
+                .FindAll(x => x.gameObject.name == npcName)
                 .Select(x => x.GetComponent<NpcMovement>());
 
             foreach (NpcMovement npc in matchingNpcs)
@@ -756,7 +776,7 @@ namespace TestingPurposes
 
         private static void HideObject(string arg)
         {
-            GameObject.Find(arg).SetActive(false);
+            UnityEngine.Object.FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == arg).SetActive(false);
         }
 
         private static void ShowNpcRig(string arg)

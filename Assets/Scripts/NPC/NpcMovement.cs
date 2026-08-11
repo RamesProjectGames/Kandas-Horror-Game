@@ -164,6 +164,7 @@ public class NpcMovement : MovableObjects
 
     public void TeleportToWaypoint(int index = 0)
     {
+        Debug.Log($"Teleporting {gameObject.name} to idx point {index}");
         idxPoint = index;
         if (point.Length > 0 && point[index] != null)
         {
@@ -238,7 +239,7 @@ public class NpcMovement : MovableObjects
 
 
         ToggleNPCMovement();
-        currIdleTime = idleTime;
+        //currIdleTime = idleTime;
         // footsteps helper
         if (footstepManager == null)
             footstepManager = GetComponent<FootstepsSoundManager>();
@@ -358,11 +359,8 @@ public class NpcMovement : MovableObjects
                     StartCoroutine(RotateHead(0f));
                     if (++idxPoint >= point.Length)
                     {
-                        if (loopMovement)
-                        {
-                            idxPoint %= point.Length;
-                        }
-                        else
+                        idxPoint %= point.Length;
+                        if (!loopMovement)
                         {
                             moveMyself = false;
                             return;
