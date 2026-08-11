@@ -1500,6 +1500,7 @@ MonoBehaviour:
   idxPoint: 0
   animator: {fileID: 2920625549383241765}
   loopMovement: 0
+  head: {fileID: 0}
   footstepManager: {fileID: 390456137735721362}
   foot: {fileID: 125463614704224397}
   groundMask:
@@ -1507,7 +1508,9 @@ MonoBehaviour:
     m_Bits: 8
   currentSurface: 0
   animState: 0
+  speed: 1
   moveMyself: 0
+  cutsceneFlagLocked: 0
 --- !u!95 &2920625549383241765
 Animator:
   serializedVersion: 7

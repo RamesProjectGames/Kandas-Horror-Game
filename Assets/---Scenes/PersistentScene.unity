@@ -6625,7 +6625,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0014877319}
+  m_AnchoredPosition: {x: 0, y: 0.0036239624}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -19647,17 +19647,6 @@ MonoBehaviour:
     LimitedAfterObjective: SubmitQuiz
     ObjectiveObject: {fileID: 0}
     Chapter: 1
-  - Name: ExploreSchool
-    Description: Explore the School (optional)
-    IsCompleted: 0
-    isHidden: 0
-    isDemo: 0
-    fragmentData: {fileID: 0}
-    requirements:
-    - SubmitQuiz
-    LimitedAfterObjective: Lunch
-    ObjectiveObject: {fileID: 0}
-    Chapter: 1
   - Name: Alya1
     Description: Follow Me
     IsCompleted: 0
@@ -19821,6 +19810,17 @@ MonoBehaviour:
     requirements:
     - EatLunch
     LimitedAfterObjective: AfterLunchClass
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: ExploreSchool
+    Description: Explore the School (optional)
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - SubmitQuiz
+    LimitedAfterObjective: Lunch
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   - Name: Bathroom
