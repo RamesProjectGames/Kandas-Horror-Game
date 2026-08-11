@@ -37,7 +37,7 @@ public class HidingSpot : MonoBehaviour
     }
     void Update()
     {
-        if (inputController != null)
+        if (inputController != null && SettingManager.Instance != null && playerController != null)
         {
             float sliderValue = SettingManager.Instance.settings.MouseSensitivity;
             float calculatedGain = Mathf.Clamp(sliderValue, SettingManager.Instance.minimumMouseSensitivity, SettingManager.Instance.maximumMouseSensitivity) * playerController.lookSensitivity * 2;
