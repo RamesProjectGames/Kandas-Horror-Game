@@ -6625,7 +6625,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0036239624}
+  m_AnchoredPosition: {x: 0, y: 0.0012054443}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -17672,7 +17672,7 @@ MonoBehaviour:
     Enabled: 1
     DefaultMode: 2
   DefaultBlend:
-    Style: 0
+    Style: 1
     Time: 1
     CustomCurve:
       serializedVersion: 2
@@ -32209,7 +32209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef527615df24f254e83abb37eae04838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupRadius: 2
+  pickupRadius: 1
   frontDotThreshold: 0.45
   throwForce: {x: 1, y: 4}
   pickupLayer:

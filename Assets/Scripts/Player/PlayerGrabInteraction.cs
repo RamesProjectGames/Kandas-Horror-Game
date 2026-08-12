@@ -54,6 +54,11 @@ public class PlayerGrabInteraction : MonoBehaviour
                 {
                     currentItem.onInteract.Invoke();
                     currentItem.HideUI();
+                    currentItem.TryGetComponent(out NpcMovement npcInteract);
+                    if (npcInteract != null)
+                    {
+                        npcInteract.facePlayer = true;
+                    }
                     //GetComponent<PlayerController>().FaceObject(currentItem.transform);
                 }
                 else if ((pickupLayer & (1 << currentItem.gameObject.layer)) != 0)
@@ -190,7 +195,15 @@ public class PlayerGrabInteraction : MonoBehaviour
         if (bestItem != currentItem)
         {
             if (currentItem != null)
+            {
                 currentItem.HideUI();
+
+                currentItem.TryGetComponent(out NpcMovement npcInteract);
+                if (npcInteract != null)
+                {
+                    npcInteract.facePlayer = false;
+                }
+            }
 
             currentItem = bestItem;
 
