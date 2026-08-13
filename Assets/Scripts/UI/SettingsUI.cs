@@ -420,7 +420,7 @@ public class SettingsUI : MonoBehaviour
     {
         ObjectiveManager.Instance.objectiveDatas.FindAll(x => x.Chapter == ObjectiveManager.Instance.currentChapter).ForEach(x => x.IsCompleted = false);
         yield return StartCoroutine(DialogueSystem.Instance.FadeToBlack(0));
-        GameObject.Find("Player").GetComponent<PlayerController>().ToggleRig(true);
+        FindAnyObjectByType<PlayerController>().ToggleRig(true);
 
         loadingPanel.SetActive(true);
 

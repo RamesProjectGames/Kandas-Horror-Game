@@ -57,6 +57,8 @@ public class PlayerGrabInteraction : MonoBehaviour
                     currentItem.TryGetComponent(out NpcMovement npcInteract);
                     if (npcInteract != null)
                     {
+                        if(!npcInteract.facePlayer)
+                            npcInteract.HandleAnimationEndState();
                         npcInteract.facePlayer = true;
                     }
                     //GetComponent<PlayerController>().FaceObject(currentItem.transform);
@@ -201,6 +203,8 @@ public class PlayerGrabInteraction : MonoBehaviour
                 currentItem.TryGetComponent(out NpcMovement npcInteract);
                 if (npcInteract != null)
                 {
+                    if(npcInteract.facePlayer)
+                        npcInteract.HandleAnimationEndState();
                     npcInteract.facePlayer = false;
                 }
             }

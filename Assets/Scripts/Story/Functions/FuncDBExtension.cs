@@ -696,6 +696,7 @@ namespace TestingPurposes
                 if (npc.point.Length > 0)
                 {
                     npc.agent.SetDestination(npc.point[npc.idxPoint].position);
+                    npc.HandleAnimationEndState();
                 }
             }
         }

@@ -33,7 +33,7 @@ public class PlayerController : MovableObjects
 
     [Header("Numeric Values")]
     [SerializeField] private float jumpPow;
-    [SerializeField] private float gravity = 9.81f, groundDist = 1f, speed = 150f, sprintMulti = 2.0f, jumpCd, maxStamina, staminaDecayRate;
+    [SerializeField] private float groundDist = 1f, speed = 150f, sprintMulti = 2.0f, jumpCd, maxStamina, staminaDecayRate;
     [SerializeField] private bool isExhausted;
     private float stamina, moveSpd;
     private bool isGrounded;

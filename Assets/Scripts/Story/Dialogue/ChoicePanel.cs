@@ -77,7 +77,7 @@ public class ChoicePanel : MonoBehaviour
 
     private void GenerateChoices(string[] choices)
     {
-        float maxWidth = 0;
+        //float maxWidth = 0;
 
         for (int i = 0; i < choices.Length; i++)
         {

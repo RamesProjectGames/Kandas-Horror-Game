@@ -66,6 +66,7 @@ public class NpcMovement : MovableObjects
         if (agent != null)
         {
             moveMyself = true;
+            blocker.enabled = false;
             agent.enabled = true;
             agent.speed = speed;
             validPos = GetValidNavMeshPosition(pos);
@@ -79,6 +80,7 @@ public class NpcMovement : MovableObjects
     {
         if (agent != null)
         {
+            blocker.enabled = false;
             agent.enabled = true;
             agent.Warp(pos);
             agent.ResetPath();
@@ -123,14 +125,14 @@ public class NpcMovement : MovableObjects
     public IEnumerator RotateHead(float yrot, float rotSpd = 5f)
     {
         yrot = Mathf.Clamp(yrot, -45f, 45f);
-        Quaternion targetRotation = Quaternion.Euler(head.rotation.x, yrot, head.rotation.z);
+        Quaternion targetRotation = Quaternion.Euler(head.localRotation.x, yrot, head.localRotation.z);
 
         while (Quaternion.Angle(head.rotation, targetRotation) >= 10f)
         {
-            head.rotation = Quaternion.Slerp(head.rotation, targetRotation, rotSpd * Time.deltaTime);
+            head.localRotation = Quaternion.Slerp(head.localRotation, targetRotation, rotSpd * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
-        head.rotation = targetRotation;
+        head.localRotation = targetRotation;
     }
 
     public void ToggleNPCMovement()
@@ -152,9 +154,17 @@ public class NpcMovement : MovableObjects
             {
                 Vector3 targetPos = point[0].faceTowards.position;
                 targetPos.y = transform.position.y;
-                Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-                if (point[0].endState != NPCAnimationState.Sit)
+                if (point[0].endState == NPCAnimationState.Sit)
+                {
+                    Quaternion targetRotation = transform.rotation;
+                    targetRotation.y = point[0].transform.rotation.y;
                     transform.rotation = targetRotation;
+                }
+                else
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+                    transform.rotation = targetRotation;
+                }
             }
             else
             {
@@ -181,9 +191,17 @@ public class NpcMovement : MovableObjects
             {
                 Vector3 targetPos = point[index].faceTowards.position;
                 targetPos.y = transform.position.y;
-                Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-                if (point[index].endState != NPCAnimationState.Sit)
+                if (point[0].endState == NPCAnimationState.Sit)
+                {
+                    Quaternion targetRotation = transform.rotation;
+                    targetRotation.y = point[index].transform.rotation.y;
                     transform.rotation = targetRotation;
+                }
+                else
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+                    transform.rotation = targetRotation;
+                }
             }
             else
             {
@@ -193,36 +211,7 @@ public class NpcMovement : MovableObjects
             }
             transform.position = point[index].position;
         }
-        //if (moveMyself && point.Length > 1)
-        //{
-        //    if (++index >= point.Length)
-        //    {
-        //        if (loopMovement)
-        //        {
-        //            idxPoint = index % point.Length;
-        //            agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
-        //            animState = NPCAnimationState.Walk;
-        //            animator.SetFloat("Blend", 1f);
-        //        }
-        //        else
-        //        {
-        //            moveMyself = false;
-        //            HandleAnimationEndState();
-        //            return;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        idxPoint = index % point.Length;
-        //        agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
-        //        animState = NPCAnimationState.Walk;
-        //        animator.SetFloat("Blend", 1f);
-        //    }
-        //}
-        //else
-        //{
-            HandleAnimationEndState();
-        //}
+        HandleAnimationEndState();
     }
     #endregion
 
@@ -407,7 +396,7 @@ public class NpcMovement : MovableObjects
                 Vector3 targetPos = point[idxPoint].faceTowards.position;
                 targetPos.y = transform.position.y;
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-                if (animState != NPCAnimationState.Sit)
+                if (point[idxPoint].endState != NPCAnimationState.Sit)
                     StartCoroutine(Rotate(targetRotation.y));
             }
             else
@@ -430,39 +419,63 @@ public class NpcMovement : MovableObjects
             return;
         }
 
-        if (point.Length > idxPoint && point[idxPoint].faceTowards != null && animState == NPCAnimationState.Sit)
+        if (point.Length > idxPoint && point[idxPoint].faceTowards != null)
         {
-            //Rotate
             Vector3 targetPos = point[idxPoint].faceTowards.position;
             targetPos.y = transform.position.y;
             Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-            if (Mathf.Abs(targetRotation.y - transform.rotation.y) <= 45f)
+            if (point[idxPoint].endState == NPCAnimationState.Sit)
             {
-                targetPos.y = head.position.y;
-                head.LookAt(targetPos);
+                //Rotate
+                if (Mathf.Abs(targetRotation.y - transform.rotation.y) <= 45f)
+                {
+                    targetPos.y = head.position.y;
+                    head.LookAt(targetPos);
+                }
+                else
+                {
+                    targetPos.y = head.position.y;
+                    head.LookAt(targetPos);
+                    head.localEulerAngles = new Vector3(head.localEulerAngles.x, Mathf.Clamp(head.localEulerAngles.y, -45f, 45f), head.localEulerAngles.z);
+                }
             }
         }
         else if ((point.Length < 1 || point[idxPoint].faceTowards == null) && DialogueSystem.Instance.isRunningConvo && facePlayer)
         {
             if (animState == NPCAnimationState.Sit)
             {
-                Vector3 playerPos = GameObject.Find("Player").transform.position;
+                Vector3 playerPos = FindAnyObjectByType<PlayerController>().transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(playerPos - transform.position);
                 float angleDiff = Quaternion.Angle(transform.rotation, targetRotation);
-                playerPos.y = head.position.y;
-                head.LookAt(playerPos);
-                head.eulerAngles = new Vector3(head.eulerAngles.x, Mathf.Clamp(head.eulerAngles.y, transform.eulerAngles.y-45f, transform.eulerAngles.y+45f), head.eulerAngles.z);
+                //Rotate
+                if (Quaternion.Angle(targetRotation, transform.rotation) <= 45f)
+                {
+                    playerPos.y = head.position.y;
+                    head.LookAt(playerPos);
+                }
+                else
+                {
+                    playerPos.y = head.position.y;
+                    head.LookAt(playerPos);
+                }
+                float headYrot = head.localEulerAngles.y;
+                if(headYrot > 180)
+                    headYrot -= 360;
+                else if (headYrot < -180)
+                    headYrot += 360;
+                head.localEulerAngles = new Vector3(head.localEulerAngles.x, Mathf.Clamp(headYrot, -45f, 45f), head.localEulerAngles.z);
             }
             else
             {
                 //Rotate
-                Vector3 targetPos = GameObject.Find("Player").transform.position;
+                Vector3 targetPos = FindAnyObjectByType<PlayerController>().transform.position;
                 targetPos.y = transform.position.y;
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-                StartCoroutine(Rotate(targetRotation.y));
+                if(Quaternion.Angle(transform.rotation, targetRotation)>0)
+                    StartCoroutine(Rotate(targetRotation.eulerAngles.y));
             }
         }
-        else
+        else if(!facePlayer)
         {
             head.localRotation = Quaternion.identity;
             if(point.Length > idxPoint && point[idxPoint] != null)
@@ -473,16 +486,14 @@ public class NpcMovement : MovableObjects
             }
         }
     }
-    void HandleAnimationEndState()
+    public void HandleAnimationEndState()
     {
         float state = 0;
         if (point.Length > 0 && point[idxPoint] != null)
             animState = point[idxPoint].endState;
-        else
-            animState = NPCAnimationState.Stand;
         if (animState == NPCAnimationState.Sit)
         {
-            if (point.Length > 0 && point[idxPoint] != null && point[idxPoint].faceTowards != null)
+            if (facePlayer || (point.Length > 0 && point[idxPoint] != null && point[idxPoint].faceTowards != null))
             {
                 state = UnityEngine.Random.Range(4, 7);
             }
@@ -491,7 +502,7 @@ public class NpcMovement : MovableObjects
         }
         else if (animState == NPCAnimationState.Stand)
         {
-            if (point.Length > 0 && point[idxPoint] != null && point[idxPoint].faceTowards != null)
+            if (facePlayer || (point.Length > 0 && point[idxPoint] != null && point[idxPoint].faceTowards != null))
             {
                 state = UnityEngine.Random.Range(0, 4);
             }
