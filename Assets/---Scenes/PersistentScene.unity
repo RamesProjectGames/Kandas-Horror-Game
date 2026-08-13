@@ -32150,6 +32150,17 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 71a15bd38f99d614bbe2ab9d0cd2bd30, type: 3}
     - {fileID: 8300000, guid: c4e0304beec89d2408a5dc9204eac1b4, type: 3}
     surfaceType: 1
+  TerrainSoundTypes:
+  - terrainLayerNames:
+    - Ground
+    - Rock Floor 1
+    - Road
+    surfaceType: 0
+  - terrainLayerNames:
+    - Grass 3
+    - Grass 2
+    - Dirt&Leaf
+    surfaceType: 2
   Animator: {fileID: 0}
   Enviroment:
     serializedVersion: 2
@@ -32357,7 +32368,6 @@ MonoBehaviour:
   unlockAction: {fileID: 3787204763737618428, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   isActivePlayer: 1
   jumpPow: 2
-  gravity: 9.81
   groundDist: 0.25
   speed: 2.3
   sprintMulti: 1.75
