@@ -10,7 +10,13 @@ public class FootstepAudioData
 {
     public List<AudioClip> leftFootstepSound = new List<AudioClip>();
     public List<AudioClip> rightFootstepSound = new List<AudioClip>();
-    public SurfaceType surfaceType;
+    public GroundSurface surfaceType;
+}
+[Serializable]
+public class TerrainSoundType
+{
+    public List<string> terrainLayerNames = new List<string>();
+    public GroundSurface surfaceType;
 }
 public class FootstepsSoundManager : MonoBehaviour
 {
@@ -18,6 +24,7 @@ public class FootstepsSoundManager : MonoBehaviour
     private EventInstance footstepEvent;
 
     public List<FootstepAudioData> FootstepAudioData = new List<FootstepAudioData>();
+    public List<TerrainSoundType> TerrainSoundTypes = new List<TerrainSoundType>();
     public Animator Animator;
     public LayerMask Enviroment;
     private float _lastfootstep;
@@ -69,7 +76,7 @@ public class FootstepsSoundManager : MonoBehaviour
         PLAYBACK_STATE playbackState;
         footstepEvent.setParameterByName("Foot", _lastFootWasRight ? 1 : 0);
         //playerFootsteps.setParameterByName("Surface", UnityEngine.Random.Range(0, 3));
-        footstepEvent.setParameterByName("Surface", 0);
+        footstepEvent.setParameterByName("Surface", GetSurfaceIndex());
         footstepEvent.getPlaybackState(out playbackState);
 
         if (playbackState == PLAYBACK_STATE.STOPPED)
@@ -116,7 +123,35 @@ public class FootstepsSoundManager : MonoBehaviour
         var randomIndex = UnityEngine.Random.Range(0, clips.Count);
         AudioSource.PlayClipAtPoint(clips[randomIndex], transform.position);
     }
-
+    public int GetSurfaceIndex()
+    {
+        var surfaceIndex = 0;
+        var origin = transform.position + Vector3.up * .1f;
+        var isHit = Physics.Raycast(origin, Vector3.down, out var hitInfo, 3);
+        if (isHit)
+        {
+            // first, try to fetch a SurfaceIdentifier component from the hit collider.
+            var surfaceIdentifier = hitInfo.collider.GetComponent<SurfaceIdentifier>();
+            var terrain = hitInfo.collider.GetComponent<Terrain>();
+            if (surfaceIdentifier != null)
+            {
+                surfaceIndex = (int)surfaceIdentifier.surfaceType;
+            }
+            else if (terrain != null)
+            {
+                string layerName = GetLayerName(hitInfo.point, terrain);
+                foreach (var terrainSoundType in TerrainSoundTypes)
+                {
+                    if (terrainSoundType.terrainLayerNames.Contains(layerName))
+                    {
+                        surfaceIndex = (int)terrainSoundType.surfaceType;
+                        break;
+                    }
+                }
+            }
+        }
+        return surfaceIndex;
+    }
     public List<AudioClip> GetClipsForSurface(bool isLeftFoot = true)
     {
         var clips = new List<AudioClip>();
@@ -149,7 +184,7 @@ public class FootstepsSoundManager : MonoBehaviour
             {
                 string layerName = GetLayerName(hitInfo.point, terrain);
                 if (!string.IsNullOrEmpty(layerName) &&
-                    Enum.TryParse<SurfaceType>(layerName, true, out var terrainSurface))
+                    Enum.TryParse<GroundSurface>(layerName, true, out var terrainSurface))
                 {
                     foreach (var audioData in FootstepAudioData)
                     {

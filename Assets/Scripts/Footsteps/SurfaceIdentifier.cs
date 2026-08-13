@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SurfaceIdentifier : MonoBehaviour
 {
-    public SurfaceType surfaceType;
+    public GroundSurface surfaceType;
 }
 
 public enum SurfaceType

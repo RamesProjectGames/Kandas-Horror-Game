@@ -439,10 +439,10 @@ public class PlayerController : MovableObjects
 
     private void FixedUpdate()
     {
-        isGrounded = Physics.CheckSphere(foot.position, groundDist, groundMask);
+        // isGrounded = Physics.CheckSphere(foot.position, groundDist, groundMask);
 
         // accumulate distance travelled this frame and trigger a step when we've covered enough ground
-        if (footstepManager != null && isGrounded && input.magnitude > 0.01f)
+        if (footstepManager != null  && input.magnitude > 0.01f)
         {
             // scale step distance inversely with speed: faster movement = more frequent steps
             // use speed (normal walk speed, ~150) as baseline
