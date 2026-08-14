@@ -522,7 +522,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         private void LoadControlBinding()
         {
             var savedBindings = PlayerPrefs.GetString(m_Action.action.name + m_BindingId, string.Empty);
-            Debug.Log(savedBindings);
             if (!string.IsNullOrEmpty(savedBindings))
                 actionReference.action.actionMap.LoadBindingOverridesFromJson(savedBindings);
         }
