@@ -19940,6 +19940,181 @@ MonoBehaviour:
     LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
+  - Name: Breakfast
+    Description: Get something to eat from the dinner table
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements: []
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: Doggie
+    Description: Play with Brownie
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - Breakfast
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: GetStick1
+    Description: Get the stick.
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - Doggie
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: GiveStick1
+    Description: Give stick to Jessica.
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - GetStick1
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: GetStick2
+    Description: Get the stick.
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - GiveStick1
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: GiveStick2
+    Description: Give stick to Jessica.
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - GetStick2
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: GetStick3
+    Description: Get the stick.
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - GiveStick2
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: GiveStick3
+    Description: Give stick to Jessica.
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - GetStick3
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: Medicine1
+    Description: Take your medicine
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - GiveStick3
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: CleanUp
+    Description: Wash up in bathroom
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - Medicine
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: DressUp
+    Description: Wash up in bathroom
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - CleanUp
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: School
+    Description: Go to school
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - DressUp
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: Class
+    Description: Attend Class
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - School
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: Bathroom
+    Description: Go to bathroom
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - School
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: Cafetaria
+    Description: Go to the cafetaria
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - Bathroom
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
+  - Name: Medicine2
+    Description: Go to bathroom
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - Cafetaria
+    LimitedAfterObjective: 
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
   ObjectivePrefab: {fileID: 4575612503608170280, guid: d23d41e198abf6d4bafe61812b8a5261, type: 3}
   ObjectivesParent: {fileID: 415318066}
   currentObjectives: []
@@ -32183,6 +32358,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 9
   minFootstepInterval: 0.3
+  groundCheckDistance: 3
 --- !u!195 &1761790451
 NavMeshAgent:
   m_ObjectHideFlags: 0

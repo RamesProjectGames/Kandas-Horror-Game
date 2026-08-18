@@ -55,6 +55,7 @@ namespace TestingPurposes
             db.AddFunction("MovePrep", new Action(MovePrep));
             db.AddFunction("ChangeInteractionText", new Action<string>(ChangeInteractionText));
             //db.AddFunction("WaitForInput", new Action(WaitForInput));
+            db.AddFunction("ChangeActivePlayer", new Action<string>(ChangeActivePlayer));
             #endregion
             #region Audio
             db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
@@ -355,6 +356,17 @@ namespace TestingPurposes
                 yield return null;
             }
             eventCam.Lens.FieldOfView = targetFoV;
+        }
+        private static void ChangeActivePlayer(string arg)
+        {
+            var playerSwitchManager = UnityEngine.Object.FindAnyObjectByType<PlayerSwitchManager>();
+            var targetPlayer = UnityEngine.Object.FindObjectsByType<PlayerController>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .ToList()
+                .Find(x => x.gameObject.name == arg);
+            if (playerSwitchManager != null && targetPlayer != null)
+            {
+                playerSwitchManager.SwitchToPlayer(targetPlayer);
+            }
         }
         #endregion
 
@@ -981,6 +993,107 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^f" }, out fragment);
             DialogueSystem.Instance.dialogueContainer.HideDialogue();
             InspectManagerUI.Instance.OnItemSelected(FragmentManager.Instance.GetFragmentGO(fragment));
+        }
+        private static T FindNamedComponent<T>(string name) where T : Component
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return null;
+
+            return UnityEngine.Object.FindObjectsByType<T>(sortMode: FindObjectsSortMode.None)
+                .FirstOrDefault(x => x != null && x.gameObject != null && x.gameObject.name == name);
+        }
+
+        private static Vector3 GetThrowDirection(PlayerGrabInteraction thrower)
+        {
+            if (thrower == null)
+                return Vector3.forward;
+
+            if (thrower.playerCamera != null)
+                return thrower.playerCamera.transform.forward;
+
+            return thrower.transform.forward;
+        }
+
+        public static void GrabItem(string[] args)
+        {
+            string receiverName = args.Length > 0 ? args[0] : string.Empty;
+            string itemName = args.Length > 1 ? args[1] : string.Empty;
+
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new[] { "^who", "^receiver", "^target" }, out string receiverToken, defaultValue: receiverName);
+            funcParams.TryGetValue(new[] { "^item", "^obj", "^name" }, out string itemToken, defaultValue: itemName);
+
+            if (string.IsNullOrEmpty(receiverToken))
+                receiverToken = receiverName;
+            if (string.IsNullOrEmpty(itemToken))
+                itemToken = itemName;
+
+            PlayerGrabInteraction receiver = FindNamedComponent<PlayerGrabInteraction>(receiverToken);
+            ItemInteraction item = FindNamedComponent<ItemInteraction>(itemToken);
+
+            if (receiver == null)
+            {
+                if (!string.IsNullOrEmpty(receiverToken))
+                    Debug.LogWarning($"GrabItem: receiver not found: {receiverToken}");
+                return;
+            }
+
+            if (item == null && receiver.HeldItem != null)
+                item = receiver.HeldItem;
+
+            if (item == null)
+            {
+                if (!string.IsNullOrEmpty(itemToken))
+                    Debug.LogWarning($"GrabItem: item not found: {itemToken}");
+                return;
+            }
+
+            receiver.TryGrabItem(item);
+        }
+
+        public static void ThrowItem(string[] args)
+        {
+            string throwerName = args.Length > 0 ? args[0] : string.Empty;
+            string itemName = args.Length > 1 ? args[1] : string.Empty;
+
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new[] { "^who", "^thrower", "^actor" }, out string throwerToken, defaultValue: throwerName);
+            funcParams.TryGetValue(new[] { "^item", "^obj", "^name" }, out string itemToken, defaultValue: itemName);
+            funcParams.TryGetValue(new[] { "^pwr" }, out float throwForce, defaultValue: 1f);
+
+            if (string.IsNullOrEmpty(throwerToken))
+                throwerToken = throwerName;
+            if (string.IsNullOrEmpty(itemToken))
+                itemToken = itemName;
+
+            PlayerGrabInteraction thrower = FindNamedComponent<PlayerGrabInteraction>(throwerToken);
+            ItemInteraction item = FindNamedComponent<ItemInteraction>(itemToken);
+
+            if (thrower == null)
+            {
+                if (!string.IsNullOrEmpty(throwerToken))
+                    Debug.LogWarning($"ThrowItem: thrower not found: {throwerToken}");
+                return;
+            }
+
+            if (item == null && thrower.HeldItem != null)
+                item = thrower.HeldItem;
+
+            if (item == null)
+            {
+                if (!string.IsNullOrEmpty(itemToken))
+                    Debug.LogWarning($"ThrowItem: item not found: {itemToken}");
+                return;
+            }
+
+            Vector3 direction = GetThrowDirection(thrower);
+            if (item.IsHeld)
+            {
+                thrower.TryThrowHeldItem(throwForce, direction);
+                return;
+            }
+
+            thrower.TryThrowItem(item, throwForce, direction);
         }
         #endregion
     }
