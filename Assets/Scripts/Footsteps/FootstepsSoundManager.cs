@@ -34,12 +34,29 @@ public class FootstepsSoundManager : MonoBehaviour
     
     // minimum time (in seconds) between footsteps to prevent left/right from playing too close
     public float minFootstepInterval = 0.3f;
+    [SerializeField] private float groundCheckDistance = 3f;
     private float _lastFootstepTime = -1f;
+
+    private bool HasValidFootstepEvent()
+    {
+        return footstepEvent.hasHandle() && footstepEvent.isValid();
+    }
+
+    private void EnsureFootstepEventCreated()
+    {
+        if (AudioManager.Instance == null || footstepAudio.IsNull)
+            return;
+
+        if (!footstepEvent.hasHandle() || !footstepEvent.isValid())
+        {
+            footstepEvent = AudioManager.Instance.CreateInstance(footstepAudio);
+            RuntimeManager.AttachInstanceToGameObject(footstepEvent, gameObject, false);
+        }
+    }
 
     private void Start()
     {
-        footstepEvent = AudioManager.Instance.CreateInstance(footstepAudio);
-        RuntimeManager.AttachInstanceToGameObject(footstepEvent, gameObject, false);
+        EnsureFootstepEventCreated();
     }
     void OnValidate()
     {
@@ -52,56 +69,122 @@ public class FootstepsSoundManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
-        //    return;
-        //if(Animator != null)
-        //{
-        //    var footstep = Animator.GetFloat("Footstep");
-        //    if (Math.Abs(footstep) < .000001f) footstep = 0f;
-        //    if (_lastfootstep > 0 && footstep < 0 || _lastfootstep < 0 && footstep > 0)
-        //    {
-        //        PlayFootstep();
-        //    }
-        //    _lastfootstep = footstep;
-        //}
+        if (GetComponent<PlayerController>() == null)
+            return;
+
+        if (Time.frameCount % 30 != 0)
+            return;
+
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        bool hasSurfaceIdentifier = false;
+        bool hasTerrainCollider = false;
+        string terrainLayerName = "None";
+
+        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hitInfo, groundCheckDistance))
+        {
+            if (hitInfo.collider != null)
+            {
+                hasSurfaceIdentifier = hitInfo.collider.GetComponent<SurfaceIdentifier>() != null;
+                hasTerrainCollider = hitInfo.collider.GetComponent<Terrain>() != null;
+            }
+        }
+
+        Terrain terrain = GetTerrainAtWorldPosition(transform.position);
+        if (terrain != null)
+        {
+            terrainLayerName = GetLayerName(transform.position, terrain);
+        }
+
+        // Debug.Log($"Ground debug: surfaceIdentifier={hasSurfaceIdentifier}, terrainCollider={hasTerrainCollider}, terrainBelow={terrain != null}, terrainLayer={terrainLayerName}, pos={transform.position}");
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!Application.isPlaying)
+            return;
+
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        bool foundGround = HasSurfaceOrTerrainBelowFoot();
+
+        Gizmos.color = foundGround ? new Color(0.12f, 0.56f, 1f, 1f) : new Color(0.96f, 0.65f, 0.14f, 1f);
+        Gizmos.DrawWireSphere(origin, 0.18f);
+        Gizmos.DrawLine(origin, origin + Vector3.down * 0.6f);
+
+        if (foundGround)
+        {
+            Gizmos.DrawCube(origin + Vector3.down * 0.45f, new Vector3(0.12f, 0.04f, 0.12f));
+        }
+        else
+        {
+            Gizmos.DrawWireCube(origin + Vector3.down * 0.45f, new Vector3(0.18f, 0.04f, 0.18f));
+        }
     }
 
     // internal helper used by animator‑based signaling and external callers
+    private bool HasSurfaceOrTerrainBelowFoot()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+
+        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hitInfo, groundCheckDistance))
+        {
+            if (hitInfo.collider != null)
+            {
+                if (hitInfo.collider.GetComponent<SurfaceIdentifier>() != null)
+                    return true;
+
+                if (hitInfo.collider.GetComponent<Terrain>() != null)
+                    return true;
+            }
+        }
+
+        return GetTerrainAtWorldPosition(transform.position) != null;
+    }
+
     public void PlayFootstep()
     {
-        // enforce minimum interval between footsteps
-        if (Time.time - _lastFootstepTime < minFootstepInterval)
+        EnsureFootstepEventCreated();
+
+        bool hasAudioManager = AudioManager.Instance != null;
+        bool hasValidEvent = HasValidFootstepEvent();
+        bool eventIsAssigned = !footstepAudio.IsNull;
+        bool hasGround = HasSurfaceOrTerrainBelowFoot();
+
+        if (!hasAudioManager || !hasValidEvent || !eventIsAssigned || !hasGround)
+        {
+            Debug.Log($"Footstep blocked: audioManager={hasAudioManager}, validEvent={hasValidEvent}, eventAssigned={eventIsAssigned}, ground={hasGround}, surfaceId={GetSurfaceIndex()}");
             return;
+        }
+
+        
+        // enforce minimum interval between footsteps
+        // if (Time.fixedTime - _lastFootstepTime < minFootstepInterval)
+        //     return;
 
         PLAYBACK_STATE playbackState;
+        int surfaceIndex = GetSurfaceIndex();
+        string surfaceName = Enum.GetName(typeof(GroundSurface), surfaceIndex);
+        Debug.Log($"Footstep ground surface: {surfaceName} (index {surfaceIndex})");
+
         footstepEvent.setParameterByName("Foot", _lastFootWasRight ? 1 : 0);
-        //playerFootsteps.setParameterByName("Surface", UnityEngine.Random.Range(0, 3));
-        footstepEvent.setParameterByName("Surface", GetSurfaceIndex());
+        footstepEvent.setParameterByName("Surface", surfaceIndex);
         footstepEvent.getPlaybackState(out playbackState);
 
         if (playbackState == PLAYBACK_STATE.STOPPED)
         {
             RuntimeManager.AttachInstanceToGameObject(footstepEvent, gameObject, false);
-            //playerFootsteps.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
             footstepEvent.start();
         }
-        
-        // alternate between left and right
-        //if (_lastFootWasRight)
-        //{
-        //    PlayLeftFootstep();
-        //}
-        //else
-        //{
-        //    PlayRightFootstep();
-        //}
+
         _lastFootWasRight = !_lastFootWasRight;
-        _lastFootstepTime = Time.time;
+        // _lastFootstepTime = Time.fixedTime;
     }
 
     public void StopFootstep()
     {
-        footstepEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        if (!HasValidFootstepEvent())
+            return;
+
+        footstepEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 
     public void PlayLeftFootstep()
@@ -123,44 +206,81 @@ public class FootstepsSoundManager : MonoBehaviour
         var randomIndex = UnityEngine.Random.Range(0, clips.Count);
         AudioSource.PlayClipAtPoint(clips[randomIndex], transform.position);
     }
+    private Terrain GetTerrainAtWorldPosition(Vector3 worldPos)
+    {
+        Terrain bestTerrain = null;
+        float closestDistance = float.MaxValue;
+
+        for (int i = 0; i < Terrain.activeTerrains.Length; i++)
+        {
+            Terrain terrain = Terrain.activeTerrains[i];
+            if (terrain == null || terrain.terrainData == null)
+                continue;
+
+            Vector3 terrainPos = terrain.transform.position;
+            Vector3 terrainSize = terrain.terrainData.size;
+
+            bool withinX = worldPos.x >= terrainPos.x && worldPos.x <= terrainPos.x + terrainSize.x;
+            bool withinZ = worldPos.z >= terrainPos.z && worldPos.z <= terrainPos.z + terrainSize.z;
+
+            if (!withinX || !withinZ)
+                continue;
+
+            float distance = Vector3.Distance(worldPos, terrain.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                bestTerrain = terrain;
+            }
+        }
+
+        return bestTerrain;
+    }
+
     public int GetSurfaceIndex()
     {
         var surfaceIndex = 0;
         var origin = transform.position + Vector3.up * .1f;
-        var isHit = Physics.Raycast(origin, Vector3.down, out var hitInfo, 3);
-        if (isHit)
+        var isHit = Physics.Raycast(origin, Vector3.down, out var hitInfo, groundCheckDistance);
+
+        if (isHit && hitInfo.collider != null)
         {
-            // first, try to fetch a SurfaceIdentifier component from the hit collider.
             var surfaceIdentifier = hitInfo.collider.GetComponent<SurfaceIdentifier>();
-            var terrain = hitInfo.collider.GetComponent<Terrain>();
             if (surfaceIdentifier != null)
             {
                 surfaceIndex = (int)surfaceIdentifier.surfaceType;
-            }
-            else if (terrain != null)
-            {
-                string layerName = GetLayerName(hitInfo.point, terrain);
-                foreach (var terrainSoundType in TerrainSoundTypes)
-                {
-                    if (terrainSoundType.terrainLayerNames.Contains(layerName))
-                    {
-                        surfaceIndex = (int)terrainSoundType.surfaceType;
-                        break;
-                    }
-                }
+                return surfaceIndex;
             }
         }
+
+        Terrain terrain = GetTerrainAtWorldPosition(transform.position);
+        if (terrain != null)
+        {
+            string layerName = GetLayerName(transform.position, terrain);
+            foreach (var terrainSoundType in TerrainSoundTypes)
+            {
+                if (terrainSoundType.terrainLayerNames.Contains(layerName))
+                {
+                    return (int)terrainSoundType.surfaceType;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(layerName) && Enum.TryParse<GroundSurface>(layerName, true, out var terrainSurface))
+            {
+                return (int)terrainSurface;
+            }
+        }
+
         return surfaceIndex;
     }
     public List<AudioClip> GetClipsForSurface(bool isLeftFoot = true)
     {
         var clips = new List<AudioClip>();
-        // Raycast downwards a short distance to determine what we're stepping on.
         var origin = transform.position + Vector3.up * .1f;
-        var isHit = Physics.Raycast(origin, Vector3.down, out var hitInfo, 3);
-        if (isHit)
+        var isHit = Physics.Raycast(origin, Vector3.down, out var hitInfo, groundCheckDistance);
+
+        if (isHit && hitInfo.collider != null)
         {
-            // first, try to fetch a SurfaceIdentifier component from the hit collider.
             var surfaceIdentifier = hitInfo.collider.GetComponent<SurfaceIdentifier>();
             if (surfaceIdentifier != null)
             {
@@ -168,7 +288,6 @@ public class FootstepsSoundManager : MonoBehaviour
                 {
                     if (audioData.surfaceType == surfaceIdentifier.surfaceType)
                     {
-                        // return left or right specific clips
                         if (isLeftFoot && audioData.leftFootstepSound.Count > 0)
                             return audioData.leftFootstepSound;
                         if (!isLeftFoot && audioData.rightFootstepSound.Count > 0)
@@ -176,52 +295,63 @@ public class FootstepsSoundManager : MonoBehaviour
                     }
                 }
             }
+        }
 
-            // if we didn't find a SurfaceIdentifier, check if the collider is a terrain
-            // and determine the terrain layer at the hit point.
-            var terrain = hitInfo.collider.GetComponent<Terrain>();
-            if (terrain != null)
+        Terrain terrain = GetTerrainAtWorldPosition(transform.position);
+        if (terrain != null)
+        {
+            string layerName = GetLayerName(transform.position, terrain);
+            if (!string.IsNullOrEmpty(layerName) && Enum.TryParse<GroundSurface>(layerName, true, out var terrainSurface))
             {
-                string layerName = GetLayerName(hitInfo.point, terrain);
-                if (!string.IsNullOrEmpty(layerName) &&
-                    Enum.TryParse<GroundSurface>(layerName, true, out var terrainSurface))
+                foreach (var audioData in FootstepAudioData)
                 {
-                    foreach (var audioData in FootstepAudioData)
+                    if (audioData.surfaceType == terrainSurface)
                     {
-                        if (audioData.surfaceType == terrainSurface)
-                        {
-                            // return left or right specific clips
-                            if (isLeftFoot && audioData.leftFootstepSound.Count > 0)
-                                return audioData.leftFootstepSound;
-                            if (!isLeftFoot && audioData.rightFootstepSound.Count > 0)
-                                return audioData.rightFootstepSound;
-                        }
+                        if (isLeftFoot && audioData.leftFootstepSound.Count > 0)
+                            return audioData.leftFootstepSound;
+                        if (!isLeftFoot && audioData.rightFootstepSound.Count > 0)
+                            return audioData.rightFootstepSound;
                     }
                 }
             }
         }
 
-        return clips; // Default footstep sounds (empty list means caller should handle fallback)
+        return clips;
     }
     public float[] GetTextureMix(Vector3 playerPos, Terrain t)
     {
+        if (t == null || t.terrainData == null)
+            return new float[0];
+
         Vector3 tPos = t.transform.position;
         TerrainData terrainData = t.terrainData;
-        int mapX = Mathf.FloorToInt((playerPos.x - tPos.x) / terrainData.size.x * terrainData.alphamapWidth);
-        int mapZ = Mathf.FloorToInt((playerPos.z - tPos.z) / terrainData.size.z * terrainData.alphamapHeight);
-        float[,,] splatMapData = terrainData.GetAlphamaps(mapX, mapZ, 1, 1);
 
+        float x = (playerPos.x - tPos.x) / Mathf.Max(terrainData.size.x, 0.0001f);
+        float z = (playerPos.z - tPos.z) / Mathf.Max(terrainData.size.z, 0.0001f);
+
+        int mapX = Mathf.Clamp(Mathf.FloorToInt(x * terrainData.alphamapWidth), 0, terrainData.alphamapWidth - 1);
+        int mapZ = Mathf.Clamp(Mathf.FloorToInt(z * terrainData.alphamapHeight), 0, terrainData.alphamapHeight - 1);
+
+        float[,,] splatMapData = terrainData.GetAlphamaps(mapX, mapZ, 1, 1);
         float[] cellMix = new float[splatMapData.GetUpperBound(2) + 1];
+
         for (int i = 0; i < cellMix.Length; i++)
         {
             cellMix[i] = splatMapData[0, 0, i];
         }
+
         return cellMix;
     }
     public string GetLayerName(Vector3 playerPos, Terrain t)
     {
+        if (t == null || t.terrainData == null)
+            return string.Empty;
+
         float[] cellMix = GetTextureMix(playerPos, t);
-        float strongestMix = 0;
+        if (cellMix == null || cellMix.Length == 0)
+            return string.Empty;
+
+        float strongestMix = -1f;
         int maxIndex = 0;
         for (int i = 0; i < cellMix.Length; i++)
         {
@@ -231,6 +361,10 @@ public class FootstepsSoundManager : MonoBehaviour
                 strongestMix = cellMix[i];
             }
         }
+
+        if (maxIndex < 0 || maxIndex >= t.terrainData.terrainLayers.Length)
+            return string.Empty;
+
         return t.terrainData.terrainLayers[maxIndex].name;
     }
 }
