@@ -16,7 +16,7 @@ public class NpcMovement : MovableObjects
     [HideInInspector] public bool moveMyself = false;
     [SerializeField] private bool cutsceneFlagLocked = false;
     [HideInInspector] public bool facePlayer = false;
-    NavMeshObstacle blocker;
+    [HideInInspector] public NavMeshObstacle blocker;
     #endregion
 
     [Header("Footsteps")]
@@ -25,7 +25,7 @@ public class NpcMovement : MovableObjects
     public Transform foot;
     public LayerMask groundMask;
     public GroundSurface currentSurface;
-    [SerializeField] private NPCAnimationState animState;
+    public NPCAnimationState animState;
     private static string headGOName = "DEF-spine.005";
     private static bool allowMovement = false;
     public static Action NPCMovementTrigger, MovePrep;

@@ -79,7 +79,6 @@ public class ObjectiveManager : MonoBehaviour
                 currentObjectives.Add(obj.objectiveData.Name);
                 if(obj.objectiveData.fragmentData != null)
                 {
-                    Debug.LogWarning("Spawning Fragment");
                     FragmentManager.Instance.SpawnFragmentInScene(obj.objectiveData.fragmentData);
                 }
             }

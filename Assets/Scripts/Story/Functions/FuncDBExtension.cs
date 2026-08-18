@@ -1,6 +1,7 @@
 using Dialogue;
 using Dialogue.Functions;
 using FMODUnity;
+using Kino;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -82,6 +83,7 @@ namespace TestingPurposes
             #region Misc Events
             db.AddFunction("PlayVideo", new Action<string[]>(PlayVideo));
             db.AddFunction("PlayCutscene", new Action<string[]>(PlayCutscene));
+            db.AddFunction("Glitch", new Func<string, IEnumerator>(Glitch));
             db.AddFunction("SwitchScene", new Action<string>(SwitchScene));
             db.AddFunction("InspectFragment", new Action<string[]>(InspectFragment));
             db.AddFunction("StartQuiz", new Action(StartQuiz));
@@ -286,7 +288,6 @@ namespace TestingPurposes
 
                 while (!completed)
                     yield return null;
-
             }
         }
 
@@ -320,7 +321,6 @@ namespace TestingPurposes
 
                 while (!completed)
                     yield return null;
-
             }
         }
 
@@ -648,6 +648,20 @@ namespace TestingPurposes
             }
         }
 
+        private static IEnumerator Glitch(string arg)
+        {
+            if (float.TryParse(arg, out float duration))
+            {
+                EventReference sfx = RuntimeManager.PathToEventReference(sfxPath + "Glitch");
+
+                var glitch = UnityEngine.Object.FindAnyObjectByType<AnalogGlitch>();
+                AudioManager.Instance.PlayOneShot2D(sfx, 1, 1);
+                glitch.enabled = true;
+                yield return new WaitForSeconds(duration);
+                glitch.enabled = false;
+            }
+        }
+
         private static void SwitchScene(string arg)
         {
             if (ChapterDataManager.Instance == null)
@@ -689,6 +703,7 @@ namespace TestingPurposes
                 if (npc == null)
                     continue;
 
+                npc.blocker.enabled = false;
                 npc.moveMyself = true;
                 npc.agent.enabled = true;
                 npc.agent.speed = speed;
@@ -696,7 +711,7 @@ namespace TestingPurposes
                 if (npc.point.Length > 0)
                 {
                     npc.agent.SetDestination(npc.point[npc.idxPoint].position);
-                    npc.HandleAnimationEndState();
+                    npc.animState = NPCAnimationState.Walk;
                 }
             }
         }
