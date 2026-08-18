@@ -6625,7 +6625,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0012054443}
+  m_AnchoredPosition: {x: 0, y: 0.0007019043}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -14918,6 +14918,7 @@ GameObject:
   - component: {fileID: 887116221}
   - component: {fileID: 887116220}
   - component: {fileID: 887116219}
+  - component: {fileID: 887116222}
   m_Layer: 7
   m_Name: UI Camera
   m_TagString: OverlayCam
@@ -15097,6 +15098,23 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &887116222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887116215}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 870b9a8f0f82f4f56800cc427bcd1025, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scanLineJitter: 0.5
+  _verticalJump: 0
+  _horizontalShake: 0
+  _colorDrift: 0.15
+  _shader: {fileID: 4800000, guid: da33272284ea24f208f36998880990be, type: 3}
 --- !u!1 &887324240
 GameObject:
   m_ObjectHideFlags: 0
@@ -19647,6 +19665,17 @@ MonoBehaviour:
     LimitedAfterObjective: SubmitQuiz
     ObjectiveObject: {fileID: 0}
     Chapter: 1
+  - Name: SubmittedQuiz
+    Description: "Submit your quiz paper on the teacher\u2019s desk"
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements:
+    - SubmitQuiz
+    LimitedAfterObjective: SubmittedQuiz
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
   - Name: Alya1
     Description: Follow Me
     IsCompleted: 0
@@ -19654,7 +19683,7 @@ MonoBehaviour:
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - SubmitQuiz
+    - SubmittedQuiz
     LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
@@ -19669,17 +19698,6 @@ MonoBehaviour:
     LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
-  - Name: Alya3
-    Description: Follow Me
-    IsCompleted: 0
-    isHidden: 1
-    isDemo: 0
-    fragmentData: {fileID: 0}
-    requirements:
-    - Alya2
-    LimitedAfterObjective: Bathroom
-    ObjectiveObject: {fileID: 0}
-    Chapter: 1
   - Name: RattleDoor
     Description: Rattle the Corner Bathroom Door
     IsCompleted: 0
@@ -19687,7 +19705,7 @@ MonoBehaviour:
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - SubmitQuiz
+    - SubmittedQuiz
     LimitedAfterObjective: EatLunch
     ObjectiveObject: {fileID: 0}
     Chapter: 1
@@ -19709,7 +19727,7 @@ MonoBehaviour:
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - SubmitQuiz
+    - SubmittedQuiz
     LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
@@ -19720,7 +19738,7 @@ MonoBehaviour:
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - SubmitQuiz
+    - SubmittedQuiz
     LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
@@ -19731,7 +19749,7 @@ MonoBehaviour:
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - SubmitQuiz
+    - SubmittedQuiz
     LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
@@ -19742,7 +19760,7 @@ MonoBehaviour:
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - SubmitQuiz
+    - SubmittedQuiz
     LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
@@ -19753,7 +19771,7 @@ MonoBehaviour:
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - SubmitQuiz
+    - SubmittedQuiz
     LimitedAfterObjective: Lunch
     ObjectiveObject: {fileID: 0}
     Chapter: 1
@@ -19819,7 +19837,7 @@ MonoBehaviour:
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - SubmitQuiz
+    - SubmittedQuiz
     LimitedAfterObjective: Lunch
     ObjectiveObject: {fileID: 0}
     Chapter: 1

@@ -68,7 +68,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlayOneShot2D(EventReference sound, float volume, float pitch, Vector3 position = default, float volumeIncreaseAmount = 0f, float pitchIncreaseAmount = 0f, float increaseDuration = 0f)
+    public void PlayOneShot2D(EventReference sound, float volume, float pitch, float volumeIncreaseAmount = 0f, float pitchIncreaseAmount = 0f, float increaseDuration = 0f)
     {
         var instance = CreateInstance(sound, true);
         instance.setVolume(volume);
