@@ -418,6 +418,12 @@ public class SettingManager : MonoBehaviour
         AudioManager.Instance.UpdateVolumeSettings();
         SaveSettings();
     }
+    public void SetAmbienceVolume(float volume)
+    {
+        settings.AmbienceVolume = volume;
+        AudioManager.Instance.UpdateVolumeSettings();
+        SaveSettings();
+    }
     public void SetSoundEffectVolume(float volume)
     {
         settings.SoundEffectVolume = volume;
@@ -434,6 +440,7 @@ public class SettingManager : MonoBehaviour
     {
         settings.MasterVolume = 1.0f;
         settings.MusicVolume = 1.0f;
+        settings.AmbienceVolume = 1.0f;
         settings.SoundEffectVolume = 1.0f;
         settings.MobVolume = 1.0f;
         SaveSettings();

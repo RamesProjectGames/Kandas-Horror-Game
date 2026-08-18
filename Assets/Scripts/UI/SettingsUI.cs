@@ -91,6 +91,7 @@ public class SettingsUI : MonoBehaviour
         }
         masterVolumeSlider.value = s.MasterVolume;
         musicVolumeSlider.value = s.MusicVolume;
+        ambienceVolumeSlider.value = s.AmbienceVolume;
         soundEffectVolumeSlider.value = s.SoundEffectVolume;
         mobVolumeSlider.value = s.MobVolume;
 
@@ -277,6 +278,7 @@ public class SettingsUI : MonoBehaviour
     public Slider microphoneSensitivitySlider;
     public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
+    public Slider ambienceVolumeSlider;
     public Slider soundEffectVolumeSlider;
     public Slider mobVolumeSlider;
 
@@ -287,6 +289,10 @@ public class SettingsUI : MonoBehaviour
     public void SetMusicVolume(float value)
     {
         SettingManager.Instance.SetMusicVolume(value);
+    }
+    public void SetAmbienceVolume(float value)
+    {
+        SettingManager.Instance.SetAmbienceVolume(value);
     }
     public void SetSoundEffectVolume(float value)
     {

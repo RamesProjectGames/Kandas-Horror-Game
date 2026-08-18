@@ -45,6 +45,8 @@ public class SettingData
     [Range(0, 1)]
     public float MusicVolume = 1.0f;
     [Range(0, 1)]
+    public float AmbienceVolume = 1.0f;
+    [Range(0, 1)]
     public float SoundEffectVolume = 1.0f;
     [Range(0, 1)]
     public float MobVolume = 1.0f;
