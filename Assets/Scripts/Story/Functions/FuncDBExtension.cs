@@ -111,6 +111,7 @@ namespace TestingPurposes
             db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
             db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
             db.AddFunction("CrossGate", new Func<IEnumerator>(CrossSchoolGate));
+            db.AddFunction("CrossHole", new Func<IEnumerator>(CrossHole));
             db.AddFunction("MoveSpecificNPC", new Action<string[]>(MoveSpecificNPC));
             db.AddFunction("StopSpecificNPC", new Action<string[]>(StopSpecificNPC));
             #endregion
@@ -942,6 +943,35 @@ namespace TestingPurposes
             SwitchCamera("Player Camera");
             yield return new WaitForSeconds(1);
             GameObject.Find("GateCam").GetComponent<CinemachineCamera>().Follow = startPos.transform;
+        }
+        private static IEnumerator CrossHole()
+        {
+            Waypoint startPos, endPos;
+            if (Vector3.Distance(GameObject.Find("Player").transform.position, GameObject.Find("HoleIn").GetComponent<Waypoint>().position) <
+               Vector3.Distance(GameObject.Find("Player").transform.position, GameObject.Find("HoleOut").GetComponent<Waypoint>().position))
+            {
+                startPos = GameObject.Find("HoleIn").GetComponent<Waypoint>();
+                endPos = GameObject.Find("HoleOut").GetComponent<Waypoint>();
+            }
+            else
+            {
+                endPos = GameObject.Find("HoleIn").GetComponent<Waypoint>();
+                startPos = GameObject.Find("HoleOut").GetComponent<Waypoint>();
+            }
+            GameObject.Find("HoleCam").transform.rotation = startPos.transform.rotation;
+            GameObject.Find("HoleCam").GetComponent<CinemachineCamera>().Follow = endPos.transform;
+            GameObject.Find("HoleCam").transform.position = startPos.position;
+            SwitchCamera("HoleCam");
+            while (Vector3.Distance(CameraManager.currentActiveCamera.transform.position, endPos.position) > .1f)
+            {
+                CameraManager.currentActiveCamera.transform.position = Vector3.Lerp(CameraManager.currentActiveCamera.transform.position, endPos.position, Time.deltaTime * 2.0f);
+                yield return null;
+            }
+            yield return TeleportObject(new string[] { "Player", "^x", endPos.position.x.ToString(), "^z", endPos.position.z.ToString() });
+            RotateObject(new string[] { "Player", "^r", startPos.transform.rotation.y.ToString() });
+            SwitchCamera("Player Camera");
+            yield return new WaitForSeconds(1);
+            GameObject.Find("HoleCam").GetComponent<CinemachineCamera>().Follow = startPos.transform;
         }
 
         private static void InspectFragment(string[] args)
