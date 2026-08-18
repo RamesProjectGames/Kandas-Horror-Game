@@ -85,9 +85,23 @@ public class PlayerController : MovableObjects
     // reference to the centralized sound manager – typically on the same GameObject
     public FootstepsSoundManager footstepManager;
     // base step distance at normal walking speed; adjusted dynamically based on moveSpd
-    public float baseStepDistance = 2f;
+    public float baseStepDistance = 1.25f;
     private Vector3 _lastFootstepPosition;
     private float _footstepDistanceAccum;
+
+    private float GetStrideLength()
+    {
+        float baseStride = baseStepDistance;
+
+        if (isSprinting)
+            baseStride *= 0.8f;
+        else if (isCrouching)
+            baseStride *= 1.3f;
+
+        float speedRatio = speed / Mathf.Max(moveSpd, 0.1f);
+        float stride = baseStride * Mathf.Clamp(speedRatio, 0.55f, 1.7f);
+        return Mathf.Clamp(stride, 0.45f, 1.8f);
+    }
 
     [Header("Hiding")]
     public PlayerHiding Hiding;
@@ -439,29 +453,36 @@ public class PlayerController : MovableObjects
 
     private void FixedUpdate()
     {
-        // isGrounded = Physics.CheckSphere(foot.position, groundDist, groundMask);
+        bool isMoving = input.magnitude > 0.01f
+            && moveSpd > 0.1f
+            && !SettingManager.Instance.isPaused
+            && !DialogueSystem.Instance.isRunningConvo
+            && (Hiding == null || !Hiding.IsHiding());
 
-        // accumulate distance travelled this frame and trigger a step when we've covered enough ground
-        if (footstepManager != null  && input.magnitude > 0.01f)
+        if (footstepManager != null)
         {
-            // scale step distance inversely with speed: faster movement = more frequent steps
-            // use speed (normal walk speed, ~150) as baseline
-            float effectiveStepDistance = moveSpd > 0.1f
-                ? baseStepDistance * (speed / moveSpd)
-                : baseStepDistance;
-
-            float dist = Vector3.Distance(transform.position, _lastFootstepPosition);
-            _footstepDistanceAccum += dist;
-            if (_footstepDistanceAccum >= effectiveStepDistance)
+            if (isMoving)
             {
-                _footstepDistanceAccum -= effectiveStepDistance;
-                footstepManager.PlayFootstep();
+                float dist = Vector3.Distance(transform.position, _lastFootstepPosition);
+                if (dist > 0.01f)
+                {
+                    _footstepDistanceAccum += dist;
+                    float strideLength = GetStrideLength();
+
+                    if (_footstepDistanceAccum >= strideLength)
+                    {
+                        _footstepDistanceAccum = Mathf.Repeat(_footstepDistanceAccum, strideLength);
+                        footstepManager.PlayFootstep();
+                    }
+                }
+            }
+            else
+            {
+                _footstepDistanceAccum = 0f;
+                footstepManager.StopFootstep();
             }
         }
-        else if (footstepManager != null)
-        {
-            footstepManager.StopFootstep();
-        }
+
         _lastFootstepPosition = transform.position;
     }
 
