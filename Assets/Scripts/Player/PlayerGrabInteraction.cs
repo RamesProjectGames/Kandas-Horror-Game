@@ -25,6 +25,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
     public ItemInteraction currentItem;
     private ItemInteraction heldItem;
+    public ItemInteraction HeldItem => heldItem;
     [SerializeField] private InputActionReference throwAction, interAction;
 
     // runtime state for charging a throw
@@ -146,6 +147,43 @@ public class PlayerGrabInteraction : MonoBehaviour
     {
         throwCharge = 0f;
     }
+
+    public bool TryGrabItem(ItemInteraction item)
+    {
+        if (item == null || heldItem != null || item.IsHeld)
+            return false;
+
+        heldItem = item;
+        item.Pickup(holdPoint);
+        return true;
+    }
+
+    public bool TryThrowHeldItem(float force, Vector3 direction)
+    {
+        if (heldItem == null)
+            return false;
+
+        Vector3 throwDirection = direction.sqrMagnitude > 0.001f ? direction.normalized : transform.forward;
+        heldItem.Throw(throwDirection * Mathf.Max(0.1f, force));
+        heldItem = null;
+        return true;
+    }
+
+    public bool TryThrowItem(ItemInteraction item, float force, Vector3 direction)
+    {
+        if (item == null)
+            return false;
+
+        if (heldItem == item)
+        {
+            return TryThrowHeldItem(force, direction);
+        }
+
+        Vector3 throwDirection = direction.sqrMagnitude > 0.001f ? direction.normalized : transform.forward;
+        item.Throw(throwDirection * Mathf.Max(0.1f, force));
+        return true;
+    }
+
     void DetectItemInteraction()
     {
         if(SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)

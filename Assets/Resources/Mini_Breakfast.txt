@@ -1,0 +1,12 @@
+[w]FadeOut(1), [w]Wait(.5),[w]SwitchCam("Breakfast Camera"), [w]Wait(1), [w]FadeIn(1)
+Jessica "Ugh..."
+Jessica "Why is this again...?"
+Jessica "..."
+Jessica "..."
+Jessica "I don’t feel hungry anymore..."
+Brownie "Woof woof!"
+Rotate("Player Camera" ^r 90)
+Jessica "!"
+Jessica "It’s Brownie."
+[w]FadeOut(1), [w]Wait(.5), PlaySFX("ChairScrape"), [w]SwitchCam("Player Camera"), [w]Wait(1), [w]FadeIn(1)
+Objective(Breakfast)
