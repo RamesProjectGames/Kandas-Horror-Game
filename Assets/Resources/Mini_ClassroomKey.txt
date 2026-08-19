@@ -1,4 +1,7 @@
-Jessica "{c}This is so weird..." HideObject(KeyClassroom), Objective(FindKey)
+Jessica "{c}This is so weird..." HideObject(KeyClassroom), Objective(ClassroomKey)
 "{a}But anyway, I can’t do anything but go back to class..."
 ShowObject("Roaming Manequin Demo (1)"), CloseSpecificDoor("Tangga-PintuKanan (FindKey)"), CloseSpecificDoor("Tangga-PintuKiri (FindKey)")
-Jessica "!!!{c}Wh... what is that...? A mannequin...?"
+Jessica "!!!"
+SwitchCam(MannequinCam1)
+"Wh... what is that...? A mannequin...?"
+SwitchCam("Player Camera")

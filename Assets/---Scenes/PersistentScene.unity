@@ -6625,7 +6625,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00077819824}
+  m_AnchoredPosition: {x: 0, y: 0.0019760132}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -19887,7 +19887,7 @@ MonoBehaviour:
     LimitedAfterObjective: BackToClass1
     ObjectiveObject: {fileID: 0}
     Chapter: 1
-  - Name: FindKey
+  - Name: ClassroomKey
     Description: "Look for classroom\u2019s key"
     IsCompleted: 0
     isHidden: 0
@@ -19895,18 +19895,7 @@ MonoBehaviour:
     fragmentData: {fileID: 0}
     requirements:
     - BackToClass1
-    LimitedAfterObjective: FindKey
-    ObjectiveObject: {fileID: 0}
-    Chapter: 1
-  - Name: FindGateKey
-    Description: Look for Gate key
-    IsCompleted: 0
-    isHidden: 0
-    isDemo: 1
-    fragmentData: {fileID: 0}
-    requirements:
-    - BackToClass1
-    LimitedAfterObjective: FindKey
+    LimitedAfterObjective: ClassroomKey
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   - Name: BackToClass2
@@ -19916,8 +19905,30 @@ MonoBehaviour:
     isDemo: 1
     fragmentData: {fileID: 0}
     requirements:
-    - FindGateKey
+    - ClassroomKey
     LimitedAfterObjective: BackToClass2
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: GateKey
+    Description: Look for Gate key
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 1
+    fragmentData: {fileID: 0}
+    requirements:
+    - BackToClass2
+    LimitedAfterObjective: GateKey
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
+  - Name: BackToClass3
+    Description: Go back to the classroom
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 1
+    fragmentData: {fileID: 0}
+    requirements:
+    - GateKey
+    LimitedAfterObjective: BackToClass3
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   - Name: Fragment1

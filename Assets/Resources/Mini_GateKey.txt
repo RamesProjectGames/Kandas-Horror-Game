@@ -1,4 +1,3 @@
-HideObject("KeyGate"),ShowObject("Trial Monster"),ShowObject("-+-MazeeLayout"), ShowObject("Roaming Manequin Demo (2)")
-OpenSpecificDoor("Tangga-PintuKanan (FindKey)"), OpenSpecificDoor("Tangga-PintuKiri (FindKey)")
+HideObject(KeyGate),ShowObject("Trial Monster"),ShowObject("-+-MazeLayout"), ShowObject("Roaming Manequin Demo (2)")
 OpenSpecificDoor("PintuKanan(FindGateKey)"), OpenSpecificDoor("PintuKiri (FindGateKey)")
-Jessica "I Think this is for the gate from before" Objective(FindGateKey)
+Jessica "Here it is... This should be the keys for the gate.{c}Let’s hurry back to class..." Objective(GateKey)

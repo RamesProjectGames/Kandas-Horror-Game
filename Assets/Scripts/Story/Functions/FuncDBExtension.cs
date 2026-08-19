@@ -55,7 +55,6 @@ namespace TestingPurposes
             db.AddFunction("Despawn", new Action<string>(Despawn));
             db.AddFunction("MovePrep", new Action(MovePrep));
             db.AddFunction("ChangeInteractionText", new Action<string>(ChangeInteractionText));
-            //db.AddFunction("WaitForInput", new Action(WaitForInput));
             db.AddFunction("ChangeActivePlayer", new Action<string>(ChangeActivePlayer));
             #endregion
             #region Audio
