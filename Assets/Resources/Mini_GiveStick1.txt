@@ -1,0 +1,8 @@
+TransferItem("Dog" "Player")
+'"Jessica"' "Good Dog"
+'"Jessica"' "Again! Doggie, fetch!" ThrowItem(Player ^pwr 2)
+Jessica "<style=\"Whispering\">This isn’t happening! No!</style>"
+Jessica "<style=\"Whispering\">Woof!</style>" PlaySFX("DogBark")
+'"Jessica"' "Get my stuff, you damn dog."
+Jessica "<style=\"Whispering\">Woof!</style>" PlaySFX("DogBark")
+Objective("GiveStick1")

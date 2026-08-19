@@ -1,0 +1,15 @@
+[w]FadeOut(1), [w]Wait(.5), [w]SwitchCam(QuizCam), [w]Wait(1), [w]FadeIn(1)
+//Smiley Student turn around to face player
+SmileyStudent "Hey, you’re the new kid, right? Jessica, wasn’t it?"
+Elizabeth "My name is Elizabeth."
+Elizabeth "I saw your car. Was that your driver? Wow, you even have a private driver?"
+Elizabeth "Anyway, tomorrow is my birthday. I’m inviting you to my family’s villa to have a party. All my other friends will be there, so let’s get to know each other!"
+Elizabeth "Here’s the invitation. The party’s going to start at 10 AM, don’t be late, okay?"
+//Elizabeth Turn bak front
+//Teacher Walks in
+// Player look down at table
+Teacher "Open your books, let’s start the lesson."
+PlayerFaceFront()
+Jessica "<style=\"Whispering\">I guess I’ll go.</style>"
+[w]FadeOut(1), [w]Wait(.5),[w]SwitchCam(PlayerCam), [w]Wait(1), [w]FadeIn(1)
+Jessica "I want to go to the bathroom." Objective(Class)
