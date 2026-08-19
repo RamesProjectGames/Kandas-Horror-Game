@@ -48,6 +48,7 @@ namespace TestingPurposes
             db.AddFunction("MoveToTarget", new Func<string[], IEnumerator>(MoveToTargetWrapper));
             db.AddFunction("MoveBackToOriginal", new Func<string[], IEnumerator>(MoveBackToOriginalWrapper));
             db.AddFunction("PlayerFaceFront", new Action(PlayerFaceFront));
+            db.AddFunction("PlayerFaceObject", new Action<string>(PlayerFaceObject));
             db.AddFunction("AllowNPCMovement", new Action<string>(AllowNPCMovement));
             db.AddFunction("SwitchCam", new Action<string>(SwitchCamera));
             db.AddFunction("ChangeCamFoV", new Func<string[], IEnumerator>(ChangeCamFoV));
@@ -248,6 +249,16 @@ namespace TestingPurposes
         private static void PlayerFaceFront()
         {
             GameObject.Find("Player").GetComponent<PlayerController>().FaceFront();
+        }
+        private static void PlayerFaceObject(string arg)
+        {
+            GameObject targetObject = GameObject.Find(arg);
+            if (targetObject == null || string.IsNullOrEmpty(arg))
+            {
+                GameObject.Find("Player").GetComponent<PlayerController>().ChangeCameraLookAt(null);
+                return;
+            }
+            GameObject.Find("Player").GetComponent<PlayerController>().ChangeCameraLookAt(targetObject.transform);
         }
 
         private static void AllowNPCMovement(string arg)
