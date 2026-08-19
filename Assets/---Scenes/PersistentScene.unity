@@ -6625,7 +6625,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0024642944}
+  m_AnchoredPosition: {x: 0, y: 0.0035629272}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -19920,17 +19920,6 @@ MonoBehaviour:
     LimitedAfterObjective: BackToClass2
     ObjectiveObject: {fileID: 0}
     Chapter: 1
-  - Name: SitDesk
-    Description: Go sit down at your desk
-    IsCompleted: 0
-    isHidden: 0
-    isDemo: 1
-    fragmentData: {fileID: 0}
-    requirements:
-    - BackToClass2
-    LimitedAfterObjective: SitDesk
-    ObjectiveObject: {fileID: 0}
-    Chapter: 1
   - Name: Fragment1
     Description: News Letter
     IsCompleted: 0
@@ -19942,179 +19931,180 @@ MonoBehaviour:
     LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
-  - Name: Breakfast
+  - Name: 2_Breakfast
     Description: Get something to eat from the dinner table
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
-    requirements: []
-    LimitedAfterObjective: 
+    requirements: 
+    - BackToClass3
+    LimitedAfterObjective: 2_Breakfast
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: Doggie
+  - Name: 2_Doggie
     Description: Play with Brownie
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - Breakfast
-    LimitedAfterObjective: 
+    - 2_Breakfast
+    LimitedAfterObjective: 2_Doggie
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: GetStick1
+  - Name: 2_GetStick1
     Description: Get the stick.
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - Doggie
-    LimitedAfterObjective: 
+    - 2_Doggie
+    LimitedAfterObjective: 2_GetStick1
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: GiveStick1
+  - Name: 2_GiveStick1
     Description: Give stick to Jessica.
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - GetStick1
-    LimitedAfterObjective: 
+    - 2_GetStick1
+    LimitedAfterObjective: 2_GiveStick1
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: GetStick2
+  - Name: 2_GetStick2
     Description: Get the stick.
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - GiveStick1
-    LimitedAfterObjective: 
+    - 2_GiveStick1
+    LimitedAfterObjective: 2_GetStick2
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: GiveStick2
+  - Name: 2_GiveStick2
     Description: Give stick to Jessica.
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - GetStick2
-    LimitedAfterObjective: 
+    - 2_GetStick2
+    LimitedAfterObjective: 2_GiveStick2
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: GetStick3
+  - Name: 2_GetStick3
     Description: Get the stick.
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - GiveStick2
-    LimitedAfterObjective: 
+    - 2_GiveStick2
+    LimitedAfterObjective: 2_GetStick3
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: GiveStick3
+  - Name: 2_GiveStick3
     Description: Give stick to Jessica.
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - GetStick3
-    LimitedAfterObjective: 
+    - 2_GetStick3
+    LimitedAfterObjective: 2_GiveStick3
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: Medicine1
+  - Name: 2_Medicine1
     Description: Take your medicine
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - GiveStick3
-    LimitedAfterObjective: 
+    - 2_GiveStick3
+    LimitedAfterObjective: 2_Medicine1
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: CleanUp
+  - Name: 2_CleanUp
     Description: Wash up in bathroom
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - Medicine
-    LimitedAfterObjective: 
+    - 2_Medicine1
+    LimitedAfterObjective: 2_CleanUp
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: DressUp
+  - Name: 2_DressUp
     Description: Wash up in bathroom
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - CleanUp
-    LimitedAfterObjective: 
+    - 2_CleanUp
+    LimitedAfterObjective: 2_DressUp
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: School
+  - Name: 2_School
     Description: Go to school
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - DressUp
-    LimitedAfterObjective: 
+    - 2_DressUp
+    LimitedAfterObjective: 2_School
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: Class
+  - Name: 2_Class
     Description: Attend Class
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - School
-    LimitedAfterObjective: 
+    - 2_School
+    LimitedAfterObjective: 2_Class
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: Bathroom
+  - Name: 2_Bathroom
     Description: Go to bathroom
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - School
-    LimitedAfterObjective: 
+    - 2_School
+    LimitedAfterObjective: 2_Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: Cafetaria
+  - Name: 2_Cafetaria
     Description: Go to the cafetaria
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - Bathroom
-    LimitedAfterObjective: 
+    - 2_Bathroom
+    LimitedAfterObjective: 2_Cafetaria
     ObjectiveObject: {fileID: 0}
     Chapter: 2
-  - Name: Medicine2
+  - Name: 2_Medicine2
     Description: Go to bathroom
     IsCompleted: 0
     isHidden: 0
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - Cafetaria
-    LimitedAfterObjective: 
+    - 2_Cafetaria
+    LimitedAfterObjective: 2_Medicine2
     ObjectiveObject: {fileID: 0}
     Chapter: 2
   ObjectivePrefab: {fileID: 4575612503608170280, guid: d23d41e198abf6d4bafe61812b8a5261, type: 3}
