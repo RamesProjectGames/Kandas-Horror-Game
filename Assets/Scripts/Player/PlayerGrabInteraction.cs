@@ -158,6 +158,21 @@ public class PlayerGrabInteraction : MonoBehaviour
         return true;
     }
 
+    public bool TryTransferHeldItemTo(PlayerGrabInteraction target)
+    {
+        if (heldItem == null || target == null || target == this)
+            return false;
+
+        if (target.heldItem != null)
+            return false;
+
+        ItemInteraction item = heldItem;
+        heldItem = null;
+        target.heldItem = item;
+        item.Pickup(target.holdPoint);
+        return true;
+    }
+
     public bool TryThrowHeldItem(float force, Vector3 direction)
     {
         if (heldItem == null)

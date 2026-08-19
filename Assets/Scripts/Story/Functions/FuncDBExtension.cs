@@ -115,6 +115,9 @@ namespace TestingPurposes
             db.AddFunction("CrossHole", new Func<IEnumerator>(CrossHole));
             db.AddFunction("MoveSpecificNPC", new Action<string[]>(MoveSpecificNPC));
             db.AddFunction("StopSpecificNPC", new Action<string[]>(StopSpecificNPC));
+            db.AddFunction("GrabItem", new Action<string[]>(GrabItem));
+            db.AddFunction("ThrowItem", new Action<string[]>(ThrowItem));
+            db.AddFunction("TransferItem", new Action<string[]>(TransferItem));
             #endregion
         }
 
@@ -1094,6 +1097,84 @@ namespace TestingPurposes
             }
 
             thrower.TryThrowItem(item, throwForce, direction);
+        }
+
+        public static void TransferItem(string[] args)
+        {
+            string sourceName = args.Length > 0 ? args[0] : string.Empty;
+            string targetName = args.Length > 1 ? args[1] : string.Empty;
+            string itemName = args.Length > 2 ? args[2] : string.Empty;
+
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new[] { "^from", "^source", "^who", "^actor" }, out string sourceToken, defaultValue: sourceName);
+            funcParams.TryGetValue(new[] { "^to", "^target", "^receiver", "^dest" }, out string targetToken, defaultValue: targetName);
+            funcParams.TryGetValue(new[] { "^item", "^obj", "^name" }, out string itemToken, defaultValue: itemName);
+
+            if (string.IsNullOrEmpty(sourceToken))
+                sourceToken = sourceName;
+            if (string.IsNullOrEmpty(targetToken))
+                targetToken = targetName;
+            if (string.IsNullOrEmpty(itemToken))
+                itemToken = itemName;
+
+            PlayerGrabInteraction source = FindNamedComponent<PlayerGrabInteraction>(sourceToken);
+            PlayerGrabInteraction target = FindNamedComponent<PlayerGrabInteraction>(targetToken);
+            ItemInteraction item = FindNamedComponent<ItemInteraction>(itemToken);
+
+            if (source == null)
+            {
+                if (!string.IsNullOrEmpty(sourceToken))
+                    Debug.LogWarning($"TransferItem: source not found: {sourceToken}");
+                return;
+            }
+
+            if (target == null)
+            {
+                if (!string.IsNullOrEmpty(targetToken))
+                    Debug.LogWarning($"TransferItem: target not found: {targetToken}");
+                return;
+            }
+
+            if (source == target)
+                return;
+
+            if (item == null)
+            {
+                if (source.HeldItem != null)
+                    item = source.HeldItem;
+                else if (target.HeldItem != null)
+                    item = target.HeldItem;
+                else
+                {
+                    if (!string.IsNullOrEmpty(itemToken))
+                        Debug.LogWarning($"TransferItem: item not found: {itemToken}");
+                    return;
+                }
+            }
+
+            if (item == source.HeldItem)
+            {
+                if (!source.TryTransferHeldItemTo(target))
+                    Debug.LogWarning($"TransferItem: failed to transfer held item '{item.gameObject.name}' from {source.gameObject.name} to {target.gameObject.name}.");
+                return;
+            }
+
+            if (target.HeldItem != null)
+            {
+                Debug.LogWarning($"TransferItem: target {target.gameObject.name} is already holding an item.");
+                return;
+            }
+
+            if (item.IsHeld)
+            {
+                Debug.LogWarning($"TransferItem: item '{item.gameObject.name}' is already held elsewhere.");
+                return;
+            }
+
+            if (!target.TryGrabItem(item))
+            {
+                Debug.LogWarning($"TransferItem: failed to transfer item '{item.gameObject.name}' to {target.gameObject.name}.");
+            }
         }
         #endregion
     }
