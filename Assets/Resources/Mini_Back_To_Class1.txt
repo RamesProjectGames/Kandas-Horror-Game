@@ -1,4 +1,6 @@
 PlaySFX(RattleDoor ^v 0.4), [w]Wait(1)
-Jessica "No! Why is it locked?!"
+Jessica "Why is it locked?!"
 HideDialogue(), PlaySFX(RattleDoor ^v 0.6), [w]Wait(1), PlaySFX(RattleDoor ^v 0.8), [w]Wait(1), PlaySFX(RattleDoor ^v 1), [w]Wait(1)
-Jessica "Is there a key anywhere?" Objective(BackToClass1)
+Jessica "Is there a key anywhere?"
+SwitchCam(KeyClassFocusCam)
+"!!" SwitchCam("Player Camera"), Objective(BackToClass1)
