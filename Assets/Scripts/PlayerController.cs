@@ -675,8 +675,6 @@ public class PlayerController : MovableObjects
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotSpd);
             yield return null;
         }
-        // Snap to exact target
-        transform.rotation = targetRotation;
     }
 
     public override IEnumerator Move(Vector3 pos, float speed = 150f)
