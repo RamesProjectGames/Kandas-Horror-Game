@@ -434,6 +434,7 @@ public class SettingsUI : MonoBehaviour
     public IEnumerator RestartChapterCO()
     {
         ObjectiveManager.Instance.objectiveDatas.FindAll(x => x.Chapter == ObjectiveManager.Instance.currentChapter).ForEach(x => x.IsCompleted = false);
+        FragmentManager.Instance.ClearCurrentChapterFragment();
         yield return StartCoroutine(DialogueSystem.Instance.FadeToBlack(0));
         FindAnyObjectByType<PlayerController>().ToggleRig(true);
 

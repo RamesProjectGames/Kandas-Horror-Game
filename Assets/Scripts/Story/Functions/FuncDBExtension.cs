@@ -1001,12 +1001,11 @@ namespace TestingPurposes
 
         private static void InspectFragment(string[] args)
         {
+            int fragment;
             var funcParams = ConvertArgsToParams(args);
-            funcParams.TryGetValue(new string[] { "^f" }, out int fragment);
+            funcParams.TryGetValue(new string[] { "^f" }, out fragment);
             DialogueSystem.Instance.dialogueContainer.HideDialogue();
-            Fragment fragGO = FragmentManager.Instance.GetFragment(fragment);
-            fragGO.OnFragmentPickup();
-
+            InspectManagerUI.Instance.OnItemSelected(FragmentManager.Instance.GetFragmentGO(fragment));
         }
         private static T FindNamedComponent<T>(string name) where T : Component
         {

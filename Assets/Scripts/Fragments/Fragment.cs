@@ -8,7 +8,7 @@ public class Fragment : ItemInteraction
 {
     FragmentData fragmentData;
     public Transform itemParent;
-    public Transform itemInspect;
+    public GameObject itemInspect;
     public InspectData inspectDetails;
     public Color fragmentColor = new Color(1f,1f,1f,1f);
     public void SetFragmentData(FragmentData fragData)
@@ -28,11 +28,6 @@ public class Fragment : ItemInteraction
         return fragmentData.fragmentName;
     }
 
-    void OnEnable()
-    {
-        FragmentManager.Instance.RemoveFragment(this);
-        gameObject.SetActive(true);
-    }
     public void OnFragmentPickup()
     {
         if(!FragmentManager.Instance.FragmentOwned(this))

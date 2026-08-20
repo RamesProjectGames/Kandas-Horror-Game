@@ -20,7 +20,6 @@ public class FragmentManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        // allFragments.Clear();
     }
 
     public void SpawnFragmentInScene(FragmentData fragment)
@@ -60,9 +59,15 @@ public class FragmentManager : MonoBehaviour
             currentFragments.Remove(fragment.GetFragmentData());
     }
 
-    public void ClearFragment()
+    public void ClearCurrentChapterFragment()
     {
-        currentFragments.Clear();
+        foreach(ObjectiveData obj in ObjectiveManager.Instance.objectiveDatas.Where(x => x.fragmentData != null))
+        {
+            if(obj.Chapter == ObjectiveManager.Instance.currentChapter)
+            {
+                currentFragments.Remove(obj.fragmentData);
+            }
+        }
     }
 
     public bool CheckCompletedFragments()
@@ -102,8 +107,10 @@ public class FragmentManager : MonoBehaviour
         }
     }
 
-    public Fragment GetFragment(int fragIdx)
+    public GameObject GetFragmentGO(int fragIdx)
     {
-        return fragmentGOs[fragIdx];
+        Debug.Log(fragmentGOs[fragIdx]);
+        Debug.Log(fragmentGOs[fragIdx].itemInspect);
+        return fragmentGOs[fragIdx].itemInspect;
     }
 }

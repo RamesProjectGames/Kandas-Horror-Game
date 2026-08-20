@@ -429,7 +429,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 496974609697621862}
         m_TargetAssemblyTypeName: Fragment, Assembly-CSharp
-        m_MethodName: TriggerDialogue
+        m_MethodName: OnFragmentPickup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -446,10 +446,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   pickupText: {fileID: 6815327678406222477}
-  buttonInteractionText: {fileID: 0}
+  buttonInteractionText: {fileID: 1923493618616385988}
   player: {fileID: 0}
   itemParent: {fileID: 2723972639185345407}
-  itemInspect: {fileID: 3969643939740601422}
+  itemInspect: {fileID: 4349582843361695476}
   inspectDetails: {fileID: 2498242891060917085}
   fragmentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &4654349256959530130
