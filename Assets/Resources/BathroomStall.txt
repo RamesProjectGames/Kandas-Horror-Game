@@ -1,7 +1,7 @@
 TryOpenDoor()
 if(DoorAttempts() == 1)
 {	
-	Jessica "?" [w]Wait(2), PlaySFX(RattleDoor ^dup true ), PlaySFX(RattleDoor ^dup true )
+	Jessica "?" [w]Wait(2), NextDialogue()
 	Jessica "Huh." [w]Wait(2), PlaySFX(RattleDoor ^dup true )
 	Jessica "Why is it..." [w]Wait(2), PlaySFX(RattleDoor ^dup true )
 	HideDialogue(), PlaySFX(DogBark ^dup true ^v .1 ^p 1 ^go DogBarkTarget1), PlaySFX(DogBark ^dup true ^v .1 ^p 1 ^go DogBarkTarget2), ChangeAudioVolumeProgression(DogBark ^type sfx ^limit 1 ^time 23)

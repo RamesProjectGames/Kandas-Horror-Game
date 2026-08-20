@@ -1,2 +1,2 @@
 [w]FadeOut(1), Teleport(Player ^x 278.675 ^z 327.125), CloseSpecificDoor("BathroomDoorJumpscare"), [w]Wait(1), Rotate(Player ^r 180), [w]Wait(1), [w]FadeIn(1), PlaySFX(WaterTrickle ^v 1 ^p 1), [w]Wait(7), StopAudioByName("WaterTrickle" ^type sfx),[w]Wait(2.5), PlaySFX(Flush ^v 1 ^p 1), Objective("Bathroom")
-Jessica "Phew, much better... I should get out now"
+Jessica "Phew, much better... I should get out now" PlayCutscene(AlyaJumpscareTimeline)
