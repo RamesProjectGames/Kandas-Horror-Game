@@ -378,6 +378,15 @@ public class SettingsUI : MonoBehaviour
         }
     }
 
+    public void PausePanelTabOut()
+    {
+        if (PausePanel != null)
+        {
+            UIAudioManager.Instance.PlayCancelSound();
+            PausePanel.SetActive(SettingManager.Instance.isPaused);
+        }
+    }
+
     public void ConfirmMainMenu() { ConfirmationUI.Instance.SetConfirmationUI("Return to Main Menu?", () => BackToMainMenu()); }
 
     public void BackToMainMenu()

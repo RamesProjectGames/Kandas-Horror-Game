@@ -102,8 +102,8 @@ public class FragmentManager : MonoBehaviour
         }
     }
 
-    public GameObject GetFragmentGO(int fragIdx)
+    public Fragment GetFragment(int fragIdx)
     {
-        return fragmentGOs[fragIdx].itemInspect.gameObject;
+        return fragmentGOs[fragIdx];
     }
 }

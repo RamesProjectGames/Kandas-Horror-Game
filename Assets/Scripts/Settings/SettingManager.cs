@@ -45,6 +45,24 @@ public class SettingManager : MonoBehaviour
         pauseAction.action.performed -= TogglePauseStatus;
     }
 
+    private void OnApplicationPause(bool pause)
+    {
+        if(pause)
+        {
+            isPaused = pause;
+            FindAnyObjectByType<SettingsUI>().PausePanelTabOut();
+        }
+    }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!focus)
+        {
+            isPaused = !focus;
+            FindAnyObjectByType<SettingsUI>().PausePanelTabOut();
+        }
+    }
+
     void TogglePauseStatus(InputAction.CallbackContext ctx)
     {
         if (!isRebinding)

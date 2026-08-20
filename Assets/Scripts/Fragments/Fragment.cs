@@ -38,7 +38,7 @@ public class Fragment : ItemInteraction
         if(!FragmentManager.Instance.FragmentOwned(this))
         {
             FragmentManager.Instance.AddFragment(this);
-            Cutscene();            
+            Cutscene();
         }
         else
         {
