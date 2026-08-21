@@ -86,7 +86,7 @@ public class ObjectiveManager : MonoBehaviour
 
         //Remove all locked objectives
         List<string> completedObjectives = Objectives.FindAll(y => y.objectiveData.IsCompleted).Select(x =>  x.objectiveData.Name).ToList();
-        List<Objective> closedObjectives = Objectives.FindAll(x => !string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) && completedObjectives.Contains(x.objectiveData.LimitedAfterObjective));
+        List<Objective> closedObjectives = Objectives.FindAll(x => x.objectiveData.IsCompleted || (!string.IsNullOrEmpty(x.objectiveData.LimitedAfterObjective) && completedObjectives.Contains(x.objectiveData.LimitedAfterObjective)));
 
         foreach (Objective obj in closedObjectives)
         {
