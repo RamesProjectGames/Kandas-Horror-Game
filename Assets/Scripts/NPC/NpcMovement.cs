@@ -414,7 +414,7 @@ public class NpcMovement : MovableObjects
 
     void LateUpdate()
     {
-        if(!allowMovement)
+        if(!movementAllowed || animState == NPCAnimationState.Walk)
         {
             return;
         }
@@ -595,7 +595,11 @@ public class NpcMovement : MovableObjects
             wasPausedLastFrame = true;
             return true;
         }
-        else if (movementAllowed && agent != null) agent.enabled = true;
+        else if ((movementAllowed||moveMyself) && agent != null)
+        {
+            agent.enabled = true;
+            agent.SetDestination(point[idxPoint].position);
+        }
         if (wasPausedLastFrame)
         {
             wasPausedLastFrame = false;

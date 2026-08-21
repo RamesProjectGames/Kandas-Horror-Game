@@ -83,7 +83,7 @@ namespace TestingPurposes
             #endregion
             #region Misc Events
             db.AddFunction("PlayVideo", new Action<string[]>(PlayVideo));
-            db.AddFunction("PlayCutscene", new Action<string[]>(PlayCutscene));
+            db.AddFunction("PlayCutscene", new Func<string[], IEnumerator>(PlayCutscene));
             db.AddFunction("Glitch", new Func<string, IEnumerator>(Glitch));
             db.AddFunction("SwitchScene", new Action<string>(SwitchScene));
             db.AddFunction("InspectFragment", new Action<string[]>(InspectFragment));
@@ -660,7 +660,7 @@ namespace TestingPurposes
         {
 
         }
-        private static void PlayCutscene(string[] args)
+        private static IEnumerator PlayCutscene(string[] args)
         {
             GameObject cutsceneGO = GameObject.Find(args[0]);
             if(cutsceneGO != null)
@@ -670,6 +670,11 @@ namespace TestingPurposes
                 {
                     Debug.Log($"Playing Cutscene: {args[0]}");
                     cutsceneManager.Play();
+
+                    while (cutsceneManager.state == PlayState.Playing)
+                    {
+                        yield return null;
+                    }
                 }
             }
         }
