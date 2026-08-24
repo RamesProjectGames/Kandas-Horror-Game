@@ -95,7 +95,9 @@ public class AsyncSceneLoader : MonoBehaviour
                 continue;
 
             if (scene != persistentScene)
+            {
                 currentChapterScene = scene;
+            }
 
             Scene existing = SceneManager.GetSceneByName(scene.SceneName);
             if (!existing.isLoaded)

@@ -445,7 +445,7 @@ public class SettingsUI : MonoBehaviour
         {
             List<SceneField> scenesToLoad = new List<SceneField> { currentChapterScene };
             List<SceneField> scenesToUnload = new List<SceneField> { currentChapterScene };
-            AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, AsyncSceneLoader.Instance.persistentScene, () =>
+            AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, currentChapterScene, () =>
             {
                 ObjectiveManager.Instance.UpdateCurrentObjectives();
                 if (DialogueSystem.Instance.isRunningConvo)

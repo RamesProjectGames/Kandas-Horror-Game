@@ -187,7 +187,7 @@ public class ObjectiveManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name != nextScene.SceneName)
         {
-            AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, reloadScene);
+            AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, nextScene);
         }
     }
 }

@@ -66,7 +66,7 @@ public class MainMenuManager : MonoBehaviour
         List<SceneField> scenesToLoad = new List<SceneField> { persistentScene, currentChapter };
         List<SceneField> scenesToUnload = new List<SceneField> { mainMenuScene };
 
-        AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, persistentScene, () =>
+        AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, currentChapter, () =>
         {
             DialogueSystem.Instance.OpenDialogue($"Chapter{currentChapterIndex}");
         }, progress =>
