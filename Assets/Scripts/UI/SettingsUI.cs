@@ -437,6 +437,7 @@ public class SettingsUI : MonoBehaviour
         FragmentManager.Instance.ClearCurrentChapterFragment();
         yield return StartCoroutine(DialogueSystem.Instance.FadeToBlack(0));
         FindAnyObjectByType<PlayerController>().ToggleRig(true);
+        NpcMovement.movementAllowed = false;
 
         loadingPanel.SetActive(true);
 

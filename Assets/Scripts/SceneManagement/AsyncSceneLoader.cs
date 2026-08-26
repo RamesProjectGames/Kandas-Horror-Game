@@ -117,13 +117,13 @@ public class AsyncSceneLoader : MonoBehaviour
             yield return null;
         }
 
-        // ---------- Step C: Set the new active scene ----------
-        if (activeScene != null && !string.IsNullOrEmpty(activeScene.SceneName))
+        // ---------- Step C: Make Persistent the Active Scene so old active scene can be reloaded ----------
+        if (persistentScene != null && !string.IsNullOrEmpty(persistentScene.SceneName))
         {
-            Scene targetScene = SceneManager.GetSceneByName(activeScene.SceneName);
-            if (targetScene.IsValid() && targetScene.isLoaded)
+            Scene activePersistScene = SceneManager.GetSceneByName(persistentScene.SceneName);
+            if (activePersistScene.IsValid() && activePersistScene.isLoaded)
             {
-                SceneManager.SetActiveScene(targetScene);
+                SceneManager.SetActiveScene(activePersistScene);
             }
         }
 
@@ -131,17 +131,41 @@ public class AsyncSceneLoader : MonoBehaviour
         // (only if it's still loaded and not the same as the new active)
         if (oldActiveScene.IsValid() && oldActiveScene.isLoaded)
         {
-            Scene newActive = SceneManager.GetActiveScene();
-            if (oldActiveScene != newActive)
+            AsyncOperation finalUnload = SceneManager.UnloadSceneAsync(oldActiveScene);
+            while (!finalUnload.isDone)
             {
-                AsyncOperation finalUnload = SceneManager.UnloadSceneAsync(oldActiveScene);
-                while (!finalUnload.isDone)
+                CurrentProgress = 0.95f + 0.05f * finalUnload.progress;
+                ProgressUpdated?.Invoke(CurrentProgress);
+                onProgress?.Invoke(CurrentProgress);
+                yield return null;
+            }
+        }
+
+        // ---------- Step E: Reload and set the new active scene ----------
+        if (activeScene != null || !string.IsNullOrEmpty(activeScene.SceneName))
+        {
+            currentChapterScene = activeScene;
+            Scene existing = SceneManager.GetSceneByName(activeScene.SceneName);
+            if (!existing.isLoaded)
+            {
+                loadOperations.Add(SceneManager.LoadSceneAsync(activeScene.SceneName, LoadSceneMode.Additive));
+
+                while (loadOperations.Any(op => !op.isDone))
                 {
-                    CurrentProgress = 0.95f + 0.05f * finalUnload.progress;
+                    float totalProgress = 0f;
+                    foreach (var op in loadOperations)
+                        totalProgress += op.progress;
+                    CurrentProgress = loadOperations.Count > 0 ? totalProgress / loadOperations.Count : 0.8f;
                     ProgressUpdated?.Invoke(CurrentProgress);
                     onProgress?.Invoke(CurrentProgress);
                     yield return null;
                 }
+            }
+
+            Scene targetScene = SceneManager.GetSceneByName(activeScene.SceneName);
+            if (targetScene.IsValid() && targetScene.isLoaded)
+            {
+                SceneManager.SetActiveScene(targetScene);
             }
         }
 
