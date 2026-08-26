@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &3031607548836423054
+--- !u!1001 &9091598497616071877
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -59,6 +59,10 @@ PrefabInstance:
     - target: {fileID: 2508613857091961945, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508613857091961945, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2540101139792097124, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
@@ -146,7 +150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5600532092239625216, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Name
-      value: NPC Boy3
+      value: NPC Boy1
       objectReference: {fileID: 0}
     - target: {fileID: 5600532092239625216, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
@@ -162,7 +166,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 317.875
+      value: 318.90625
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalPosition.y
@@ -276,6 +280,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7859647661431879213, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8112689352384700630, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -310,37 +318,42 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-    - {fileID: 7343823937558695543, guid: 4503a988b03975f4eb706590388fa537, type: 3}
     - {fileID: 2080103880407699807, guid: 4503a988b03975f4eb706590388fa537, type: 3}
     - {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+    - {fileID: 7343823937558695543, guid: 4503a988b03975f4eb706590388fa537, type: 3}
     m_RemovedGameObjects:
     - {fileID: 4151319070535293593, guid: 4503a988b03975f4eb706590388fa537, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5600532092239625216, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 19867270238932471}
+      addedObject: {fileID: 2816656225988090683}
     - targetCorrespondingSourceObject: {fileID: 5600532092239625216, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4277542709136496264}
+      addedObject: {fileID: 4020926877266128412}
   m_SourcePrefab: {fileID: 100100000, guid: 4503a988b03975f4eb706590388fa537, type: 3}
---- !u!137 &357315427487586171 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 3379704663319491317, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-  m_PrefabInstance: {fileID: 3031607548836423054}
+--- !u!1 &1385080420974066408 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7859647661431879213, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+  m_PrefabInstance: {fileID: 9091598497616071877}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7470197736430082446 stripped
+--- !u!1 &1986545614263340417 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7330303405399163204, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+  m_PrefabInstance: {fileID: 9091598497616071877}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3716260146381304005 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5600532092239625216, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-  m_PrefabInstance: {fileID: 3031607548836423054}
+  m_PrefabInstance: {fileID: 9091598497616071877}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &19867270238932471
+--- !u!114 &2816656225988090683
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7470197736430082446}
+  m_GameObject: {fileID: 3716260146381304005}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba0e664210438984d90755880d10fcb3, type: 3}
@@ -365,36 +378,69 @@ MonoBehaviour:
   - state: 3
     clips:
     - {fileID: -6870669886926708609, guid: ff6baa9e5bc938647ab5dfa13be5a0fb, type: 3}
---- !u!114 &4277542709136496264
+--- !u!114 &4020926877266128412
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7470197736430082446}
+  m_GameObject: {fileID: 3716260146381304005}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07c668856fb0c874ea19acb063d7256e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skinVariants:
-  - variantName: Body1
+  currentGender: 0
+  bottomType: 0
+  maleBodyRenderer: {fileID: 5822248140555828784}
+  femaleBodyRenderer: {fileID: 0}
+  earsRenderer: {fileID: 4566786135744534728}
+  maleShortPants: {fileID: 0}
+  maleLongPants: {fileID: 0}
+  femaleShortSkirt: {fileID: 0}
+  femaleLongSkirt: {fileID: 0}
+  maleHairObjects:
+  - {fileID: 4966622560147643718}
+  - {fileID: 1986545614263340417}
+  - {fileID: 1385080420974066408}
+  - {fileID: 6539036397583845804}
+  - {fileID: 0}
+  femaleHairObjects: []
+  accessoryObjects: []
+  showAccessories: 0
+  currentHairIndex: 5
+  currentSkinIndex: 4
+  maleSkinVariants:
+  - variantName: 
     bodyMaterial: {fileID: 2100000, guid: 61710fa6761dbd442bbfd9bf5ab2b09a, type: 2}
     earsMaterial: {fileID: 2100000, guid: 3ee269d20e475854ea5583f5fb62f235, type: 2}
-  - variantName: Body2
+  - variantName: 
     bodyMaterial: {fileID: 2100000, guid: 156df78dd6fe5064e8787a0e06a9a51e, type: 2}
     earsMaterial: {fileID: 2100000, guid: a7cc7d7dcaae57043b5fd5bae85c7eb8, type: 2}
-  - variantName: Body3
+  - variantName: 
     bodyMaterial: {fileID: 2100000, guid: de347cd019b445647bf0209524d98567, type: 2}
-    earsMaterial: {fileID: 2100000, guid: a7cc7d7dcaae57043b5fd5bae85c7eb8, type: 2}
-  - variantName: Body4
+    earsMaterial: {fileID: 2100000, guid: e7111af5ef76df449a1300d90c0c4274, type: 2}
+  - variantName: 
     bodyMaterial: {fileID: 2100000, guid: 3e8a0d57e97be404fb69a1a90883b37a, type: 2}
     earsMaterial: {fileID: 2100000, guid: bc7c913bdce21f44db4bff569f123fdd, type: 2}
-  bodyRenderer: {fileID: 357315427487586171}
-  earsRenderer: {fileID: 7735438554218852739}
-  currentSkinIndex: 3
---- !u!137 &7735438554218852739 stripped
+  femaleSkinVariants: []
+--- !u!137 &4566786135744534728 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4705033874350724109, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-  m_PrefabInstance: {fileID: 3031607548836423054}
+  m_PrefabInstance: {fileID: 9091598497616071877}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4966622560147643718 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4235393889808880003, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+  m_PrefabInstance: {fileID: 9091598497616071877}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &5822248140555828784 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3379704663319491317, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+  m_PrefabInstance: {fileID: 9091598497616071877}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6539036397583845804 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2635883824050095465, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+  m_PrefabInstance: {fileID: 9091598497616071877}
   m_PrefabAsset: {fileID: 0}
