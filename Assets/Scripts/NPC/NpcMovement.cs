@@ -9,6 +9,7 @@ public class NpcMovement : MovableObjects
 {
     #region Movement
     public Waypoint[] point;
+    public Vector3? destination = null;
     public int idxPoint = 0;
     [SerializeField] Animator animator;
     [SerializeField] bool loopMovement;
@@ -70,7 +71,8 @@ public class NpcMovement : MovableObjects
             agent.enabled = true;
             agent.speed = speed;
             validPos = GetValidNavMeshPosition(pos);
-            agent.SetDestination(validPos);
+            destination = validPos;
+            agent.SetDestination((Vector3)destination);
         }
         animator.SetFloat("Blend", 1);
         yield return new WaitForEndOfFrame();
@@ -140,7 +142,13 @@ public class NpcMovement : MovableObjects
         if ((point.Length == 0 && !agent.hasPath) || !moveMyself) return;
         if (agent != null) agent.enabled = point[idxPoint].endState != NPCAnimationState.Sit && (movementAllowed || moveMyself);
         if (movementAllowed && point.Length > 1)
-            agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
+        {
+            if(destination == null)
+            {
+                destination = GetValidNavMeshPosition(point[idxPoint].position);
+            }
+            agent.SetDestination((Vector3)destination);
+        }
     }
 
     private void TeleportToFirstWaypoint()
@@ -241,8 +249,13 @@ public class NpcMovement : MovableObjects
         agent.updatePosition = true;
         agent.updateRotation = true;
         agent.enabled = true;
-        if (point.Length > 0)
-            agent.SetDestination(point[idxPoint].position);
+        if (destination == null)
+        {
+            if (point.Length > 0)
+                destination = GetValidNavMeshPosition(point[idxPoint].position);
+        }
+        if(destination != null)
+            agent.SetDestination((Vector3)destination);
         agent.enabled = false;
 
 
@@ -382,7 +395,8 @@ public class NpcMovement : MovableObjects
                         // Transition from Idle to Moving
                         animator.SetFloat("Blend", 1);
                         animState = NPCAnimationState.Walk;
-                        agent.SetDestination(GetValidNavMeshPosition(point[idxPoint].transform.position));
+                        destination = GetValidNavMeshPosition(point[idxPoint].position);
+                        agent.SetDestination((Vector3)destination);
                         agent.speed = speed;
                     }
                 }
@@ -598,7 +612,14 @@ public class NpcMovement : MovableObjects
         else if ((movementAllowed||moveMyself) && agent != null)
         {
             agent.enabled = true;
-            agent.SetDestination(point[idxPoint].position);
+            if (destination == null)
+            {
+                if (point.Length > idxPoint)
+                    destination = GetValidNavMeshPosition(point[idxPoint].position);
+            }
+            agent.SetDestination((Vector3)destination);
+            animState = NPCAnimationState.Walk;
+            animator.SetFloat("Blend", 1f);
         }
         if (wasPausedLastFrame)
         {

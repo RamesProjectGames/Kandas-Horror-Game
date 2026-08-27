@@ -109,7 +109,6 @@ namespace TestingPurposes
             db.AddFunction("ResetDoorAttempts", new Action(ResetDoorAttempts));
             db.AddFunction("TryOpenDoor", new Func<IEnumerator>(TryOpenDoor));
             db.AddFunction("ClosingInWalls", new Action(ClosingInWalls));
-            db.AddFunction("PrepChase", new Action(SurvivalHorrorPrep));
             db.AddFunction("SpawnNurseMannequins", new Action(SpawnNurseOfficeMannequin));
             db.AddFunction("CrossGate", new Func<IEnumerator>(CrossSchoolGate));
             db.AddFunction("CrossHole", new Func<IEnumerator>(CrossHole));
@@ -929,11 +928,6 @@ namespace TestingPurposes
         private static void SpawnNurseOfficeMannequin()
         {
 
-        }
-
-        private static void SurvivalHorrorPrep()
-        {
-            UnityEngine.Object.FindAnyObjectByType<EnemyMovement>(FindObjectsInactive.Include).gameObject.SetActive(true);
         }
 
         private static void StartQuiz()
