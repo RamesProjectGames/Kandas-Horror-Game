@@ -1,4 +1,5 @@
 using Dialogue;
+using Dialogue.Functions;
 using FMOD;
 using FMODUnity;
 using System;
@@ -6,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.Samples.RebindUI;
 using UnityEngine.SceneManagement;
@@ -397,7 +399,15 @@ public class SettingsUI : MonoBehaviour
         SceneManager.LoadScene("Main Menu");
     }
     public void ShowGameover(bool open)
-    { 
+    {
+        if (open)
+        {
+            AudioManager.Instance.PlayOneShot2D(RuntimeManager.PathToEventReference(FuncDBExtension.bgmPath + "GameOver"), 1, 1);
+        }
+        else
+        {
+            AudioManager.Instance.StopSoundInstance(RuntimeManager.PathToEventReference(FuncDBExtension.bgmPath + "GameOver"));
+        }
         GameoverPanel.SetActive(open);
         SettingManager.Instance.gameOver = open;
     }

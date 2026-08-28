@@ -15,18 +15,18 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0, g: 0, b: 0, a: 0}
+  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.232
+  m_FogDensity: 0
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
   m_AmbientEquatorColor: {r: 0.9245283, g: 0.9117699, b: 0.8940014, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: -1.37
+  m_AmbientIntensity: 0
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.103773594, g: 0.09865755, b: 0.09055714, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 51b74d7bad397457d883c5940f7664d8, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 2d796ced94d61438fbab81b194038162, type: 2}
   m_HaloStrength: 0.05
   m_FlareStrength: 0.244
   m_FlareFadeSpeed: 3
@@ -33998,6 +33998,8 @@ PlayableDirector:
     value: {fileID: 212197521}
   - key: {fileID: -4879794872255514453, guid: b96b8f4f47ffcd143b1583d51769ed9c, type: 2}
     value: {fileID: 256038816}
+  - key: {fileID: 948965786318371589, guid: b96b8f4f47ffcd143b1583d51769ed9c, type: 2}
+    value: {fileID: 256038812}
   m_ExposedReferences:
     m_References:
     - e4e84221c4021f84d8f1436c82a71b9f: {fileID: 999339782}
@@ -54116,7 +54118,7 @@ GameObject:
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &256038813
 Transform:
   m_ObjectHideFlags: 0
@@ -105144,6 +105146,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1799980487}
     m_Modifications:
+    - target: {fileID: 796842561380567851, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 825576522}
+    - target: {fileID: 796842561380567851, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_VersionIndex
+      value: 4246
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917859541892997190, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 919436947}
+    - target: {fileID: 2917859541892997190, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_VersionIndex
+      value: 4310
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1090775654}
+    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_VersionIndex
+      value: 5032
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_SelectedEdges.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_SelectedFaces.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_SelectedVertices.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3954830371591678686, guid: 6b490adf570f8c8428ce1680e1b235e4, type: 3}
       propertyPath: m_Name
       value: PagarDepan1
@@ -105191,42 +105229,6 @@ PrefabInstance:
     - target: {fileID: 4443278119231926372, guid: 6b490adf570f8c8428ce1680e1b235e4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 796842561380567851, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 825576522}
-    - target: {fileID: 796842561380567851, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_VersionIndex
-      value: 4246
-      objectReference: {fileID: 0}
-    - target: {fileID: 2917859541892997190, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 919436947}
-    - target: {fileID: 2917859541892997190, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_VersionIndex
-      value: 4310
-      objectReference: {fileID: 0}
-    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 1090775654}
-    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_VersionIndex
-      value: 5032
-      objectReference: {fileID: 0}
-    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_SelectedEdges.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_SelectedFaces.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_SelectedVertices.Array.size
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -115229,14 +115231,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1393366711}
     m_Modifications:
-    - target: {fileID: 2168003501543069763, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3090566828041936889, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 76801907906657482, guid: b99ae046023106d48bcb1da8b23ace97, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
@@ -115536,6 +115530,14 @@ PrefabInstance:
     - target: {fileID: 9018398573127874575, guid: b99ae046023106d48bcb1da8b23ace97, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2168003501543069763, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090566828041936889, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -181524,7 +181526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DirectionalLight: {fileID: 1927567411}
   Preset: {fileID: 11400000, guid: 26bb524f7a6692a47b13abd1fa2f5ac5, type: 2}
-  SkyboxMaterial: {fileID: 2100000, guid: 51b74d7bad397457d883c5940f7664d8, type: 2}
+  SkyboxMaterial: {fileID: 2100000, guid: 2d796ced94d61438fbab81b194038162, type: 2}
   TimeOfDay: 10
   PointLights:
   - {fileID: 0}
@@ -242930,18 +242932,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1393366711}
     m_Modifications:
-    - target: {fileID: 1844064019086816363, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_Name
-      value: KantinKosong
-      objectReference: {fileID: 0}
-    - target: {fileID: 7205676772365361542, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 327.37
-      objectReference: {fileID: 0}
-    - target: {fileID: 7461643524615361135, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_Layer
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 407534499677221520, guid: 0886903145fd4634d8008d7b6cce221d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
@@ -243009,6 +242999,18 @@ PrefabInstance:
     - target: {fileID: 8428098002497188612, guid: 0886903145fd4634d8008d7b6cce221d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844064019086816363, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_Name
+      value: KantinKosong
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205676772365361542, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 327.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 7461643524615361135, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -329899,6 +329901,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2065732803}
     m_Modifications:
+    - target: {fileID: 796842561380567851, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 825576522}
+    - target: {fileID: 796842561380567851, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_VersionIndex
+      value: 4246
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917859541892997190, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 919436947}
+    - target: {fileID: 2917859541892997190, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_VersionIndex
+      value: 4310
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1090775654}
+    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_VersionIndex
+      value: 5032
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_SelectedEdges.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_SelectedFaces.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
+      propertyPath: m_SelectedVertices.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3954830371591678686, guid: 6b490adf570f8c8428ce1680e1b235e4, type: 3}
       propertyPath: m_Name
       value: PagarDepan1 (1)
@@ -329946,42 +329984,6 @@ PrefabInstance:
     - target: {fileID: 4443278119231926372, guid: 6b490adf570f8c8428ce1680e1b235e4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 269.999
-      objectReference: {fileID: 0}
-    - target: {fileID: 796842561380567851, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 825576522}
-    - target: {fileID: 796842561380567851, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_VersionIndex
-      value: 4246
-      objectReference: {fileID: 0}
-    - target: {fileID: 2917859541892997190, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 919436947}
-    - target: {fileID: 2917859541892997190, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_VersionIndex
-      value: 4310
-      objectReference: {fileID: 0}
-    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 1090775654}
-    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_VersionIndex
-      value: 5032
-      objectReference: {fileID: 0}
-    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_SelectedEdges.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_SelectedFaces.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5148122355849327076, guid: 21106ed369681ea448bea0401ef3cb07, type: 3}
-      propertyPath: m_SelectedVertices.Array.size
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -782,7 +782,8 @@ namespace TestingPurposes
 
         private static IEnumerator EatLunch()
         {
-            if(GameObject.Find("Player").GetComponent<PlayerController>().lunchProgress <= 5)
+            PlaySFX(new string[] { "Eat" });
+            if(GameObject.Find("Player").GetComponent<PlayerController>().lunchProgress <= 2)
             {
                 GameObject.Find("Player").GetComponent<PlayerController>().EatFood();
             }

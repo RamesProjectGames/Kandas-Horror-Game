@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Dialogue.Functions;
 using FMODUnity;
 using UnityEngine;
 
@@ -80,42 +81,42 @@ public class LocalAudioManager : MonoBehaviour
 
     public void PlaySFX(string audioName, bool duplicate = false, float volume = 1f, float pitch = 1f, Vector3? position = null)
     {
-        PlayAudioByCategory(audioName, sfxPath, duplicate, volume, pitch, position);
+        PlayAudioByCategory(audioName, FuncDBExtension.sfxPath, duplicate, volume, pitch, position);
     }
 
     public void PlayBGM(string audioName, bool duplicate = false, float volume = 1f, float pitch = 1f, Vector3? position = null)
     {
-        PlayAudioByCategory(audioName, bgmPath, duplicate, volume, pitch, position);
+        PlayAudioByCategory(audioName, FuncDBExtension.bgmPath, duplicate, volume, pitch, position);
     }
 
     public void PlayAmbiance(string audioName, bool duplicate = false, float volume = 1f, float pitch = 1f, Vector3? position = null)
     {
-        PlayAudioByCategory(audioName, ambiencePath, duplicate, volume, pitch, position);
+        PlayAudioByCategory(audioName, FuncDBExtension.ambiencePath, duplicate, volume, pitch, position);
     }
 
     public void PlayVoice(string audioName, bool duplicate = false, float volume = 1f, float pitch = 1f, Vector3? position = null)
     {
-        PlayAudioByCategory(audioName, voicePath, duplicate, volume, pitch, position);
+        PlayAudioByCategory(audioName, FuncDBExtension.voicePath, duplicate, volume, pitch, position);
     }
 
     public void StopSFX(string audioName)
     {
-        StopAudioByCategory(audioName, sfxPath);
+        StopAudioByCategory(audioName, FuncDBExtension.sfxPath);
     }
 
     public void StopBGM(string audioName)
     {
-        StopAudioByCategory(audioName, bgmPath);
+        StopAudioByCategory(audioName, FuncDBExtension.bgmPath);
     }
 
     public void StopAmbiance(string audioName)
     {
-        StopAudioByCategory(audioName, ambiencePath);
+        StopAudioByCategory(audioName, FuncDBExtension.ambiencePath);
     }
 
     public void StopVoice(string audioName)
     {
-        StopAudioByCategory(audioName, voicePath);
+        StopAudioByCategory(audioName, FuncDBExtension.voicePath);
     }
 
     private Vector3 GetDefaultPlayPosition()
@@ -177,10 +178,10 @@ public class LocalAudioManager : MonoBehaviour
 
         return new[]
         {
-            sfxPath + eventName,
-            bgmPath + eventName,
-            ambiencePath + eventName,
-            voicePath + eventName
+            FuncDBExtension.sfxPath + eventName,
+            FuncDBExtension.bgmPath + eventName,
+            FuncDBExtension.ambiencePath + eventName,
+            FuncDBExtension.voicePath + eventName
         };
     }
 }

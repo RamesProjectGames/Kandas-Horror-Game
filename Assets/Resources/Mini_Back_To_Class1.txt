@@ -4,4 +4,4 @@ HideDialogue(), PlaySFX(RattleDoor ^v 0.6), [w]Wait(1), PlaySFX(RattleDoor ^v 0.
 Jessica "Is there a key anywhere?"
 SwitchCam(ClassKeyCam), [w]Wait(1), ChangeCamFoV(ClassKeyCam ^fov 20)
 "!!"
-[w]ChangeCamFoV(ClassKeyCam ^fov 60), SwitchCam("Player Camera"), Objective(BackToClass1)
+[w]ChangeCamFoV(ClassKeyCam ^fov 60), [w]FadeOut(1), SwitchCam("Player Camera"), Wait(0.5), FadeIn(1), Objective(BackToClass1)
