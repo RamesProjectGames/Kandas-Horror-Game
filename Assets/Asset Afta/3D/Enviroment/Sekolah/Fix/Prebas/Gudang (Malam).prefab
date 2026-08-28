@@ -208,7 +208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2667071945526080011, guid: 294c661560daa474fbb3f0016837e300, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3335064375383664817, guid: 294c661560daa474fbb3f0016837e300, type: 3}
       propertyPath: m_LocalPosition.x
@@ -392,11 +392,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 6f2f685969c8d394d8d70214f903e783, type: 2}
     - target: {fileID: 919132149155446097, guid: d31a0e4f8cd166f44a9d018c1f10f277, type: 3}
       propertyPath: m_Name
-      value: Gudang (1)
+      value: Gudang (Malam)
       objectReference: {fileID: 0}
     - target: {fileID: 5204768749561909420, guid: d31a0e4f8cd166f44a9d018c1f10f277, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 127
+      objectReference: {fileID: 0}
+    - target: {fileID: 5955790692331392693, guid: d31a0e4f8cd166f44a9d018c1f10f277, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5955790692331392693, guid: d31a0e4f8cd166f44a9d018c1f10f277, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -596,6 +600,10 @@ PrefabInstance:
     - target: {fileID: 3144309499519140349, guid: 9a456f6950e85d14b8129fe44dd3fe6e, type: 3}
       propertyPath: m_Name
       value: Hordeng2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3144309499519140349, guid: 9a456f6950e85d14b8129fe44dd3fe6e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
