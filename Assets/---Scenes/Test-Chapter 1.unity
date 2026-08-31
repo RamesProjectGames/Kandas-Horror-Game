@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: c67e51f1085962a4da535422181c1b0b, type: 2}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 327e0df47334b7a44815bf13d392bf8d, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 79caaf61bc9342a4480fe7b8ecb09900, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -62486,6 +62486,10 @@ PrefabInstance:
       propertyPath: m_Shadows.m_Type
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 223222909318969895, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 384588834762525681, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
       propertyPath: m_Intensity
       value: 0.5666667
@@ -66346,6 +66350,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1485096841}
     m_Modifications:
+    - target: {fileID: 223222909318969895, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 384588834762525681, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
       propertyPath: m_Intensity
       value: 0.5666667
@@ -76376,6 +76384,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1485096841}
     m_Modifications:
+    - target: {fileID: 223222909318969895, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 384588834762525681, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
       propertyPath: m_Intensity
       value: 0.5666667
@@ -109091,6 +109103,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1393366711}
     m_Modifications:
+    - target: {fileID: 2168003501543069763, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090566828041936889, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 76801907906657482, guid: b99ae046023106d48bcb1da8b23ace97, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
@@ -109390,14 +109410,6 @@ PrefabInstance:
     - target: {fileID: 9018398573127874575, guid: b99ae046023106d48bcb1da8b23ace97, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 2168003501543069763, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3090566828041936889, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -229885,6 +229897,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1393366711}
     m_Modifications:
+    - target: {fileID: 1844064019086816363, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_Name
+      value: KantinKosong
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205676772365361542, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 327.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 7461643524615361135, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 407534499677221520, guid: 0886903145fd4634d8008d7b6cce221d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
@@ -229952,18 +229976,6 @@ PrefabInstance:
     - target: {fileID: 8428098002497188612, guid: 0886903145fd4634d8008d7b6cce221d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 1844064019086816363, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_Name
-      value: KantinKosong
-      objectReference: {fileID: 0}
-    - target: {fileID: 7205676772365361542, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 327.37
-      objectReference: {fileID: 0}
-    - target: {fileID: 7461643524615361135, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_Layer
-      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -232498,6 +232510,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1485096841}
     m_Modifications:
+    - target: {fileID: 223222909318969895, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 384588834762525681, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
       propertyPath: m_Intensity
       value: 0.5666667
@@ -252524,6 +252540,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1485096841}
     m_Modifications:
+    - target: {fileID: 223222909318969895, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 384588834762525681, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
       propertyPath: m_Intensity
       value: 0.5666667
@@ -267870,6 +267890,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 1893239189961678325, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a73ce97174548ff43becf7076bf810d5, type: 2}
     - target: {fileID: 2205261322107550409, guid: d8f280ba6eaf69447b0c9301b4f3ca33, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
