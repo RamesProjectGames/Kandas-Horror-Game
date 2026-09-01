@@ -1,6 +1,6 @@
 Student B "<style=\"Whispering\">Aww man, I didn’t get to finish.</style>" Objective(SubmitQuiz)
 Student C "<style=\"Whispering\">Forget it, {a}you’d get a low score no matter how hard you try anyway.</style>"
-PlaySFX(SchoolBell ^v 0.3), [w]OpenSpecificDoor(PintuKiri-Classroom), [w]OpenSpecificDoor(PintuKanan-Classroom)
+PlaySFX(SchoolBell ^v 0.3), [w]OpenSpecificDoor(PintuKiri), [w]OpenSpecificDoor(PintuKanan)
 Teacher "We’re just on time.{a} Tomorrow, I will announce the scores." MoveSpecificNPC(OurTeacher)
 "{a}\nYou are all dismissed."
 AllowNPCMovement(true)

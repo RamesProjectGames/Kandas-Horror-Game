@@ -109,6 +109,12 @@ public class PlayerController : MovableObjects
     [Header("Stamina")]
     public Slider staminaFillImage;
 
+    [Header("Flashlight")]
+    [SerializeField] InputActionReference flashlightAction;
+    public static bool canUseFlashlight = false;
+    private bool flashlightEnabled = false;
+    [SerializeField] GameObject flashlight;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -128,15 +134,16 @@ public class PlayerController : MovableObjects
         stamina = maxStamina;
         staminaFillImage.gameObject.SetActive(false);
 
-        agent = GetComponent<NavMeshAgent>();
 
         // footsteps helper
         if (footstepManager == null)
             footstepManager = GetComponent<FootstepsSoundManager>();
         _lastFootstepPosition = transform.position;
+
+        #region NavMeshAgent
+        agent = GetComponent<NavMeshAgent>();
         if (agent == null) agent = gameObject.AddComponent<NavMeshAgent>();
 
-        // Configure NavMeshAgent for auto movement
         agent.angularSpeed = 300f;
         agent.acceleration = 8f;
         agent.stoppingDistance = 0.1f;
@@ -147,6 +154,11 @@ public class PlayerController : MovableObjects
         }
         agent.updateRotation = false;
         agent.updatePosition = false;
+        #endregion
+
+        #region Flashlight Setup
+        flashlightAction.action.performed += ToggleFlashlight;
+        #endregion
 
         targetControllerHeight = standingHeight;
         targetCameraY = standingCameraY;
@@ -740,6 +752,23 @@ public class PlayerController : MovableObjects
             pantingSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             pantingSoundEvent.release();
         }
+    }
+    #endregion
+
+    #region Flashlight
+    private void ToggleFlashlight(InputAction.CallbackContext ctx)
+    {
+        if (!canUseFlashlight)
+            return;
+        flashlightEnabled = !flashlightEnabled;
+        flashlight.SetActive(flashlightEnabled);
+    }
+    public void ToggleFlashlight()
+    {
+        if (!canUseFlashlight)
+            return;
+        flashlightEnabled = !flashlightEnabled;
+        flashlight.SetActive(flashlightEnabled);
     }
     #endregion
 }

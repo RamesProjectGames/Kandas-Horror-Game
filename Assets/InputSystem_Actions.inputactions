@@ -77,6 +77,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "FlashlightToggle",
+                    "type": "Button",
+                    "id": "449879f0-9b55-4672-b50e-0809d4db51fc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -275,6 +284,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d798e0cb-4ca5-4525-a6bf-0d20140b01a0",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "FlashlightToggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

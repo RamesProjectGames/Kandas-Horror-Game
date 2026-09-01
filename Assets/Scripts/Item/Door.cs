@@ -1,11 +1,11 @@
 using FMODUnity;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 
 public class Door : MonoBehaviour
 {
     public Vector3 openRotation;
     public Vector3 closedRotation;
-    bool canInteractWithDoor = true;
     bool isOpen = false;
     OcclusionPortal portal;
 
@@ -38,7 +38,6 @@ public class Door : MonoBehaviour
         AudioManager.Instance.StopSoundInstance(openSfx);
         AudioManager.Instance.StopSoundInstance(closeSfx);
         AudioManager.Instance.PlayOneShot3D(openSfx,true, 1, 1, transform.position);
-        if (!canInteractWithDoor) return;
         transform.LeanRotate(openRotation, duration);
         isOpen = true;
     }
@@ -50,7 +49,6 @@ public class Door : MonoBehaviour
         AudioManager.Instance.StopSoundInstance(openSfx);
         AudioManager.Instance.StopSoundInstance(closeSfx);
         AudioManager.Instance.PlayOneShot3D(closeSfx,true, 1, 1, transform.position);
-        if (!canInteractWithDoor) return;
         transform.LeanRotate(closedRotation, duration);
         isOpen = false;
     }

@@ -114,6 +114,7 @@ namespace TestingPurposes
             db.AddFunction("CrossHole", new Func<IEnumerator>(CrossHole));
             db.AddFunction("MoveSpecificNPC", new Action<string[]>(MoveSpecificNPC));
             db.AddFunction("StopSpecificNPC", new Action<string[]>(StopSpecificNPC));
+            db.AddFunction("FetchFlashlight", new Action(FetchFlashlight));
             db.AddFunction("GrabItem", new Action<string[]>(GrabItem));
             db.AddFunction("ThrowItem", new Action<string[]>(ThrowItem));
             db.AddFunction("TransferItem", new Action<string[]>(TransferItem));
@@ -850,7 +851,7 @@ namespace TestingPurposes
 
         private static void ToggleSpecificDoor(string arg = "")
         {
-            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg).Select(x => x.GetComponent<Door>());
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg);
             foreach (Door door in doors)
             {
                 door.ToggleDoor();
@@ -864,7 +865,7 @@ namespace TestingPurposes
 
         private static void CloseSpecificDoor(string arg = "")
         {
-            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg).Select(x => x.GetComponent<Door>());
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg);
             foreach(Door door in doors)
             {
                 door.CloseDoor();
@@ -887,7 +888,7 @@ namespace TestingPurposes
 
         private static void OpenSpecificDoor(string arg = "")
         {
-            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<ItemInteraction>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg).Select(x => x.GetComponent<Door>());
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg);
             foreach (Door door in doors)
             {
                 door.OpenDoor();
@@ -1007,6 +1008,16 @@ namespace TestingPurposes
             DialogueSystem.Instance.dialogueContainer.HideDialogue();
             InspectManagerUI.Instance.OnItemSelected(FragmentManager.Instance.GetFragmentGO(fragment));
         }
+
+        private static void FetchFlashlight()
+        {
+            PlayerController.canUseFlashlight = true;
+            HideObject("Senter");
+            GameObject.Find("Player").GetComponent<PlayerController>().ToggleFlashlight();
+        }
+        #endregion
+
+        #region ItemInteraction
         private static T FindNamedComponent<T>(string name) where T : Component
         {
             if (string.IsNullOrWhiteSpace(name))
