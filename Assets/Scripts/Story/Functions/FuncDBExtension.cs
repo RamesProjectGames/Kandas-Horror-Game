@@ -978,11 +978,17 @@ namespace TestingPurposes
             {
                 startPos = GameObject.Find("HoleIn").GetComponent<Waypoint>();
                 endPos = GameObject.Find("HoleOut").GetComponent<Waypoint>();
+                CompleteObjective("CrossClassHole");
             }
             else
             {
                 endPos = GameObject.Find("HoleIn").GetComponent<Waypoint>();
                 startPos = GameObject.Find("HoleOut").GetComponent<Waypoint>();
+                if(ObjectiveManager.Instance.objectiveDatas.Find(x => x.Name == "GateKey").IsCompleted == false)
+                {
+                    ObjectiveManager.Instance.objectiveDatas.Find(x => x.Name == "CrossClassHole").IsCompleted = false;
+                    ObjectiveManager.Instance.UpdateCurrentObjectives();
+                }
             }
             GameObject.Find("HoleCam").transform.rotation = startPos.transform.rotation;
             GameObject.Find("HoleCam").GetComponent<CinemachineCamera>().Follow = endPos.transform;

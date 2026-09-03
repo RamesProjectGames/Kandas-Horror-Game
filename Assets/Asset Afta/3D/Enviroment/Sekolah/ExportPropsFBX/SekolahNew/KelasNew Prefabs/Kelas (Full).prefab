@@ -3998,6 +3998,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.9056604
       objectReference: {fileID: 0}
+    - target: {fileID: 2084709097883158692, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2130131158952130276, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_DrawHalo
       value: 0
@@ -4365,9 +4369,6 @@ PrefabInstance:
       addedObject: {fileID: 3581264306595413789}
     - targetCorrespondingSourceObject: {fileID: 3906176168996933644, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5646297905525791564}
-    - targetCorrespondingSourceObject: {fileID: 3906176168996933644, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3628177839181934212}
     - targetCorrespondingSourceObject: {fileID: 3403772288797032331, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       insertIndex: -1
@@ -4375,9 +4376,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3403772288797032331, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2026316093084302569}
-    - targetCorrespondingSourceObject: {fileID: 3403772288797032331, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5517329671632713709}
     - targetCorrespondingSourceObject: {fileID: 3403772288797032331, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6433474026294505598}
@@ -4422,17 +4420,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 10
   pickupUI: {fileID: 385763487970973125}
-  itemInteractionText: Open / Close Door
+  itemInteractionText: Open Door
   globalAlert: 0
   landingSound: {fileID: 0}
   landingAlertRadius: 10
   objectiveDialoguePair:
   - objective:
-    - BackToClass1
-    dialogueAsset: Mini_SchoolDark
-  - objective:
-    - BackToClass2
-    dialogueAsset: 
+    - 
+    dialogueAsset: Mini_ToggleDoor
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
   breakImpactThreshold: 6
@@ -4448,7 +4443,7 @@ MonoBehaviour:
   showTextOnPickup: 1
   canInteractWhenHeld: 0
   controlCameraOnDialogue: 0
-  interactAction: {fileID: -1946564365313720924, guid: 7dead05c54ca85b4681351aafd8bd03a, type: 3}
+  interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   onPickup:
     m_PersistentCalls:
       m_Calls: []
@@ -4476,20 +4471,6 @@ MonoBehaviour:
   pickupText: {fileID: 7641741950037597890}
   buttonInteractionText: {fileID: 1354329219153112926}
   player: {fileID: 0}
---- !u!114 &5646297905525791564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 449777526897580591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c69d75613002c6a4ebaa258b334a4b06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  openRotation: {x: -90, y: 105, z: 0}
-  closedRotation: {x: -90, y: 0, z: 0}
 --- !u!208 &3628177839181934212
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -4546,17 +4527,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 10
   pickupUI: {fileID: 4601184400647648348}
-  itemInteractionText: Open / Close Door
+  itemInteractionText: Open Door
   globalAlert: 0
   landingSound: {fileID: 0}
   landingAlertRadius: 10
   objectiveDialoguePair:
   - objective:
-    - BackToClass1
-    dialogueAsset: Mini_SchoolDark
-  - objective:
-    - BackToClass2
-    dialogueAsset: 
+    - 
+    dialogueAsset: Mini_ToggleDoor
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
   breakImpactThreshold: 6
@@ -4572,7 +4550,7 @@ MonoBehaviour:
   showTextOnPickup: 1
   canInteractWhenHeld: 0
   controlCameraOnDialogue: 0
-  interactAction: {fileID: -1946564365313720924, guid: 7dead05c54ca85b4681351aafd8bd03a, type: 3}
+  interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   onPickup:
     m_PersistentCalls:
       m_Calls: []
@@ -4600,20 +4578,6 @@ MonoBehaviour:
   pickupText: {fileID: 4979330637953878503}
   buttonInteractionText: {fileID: 3163853380781619131}
   player: {fileID: 0}
---- !u!114 &5517329671632713709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2248642138354431400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c69d75613002c6a4ebaa258b334a4b06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  openRotation: {x: -90, y: -105, z: 0}
-  closedRotation: {x: -90, y: 0, z: 0}
 --- !u!208 &6433474026294505598
 NavMeshObstacle:
   m_ObjectHideFlags: 0
