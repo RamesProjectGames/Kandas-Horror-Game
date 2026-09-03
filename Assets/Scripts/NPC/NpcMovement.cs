@@ -93,23 +93,23 @@ public class NpcMovement : MovableObjects
         float state = 0;
         if (animState == NPCAnimationState.Sit)
         {
-            if (DialogueSystem.Instance.isRunningConvo)
+            if (facePlayer || (point.Length > 0 && point[idxPoint] != null && point[idxPoint].faceTowards != null))
             {
-                state = UnityEngine.Random.Range(4, 7);
+                state = UnityEngine.Random.Range(4, 12);
             }
             else
-                state = 4;
+                state = UnityEngine.Random.Range(4, 10);
         }
         else if (animState == NPCAnimationState.Stand)
         {
-            if (DialogueSystem.Instance.isRunningConvo)
+            if (facePlayer || (point.Length > 0 && point[idxPoint] != null && point[idxPoint].faceTowards != null))
             {
                 state = UnityEngine.Random.Range(0, 4);
             }
             else
                 state = UnityEngine.Random.Range(0, 2);
         }
-        animator.SetFloat("Blend", state / 7f);
+        animator.SetFloat("Blend", Mathf.Clamp01(state / 13f));
         yield return new WaitForEndOfFrame();
     }
     public override IEnumerator Rotate(float yrot, float rotSpd = 5f)
@@ -276,27 +276,13 @@ public class NpcMovement : MovableObjects
         float state = 0;
         if (animState == NPCAnimationState.Sit)
         {
-            if (DialogueSystem.Instance.isRunningConvo)
-            {
-                state = UnityEngine.Random.Range(4, 7);
-            }
-            else
-                state = 4;
+            state = UnityEngine.Random.Range(4, 10);
         }
         else if (animState == NPCAnimationState.Stand)
         {
-            if (DialogueSystem.Instance.isRunningConvo)
-            {
-                state = UnityEngine.Random.Range(0, 4);
-            }
-            else
-                state = UnityEngine.Random.Range(0, 2);
+            state = UnityEngine.Random.Range(0, 2);
         }
-        else if (animState == NPCAnimationState.Walk)
-        {
-            state = 7;
-        }
-        animator.SetFloat("Blend", state / 7f);
+        animator.SetFloat("Blend", Mathf.Clamp01(state / 13f));
     }
     private void OnEnable()
     {
@@ -393,7 +379,7 @@ public class NpcMovement : MovableObjects
                     if (moveMyself)
                     {
                         // Transition from Idle to Moving
-                        animator.SetFloat("Blend", 1);
+                        animator.SetFloat("Blend", 1f);
                         animState = NPCAnimationState.Walk;
                         destination = GetValidNavMeshPosition(point[idxPoint].position);
                         agent.SetDestination((Vector3)destination);
@@ -509,10 +495,10 @@ public class NpcMovement : MovableObjects
         {
             if (facePlayer || (point.Length > 0 && point[idxPoint] != null && point[idxPoint].faceTowards != null))
             {
-                state = UnityEngine.Random.Range(4, 7);
+                state = UnityEngine.Random.Range(4, 12);
             }
             else
-                state = 4;
+                state = UnityEngine.Random.Range(4, 10);
         }
         else if (animState == NPCAnimationState.Stand)
         {
@@ -523,7 +509,7 @@ public class NpcMovement : MovableObjects
             else
                 state = UnityEngine.Random.Range(0, 2);
         }
-        animator.SetFloat("Blend", state / 7f);
+        animator.SetFloat("Blend", Mathf.Clamp01(state / 13f));
     }
 
     void OnAnimatorMove()
