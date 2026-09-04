@@ -133,6 +133,19 @@ public class NPCSkinSwitcher : MonoBehaviour
 
     void OnValidate()
     {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.delayCall += SafeApplyInEditor;
+#endif
+    }
+
+    private void SafeApplyInEditor()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.delayCall -= SafeApplyInEditor;
+
+        if (this == null) return;
+
         ApplyAllCustomizations();
+#endif
     }
 }

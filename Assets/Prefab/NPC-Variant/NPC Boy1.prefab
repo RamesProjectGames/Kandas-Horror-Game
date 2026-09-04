@@ -91,7 +91,7 @@ PrefabInstance:
     - target: {fileID: 3379704663319491317, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3e8a0d57e97be404fb69a1a90883b37a, type: 2}
+      objectReference: {fileID: 2100000, guid: 156df78dd6fe5064e8787a0e06a9a51e, type: 2}
     - target: {fileID: 3487091346026701371, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -118,7 +118,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4235393889808880003, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4524456297740338413, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
@@ -131,7 +131,7 @@ PrefabInstance:
     - target: {fileID: 4705033874350724109, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: bc7c913bdce21f44db4bff569f123fdd, type: 2}
+      objectReference: {fileID: 2100000, guid: a7cc7d7dcaae57043b5fd5bae85c7eb8, type: 2}
     - target: {fileID: 5027048702477015346, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -166,31 +166,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 318.90625
+      value: 5.375
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.49999958
+      value: 0.89660364
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 237.083
+      value: 10.877594
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000014603136
+      value: -0.7933514
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: -0.60876393
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -198,7 +198,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: -285
       objectReference: {fileID: 0}
     - target: {fileID: 6235753318772414903, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -331,6 +331,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5600532092239625216, guid: 4503a988b03975f4eb706590388fa537, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4020926877266128412}
+    - targetCorrespondingSourceObject: {fileID: 5600532092239625216, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 359056577144051791}
   m_SourcePrefab: {fileID: 100100000, guid: 4503a988b03975f4eb706590388fa537, type: 3}
 --- !u!1 &1385080420974066408 stripped
 GameObject:
@@ -359,8 +362,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0e664210438984d90755880d10fcb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
-  variantIndex: 0
+  currentState: 6
+  variantIndex: 1
   animationGroups:
   - state: 0
     clips:
@@ -378,6 +381,19 @@ MonoBehaviour:
   - state: 3
     clips:
     - {fileID: -6870669886926708609, guid: ff6baa9e5bc938647ab5dfa13be5a0fb, type: 3}
+  - state: 6
+    clips:
+    - {fileID: -1504124569453850998, guid: ff6baa9e5bc938647ab5dfa13be5a0fb, type: 3}
+    - {fileID: 5660396817073013576, guid: ff6baa9e5bc938647ab5dfa13be5a0fb, type: 3}
+  - state: 4
+    clips:
+    - {fileID: 3099782782412425934, guid: ff6baa9e5bc938647ab5dfa13be5a0fb, type: 3}
+    - {fileID: -7596505732261028899, guid: ff6baa9e5bc938647ab5dfa13be5a0fb, type: 3}
+  - state: 6
+    clips:
+    - {fileID: -3332327104135981952, guid: ff6baa9e5bc938647ab5dfa13be5a0fb, type: 3}
+    - {fileID: -3379102257267683876, guid: ff6baa9e5bc938647ab5dfa13be5a0fb, type: 3}
+    - {fileID: -1094389837419787169, guid: ff6baa9e5bc938647ab5dfa13be5a0fb, type: 3}
 --- !u!114 &4020926877266128412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,8 +424,8 @@ MonoBehaviour:
   femaleHairObjects: []
   accessoryObjects: []
   showAccessories: 0
-  currentHairIndex: 5
-  currentSkinIndex: 4
+  currentHairIndex: 0
+  currentSkinIndex: 1
   maleSkinVariants:
   - variantName: 
     bodyMaterial: {fileID: 2100000, guid: 61710fa6761dbd442bbfd9bf5ab2b09a, type: 2}
@@ -424,6 +440,22 @@ MonoBehaviour:
     bodyMaterial: {fileID: 2100000, guid: 3e8a0d57e97be404fb69a1a90883b37a, type: 2}
     earsMaterial: {fileID: 2100000, guid: bc7c913bdce21f44db4bff569f123fdd, type: 2}
   femaleSkinVariants: []
+--- !u!208 &359056577144051791
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3716260146381304005}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.2, y: 0.8725, z: 0.2}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.94, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!137 &4566786135744534728 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4705033874350724109, guid: 4503a988b03975f4eb706590388fa537, type: 3}

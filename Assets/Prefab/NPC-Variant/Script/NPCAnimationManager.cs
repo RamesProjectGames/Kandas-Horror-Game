@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class NPCAnimationManager : MonoBehaviour
 {
-    public enum NPCState { Idle, Sit, Talk, Walk }
+    public enum NPCState { Idle, Sit, Talk, Walk, Smoking, Class, Aktifitas }
 
     [System.Serializable]
     public struct AnimationStateGroup
