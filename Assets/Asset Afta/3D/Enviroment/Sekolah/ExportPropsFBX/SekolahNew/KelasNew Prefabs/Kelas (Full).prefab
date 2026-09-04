@@ -31,13 +31,12 @@ RectTransform:
   m_Children:
   - {fileID: 1800889084599045781}
   - {fileID: 4611221401795618449}
-  - {fileID: 4350308288045214385}
   m_Father: {fileID: 8490212765221295865}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 0.0035}
-  m_SizeDelta: {x: 1.5, y: 0.2}
+  m_AnchoredPosition: {x: -0, y: 0}
+  m_SizeDelta: {x: 0.65, y: 0.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1794635088126005438
 MonoBehaviour:
@@ -233,7 +232,7 @@ GameObject:
   - component: {fileID: 193346606821576629}
   - component: {fileID: 8367828748817855969}
   - component: {fileID: 7453496218556253486}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Pickup Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,13 +250,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4466363114237099314}
   m_Father: {fileID: 2882789905252579732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.25, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8367828748817855969
 CanvasRenderer:
@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 1147974178504466954}
   - component: {fileID: 3482966643506288538}
   - component: {fileID: 1354329219153112926}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Button Interaction Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,7 +444,7 @@ GameObject:
   - component: {fileID: 3104626159334216669}
   - component: {fileID: 3173248773041411106}
   - component: {fileID: 5245436839953442172}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: PickUp Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -458,17 +458,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1777231805440194143}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 9.313226e-10, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3465363070995741547}
+  m_Father: {fileID: 7147560168576598827}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3173248773041411106
 CanvasRenderer:
@@ -580,7 +580,7 @@ GameObject:
   - component: {fileID: 3734897281031998}
   - component: {fileID: 1683068850118830148}
   - component: {fileID: 4979330637953878503}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: PickUp Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -594,17 +594,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2627657915441296616}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 661150195513826882}
+  m_Father: {fileID: 8318887029776858007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1683068850118830148
 CanvasRenderer:
@@ -782,7 +782,7 @@ GameObject:
   - component: {fileID: 1944935722313281840}
   - component: {fileID: 1975052830231134100}
   - component: {fileID: 4783629662428647000}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Button Interaction Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -918,7 +918,7 @@ GameObject:
   - component: {fileID: 8318887029776858007}
   - component: {fileID: 1114397565478125032}
   - component: {fileID: 1371991697741013595}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Pickup Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -936,13 +936,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3734897281031998}
   m_Father: {fileID: 661150195513826882}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.25, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1114397565478125032
 CanvasRenderer:
@@ -993,7 +994,7 @@ GameObject:
   - component: {fileID: 4350308288045214385}
   - component: {fileID: 7860876177876342244}
   - component: {fileID: 7641741950037597890}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: PickUp Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1007,17 +1008,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3562914023075797042}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5653080701204088758}
+  m_Father: {fileID: 4611221401795618449}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7860876177876342244
 CanvasRenderer:
@@ -1144,18 +1145,17 @@ RectTransform:
   m_GameObject: {fileID: 3600761216068690112}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4427731005688182521}
   - {fileID: 193346606821576629}
-  - {fileID: 4466363114237099314}
   m_Father: {fileID: 6283430003616402365}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.5}
-  m_SizeDelta: {x: 1.5, y: 0.2}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.65, y: 0.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6551273183071577730
 MonoBehaviour:
@@ -1182,7 +1182,7 @@ GameObject:
   - component: {fileID: 5434450171131968819}
   - component: {fileID: 127147412498711699}
   - component: {fileID: 8592232162290798161}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Button Interaction Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1318,7 +1318,7 @@ GameObject:
   - component: {fileID: 8615067349063017068}
   - component: {fileID: 7106548592489280724}
   - component: {fileID: 8331495186224267879}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1341,9 +1341,9 @@ RectTransform:
   m_Father: {fileID: 8825523094997871360}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.2, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7106548592489280724
 CanvasRenderer:
@@ -1394,7 +1394,7 @@ GameObject:
   - component: {fileID: 5806706966925308350}
   - component: {fileID: 6157849712962364016}
   - component: {fileID: 5601538071440057018}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Pickup Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1412,13 +1412,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2581537112758376353}
   m_Father: {fileID: 8825523094997871360}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.25, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6157849712962364016
 CanvasRenderer:
@@ -1489,13 +1490,12 @@ RectTransform:
   m_Children:
   - {fileID: 263076474522635935}
   - {fileID: 8318887029776858007}
-  - {fileID: 3734897281031998}
   m_Father: {fileID: 6884619993860823763}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 0.0035}
-  m_SizeDelta: {x: 1.5, y: 0.2}
+  m_AnchoredPosition: {x: -0, y: 0}
+  m_SizeDelta: {x: 0.65, y: 0.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8682457218625985169
 MonoBehaviour:
@@ -1542,13 +1542,12 @@ RectTransform:
   m_Children:
   - {fileID: 8615067349063017068}
   - {fileID: 5806706966925308350}
-  - {fileID: 2581537112758376353}
   m_Father: {fileID: 2049634369869767307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1.5, y: 0.2}
+  m_SizeDelta: {x: 0.65, y: 0.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6683395296202687597
 MonoBehaviour:
@@ -1575,7 +1574,7 @@ GameObject:
   - component: {fileID: 1397636215312925848}
   - component: {fileID: 2985484354446268968}
   - component: {fileID: 7289480092822249916}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1598,9 +1597,9 @@ RectTransform:
   m_Father: {fileID: 3465363070995741547}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.2, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2985484354446268968
 CanvasRenderer:
@@ -1682,7 +1681,7 @@ GameObject:
   - component: {fileID: 4611221401795618449}
   - component: {fileID: 2217934067334230153}
   - component: {fileID: 4019932784128443287}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Pickup Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1700,13 +1699,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4350308288045214385}
   m_Father: {fileID: 5653080701204088758}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.25, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2217934067334230153
 CanvasRenderer:
@@ -1926,7 +1926,7 @@ GameObject:
   - component: {fileID: 3166701291000547432}
   - component: {fileID: 3302704817926170785}
   - component: {fileID: 3904376090633582459}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Button Interaction Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2062,7 +2062,7 @@ GameObject:
   - component: {fileID: 4427731005688182521}
   - component: {fileID: 3668918632330983417}
   - component: {fileID: 258344326451977598}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2085,9 +2085,9 @@ RectTransform:
   m_Father: {fileID: 2882789905252579732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.2, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3668918632330983417
 CanvasRenderer:
@@ -2138,7 +2138,7 @@ GameObject:
   - component: {fileID: 7147560168576598827}
   - component: {fileID: 8688629892566072686}
   - component: {fileID: 3532664888303428335}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Pickup Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2156,13 +2156,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3104626159334216669}
   m_Father: {fileID: 3465363070995741547}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.25, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8688629892566072686
 CanvasRenderer:
@@ -2213,7 +2214,7 @@ GameObject:
   - component: {fileID: 263076474522635935}
   - component: {fileID: 6705435886645751599}
   - component: {fileID: 4731155173906269644}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2236,9 +2237,9 @@ RectTransform:
   m_Father: {fileID: 661150195513826882}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.2, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6705435886645751599
 CanvasRenderer:
@@ -2417,7 +2418,7 @@ GameObject:
   - component: {fileID: 2581537112758376353}
   - component: {fileID: 8496599195443020036}
   - component: {fileID: 3718249057141475420}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: PickUp Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2431,17 +2432,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6744014655465634617}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8825523094997871360}
+  m_Father: {fileID: 5806706966925308350}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8496599195443020036
 CanvasRenderer:
@@ -2553,7 +2554,7 @@ GameObject:
   - component: {fileID: 1800889084599045781}
   - component: {fileID: 7511487897298152967}
   - component: {fileID: 420028951177206546}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2576,9 +2577,9 @@ RectTransform:
   m_Father: {fileID: 5653080701204088758}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.2, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7511487897298152967
 CanvasRenderer:
@@ -2683,13 +2684,12 @@ RectTransform:
   m_Children:
   - {fileID: 1397636215312925848}
   - {fileID: 7147560168576598827}
-  - {fileID: 3104626159334216669}
   m_Father: {fileID: 538719253973094646}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.613}
-  m_SizeDelta: {x: 1.5, y: 0.2}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.65, y: 0.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5079191820259899121
 MonoBehaviour:
@@ -2749,7 +2749,7 @@ GameObject:
   - component: {fileID: 8059431154911949053}
   - component: {fileID: 6898486727532803559}
   - component: {fileID: 3163853380781619131}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Button Interaction Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2916,7 +2916,7 @@ GameObject:
   - component: {fileID: 4466363114237099314}
   - component: {fileID: 949144438024927301}
   - component: {fileID: 951428812000862223}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: PickUp Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2930,17 +2930,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9145593446989788937}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2882789905252579732}
+  m_Father: {fileID: 193346606821576629}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &949144438024927301
 CanvasRenderer:

@@ -47,20 +47,20 @@ public class SettingManager : MonoBehaviour
 
     private void OnApplicationPause(bool pause)
     {
-        if(pause && !isPaused)
-        {
-            isPaused = pause;
-            FindAnyObjectByType<SettingsUI>().PausePanelTabOut();
-        }
+        //if(pause && !isPaused)
+        //{
+        //    isPaused = pause;
+        //    FindAnyObjectByType<SettingsUI>().PausePanelTabOut();
+        //}
     }
 
     private void OnApplicationFocus(bool focus)
     {
-        if (!focus && !isPaused)
-        {
-            isPaused = !focus;
-            FindAnyObjectByType<SettingsUI>().PausePanelTabOut();
-        }
+        //if (!focus && !isPaused)
+        //{
+        //    isPaused = !focus;
+        //    FindAnyObjectByType<SettingsUI>().PausePanelTabOut();
+        //}
     }
 
     void TogglePauseStatus(InputAction.CallbackContext ctx)

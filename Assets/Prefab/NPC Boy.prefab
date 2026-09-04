@@ -1231,7 +1231,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8668055973541288225}
   - component: {fileID: 6265188762219800809}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Button Interaction Prompt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1252,13 +1252,12 @@ RectTransform:
   m_Children:
   - {fileID: 8934401427087738740}
   - {fileID: 3075203661484037}
-  - {fileID: 4882329559028891692}
   m_Father: {fileID: 6235753318772414903}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.75}
-  m_SizeDelta: {x: 2, y: 0.25}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.65, y: 0.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6265188762219800809
 MonoBehaviour:
@@ -1453,7 +1452,7 @@ GameObject:
   - component: {fileID: 8934401427087738740}
   - component: {fileID: 4066186294556278985}
   - component: {fileID: 4363003940118304117}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1476,9 +1475,9 @@ RectTransform:
   m_Father: {fileID: 8668055973541288225}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.2, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4066186294556278985
 CanvasRenderer:
@@ -1561,7 +1560,7 @@ GameObject:
   - component: {fileID: 4882329559028891692}
   - component: {fileID: 4106627891342039655}
   - component: {fileID: 9155773865651496959}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: PickUp Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1575,17 +1574,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4676783532009231236}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8668055973541288225}
+  m_Father: {fileID: 3075203661484037}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4106627891342039655
 CanvasRenderer:
@@ -1900,6 +1899,10 @@ MonoBehaviour:
   animator: {fileID: 3338942343666924565}
   loopMovement: 0
   head: {fileID: 0}
+  moveMyself: 0
+  cutsceneFlagLocked: 0
+  facePlayer: 0
+  blocker: {fileID: 0}
   footstepManager: {fileID: 2080103880407699807}
   foot: {fileID: 1592939981023489621}
   groundMask:
@@ -1908,8 +1911,6 @@ MonoBehaviour:
   currentSurface: 0
   animState: 0
   speed: 1
-  moveMyself: 0
-  cutsceneFlagLocked: 0
 --- !u!95 &3338942343666924565
 Animator:
   serializedVersion: 7
@@ -1952,11 +1953,13 @@ MonoBehaviour:
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
   FootstepAudioData: []
+  TerrainSoundTypes: []
   Animator: {fileID: 3338942343666924565}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  groundCheckDistance: 3
 --- !u!114 &5414524446743079529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2372,7 +2375,7 @@ GameObject:
   - component: {fileID: 3075203661484037}
   - component: {fileID: 3194172730753510148}
   - component: {fileID: 69798067374541339}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Pickup Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2390,13 +2393,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4882329559028891692}
   m_Father: {fileID: 8668055973541288225}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.25, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0}
-  m_SizeDelta: {x: -0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3194172730753510148
 CanvasRenderer:
@@ -3101,7 +3105,7 @@ GameObject:
   - component: {fileID: 3527582036482497658}
   - component: {fileID: 973129873728934602}
   - component: {fileID: 5251489113302378924}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Button Interaction Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}

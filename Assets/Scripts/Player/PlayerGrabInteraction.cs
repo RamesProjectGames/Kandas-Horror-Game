@@ -226,7 +226,6 @@ public class PlayerGrabInteraction : MonoBehaviour
             // Only detect front cone
             if (dot >= frontDotThreshold)
             {
-
                 float distance = Vector3.Distance(visionPos, hit.transform.position);
                 if (distance < bestDistance)
                 {
