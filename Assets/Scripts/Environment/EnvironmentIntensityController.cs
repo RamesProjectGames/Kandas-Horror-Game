@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnvironmentIntensityController : MonoBehaviour
 {
     [Header("Environment Lighting")]
-    public float intensityMultiplier = 1.5f;
+    public float intensityMultiplier = 0f;
 
     [Header("Skybox Settings")]
     public Material skyboxMaterial;
