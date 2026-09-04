@@ -47,7 +47,7 @@ public class SettingManager : MonoBehaviour
 
     private void OnApplicationPause(bool pause)
     {
-        if(pause)
+        if(pause && !isPaused)
         {
             isPaused = pause;
             FindAnyObjectByType<SettingsUI>().PausePanelTabOut();
@@ -56,7 +56,7 @@ public class SettingManager : MonoBehaviour
 
     private void OnApplicationFocus(bool focus)
     {
-        if (!focus)
+        if (!focus && !isPaused)
         {
             isPaused = !focus;
             FindAnyObjectByType<SettingsUI>().PausePanelTabOut();

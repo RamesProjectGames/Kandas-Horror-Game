@@ -58,7 +58,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                     currentItem.TryGetComponent(out NpcMovement npcInteract);
                     if (npcInteract != null)
                     {
-                        if(!npcInteract.facePlayer)
+                        if(!npcInteract.facePlayer && npcInteract.animState != NPCAnimationState.Sit)
                             npcInteract.HandleAnimationEndState();
                         npcInteract.facePlayer = true;
                     }
@@ -256,7 +256,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                 currentItem.TryGetComponent(out NpcMovement npcInteract);
                 if (npcInteract != null)
                 {
-                    if(npcInteract.facePlayer)
+                    if(npcInteract.facePlayer && npcInteract.animState != NPCAnimationState.Sit)
                         npcInteract.HandleAnimationEndState();
                     npcInteract.facePlayer = false;
                 }
