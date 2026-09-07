@@ -163,7 +163,7 @@ public class FootstepsSoundManager : MonoBehaviour
         PLAYBACK_STATE playbackState;
         int surfaceIndex = GetSurfaceIndex();
         string surfaceName = Enum.GetName(typeof(GroundSurface), surfaceIndex);
-        Debug.Log($"Footstep ground surface: {surfaceName} (index {surfaceIndex})");
+        //Debug.Log($"Footstep ground surface: {surfaceName} (index {surfaceIndex})");
 
         footstepEvent.setParameterByName("Foot", _lastFootWasRight ? 1 : 0);
         footstepEvent.setParameterByName("Surface", surfaceIndex);

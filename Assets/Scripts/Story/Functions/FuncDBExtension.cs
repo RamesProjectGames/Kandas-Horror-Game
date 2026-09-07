@@ -734,7 +734,8 @@ namespace TestingPurposes
                 if (npc == null)
                     continue;
 
-                npc.blocker.enabled = false;
+                if(npc.blocker != null)
+                    npc.blocker.enabled = false;
                 npc.moveMyself = true;
                 npc.agent.enabled = true;
                 npc.agent.speed = speed;

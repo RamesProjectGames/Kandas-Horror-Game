@@ -39,7 +39,9 @@ public class Door : MonoBehaviour
         AudioManager.Instance.StopSoundInstance(closeSfx);
         AudioManager.Instance.PlayOneShot3D(openSfx,true, 1, 1, transform.position);
         transform.LeanRotate(openRotation, duration);
-        GetComponent<ItemInteraction>().ChangeInteractionText("Close Door");
+        ItemInteraction interactor = GetComponent<ItemInteraction>();
+        if(interactor != null)
+            interactor.ChangeInteractionText("Close Door");
         isOpen = true;
     }
     [ContextMenu("Set Closed Rotation")]
@@ -51,7 +53,9 @@ public class Door : MonoBehaviour
         AudioManager.Instance.StopSoundInstance(closeSfx);
         AudioManager.Instance.PlayOneShot3D(closeSfx,true, 1, 1, transform.position);
         transform.LeanRotate(closedRotation, duration);
-        GetComponent<ItemInteraction>().ChangeInteractionText("Open Door");
+        ItemInteraction interactor = GetComponent<ItemInteraction>();
+        if (interactor != null)
+            interactor.ChangeInteractionText("Open Door");
         isOpen = false;
     }
 }

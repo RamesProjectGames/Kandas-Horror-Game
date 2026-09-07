@@ -117,7 +117,7 @@ public class NpcMovement : MovableObjects
         rotSpd = Mathf.Min(rotSpd, 1f);
         Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
 
-        while (Quaternion.Angle(transform.rotation, targetRotation) >= 10f)
+        while (Quaternion.Angle(transform.rotation, targetRotation) >= 10f && animState != NPCAnimationState.Walk)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpd * Time.deltaTime);
             yield return new WaitForEndOfFrame();
@@ -129,7 +129,7 @@ public class NpcMovement : MovableObjects
         yrot = Mathf.Clamp(yrot, -45f, 45f);
         Quaternion targetRotation = Quaternion.Euler(head.localRotation.x, yrot, head.localRotation.z);
 
-        while (Quaternion.Angle(head.rotation, targetRotation) >= 10f)
+        while (Quaternion.Angle(head.rotation, targetRotation) >= 10f && animState == NPCAnimationState.Sit)
         {
             head.localRotation = Quaternion.Slerp(head.localRotation, targetRotation, rotSpd * Time.deltaTime);
             yield return new WaitForEndOfFrame();
