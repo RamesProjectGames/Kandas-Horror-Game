@@ -33,7 +33,7 @@ public class TVHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+        if (SettingManager.Instance.isPaused || DialogueSystem.IsConversationRunning)
         {
             videoPlayer.Pause();
             return;

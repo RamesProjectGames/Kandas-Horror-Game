@@ -42,7 +42,7 @@ public class PlayerHiding : MonoBehaviour
 
     private void Update()
     {
-        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+        if (SettingManager.Instance.isPaused || DialogueSystem.IsConversationRunning)
             return;
         // Handle hiding animation timing
         if (isAnimatingHide)

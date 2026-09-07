@@ -45,7 +45,7 @@ public class InspectManagerUI : MonoBehaviour
         InspectUI(false);
         itemTitle.text = "";
         itemDescription.text = "";
-        if (DialogueSystem.Instance.isRunningConvo)
+        if (DialogueSystem.IsConversationRunning)
             DialogueSystem.Instance.dialogueContainer.ShowDialogue();
     }
 }

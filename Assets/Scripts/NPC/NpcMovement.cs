@@ -440,7 +440,7 @@ public class NpcMovement : MovableObjects
                 }
             }
         }
-        else if ((point.Length < 1 || point[idxPoint].faceTowards == null) && DialogueSystem.Instance.isRunningConvo && facePlayer)
+        else if ((point.Length < 1 || point[idxPoint].faceTowards == null) && DialogueSystem.IsConversationRunning && facePlayer)
         {
             if (animState == NPCAnimationState.Sit)
             {
@@ -624,7 +624,7 @@ public class NpcMovement : MovableObjects
         float state = 0;
         if (animState == NPCAnimationState.Sit)
         {
-            if (DialogueSystem.Instance.isRunningConvo)
+            if (DialogueSystem.IsConversationRunning)
             {
                 state = UnityEngine.Random.Range(4, 7);
             }
@@ -633,7 +633,7 @@ public class NpcMovement : MovableObjects
         }
         else if (animState == NPCAnimationState.Stand)
         {
-            if (DialogueSystem.Instance.isRunningConvo)
+            if (DialogueSystem.IsConversationRunning)
             {
                 state = UnityEngine.Random.Range(0, 4);
             }

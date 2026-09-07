@@ -50922,6 +50922,9 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 256
+  minimumClearRaycasts: 3
+  playerRaycastHorizontalOffset: 0.35
+  playerRaycastVerticalOffset: 0.75
   moveSpeed: 3
   stoppingDistance: 0.5
   idleAnimations:
@@ -50938,6 +50941,7 @@ MonoBehaviour:
   postResetBlackHoldDuration: 0.05
   footstepManager: {fileID: 0}
   contactThreshold: 1
+  randomizePose: 1
   playerResetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &246087501
 MonoBehaviour:
@@ -58278,6 +58282,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1976744821}
     m_Modifications:
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: pickupUI
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: pickupText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: buttonInteractionText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: animState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: loopMovement
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: point.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1385080420974066408, guid: 47e556c3d7447a34e98c6753a1cdaa9a, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -58350,30 +58378,6 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 61710fa6761dbd442bbfd9bf5ab2b09a, type: 2}
-    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: pickupUI
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: pickupText
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: buttonInteractionText
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: animState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: loopMovement
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: point.Array.size
-      value: 4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4151319070535293593, guid: 4503a988b03975f4eb706590388fa537, type: 3}
@@ -79969,13 +79973,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527621438}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.11877555, y: 0.9877233, z: 0.012114023, w: 0.10073878}
-  m_LocalPosition: {x: -0.00042, y: 0.00154, z: -0.00078}
+  m_LocalRotation: {x: -0.004718647, y: 0.5793329, z: 0.2886177, w: -0.762267}
+  m_LocalPosition: {x: 0.0022, y: -0.0658, z: 0.0281}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1272413722}
-  m_LocalEulerAnglesHint: {x: 0, y: 168.353, z: 13.714}
+  m_LocalEulerAnglesHint: {x: -19.1, y: 290.35602, z: -28.127}
 --- !u!114 &527621441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103249,14 +103253,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1393366711}
     m_Modifications:
-    - target: {fileID: 2168003501543069763, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3090566828041936889, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 76801907906657482, guid: b99ae046023106d48bcb1da8b23ace97, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
@@ -103556,6 +103552,14 @@ PrefabInstance:
     - target: {fileID: 9018398573127874575, guid: b99ae046023106d48bcb1da8b23ace97, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2168003501543069763, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090566828041936889, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -110761,6 +110765,9 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 256
+  minimumClearRaycasts: 3
+  playerRaycastHorizontalOffset: 0.35
+  playerRaycastVerticalOffset: 0.75
   moveSpeed: 3
   stoppingDistance: 0.5
   idleAnimations:
@@ -110777,6 +110784,7 @@ MonoBehaviour:
   postResetBlackHoldDuration: 0.05
   footstepManager: {fileID: 0}
   contactThreshold: 1
+  randomizePose: 1
   playerResetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &741790604
 MonoBehaviour:
@@ -201943,18 +201951,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1393366711}
     m_Modifications:
-    - target: {fileID: 1844064019086816363, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_Name
-      value: KantinKosong
-      objectReference: {fileID: 0}
-    - target: {fileID: 7205676772365361542, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 327.37
-      objectReference: {fileID: 0}
-    - target: {fileID: 7461643524615361135, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
-      propertyPath: m_Layer
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 407534499677221520, guid: 0886903145fd4634d8008d7b6cce221d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
@@ -202022,6 +202018,18 @@ PrefabInstance:
     - target: {fileID: 8428098002497188612, guid: 0886903145fd4634d8008d7b6cce221d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844064019086816363, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_Name
+      value: KantinKosong
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205676772365361542, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 327.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 7461643524615361135, guid: 49d569e4baf21e3418dbdcf8b31c6a43, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -215462,13 +215470,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1272413721}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.6875458, y: 0.36068317, z: 0.37835914, w: -0.50401664}
-  m_LocalPosition: {x: 0.00066, y: 0.00291, z: 0.00148}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.8215356, y: 0.043378502, z: -0.54113483, w: -0.1742718}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.0100000035, y: 0.009999996, z: 0.009999999}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 527621440}
-  m_Father: {fileID: 1755845226}
+  m_Father: {fileID: 1755845225}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1272550232
 PrefabInstance:
@@ -228920,6 +228928,9 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 256
+  minimumClearRaycasts: 3
+  playerRaycastHorizontalOffset: 0.35
+  playerRaycastVerticalOffset: 0.75
   moveSpeed: 3
   stoppingDistance: 0.5
   idleAnimations:
@@ -228936,6 +228947,7 @@ MonoBehaviour:
   postResetBlackHoldDuration: 0.05
   footstepManager: {fileID: 0}
   contactThreshold: 1
+  randomizePose: 1
   playerResetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1360418033
 MonoBehaviour:
@@ -290026,6 +290038,9 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 256
+  minimumClearRaycasts: 3
+  playerRaycastHorizontalOffset: 0.35
+  playerRaycastVerticalOffset: 0.75
   moveSpeed: 3
   stoppingDistance: 0.5
   idleAnimations:
@@ -290042,6 +290057,7 @@ MonoBehaviour:
   postResetBlackHoldDuration: 0.05
   footstepManager: {fileID: 0}
   contactThreshold: 1
+  randomizePose: 1
   playerResetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1744060764
 MonoBehaviour:
@@ -292552,7 +292568,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 8200467496786942285, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1272413722}
     m_AddedComponents:
@@ -292563,6 +292579,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1755845229}
   m_SourcePrefab: {fileID: 100100000, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+--- !u!4 &1755845225 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8200467496786942285, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+  m_PrefabInstance: {fileID: 1755845224}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1755845226 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
@@ -320168,6 +320189,9 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 265
+  minimumClearRaycasts: 3
+  playerRaycastHorizontalOffset: 0.35
+  playerRaycastVerticalOffset: 0.75
   moveSpeed: 1.5
   stoppingDistance: 0.5
   idleAnimations:
@@ -320184,6 +320208,7 @@ MonoBehaviour:
   postResetBlackHoldDuration: 1
   footstepManager: {fileID: 1856562852}
   contactThreshold: 1
+  randomizePose: 1
   playerResetPosition: {x: 171.37134, y: 0.50214505, z: 210.01279}
 --- !u!114 &1856562852
 MonoBehaviour:
