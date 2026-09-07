@@ -8,7 +8,8 @@ public class PlayerSightInteraction : MonoBehaviour
     [SerializeField] private float fieldOfViewAngle = 60f;
     [SerializeField] private float eyeOffset = 1.5f;
     [SerializeField] private LayerMask obstacleLayer;
-    [SerializeField] private string enemyTag = "Enemy";
+    [SerializeField, Tooltip("Comma-separated enemy tags, for example: Enemy, Monster")]
+    private string enemyTag = "Enemy";
 
     [SerializeField]private List<Transform> visibleEnemies = new List<Transform>();
     [SerializeField]private bool canSeeAnyEnemy = false;
@@ -41,8 +42,17 @@ public class PlayerSightInteraction : MonoBehaviour
         visibleEnemies.Clear();
         canSeeAnyEnemy = false;
 
-        // Find all enemies in scene
-        GameObject[] allEnemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        // Find all enemies in scene using each configured tag.
+        List<GameObject> allEnemies = new List<GameObject>();
+        string[] enemyTags = enemyTag.Split(',');
+        foreach (string configuredTag in enemyTags)
+        {
+            string tag = configuredTag.Trim();
+            if (!string.IsNullOrEmpty(tag))
+            {
+                allEnemies.AddRange(GameObject.FindGameObjectsWithTag(tag));
+            }
+        }
 
         foreach (GameObject enemy in allEnemies)
         {

@@ -82,7 +82,7 @@ public class EnemySightDetection : MonoBehaviour
             {
                 bool hasObstacle = false;
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, playerTarget, out hit, distanceToPlayer, obstacleMask, QueryTriggerInteraction.Ignore))
+                if (Physics.Raycast(transform.position, playerTarget, out hit, distanceToPlayer, obstacleMask, QueryTriggerInteraction.Collide))
                 {
                     if (hit.collider != null && hit.collider.transform != player.transform)
                     {

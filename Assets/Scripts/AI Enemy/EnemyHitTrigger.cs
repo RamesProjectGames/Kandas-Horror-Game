@@ -18,7 +18,7 @@ public class EnemyHitTrigger : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("EnemyStop"))
+        if (IsEnemyStopZone(other))
         {
             Debug.Log("EnemyStop Triggered");
             enemyMovement?.OnEnterEnemyStopZone(true);
@@ -32,7 +32,7 @@ public class EnemyHitTrigger : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("EnemyStop"))
+        if (IsEnemyStopZone(other))
         {
             enemyMovement?.OnEnterEnemyStopZone(false);
             LeaveEvent?.Invoke();
@@ -41,5 +41,10 @@ public class EnemyHitTrigger : MonoBehaviour
         {
             registeredLeaveEvent?.Invoke();
         }
+    }
+
+    private static bool IsEnemyStopZone(Collider other)
+    {
+        return other.CompareTag("EnemyStop") || other.GetComponentInParent<Transform>().CompareTag("EnemyStop");
     }
 }

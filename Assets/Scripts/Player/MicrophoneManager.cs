@@ -53,7 +53,7 @@ public class MicrophoneManager : MonoBehaviour
 
     void Update()
     {
-        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.IsConversationRunning))
             return;
         if (isRecording && coreSystem.handle != System.IntPtr.Zero)
         {

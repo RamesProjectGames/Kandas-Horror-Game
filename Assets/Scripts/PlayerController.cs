@@ -214,7 +214,7 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
+                if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || (DialogueSystem.IsConversationRunning && !DialogueSystem.Instance.cameraControl) || CameraManager.currentActiveCamera != playerCam)
                 {
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -432,7 +432,7 @@ public class PlayerController : MovableObjects
 
     private void ApplyLookSensitivity()
     {
-        if (inputController == null || SettingManager.Instance == null || (DialogueSystem.Instance.isRunningConvo && !DialogueSystem.Instance.cameraControl) || SettingManager.Instance.settings == null)
+        if (inputController == null || SettingManager.Instance == null || (DialogueSystem.IsConversationRunning && !DialogueSystem.Instance.cameraControl) || SettingManager.Instance.settings == null)
         {
             inputController.enabled = false;
             return;
@@ -468,7 +468,7 @@ public class PlayerController : MovableObjects
         bool isMoving = input.magnitude > 0.01f
             && moveSpd > 0.1f
             && !SettingManager.Instance.isPaused
-            && !DialogueSystem.Instance.isRunningConvo
+            && !DialogueSystem.IsConversationRunning
             && (Hiding == null || !Hiding.IsHiding());
 
         if (footstepManager != null)
@@ -505,7 +505,7 @@ public class PlayerController : MovableObjects
             return;
         }
 
-        if (agent.enabled && !SettingManager.Instance.isPaused && !DialogueSystem.Instance.isRunningConvo)
+        if (agent.enabled && !SettingManager.Instance.isPaused && !DialogueSystem.IsConversationRunning)
         {
             //// Rotate body left/right using Look X input
             transform.Rotate(Vector3.up * lookAction.action.ReadValue<Vector2>().x * SettingManager.Instance.settings.MouseSensitivity * lookSensitivity * Time.deltaTime);

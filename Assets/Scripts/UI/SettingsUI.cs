@@ -459,7 +459,7 @@ public class SettingsUI : MonoBehaviour
             AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, chapterScene, () =>
             {
                 ObjectiveManager.Instance.UpdateCurrentObjectives();
-                if (DialogueSystem.Instance.isRunningConvo)
+                if (DialogueSystem.IsConversationRunning)
                     DialogueSystem.Instance.StopDialogue();
                 loadingPanel.SetActive(false);
                 DialogueSystem.Instance.OpenDialogue($"Chapter{ChapterDataManager.Instance.currentChapterIndex + 1}");
@@ -471,7 +471,7 @@ public class SettingsUI : MonoBehaviour
         }
         else
         {
-            if (DialogueSystem.Instance.isRunningConvo)
+            if (DialogueSystem.IsConversationRunning)
                 DialogueSystem.Instance.StopDialogue();
             loadingPanel.SetActive(false);
             DialogueSystem.Instance.OpenDialogue($"Chapter{ChapterDataManager.Instance.currentChapterIndex + 1}");

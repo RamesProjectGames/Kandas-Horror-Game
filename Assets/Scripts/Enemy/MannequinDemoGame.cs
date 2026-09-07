@@ -40,6 +40,7 @@ public class MannequinDemoGame : MovableObjects
     private NavMeshAgent navMeshAgent;
 
     [Header("Catch Animation")]
+    [SerializeField] private bool randomizeIdleAnimation;
     [SerializeField] private List<string> idleAnimations = new List<string>();
     [SerializeField] private Animator animator;
     [SerializeField] private CinemachineCamera chokeCamera;
@@ -72,6 +73,7 @@ public class MannequinDemoGame : MovableObjects
         playerTransform = playerSight?.transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
         resetManager = FindAnyObjectByType<PlayerResetManager>();
+        playerCamera = GameObject.Find("Player Camera")?.GetComponent<CinemachineCamera>();
 
         if (footstepManager == null)
         {
@@ -100,6 +102,11 @@ public class MannequinDemoGame : MovableObjects
 
         if (!isPlayerLooking)
         {
+            if (IsPlayerBehindMannequin())
+            {
+                FacePlayerImmediately();
+            }
+
             ResumeAnimator();
 
             if(canRoamAround)
@@ -234,6 +241,24 @@ public class MannequinDemoGame : MovableObjects
         return false;
     }
 
+    private bool IsPlayerBehindMannequin()
+    {
+        if (playerTransform == null)
+            return false;
+
+        Vector3 directionToPlayer = playerTransform.position - transform.position;
+        directionToPlayer.y = 0f;
+
+        return directionToPlayer.sqrMagnitude > 0.0001f && Vector3.Dot(transform.forward, directionToPlayer) < 0f;
+    }
+
+    private void FacePlayerImmediately()
+    {
+        Vector3 directionToPlayer = playerTransform.position - transform.position;
+        directionToPlayer.y = 0f;
+        transform.rotation = Quaternion.LookRotation(directionToPlayer);
+    }
+
     private bool IsPlayerInDetectionBox()
     {
         if (playerTransform == null)
@@ -321,6 +346,12 @@ public class MannequinDemoGame : MovableObjects
         if (playerTransform == null || isAnimatingCatch)
             return;
 
+        if (Vector3.Distance(transform.position, playerTransform.position) <= contactThreshold)
+        {
+            PlayCatchAnimation();
+            return;
+        }
+
         // Check if path to player is obstructed
         if (IsPathObstructed())
         {
@@ -364,10 +395,17 @@ public class MannequinDemoGame : MovableObjects
         {
             animator.SetFloat("MoveBlend", 0);
 
-            if (idleAnimations.Count > 0)
+            if(randomizeIdleAnimation)
             {
-                int randomIdle = Random.Range(0, idleAnimations.Count);
-                animator.SetFloat("SelectedPose", randomIdle);
+                if (idleAnimations.Count > 0)
+                {
+                    int randomIdle = Random.Range(0, idleAnimations.Count);
+                    animator.SetFloat("SelectedPose", randomIdle);
+                }
+            }
+            else
+            {
+                animator.SetFloat("SelectedPose", 0);
             }
 
             animator.SetBool("Capture", false);

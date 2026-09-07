@@ -31,7 +31,7 @@ public class EnemySoundDetection : MonoBehaviour
 
     void Update()
     {
-        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
+        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.IsConversationRunning))
             return;
         // Only process if the player is actually hiding
         if (playerHiding != null && playerHiding.IsHiding())

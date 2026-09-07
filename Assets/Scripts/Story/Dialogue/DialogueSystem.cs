@@ -13,7 +13,7 @@ namespace Dialogue
         public DialogueContainer dialogueContainer = new DialogueContainer();
         public ConvoManager convoManager { get; private set; }
         public BuildMethod buildMethod = BuildMethod.typewriter;
-        public bool isRunningConvo => convoManager.isRunning;
+        public bool isRunningConvo => convoManager != null && convoManager.isRunning;
         public bool cameraControl;
         public TextArchitect architect { get; private set; }
 
@@ -26,6 +26,7 @@ namespace Dialogue
         public DialoguePrompt dialoguePrompt;
 
         public static DialogueSystem Instance { get; private set; }
+        public static bool IsConversationRunning => Instance != null && Instance.isRunningConvo;
 
         //Initialize System
         private void Awake()

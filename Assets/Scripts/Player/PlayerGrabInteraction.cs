@@ -45,7 +45,7 @@ public class PlayerGrabInteraction : MonoBehaviour
     {
         DetectItemInteraction();
 
-        if (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+        if (SettingManager.Instance.isPaused || DialogueSystem.IsConversationRunning)
             return;
         if (interAction != null && interAction.action.WasPerformedThisFrame())
         {
@@ -201,7 +201,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
     void DetectItemInteraction()
     {
-        if(SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo)
+        if(SettingManager.Instance.isPaused || DialogueSystem.IsConversationRunning)
         {
             if(currentItem != null)
                 currentItem.HideUI();
