@@ -447,16 +447,16 @@ public class SettingsUI : MonoBehaviour
         FragmentManager.Instance.ClearCurrentChapterFragment();
         yield return StartCoroutine(DialogueSystem.Instance.FadeToBlack(0));
         FindAnyObjectByType<PlayerController>().ToggleRig(true);
-        NpcMovement.movementAllowed = false;
 
         loadingPanel.SetActive(true);
 
-        SceneField currentChapterScene = ChapterDataManager.Instance.GetChapterScene(ChapterDataManager.Instance.currentChapterIndex);
-        if (currentChapterScene != null)
+        SceneField chapterScene = ChapterDataManager.Instance.GetChapterScene(ChapterDataManager.Instance.currentChapterIndex);
+        SceneField currentScene = AsyncSceneLoader.Instance.currentChapterScene;
+        if (chapterScene != null)
         {
-            List<SceneField> scenesToLoad = new List<SceneField> { currentChapterScene };
-            List<SceneField> scenesToUnload = new List<SceneField> { currentChapterScene };
-            AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, currentChapterScene, () =>
+            List<SceneField> scenesToLoad = new List<SceneField> { chapterScene };
+            List<SceneField> scenesToUnload = new List<SceneField> { currentScene };
+            AsyncSceneLoader.Instance.LoadScenes(scenesToLoad, scenesToUnload, chapterScene, () =>
             {
                 ObjectiveManager.Instance.UpdateCurrentObjectives();
                 if (DialogueSystem.Instance.isRunningConvo)

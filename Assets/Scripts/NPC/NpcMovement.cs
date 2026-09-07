@@ -227,6 +227,7 @@ public class NpcMovement : MovableObjects
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        movementAllowed = false;
         agent = GetComponent<NavMeshAgent>();
         if (agent == null)
         {

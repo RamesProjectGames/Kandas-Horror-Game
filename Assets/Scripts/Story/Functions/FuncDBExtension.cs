@@ -61,7 +61,8 @@ namespace TestingPurposes
             db.AddFunction("PlaySFX", new Action<string[]>(PlaySFX));
             db.AddFunction("StopSFX", new Action(StopSFX));
             db.AddFunction("PlayBGM", new Action<string[]>(PlayBGM));
-            db.AddFunction("PlayAmbience", new Action<string[]>(PlayAmbience));
+            db.AddFunction("PlayAmbience3D", new Action<string[]>(PlayAmbience3D));
+            db.AddFunction("PlayAmbience2D", new Action<string[]>(PlayAmbience2D));
             db.AddFunction("StopAmbience", new Action(StopAmbience));
             db.AddFunction("PlayVoice", new Action<string[]>(PlayVoice));
             db.AddFunction("StopVoice", new Action(StopVoice));
@@ -624,10 +625,10 @@ namespace TestingPurposes
             ParseAudioProgression(funcParams, out float volumeIncreaseLimit, out float pitchIncreaseLimit, out float increaseDuration);
 
             Vector3 pos = ResolveAudioPosition(funcParams);
-            AudioManager.Instance.PlayOneShot3D(bgm, dup, volume, pitch, pos, volumeIncreaseLimit, pitchIncreaseLimit, increaseDuration);
+            AudioManager.Instance.PlayOneShot2D(bgm, volume, pitch, volumeIncreaseLimit, pitchIncreaseLimit, increaseDuration);
         }
 
-        private static void PlayAmbience(string[] args)
+        private static void PlayAmbience3D(string[] args)
         {
             Debug.Log("Playing Ambience");
             var funcParams = ConvertArgsToParams(args);
@@ -639,6 +640,19 @@ namespace TestingPurposes
 
             Vector3 pos = ResolveAudioPosition(funcParams);
             AudioManager.Instance.PlayOneShot3D(ambience, dup, volume, pitch, pos, volumeIncreaseLimit, pitchIncreaseLimit, increaseDuration);
+        }
+
+        private static void PlayAmbience2D(string[] args)
+        {
+            Debug.Log("Playing Ambience");
+            var funcParams = ConvertArgsToParams(args);
+            EventReference ambience = RuntimeManager.PathToEventReference(ambiencePath + args[0]);
+            funcParams.TryGetValue(new string[] { "^v" }, out float volume, defaultValue: 1);
+            funcParams.TryGetValue(new string[] { "^p" }, out float pitch, defaultValue: 1);
+            funcParams.TryGetValue(new string[] { "^dup" }, out bool dup, defaultValue: false);
+            ParseAudioProgression(funcParams, out float volumeIncreaseLimit, out float pitchIncreaseLimit, out float increaseDuration);
+
+            AudioManager.Instance.PlayOneShot2D(ambience, volume, pitch, volumeIncreaseLimit, pitchIncreaseLimit, increaseDuration);
         }
 
         private static void PlayVoice(string[] args)
