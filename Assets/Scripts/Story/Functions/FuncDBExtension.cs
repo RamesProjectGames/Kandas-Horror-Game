@@ -119,6 +119,7 @@ namespace TestingPurposes
             db.AddFunction("GrabItem", new Action<string[]>(GrabItem));
             db.AddFunction("ThrowItem", new Action<string[]>(ThrowItem));
             db.AddFunction("TransferItem", new Action<string[]>(TransferItem));
+            db.AddFunction("UpdateCheckpoint", new Action<string>(UpdateCheckpoint));
             #endregion
         }
 
@@ -1217,6 +1218,12 @@ namespace TestingPurposes
             {
                 Debug.LogWarning($"TransferItem: failed to transfer item '{item.gameObject.name}' to {target.gameObject.name}.");
             }
+        }
+
+        private static void UpdateCheckpoint(string arg)
+        {
+            Waypoint newCheckpoint = UnityEngine.Object.FindObjectsByType<Waypoint>(sortMode: FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == arg);
+            UnityEngine.Object.FindAnyObjectByType<PlayerResetManager>().SetCheckpoint(newCheckpoint);
         }
         #endregion
     }
