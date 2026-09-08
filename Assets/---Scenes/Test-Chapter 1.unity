@@ -68878,13 +68878,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527621438}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.11877555, y: 0.9877233, z: 0.012114023, w: 0.10073878}
-  m_LocalPosition: {x: -0.00042, y: 0.00154, z: -0.00078}
+  m_LocalRotation: {x: -0.004718647, y: 0.5793329, z: 0.2886177, w: -0.762267}
+  m_LocalPosition: {x: 0.0022, y: -0.0658, z: 0.0281}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1272413722}
-  m_LocalEulerAnglesHint: {x: 0, y: 168.353, z: 13.714}
+  m_LocalEulerAnglesHint: {x: -19.1, y: 290.35602, z: -28.127}
 --- !u!114 &527621441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134969,125 +134969,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &929146858
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 929146859}
-  - component: {fileID: 929146862}
-  - component: {fileID: 929146861}
-  - component: {fileID: 929146860}
-  m_Layer: 14
-  m_Name: Detetcion Sphere
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &929146859
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 929146858}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1856562859}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &929146860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 929146858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d959081025e075468f47c7be2e505ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  registeredHitLayerName: Player
-  registeredHitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1856562851}
-        m_TargetAssemblyTypeName: MannequinDemoGame, Assembly-CSharp
-        m_MethodName: PlayCatchAnimation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  registeredLeaveEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  HitEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  LeaveEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!54 &929146861
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 929146858}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 1
---- !u!135 &929146862
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 929146858}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!43 &929898481
 Mesh:
   m_ObjectHideFlags: 0
@@ -139961,7 +139842,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DirectionalLight: {fileID: 1927567411}
   Preset: {fileID: 11400000, guid: 26bb524f7a6692a47b13abd1fa2f5ac5, type: 2}
-  SkyboxMaterial: {fileID: 2100000, guid: 2d796ced94d61438fbab81b194038162, type: 2}
+  SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   TimeOfDay: 10
   PointLights:
   - {fileID: 0}
@@ -178400,13 +178281,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1272413721}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.6875458, y: 0.36068317, z: 0.37835914, w: -0.50401664}
-  m_LocalPosition: {x: 0.00066, y: 0.00291, z: 0.00148}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.8215356, y: 0.043378502, z: -0.54113483, w: -0.1742718}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.0100000035, y: 0.009999996, z: 0.009999999}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 527621440}
-  m_Father: {fileID: 1755845226}
+  m_Father: {fileID: 1755845225}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1272550232
 PrefabInstance:
@@ -236983,6 +236864,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button Interaction Prompt
       objectReference: {fileID: 0}
+    - target: {fileID: 7350114669987802245, guid: 1632c793e0170b7459b64aa64e7efe88, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -249044,7 +248929,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 8200467496786942285, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1272413722}
     m_AddedComponents:
@@ -249055,6 +248940,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1755845229}
   m_SourcePrefab: {fileID: 100100000, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+--- !u!4 &1755845225 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8200467496786942285, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+  m_PrefabInstance: {fileID: 1755845224}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1755845226 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
@@ -276700,7 +276590,6 @@ Transform:
   m_Children:
   - {fileID: 1833111726}
   - {fileID: 1755845226}
-  - {fileID: 929146859}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &1856655442
