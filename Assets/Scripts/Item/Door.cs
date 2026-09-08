@@ -38,7 +38,8 @@ public class Door : MonoBehaviour
         AudioManager.Instance.StopSoundInstance(openSfx);
         AudioManager.Instance.StopSoundInstance(closeSfx);
         AudioManager.Instance.PlayOneShot3D(openSfx,true, 1, 1, transform.position);
-        transform.LeanRotate(openRotation, duration);
+        //transform.LeanRotate(openRotation, duration);
+        LeanTween.rotateLocal(gameObject, openRotation, duration);
         ItemInteraction interactor = GetComponent<ItemInteraction>();
         if(interactor != null)
             interactor.ChangeInteractionText("Close Door");
@@ -52,7 +53,8 @@ public class Door : MonoBehaviour
         AudioManager.Instance.StopSoundInstance(openSfx);
         AudioManager.Instance.StopSoundInstance(closeSfx);
         AudioManager.Instance.PlayOneShot3D(closeSfx,true, 1, 1, transform.position);
-        transform.LeanRotate(closedRotation, duration);
+        //transform.LeanRotate(closedRotation, duration);
+        LeanTween.rotateLocal(gameObject, closedRotation, duration);
         ItemInteraction interactor = GetComponent<ItemInteraction>();
         if (interactor != null)
             interactor.ChangeInteractionText("Open Door");
