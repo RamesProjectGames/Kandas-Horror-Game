@@ -44,25 +44,29 @@ public class EnemySoundDetection : MonoBehaviour
     {
         if (playerHiding == null || !playerHiding.IsHiding()) return;
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, maxHearingRange, playerLayer);
-        if (hits.Length > 0)
+        if (micManager == null || enemyMovement == null)
         {
-            float distance = Vector3.Distance(transform.position, hits[0].transform.position);
+            return;
+        }
+
+        float distance = Vector3.Distance(transform.position, playerHiding.transform.position);
+        if (distance <= maxHearingRange)
+        {
             float currentThreshold = Mathf.Lerp(minMicThreshold, maxMicThreshold, distance / maxHearingRange);
             float loudness = micManager.GetMicrophoneLoudness();
+            HidingSpot hidingSpot = playerHiding.GetCurrentHidingSpot();
 
             // Use the same buffer logic as your UI
             float warningBuffer = 0.15f;
 
             if (loudness >= currentThreshold)
             {
-                // DANGER: Kill the player
-                enemyMovement.TriggerKillPlayer(playerHiding.transform);
+                enemyMovement.InvestigatePlayerSpot(hidingSpot);
             }
             else if (loudness >= (currentThreshold - warningBuffer))
             {
                 // WARNING: Go inspect the hiding spot
-                enemyMovement.InvestigatePlayerSpot(playerHiding.GetCurrentHidingSpot());
+                enemyMovement.InvestigatePlayerSpot(hidingSpot);
             }
         }
     }

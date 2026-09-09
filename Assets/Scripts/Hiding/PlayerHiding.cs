@@ -37,7 +37,6 @@ public class PlayerHiding : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody>();
         playerCollider = GetComponent<Collider>();
         agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -139,7 +138,7 @@ public class PlayerHiding : MonoBehaviour
         isAnimatingHide = true;
         hidingAnimationTimer = 0f;
         currentHidingSpot = hidingSpot;
-        CameraManager.SwitchCamera(hidingSpot.GetHidingCamera());
+        // CameraManager.SwitchCamera(hidingSpot.GetHidingCamera());
         var postProcessVolume = FindAnyObjectByType<PostProcessVolume>();
         if (postProcessVolume != null)
         {
@@ -150,19 +149,13 @@ public class PlayerHiding : MonoBehaviour
         // hidingPosition = hidingSpot.GetHidingPosition();
 
         // // Notify the hiding spot
-        // hidingSpot.HidePlayer(gameObject);
+        hidingSpot.HidePlayer(gameObject);
 
         // // Rotate player to look away from the cupboard (player faces opposite direction)
         // Vector3 directionToCupboard = (hidingPosition - transform.position).normalized;
         // Quaternion targetRotation = Quaternion.LookRotation(-directionToCupboard);
         // transform.rotation = targetRotation;
-
-        // Trigger entering animation
-        if (animator != null)
-        {
-            animator.SetBool("IsEnteringCupboard", true);
-            animator.SetTrigger("EnterCupboard");
-        }
+       
 
         // Disable physics/collider during animation
         if (playerRigidbody != null)
@@ -209,13 +202,6 @@ public class PlayerHiding : MonoBehaviour
 
         isHiding = false;
 
-        // Trigger exiting animation
-        if (animator != null)
-        {
-            animator.SetBool("IsEnteringCupboard", false);
-            animator.SetTrigger("ExitCupboard");
-        }
-
         // Notify the hiding spot
         currentHidingSpot.UnhidePlayer();
 
@@ -261,21 +247,17 @@ public class PlayerHiding : MonoBehaviour
             return;
 
         isHiding = false;
-
-        // Trigger exit animation
-        if (animator != null)
-        {
-            animator.SetBool("IsEnteringCupboard", false);
-            animator.SetTrigger("ExitCupboard");
-        }
-
-        if (currentHidingSpot != null)
-        {
-            currentHidingSpot.UnhidePlayer();
-            currentHidingSpot = null;
-        }
+        // Play Momnster Locker Catch Here
         
-        CameraManager.SwitchCamera(originCamera);
+
+
+        // if (currentHidingSpot != null)
+        // {
+        //     currentHidingSpot.UnhidePlayer();
+        //     currentHidingSpot = null;
+        // }
+        
+        // CameraManager.SwitchCamera(originCamera);
 
         if (playerRigidbody != null)
         {

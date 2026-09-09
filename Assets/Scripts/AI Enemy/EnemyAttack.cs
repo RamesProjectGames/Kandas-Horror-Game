@@ -14,10 +14,13 @@ public class EnemyAttack : MonoBehaviour
 
     public Animator animator;
     public float distanceToPlayer;
+
+    private PlayerHiding hiding;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        hiding = player.GetComponent<PlayerHiding>();
         // animator = GetComponent<Animator>();
         if (batCollider != null)
         {
@@ -54,6 +57,13 @@ public class EnemyAttack : MonoBehaviour
             animator.SetFloat("UpperBody", 0f);
             canAttackPlayer = false;
             return;
+        }        
+
+        if (hiding != null && hiding.IsHiding())
+        {
+            animator.SetFloat("UpperBody", 0f);
+            canAttackPlayer = false;
+            return;
         }
 
         if (distanceToPlayer < attackRange)
@@ -77,7 +87,7 @@ public class EnemyAttack : MonoBehaviour
     }
     public void PlayerAttack()
     {
-        if (canAttackPlayer)
+        if (canAttackPlayer && (hiding == null || !hiding.IsHiding()))
         {
             var settingUI = FindAnyObjectByType<SettingsUI>();
             if (settingUI != null)

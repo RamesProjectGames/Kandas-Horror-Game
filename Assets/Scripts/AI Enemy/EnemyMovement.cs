@@ -522,6 +522,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
         isDiscoveringSpot = true;
         targetHidingSpot = spot;
+        spot.StartDiscovery(this);
         agent.isStopped = false;
         agent.speed = pursueSpeed;
         agent.SetDestination(GetValidNavMeshPosition(spot.transform.position));

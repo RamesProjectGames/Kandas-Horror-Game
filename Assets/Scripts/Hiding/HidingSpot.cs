@@ -13,7 +13,10 @@ public class HidingSpot : MonoBehaviour
     [SerializeField] private float hidingHeight = 1f; // Height offset for hiding position
     [SerializeField] private bool visualizationEnabled = true;
     [SerializeField] private CinemachineCamera hidingCamera;
+    [SerializeField] private Door door;
+    [SerializeField] private float doorOpenDuration = 0.5f;
     private CinemachineInputAxisController inputController;
+
     
     [Header("Spot Discovery")]
     [SerializeField] private float discoveryTime = 2f; // Time for enemy to fully discover/open the spot
@@ -102,16 +105,31 @@ public class HidingSpot : MonoBehaviour
     /// </summary>
     public void HidePlayer(GameObject player)
     {
-        coll.enabled = false;
-        if(rb != null)
+        if (door != null)
         {
-            rb.useGravity = false;
-            rb.isKinematic = true;
+            door.OpenDoor(doorOpenDuration, () =>
+            {
+                CameraManager.SwitchCamera(hidingCamera);
+            });
         }
-        isOccupied = true;
-        hiddenPlayer = player;
-        currentDiscoveryProgress = 0f;
-        isBeingDiscovered = false;
+        CameraManager.CameraTransitionCompleted += (camera)=>{
+            if(camera == hidingCamera)
+            {
+                coll.enabled = false;
+                if (rb != null)
+                {
+                    rb.useGravity = false;
+                    rb.isKinematic = true;
+                }
+                isOccupied = true;
+                hiddenPlayer = player;
+                currentDiscoveryProgress = 0f;
+                isBeingDiscovered = false;
+                door?.CloseDoor(doorOpenDuration);
+                CameraManager.CameraTransitionCompleted -= null;
+            }
+        };        
+        
     }
 
     /// <summary>
@@ -119,13 +137,28 @@ public class HidingSpot : MonoBehaviour
     /// </summary>
     public void UnhidePlayer()
     {
-        coll.enabled = true;
-        rb.useGravity = true;
-        rb.isKinematic = false;
-        isOccupied = false;
-        hiddenPlayer = null;
-        currentDiscoveryProgress = 0f;
-        isBeingDiscovered = false;
+        if (door != null)
+        {
+            door.OpenDoor(doorOpenDuration, () =>
+            {
+                CameraManager.SwitchCamera(hidingCamera);
+            });
+        }
+        CameraManager.CameraTransitionCompleted += (camera) =>
+        {
+            if (camera == hidingCamera)
+            {
+                coll.enabled = true;
+                rb.useGravity = true;
+                rb.isKinematic = false;
+                isOccupied = false;
+                hiddenPlayer = null;
+                currentDiscoveryProgress = 0f;
+                isBeingDiscovered = false;
+                door?.CloseDoor(doorOpenDuration);
+                CameraManager.CameraTransitionCompleted -= null;
+            }
+        };
     }
 
     /// <summary>

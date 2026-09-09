@@ -14,7 +14,7 @@ public class MannequinFullGame : MonoBehaviour
     // ===== EVENTS =====
     public delegate void MannequinEvent();
     public delegate void PoseEvent(int poseIndex, string poseName);
-    public delegate void StrikeEvent(string limbName);
+    public delegate void StrikeEvent();
     
     public event MannequinEvent OnLightOn;
     public event MannequinEvent OnLightOff;
@@ -146,13 +146,13 @@ public class MannequinFullGame : MonoBehaviour
     /// Called when this mannequin is struck/hit
     /// limb: Name of the hit collider/limb
     /// </summary>
-    public void OnStruck(string limb = "")
+    public void OnStruck()
     {
         // Only destroyable mannequins can be struck
         if (!isDestroyable)
         {
             // Trying to strike a non-destroyable mannequin - trigger wrong strike
-            OnWrongStrike?.Invoke(limb);
+            OnWrongStrike?.Invoke();
             
             if (animator != null)
             {
@@ -173,7 +173,7 @@ public class MannequinFullGame : MonoBehaviour
         if (!correctStrike)
         {
             // Wrong strike - trigger event
-            OnWrongStrike?.Invoke(limb);
+            OnWrongStrike?.Invoke();
             
             if (animator != null)
             {
@@ -191,7 +191,7 @@ public class MannequinFullGame : MonoBehaviour
         else
         {
             // Correct strike - trigger event
-            OnCorrectStrike?.Invoke(limb);
+            OnCorrectStrike?.Invoke();
                         
             correctStrikesReceived++;
             Debug.Log($"Correct mannequin destroyed! This was the RIGHT one!");

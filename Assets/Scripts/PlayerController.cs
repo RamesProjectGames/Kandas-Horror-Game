@@ -226,7 +226,10 @@ public class PlayerController : MovableObjects
                 }
             }
         }
-        if (SettingManager.Instance.isPaused || CameraManager.currentActiveCamera != playerCam || isBeingGrab || SettingManager.Instance.gameOver)
+        if (SettingManager.Instance.isPaused
+            || (CameraManager.currentActiveCamera != playerCam && (Hiding == null || !Hiding.IsHiding()))
+            || isBeingGrab
+            || SettingManager.Instance.gameOver)
         {
             ResetMovementState();
             lookAction.action.Disable();
@@ -248,6 +251,7 @@ public class PlayerController : MovableObjects
         if (Hiding != null && Hiding.IsHiding())
         {
             // when hidden we don't process movement input or physics
+            lookAction.action.Enable();
         }
         else if (agent.isStopped)
         {
