@@ -6701,7 +6701,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00016784668}
+  m_AnchoredPosition: {x: 0, y: 0.00038146973}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -33255,9 +33255,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableMicrophone: 1
   recordingDeviceName: 
+  rejectSystemAudioDevices: 1
   frequencyBands: 64
   loudnessSmoothing: 0.1
   peakFrequencyWeight: 1.5
+  useManualLoudness: 0
+  manualLoudness: 0
 --- !u!114 &1761790449
 MonoBehaviour:
   m_ObjectHideFlags: 0

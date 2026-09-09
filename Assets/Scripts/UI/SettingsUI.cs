@@ -423,6 +423,10 @@ public class SettingsUI : MonoBehaviour
         Application.OpenURL($"https://store.steampowered.com/");
     }
 
+    public void VisitItchIoPage()
+    {
+        Application.OpenURL($"https://itch.io/");
+    }
 
     public void TryAgain()
     {

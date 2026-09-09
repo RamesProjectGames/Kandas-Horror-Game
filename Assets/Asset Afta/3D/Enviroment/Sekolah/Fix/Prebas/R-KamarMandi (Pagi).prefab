@@ -1024,11 +1024,14 @@ MonoBehaviour:
   landingAlertRadius: 10
   objectiveDialoguePair:
   - objective:
-    - 
+    - ExploreSchool
     dialogueAsset: Mini_ToggleDoor
   - objective:
     - Bathroom
     dialogueAsset: ToiletEvents
+  - objective:
+    - LeaveBathroom
+    dialogueAsset: Mini_ToggleDoor
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
   breakImpactThreshold: 6
@@ -1360,11 +1363,14 @@ MonoBehaviour:
   landingAlertRadius: 10
   objectiveDialoguePair:
   - objective:
-    - 
+    - ExploreSchool
     dialogueAsset: Mini_ToggleDoor
   - objective:
     - Bathroom
     dialogueAsset: ToiletEvents
+  - objective:
+    - LeaveBathroom
+    dialogueAsset: Mini_ToggleDoor
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
   breakImpactThreshold: 6
@@ -2526,7 +2532,7 @@ MonoBehaviour:
     dialogueAsset: ToiletEvents
   - objective:
     - OpenBathroomStall
-    dialogueAsset: BathroomStall
+    dialogueAsset: Mini_RattleDoor
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
   breakImpactThreshold: 6
