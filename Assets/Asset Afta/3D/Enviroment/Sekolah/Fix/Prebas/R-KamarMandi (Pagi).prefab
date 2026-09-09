@@ -3488,7 +3488,10 @@ MonoBehaviour:
     dialogueAsset: Mini_ToggleDoor
   - objective:
     - OpenBathroomStall
-    dialogueAsset: MonsterEncounter
+    dialogueAsset: Mini_RattleDoor
+  - objective:
+    - LeaveBathroom
+    dialogueAsset: LeaveBathroom
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
   breakImpactThreshold: 6
