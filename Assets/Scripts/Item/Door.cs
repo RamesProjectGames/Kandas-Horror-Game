@@ -31,7 +31,7 @@ public class Door : MonoBehaviour
             OpenDoor();
     }
     [ContextMenu("Set Open Rotation")]
-    public void OpenDoor(float duration = 0.5f)
+    public void OpenDoor(float duration = 0.5f, System.Action onComplete = null)
     {
         EventReference openSfx = RuntimeManager.PathToEventReference("event:/SFX/OpenDoor");
         EventReference closeSfx = RuntimeManager.PathToEventReference("event:/SFX/CloseDoor");
@@ -39,14 +39,14 @@ public class Door : MonoBehaviour
         AudioManager.Instance.StopSoundInstance(closeSfx);
         AudioManager.Instance.PlayOneShot3D(openSfx,true, 1, 1, transform.position);
         //transform.LeanRotate(openRotation, duration);
-        LeanTween.rotateLocal(gameObject, openRotation, duration);
+        LeanTween.rotateLocal(gameObject, openRotation, duration).setOnComplete(() => onComplete?.Invoke());
         ItemInteraction interactor = GetComponent<ItemInteraction>();
         if(interactor != null)
             interactor.ChangeInteractionText("Close Door");
         isOpen = true;
     }
     [ContextMenu("Set Closed Rotation")]
-    public void CloseDoor(float duration = 0.5f)
+    public void CloseDoor(float duration = 0.5f, System.Action onComplete = null)
     {
         EventReference openSfx = RuntimeManager.PathToEventReference("event:/SFX/OpenDoor");
         EventReference closeSfx = RuntimeManager.PathToEventReference("event:/SFX/CloseDoor");
@@ -54,7 +54,7 @@ public class Door : MonoBehaviour
         AudioManager.Instance.StopSoundInstance(closeSfx);
         AudioManager.Instance.PlayOneShot3D(closeSfx,true, 1, 1, transform.position);
         //transform.LeanRotate(closedRotation, duration);
-        LeanTween.rotateLocal(gameObject, closedRotation, duration);
+        LeanTween.rotateLocal(gameObject, closedRotation, duration).setOnComplete(() => onComplete?.Invoke());
         ItemInteraction interactor = GetComponent<ItemInteraction>();
         if (interactor != null)
             interactor.ChangeInteractionText("Open Door");

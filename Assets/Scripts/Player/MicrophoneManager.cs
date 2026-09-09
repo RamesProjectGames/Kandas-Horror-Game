@@ -11,11 +11,16 @@ public class MicrophoneManager : MonoBehaviour
     [Header("Microphone Settings")]
     [SerializeField] private bool enableMicrophone = true;
     [SerializeField] private string recordingDeviceName = "";
+    [SerializeField] private bool rejectSystemAudioDevices = true;
     
     [Header("Loudness Calculation (PC-Quality)")]
     [SerializeField] private int frequencyBands = 64;
     [SerializeField] private float loudnessSmoothing = 0.1f;
     [SerializeField] private float peakFrequencyWeight = 1.5f;
+
+    [Header("Editor Testing")]
+    [SerializeField] private bool useManualLoudness;
+    [SerializeField, Range(0f, 1f)] private float manualLoudness;
     
     private FMOD.System coreSystem;
     private FMOD.Sound recordingSound;
@@ -139,6 +144,13 @@ public class MicrophoneManager : MonoBehaviour
             return;
         }
 
+        if (rejectSystemAudioDevices && IsSystemAudioDevice(recordingDeviceName))
+        {
+            UnityEngine.Debug.LogWarning($"Microphone input '{recordingDeviceName}' is a system-audio device. Select a physical microphone to enable voice detection.");
+            enableMicrophone = false;
+            return;
+        }
+
         activeRecordingDevice = recordingDevice;
 
         // Create sound object for recording
@@ -177,6 +189,22 @@ public class MicrophoneManager : MonoBehaviour
         //     SettingManager.Instance.settings.AudioInputDeviceName = "FMOD_Default_Microphone";
         // }
     }
+
+    private static bool IsSystemAudioDevice(string deviceName)
+    {
+        if (string.IsNullOrWhiteSpace(deviceName))
+        {
+            return false;
+        }
+
+        string normalizedName = deviceName.ToLowerInvariant();
+        return normalizedName.Contains("stereo mix")
+            || normalizedName.Contains("what u hear")
+            || normalizedName.Contains("loopback")
+            || normalizedName.Contains("virtual cable")
+            || normalizedName.Contains("vb-audio");
+    }
+
     public float GetLoudnessFromAudioClip(int clipPosition, AudioClip audioClip)
     {
         int startPosition = clipPosition - frequencyBands;
@@ -193,6 +221,11 @@ public class MicrophoneManager : MonoBehaviour
 
     public float GetMicrophoneLoudness()
     {
+        if (useManualLoudness)
+        {
+            return manualLoudness;
+        }
+
         if (!isRecording || recordingSound.handle == System.IntPtr.Zero)
         {
             return 0f;
