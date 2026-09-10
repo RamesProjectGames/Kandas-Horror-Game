@@ -16,6 +16,7 @@ public class PlayerHiding : MonoBehaviour
     [SerializeField] private LayerMask hidingSpotLayer;
 
     [Header("Animation Configuration")]
+    [SerializeField] private GameObject hidingUIText;
     [SerializeField] private float hidingAnimationDuration = 1.5f;
     [SerializeField] private float rotationSpeed = 5f;
 
@@ -53,12 +54,17 @@ public class PlayerHiding : MonoBehaviour
                 hidingAnimationTimer = 0f;
                 // Animation complete, player is now fully in cupboard
             }
-        }
+        }        
 
         // Check for nearby hiding spots when not hiding
         if (!isHiding && !isAnimatingHide)
         {
             DetectNearbyHidingSpots();
+        }
+
+        if (hidingUIText != null)
+        {
+            hidingUIText.SetActive(isHiding);
         }
 
         // Handle hiding input
@@ -203,9 +209,8 @@ public class PlayerHiding : MonoBehaviour
         isHiding = false;
 
         // Notify the hiding spot
-        currentHidingSpot.UnhidePlayer();
+        currentHidingSpot.UnhidePlayer(originCamera);
 
-        CameraManager.SwitchCamera(originCamera);
 
         var postProcessVolume = FindAnyObjectByType<PostProcessVolume>();
         if (postProcessVolume != null)

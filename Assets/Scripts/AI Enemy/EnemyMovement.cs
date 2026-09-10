@@ -226,6 +226,13 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         // 1. Check if player is currently hiding
         PlayerHiding checkHiding = fov.player.GetComponent<PlayerHiding>();
         bool isPlayerHiding = checkHiding != null && checkHiding.IsHiding();
+
+        if (isPlayerHiding)
+        {
+            isPlayerDetected = false;
+            hasLastSeenPlayerPosition = false;
+        }
+
         UpdatePlayerDetection(isPlayerHiding);
 
         bool isChasingNow = isPlayerDetected;
@@ -278,15 +285,15 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             // If we've stopped moving for some reason, ensure animator resets
             // (will be re-evaluated by other branches or SynchronizeAnimatorAndAgent)
         }
-        else if (hasLastSeenPlayerPosition)
-        {
-            MoveToLastSeenPlayerPosition();
-        }
         else if (isPlayerHiding && fov.PlayerWasSpottedWhileHiding && !isDiscoveringSpot)
         {
             // TRANSITION TO DISCOVERY: Player hid while in view
             HidingSpot spot = checkHiding.GetCurrentHidingSpot();
             if (spot != null) StartDiscoveringHidingSpot(spot);
+        }
+        else if (hasLastSeenPlayerPosition)
+        {
+            MoveToLastSeenPlayerPosition();
         }
         else
         {
