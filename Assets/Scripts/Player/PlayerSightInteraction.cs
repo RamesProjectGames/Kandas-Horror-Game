@@ -14,7 +14,6 @@ public class PlayerSightInteraction : MonoBehaviour
     [SerializeField]private List<Transform> visibleEnemies = new List<Transform>();
     [SerializeField]private bool canSeeAnyEnemy = false;
     [SerializeField]private Camera playerCamera;
-    private Vector3 startingPosition;
 
     // Events
     public delegate void EnemySightEvent(Transform enemy, bool isVisible);
@@ -22,7 +21,6 @@ public class PlayerSightInteraction : MonoBehaviour
 
     void Start()
     {
-        startingPosition = transform.position;
         if (obstacleLayer == 0)
         {
             obstacleLayer = LayerMask.GetMask("Default");
@@ -135,26 +133,6 @@ public class PlayerSightInteraction : MonoBehaviour
         }
 
         return true;
-    }
-
-    /// <summary>
-    /// Returns the starting position of the player
-    /// </summary>
-    public Vector3 GetStartingPosition()
-    {
-        return startingPosition;
-    }
-
-    /// <summary>
-    /// Resets player to starting position
-    /// </summary>
-    public void ResetToStartingPosition(Vector3 dedicatedStartPos = default)
-    {
-        transform.position = dedicatedStartPos == default ? startingPosition : dedicatedStartPos;
-    }
-    public void SetStartingPosition(Vector3 newPosition)
-    {
-        startingPosition = newPosition;
     }
 
     /// <summary>

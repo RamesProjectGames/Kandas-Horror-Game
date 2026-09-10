@@ -6,19 +6,19 @@ using UnityEngine;
 /// </summary>
 public class PlayerResetManager : MonoBehaviour
 {
-    private PlayerSightInteraction playerSight;
+    private PlayerController playerController;
     [SerializeField] private float resetDelay = 1f;
-    [SerializeField] private Transform startingPositionTransform;
+    [SerializeField] private Waypoint checkpoint;
     private float resetTimer = 0f;
     private bool shouldReset = false;
     private string resetReason = "";
 
     void Start()
     {
-        playerSight = GetComponent<PlayerSightInteraction>();
-        if (playerSight == null)
+        playerController = GetComponent<PlayerController>();
+        if (playerController == null)
         {
-            playerSight = FindAnyObjectByType<PlayerSightInteraction>();
+            playerController = FindAnyObjectByType<PlayerController>();
         }
     }
 
@@ -51,10 +51,10 @@ public class PlayerResetManager : MonoBehaviour
 
     private void ExecuteReset()
     {
-        if (playerSight != null)
+        if (playerController != null)
         {
             Debug.Log($"Executing reset: {resetReason}");
-            playerSight.ResetToStartingPosition(startingPositionTransform != null ? startingPositionTransform.position : default);
+            playerController.ResetToStartingPosition(checkpoint != null ? checkpoint.position : default);
         }
         else
         {
@@ -69,5 +69,10 @@ public class PlayerResetManager : MonoBehaviour
     {
         shouldReset = false;
         resetTimer = 0f;
+    }
+
+    public void SetCheckpoint(Waypoint newCheckpoint)
+    {
+        checkpoint = newCheckpoint;
     }
 }

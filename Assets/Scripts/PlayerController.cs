@@ -65,11 +65,9 @@ public class PlayerController : MovableObjects
     [SerializeField] private float crouchHeight = 1.2f;
     [SerializeField] private float crouchSpeedMultiplier = 0.45f;
     [SerializeField] private float crouchTransitionSpeed = 10f;
-
     [SerializeField] private Transform cameraHeightTarget; // assign your face or camera pivot
     [SerializeField] private float standingCameraY = 1.6f;
     [SerializeField] private float crouchCameraY = 1.0f;
-
     [SerializeField] private LayerMask ceilingMask;
     [SerializeField] private float ceilingCheckRadius = 0.25f;
     [SerializeField] private float ceilingCheckOffset = 0.1f;
@@ -773,6 +771,18 @@ public class PlayerController : MovableObjects
             return;
         flashlightEnabled = !flashlightEnabled;
         flashlight.SetActive(flashlightEnabled);
+    }
+    #endregion
+
+    #region Reset
+
+
+    /// <summary>
+    /// Resets player to starting position
+    /// </summary>
+    public void ResetToStartingPosition(Vector3 dedicatedStartPos = default)
+    {
+        Teleport(dedicatedStartPos);
     }
     #endregion
 }

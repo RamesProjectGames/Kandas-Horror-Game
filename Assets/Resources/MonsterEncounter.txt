@@ -4,4 +4,4 @@ Jessica "...!"
 PlayVoice(MonsterScreech), SwitchCam(MonsterCam)
 Jessica "!!!"
 "What is that?!"
-"Something’s... something’s there...", Objective(OpenStairGate), SwitchCam("Player Camera")
+"Something’s... something’s there..." SwitchCam("Player Camera"), Objective(OpenStairGate), UpdateCheckpoint("Maze Checkpoint")
