@@ -40,7 +40,7 @@ public class AttackItem : MonoBehaviour
     }
     void Update()
     {
-        if (SettingManager.Instance.isPaused || DialogueSystem.IsConversationRunning)
+        if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning)
             return;
 
         if(attackTimer > 0f) 

@@ -58,7 +58,7 @@ namespace Dialogue
 
         private void Update()
         {
-            if (Application.isPlaying && (SettingManager.Instance.isPaused || !isRunningConvo) && !dialogueContainer.active)
+            if (Application.isPlaying && (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || !isRunningConvo) && !dialogueContainer.active)
                 return;
             if (buildMethod != architect.buildMethod)
             {
@@ -143,14 +143,14 @@ namespace Dialogue
 
         public void OnUserPrompt(InputAction.CallbackContext ctx)
         {
-            if (!isRunningConvo || !dialogueContainer.active || SettingManager.Instance.isPaused)
+            if (!isRunningConvo || !dialogueContainer.active || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver)
                 return;
             onUserPrompt?.Invoke();
         }
 
         public void OnUserPrompt()
         {
-            if (!isRunningConvo || !dialogueContainer.active || SettingManager.Instance.isPaused)
+            if (!isRunningConvo || !dialogueContainer.active || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver)
                 return;
             onUserPrompt?.Invoke();
         }

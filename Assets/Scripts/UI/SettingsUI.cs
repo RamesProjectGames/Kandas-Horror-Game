@@ -433,11 +433,7 @@ public class SettingsUI : MonoBehaviour
         var playerReset = FindAnyObjectByType<PlayerResetManager>();
         if(playerReset == null) return;
         UnityEngine.Debug.Log("Player Reset Triggered");
-        playerReset.ResetPlayer($"Getting Hit by Monster Bat!");
-        if(SettingManager.Instance.gameOver)
-        {
-            ShowGameover(false);
-        }        
+        playerReset.ResetPlayer($"Getting Hit by Monster Bat!");    
     }
 
     public void RestartChapter()

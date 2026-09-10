@@ -242,7 +242,7 @@ public class PlayerController : MovableObjects
             ApplyLookSensitivity();
         }
         // inputController.enabled = Cursor.lockState == CursorLockMode.Locked;
-        if (SettingManager.Instance.isPaused) return;
+        if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver) return;
 
         if (!CanUseAgent()) return;
         //Movement - skip input if player is hiding
@@ -469,8 +469,7 @@ public class PlayerController : MovableObjects
     {
         bool isMoving = input.magnitude > 0.01f
             && moveSpd > 0.1f
-            && !SettingManager.Instance.isPaused
-            && !DialogueSystem.IsConversationRunning
+            && !(SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning)
             && (Hiding == null || !Hiding.IsHiding());
 
         if (footstepManager != null)
@@ -507,7 +506,7 @@ public class PlayerController : MovableObjects
             return;
         }
 
-        if (agent.enabled && !SettingManager.Instance.isPaused && !DialogueSystem.IsConversationRunning)
+        if (agent.enabled && !(SettingManager.Instance.isPaused || SettingManager.Instance.gameOver) && !DialogueSystem.IsConversationRunning)
         {
             //// Rotate body left/right using Look X input
             transform.Rotate(Vector3.up * lookAction.action.ReadValue<Vector2>().x * SettingManager.Instance.settings.MouseSensitivity * lookSensitivity * Time.deltaTime);
@@ -760,14 +759,14 @@ public class PlayerController : MovableObjects
     #region Flashlight
     private void ToggleFlashlight(InputAction.CallbackContext ctx)
     {
-        if (!canUseFlashlight)
+        if (!canUseFlashlight || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning || CameraManager.currentActiveCamera != playerCam)
             return;
         flashlightEnabled = !flashlightEnabled;
         flashlight.SetActive(flashlightEnabled);
     }
     public void ToggleFlashlight()
     {
-        if (!canUseFlashlight)
+        if (!canUseFlashlight || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning || CameraManager.currentActiveCamera != playerCam)
             return;
         flashlightEnabled = !flashlightEnabled;
         flashlight.SetActive(flashlightEnabled);
@@ -780,9 +779,13 @@ public class PlayerController : MovableObjects
     /// <summary>
     /// Resets player to starting position
     /// </summary>
-    public void ResetToStartingPosition(Vector3 dedicatedStartPos = default)
+    public IEnumerator ResetToStartingPosition(Vector3 dedicatedStartPos = default)
     {
-        Teleport(dedicatedStartPos);
+        yield return StartCoroutine(Teleport(dedicatedStartPos));
+        if (SettingManager.Instance.gameOver)
+        {
+            FindAnyObjectByType<SettingsUI>().ShowGameover(false);
+        }
     }
     #endregion
 }

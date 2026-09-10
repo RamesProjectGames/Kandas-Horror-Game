@@ -54,7 +54,7 @@ public class PlayerResetManager : MonoBehaviour
         if (playerController != null)
         {
             Debug.Log($"Executing reset: {resetReason}");
-            playerController.ResetToStartingPosition(checkpoint != null ? checkpoint.position : default);
+            StartCoroutine(playerController.ResetToStartingPosition(checkpoint != null ? checkpoint.position : default));
         }
         else
         {

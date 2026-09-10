@@ -1,3 +1,4 @@
+using Dialogue;
 using FMOD;
 using FMODUnity;
 using System;
@@ -47,7 +48,7 @@ public class SettingManager : MonoBehaviour
 
     private void OnApplicationPause(bool pause)
     {
-        if(pause && !isPaused)
+        if(pause && !isPaused && !gameOver || !DialogueSystem.IsConversationRunning)
         {
             isPaused = pause;
             FindAnyObjectByType<SettingsUI>().PausePanelTabOut();
@@ -56,7 +57,7 @@ public class SettingManager : MonoBehaviour
 
     private void OnApplicationFocus(bool focus)
     {
-        if (!focus && !isPaused)
+        if (!focus && !isPaused && !gameOver || !DialogueSystem.IsConversationRunning)
         {
             isPaused = !focus;
             FindAnyObjectByType<SettingsUI>().PausePanelTabOut();
@@ -65,7 +66,7 @@ public class SettingManager : MonoBehaviour
 
     void TogglePauseStatus(InputAction.CallbackContext ctx)
     {
-        if (!isRebinding)
+        if (!isRebinding || !gameOver || !DialogueSystem.IsConversationRunning)
         {
             FindAnyObjectByType<SettingsUI>().PausePanelToggle();
         }

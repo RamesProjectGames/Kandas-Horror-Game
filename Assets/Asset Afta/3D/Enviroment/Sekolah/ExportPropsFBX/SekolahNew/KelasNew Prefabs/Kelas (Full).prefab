@@ -509,6 +509,8 @@ MonoBehaviour:
   hidingHeight: 1
   visualizationEnabled: 1
   hidingCamera: {fileID: 1055092913322374182}
+  door: {fileID: 0}
+  doorOpenDuration: 0.5
   discoveryTime: 2
 --- !u!114 &3614910576602756845
 MonoBehaviour:
@@ -3276,8 +3278,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.009103381, y: 0.006903392, z: 0.01}
-  m_Center: {x: 0.005982023, y: -0.0070256363, z: 6.1844364e-17}
+  m_Size: {x: 0.006, y: 0.006, z: 0.019}
+  m_Center: {x: 0.00275, y: 0.003, z: 0.001}
 --- !u!114 &6450219436322103512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3294,6 +3296,8 @@ MonoBehaviour:
   hidingHeight: 1
   visualizationEnabled: 1
   hidingCamera: {fileID: 3119758624208942722}
+  door: {fileID: 0}
+  doorOpenDuration: 0.5
   discoveryTime: 2
 --- !u!114 &5204031663690309263
 MonoBehaviour:

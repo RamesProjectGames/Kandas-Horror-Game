@@ -589,7 +589,7 @@ public class NpcMovement : MovableObjects
     }
     private bool HandlePauseState()
     {
-        bool isPaused = SettingManager.Instance.isPaused;
+        bool isPaused = SettingManager.Instance.isPaused || SettingManager.Instance.gameOver;
         if (isPaused)
         {
             if (!wasPausedLastFrame && agent != null) agent.enabled = false;

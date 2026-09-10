@@ -424,7 +424,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
     private void FixedUpdate()
     {
-        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.IsConversationRunning))
+        if (Application.isPlaying && (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning))
             return;
         // accumulate distance travelled this frame and trigger a step when we've covered enough ground
         if (footstepManager != null)
@@ -459,7 +459,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     }
     private bool HandlePauseState()
     {
-        bool isPaused = SettingManager.Instance.isPaused || DialogueSystem.IsConversationRunning;
+        bool isPaused = SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning;
         if (isPaused)
         {
             if (!wasPausedLastFrame && agent != null) agent.enabled = false;

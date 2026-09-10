@@ -425,7 +425,10 @@ namespace TestingPurposes
 
         private static void DemoComplete()
         {
-            UnityEngine.Object.FindAnyObjectByType<SettingsUI>().ShowDemoEnd();
+            if(SettingManager.Instance.isPaused)
+                UnityEngine.Object.FindAnyObjectByType<SettingsUI>().PausePanelToggle();
+            SettingManager.Instance.gameOver = true;
+            //UnityEngine.Object.FindAnyObjectByType<SettingsUI>().ShowDemoEnd();
         }
 
         private static IEnumerator ShowDialogue()

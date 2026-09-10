@@ -45,7 +45,7 @@ public class Manequin : MonoBehaviour
 
     void LateUpdate()
     {
-        if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.IsConversationRunning))
+        if (Application.isPlaying && (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning))
             return;
         if (_poseHandler == null) return;
 

@@ -6738,7 +6738,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.006477356}
+  m_AnchoredPosition: {x: 0, y: 0.0015487671}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -20415,7 +20415,7 @@ MonoBehaviour:
     fragmentData: {fileID: 0}
     requirements:
     - SubmittedQuiz
-    LimitedAfterObjective: Lunch
+    LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
   - Name: Bathroom
@@ -33768,7 +33768,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.2
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.86, z: 0}
@@ -33780,8 +33780,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761790445}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.056148008, y: -0.760283, z: 0.06631262, w: 0.6437545}
-  m_LocalPosition: {x: 21.64, y: 0.18, z: -30.791}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -33791,7 +33791,7 @@ Transform:
   - {fileID: 890258805}
   - {fileID: 1234470049}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1761790461
 MonoBehaviour:
   m_ObjectHideFlags: 0
