@@ -38,8 +38,7 @@ public class Door : MonoBehaviour
         AudioManager.Instance.StopSoundInstance(openSfx);
         AudioManager.Instance.StopSoundInstance(closeSfx);
         AudioManager.Instance.PlayOneShot3D(openSfx,true, 1, 1, transform.position);
-        //transform.LeanRotate(openRotation, duration);
-        LeanTween.rotateLocal(gameObject, openRotation, duration).setOnComplete(() => onComplete?.Invoke());
+        RotateTo(openRotation, duration, onComplete);
         ItemInteraction interactor = GetComponent<ItemInteraction>();
         if(interactor != null)
             interactor.ChangeInteractionText("Close Door");
@@ -53,11 +52,25 @@ public class Door : MonoBehaviour
         AudioManager.Instance.StopSoundInstance(openSfx);
         AudioManager.Instance.StopSoundInstance(closeSfx);
         AudioManager.Instance.PlayOneShot3D(closeSfx,true, 1, 1, transform.position);
-        //transform.LeanRotate(closedRotation, duration);
-        LeanTween.rotateLocal(gameObject, closedRotation, duration).setOnComplete(() => onComplete?.Invoke());
+        RotateTo(closedRotation, duration, onComplete);
         ItemInteraction interactor = GetComponent<ItemInteraction>();
         if (interactor != null)
             interactor.ChangeInteractionText("Open Door");
         isOpen = false;
+    }
+
+    private void RotateTo(Vector3 targetEulerAngles, float duration, System.Action onComplete)
+    {
+        Quaternion startRotation = transform.localRotation;
+        Quaternion targetRotation = Quaternion.Euler(targetEulerAngles);
+
+        LeanTween.cancel(gameObject);
+        LeanTween.value(gameObject, 0f, 1f, duration)
+            .setOnUpdate(progress => transform.localRotation = Quaternion.Slerp(startRotation, targetRotation, progress))
+            .setOnComplete(() =>
+            {
+                transform.localRotation = targetRotation;
+                onComplete?.Invoke();
+            });
     }
 }

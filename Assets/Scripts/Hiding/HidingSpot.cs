@@ -135,22 +135,25 @@ public class HidingSpot : MonoBehaviour
     /// <summary>
     /// Called when player leaves the hiding spot.
     /// </summary>
-    public void UnhidePlayer()
+    public void UnhidePlayer(CinemachineCamera originCamera)
     {
         if (door != null)
         {
             door.OpenDoor(doorOpenDuration, () =>
             {
-                CameraManager.SwitchCamera(hidingCamera);
+                CameraManager.SwitchCamera(originCamera);
             });
         }
         CameraManager.CameraTransitionCompleted += (camera) =>
         {
-            if (camera == hidingCamera)
+            if (camera == originCamera)
             {
                 coll.enabled = true;
-                rb.useGravity = true;
-                rb.isKinematic = false;
+                if (rb != null)
+                {
+                    rb.useGravity = true;
+                    rb.isKinematic = false;
+                }
                 isOccupied = false;
                 hiddenPlayer = null;
                 currentDiscoveryProgress = 0f;
