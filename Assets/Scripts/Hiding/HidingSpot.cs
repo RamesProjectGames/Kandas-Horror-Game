@@ -112,6 +112,10 @@ public class HidingSpot : MonoBehaviour
                 CameraManager.SwitchCamera(hidingCamera);
             });
         }
+        else
+        {
+                CameraManager.SwitchCamera(hidingCamera);            
+        }
         CameraManager.CameraTransitionCompleted += (camera)=>{
             if(camera == hidingCamera)
             {
@@ -143,6 +147,10 @@ public class HidingSpot : MonoBehaviour
             {
                 CameraManager.SwitchCamera(originCamera);
             });
+        }
+        else
+        {
+            
         }
         CameraManager.CameraTransitionCompleted += (camera) =>
         {
