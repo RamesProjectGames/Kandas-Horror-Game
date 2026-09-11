@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -126,7 +127,7 @@ public class ObjectiveManager : MonoBehaviour
 
     public bool isCompleted(string objName)
     {
-        return objName == string.Empty || Objectives.Find(x => x.objectiveData.Name == objName).objectiveData.IsCompleted;
+        return objName == string.Empty || Objectives.Find(x => string.Equals(x.objectiveData.Name, objName, StringComparison.CurrentCultureIgnoreCase)).objectiveData.IsCompleted;
     }
 
     public bool CheckIfFragmentValid(FragmentData fragData)
