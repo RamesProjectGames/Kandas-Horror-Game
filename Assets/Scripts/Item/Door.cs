@@ -31,7 +31,20 @@ public class Door : MonoBehaviour
             OpenDoor();
     }
     [ContextMenu("Set Open Rotation")]
-    public void OpenDoor(float duration = 0.5f, System.Action onComplete = null)
+    public void OpenDoor(float duration = 0.5f)
+    {
+        EventReference openSfx = RuntimeManager.PathToEventReference("event:/SFX/OpenDoor");
+        EventReference closeSfx = RuntimeManager.PathToEventReference("event:/SFX/CloseDoor");
+        AudioManager.Instance.StopSoundInstance(openSfx);
+        AudioManager.Instance.StopSoundInstance(closeSfx);
+        AudioManager.Instance.PlayOneShot3D(openSfx,true, 1, 1, transform.position);
+        RotateTo(openRotation, duration);
+        ItemInteraction interactor = GetComponent<ItemInteraction>();
+        if(interactor != null)
+            interactor.ChangeInteractionText("Close Door");
+        isOpen = true;
+    }
+    public void OpenDoorWithAction(float duration = 0.5f, System.Action onComplete = null)
     {
         EventReference openSfx = RuntimeManager.PathToEventReference("event:/SFX/OpenDoor");
         EventReference closeSfx = RuntimeManager.PathToEventReference("event:/SFX/CloseDoor");
@@ -44,8 +57,9 @@ public class Door : MonoBehaviour
             interactor.ChangeInteractionText("Close Door");
         isOpen = true;
     }
+
     [ContextMenu("Set Closed Rotation")]
-    public void CloseDoor(float duration = 0.5f, System.Action onComplete = null)
+    public void CloseDoorWithAction(float duration = 0.5f, System.Action onComplete = null)
     {
         EventReference openSfx = RuntimeManager.PathToEventReference("event:/SFX/OpenDoor");
         EventReference closeSfx = RuntimeManager.PathToEventReference("event:/SFX/CloseDoor");
@@ -58,8 +72,21 @@ public class Door : MonoBehaviour
             interactor.ChangeInteractionText("Open Door");
         isOpen = false;
     }
+    public void CloseDoor(float duration = 0.5f)
+    {
+        EventReference openSfx = RuntimeManager.PathToEventReference("event:/SFX/OpenDoor");
+        EventReference closeSfx = RuntimeManager.PathToEventReference("event:/SFX/CloseDoor");
+        AudioManager.Instance.StopSoundInstance(openSfx);
+        AudioManager.Instance.StopSoundInstance(closeSfx);
+        AudioManager.Instance.PlayOneShot3D(closeSfx,true, 1, 1, transform.position);
+        RotateTo(closedRotation, duration);
+        ItemInteraction interactor = GetComponent<ItemInteraction>();
+        if (interactor != null)
+            interactor.ChangeInteractionText("Open Door");
+        isOpen = false;
+    }
 
-    private void RotateTo(Vector3 targetEulerAngles, float duration, System.Action onComplete)
+    private void RotateTo(Vector3 targetEulerAngles, float duration, System.Action onComplete = null)
     {
         Quaternion startRotation = transform.localRotation;
         Quaternion targetRotation = Quaternion.Euler(targetEulerAngles);

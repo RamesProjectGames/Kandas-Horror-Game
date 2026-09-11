@@ -48,7 +48,7 @@ public class SettingManager : MonoBehaviour
 
     private void OnApplicationPause(bool pause)
     {
-        if(pause && !isPaused && !gameOver || !DialogueSystem.IsConversationRunning)
+        if(pause && !isPaused && !gameOver && !DialogueSystem.IsConversationRunning)
         {
             isPaused = pause;
             FindAnyObjectByType<SettingsUI>().PausePanelTabOut();
@@ -57,7 +57,7 @@ public class SettingManager : MonoBehaviour
 
     private void OnApplicationFocus(bool focus)
     {
-        if (!focus && !isPaused && !gameOver || !DialogueSystem.IsConversationRunning)
+        if (!focus && !isPaused && !gameOver && !DialogueSystem.IsConversationRunning)
         {
             isPaused = !focus;
             FindAnyObjectByType<SettingsUI>().PausePanelTabOut();

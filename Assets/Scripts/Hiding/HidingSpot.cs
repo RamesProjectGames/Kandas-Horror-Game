@@ -107,7 +107,7 @@ public class HidingSpot : MonoBehaviour
     {
         if (door != null)
         {
-            door.OpenDoor(doorOpenDuration, () =>
+            door.OpenDoorWithAction(doorOpenDuration, () =>
             {
                 CameraManager.SwitchCamera(hidingCamera);
             });
@@ -143,7 +143,7 @@ public class HidingSpot : MonoBehaviour
     {
         if (door != null)
         {
-            door.OpenDoor(doorOpenDuration, () =>
+            door.OpenDoorWithAction(doorOpenDuration, () =>
             {
                 CameraManager.SwitchCamera(originCamera);
             });
