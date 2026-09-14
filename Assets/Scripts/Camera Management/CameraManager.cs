@@ -71,6 +71,15 @@ public class CameraManager : MonoBehaviour
             CameraTransitionCompleted?.Invoke(targetCamera);
         }
     }
+    public static void LookAt(Transform target)
+    {
+        if (currentActiveCamera != null)
+        {
+            if (target != null)
+                currentActiveCamera.transform.LookAt(target);
+            currentActiveCamera.LookAt = target;
+        }
+    }
     public static void Register(CinemachineCamera camera)
     {
         cameras.Add(camera);

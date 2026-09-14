@@ -6738,7 +6738,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0013809204}
+  m_AnchoredPosition: {x: 0, y: 0.0028305054}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -20539,6 +20539,16 @@ MonoBehaviour:
     LimitedAfterObjective: Bathroom
     ObjectiveObject: {fileID: 0}
     Chapter: 1
+  - Name: 2_Bedroom
+    Description: Get up from bed
+    IsCompleted: 0
+    isHidden: 0
+    isDemo: 0
+    fragmentData: {fileID: 0}
+    requirements: []
+    LimitedAfterObjective: 2_Bedroom
+    ObjectiveObject: {fileID: 0}
+    Chapter: 2
   - Name: 2_Breakfast
     Description: Get something to eat from the dinner table
     IsCompleted: 0
@@ -20546,7 +20556,7 @@ MonoBehaviour:
     isDemo: 0
     fragmentData: {fileID: 0}
     requirements:
-    - 2_Doggie
+    - 2_Bedroom
     LimitedAfterObjective: 2_Breakfast
     ObjectiveObject: {fileID: 0}
     Chapter: 2
@@ -20715,6 +20725,17 @@ MonoBehaviour:
     LimitedAfterObjective: 2_Medicine2
     ObjectiveObject: {fileID: 0}
     Chapter: 2
+  - Name: Fragment2
+    Description: A potograph of a woman
+    IsCompleted: 0
+    isHidden: 1
+    isDemo: 0
+    fragmentData: {fileID: 11400000, guid: a38d5a6c17cb5b34cade80cd80d4ae66, type: 2}
+    requirements:
+    - 2_CleanUp
+    LimitedAfterObjective: 2_CleanUp
+    ObjectiveObject: {fileID: 0}
+    Chapter: 1
   ObjectivePrefab: {fileID: 4575612503608170280, guid: d23d41e198abf6d4bafe61812b8a5261, type: 3}
   ObjectivesParent: {fileID: 415318066}
   currentObjectives: []

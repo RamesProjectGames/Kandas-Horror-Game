@@ -1,7 +1,9 @@
+[w]FadeIn(1)
 Jessica "<style=\"Whispering\">(Wakes up with a start)</style>"
 Jessica "..."
 Jessica "..."
 Jessica "... what time is it?"
-[w]FadeOut(1), [w]Wait(.5),[w]SwitchCam("Clock Camera"), [w]Wait(1), [w]FadeIn(1)
-[w]FadeOut(1), [w]Wait(.5), [w]SwitchCam("Player Camera"), [w]Wait(1), [w]FadeIn(1)
-Objective(Chapter2)
+[w]FadeOut(1), [w]Wait(.5),CameraFaceObject("Clock"), [w]Wait(1), [w]FadeIn(1)
+[w]FadeOut(1), [w]Wait(.5), [w]Teleport(Player ^x -12.65921 ^y 6.061495 ^z 1.589484), [w]SwitchCam("Player Camera"), [w]Wait(1), [w]FadeIn(1)
+Jessica "I should go eat breakfast."
+Objective("2_Bedroom")
