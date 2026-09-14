@@ -26,8 +26,10 @@ public class NpcMovement : MovableObjects
     public Transform foot;
     public LayerMask groundMask;
     public GroundSurface currentSurface;
+    #endregion
     public NPCAnimationState animState;
     private static string headGOName = "DEF-spine.005";
+    #region Flags
     private static bool allowMovement = false;
     public static Action NPCMovementTrigger, MovePrep;
     public static bool movementAllowed
@@ -45,6 +47,7 @@ public class NpcMovement : MovableObjects
     }
     [SerializeField] float speed = 1f;
     float idleTime = 5f, currIdleTime;
+    bool idle = true;
     bool wasPausedLastFrame = false;
     float lastFootstep;
     #endregion
@@ -67,12 +70,13 @@ public class NpcMovement : MovableObjects
         if (agent != null)
         {
             moveMyself = true;
-            blocker.enabled = false;
+            if (blocker != null)
+                blocker.enabled = false;
             agent.enabled = true;
             agent.speed = speed;
             validPos = GetValidNavMeshPosition(pos);
             destination = validPos;
-            agent.SetDestination((Vector3)destination);
+            agent.SetDestination(destination.Value);
         }
         animator.SetFloat("Blend", 1);
         yield return new WaitForEndOfFrame();
@@ -82,7 +86,8 @@ public class NpcMovement : MovableObjects
     {
         if (agent != null)
         {
-            blocker.enabled = false;
+            if (blocker != null)
+                blocker.enabled = false;
             agent.enabled = true;
             agent.Warp(pos);
             agent.ResetPath();
@@ -147,7 +152,7 @@ public class NpcMovement : MovableObjects
             {
                 destination = GetValidNavMeshPosition(point[idxPoint].position);
             }
-            agent.SetDestination((Vector3)destination);
+            agent.SetDestination(destination.Value);
         }
     }
 
@@ -233,18 +238,19 @@ public class NpcMovement : MovableObjects
         {
             agent = gameObject.AddComponent<NavMeshAgent>();
         }
-        blocker = GetComponent<NavMeshObstacle>();
-        if(blocker == null)
-        {
-            blocker = gameObject.AddComponent<NavMeshObstacle>();
-            blocker.center = new Vector3(0, .94f, 0);
-            blocker.shape = NavMeshObstacleShape.Capsule;
-            blocker.radius = .2f;
-            blocker.height = 1.745f;
-            blocker.carving = true;
-            blocker.carveOnlyStationary = true;
-        }
-        blocker.enabled = false;
+        //blocker = GetComponent<NavMeshObstacle>();
+        //if(blocker == null)
+        //{
+        //    blocker = gameObject.AddComponent<NavMeshObstacle>();
+        //    blocker.center = new Vector3(0, .94f, 0);
+        //    blocker.shape = NavMeshObstacleShape.Capsule;
+        //    blocker.radius = .2f;
+        //    blocker.height = 1.745f;
+        //    blocker.carving = true;
+        //    blocker.carveOnlyStationary = true;
+        //}
+        if (blocker != null)
+            blocker.enabled = false;
 
         // NavMeshAgent must drive the transform because the animation has no root motion
         agent.updatePosition = true;
@@ -256,7 +262,7 @@ public class NpcMovement : MovableObjects
                 destination = GetValidNavMeshPosition(point[idxPoint].position);
         }
         if(destination != null)
-            agent.SetDestination((Vector3)destination);
+            agent.SetDestination(destination.Value);
         agent.enabled = false;
 
 
@@ -320,7 +326,8 @@ public class NpcMovement : MovableObjects
     void Update()
     {
         bool shouldStayInCutscene = cutsceneFlagLocked;
-        blocker.enabled = !agent.enabled;
+        if (blocker != null)
+            blocker.enabled = !agent.enabled;
 
         if (animator != null && HasAnimatorParameter("Cutscene"))
         {
@@ -347,62 +354,54 @@ public class NpcMovement : MovableObjects
         {
             return;
         }
-        if (HandlePauseState()) return;        
+        if (HandlePauseState()) return;
 
         if (animState == NPCAnimationState.Sit)
-            return;        
-        
-        if (agent.remainingDistance <= agent.stoppingDistance)
+            return;
+        else if (agent.remainingDistance <= agent.stoppingDistance)
         {
-            if (point.Length == 0)
-            {
-                HandleAnimationEndState();
-                moveMyself = false;
-                return;
-            }
-            if (animState != NPCAnimationState.Walk)
+            if (idle)
             {
                 currIdleTime -= Time.deltaTime;
-                if (currIdleTime <= 0)
+                if (currIdleTime > 0f) return;
+                if (point.Length == 0)
                 {
-                    StartCoroutine(RotateHead(0f));
-                    if (++idxPoint >= point.Length)
+                    HandleAnimationEndState();
+                    moveMyself = false;
+                }
+                else if (++idxPoint >= point.Length)
+                {
+                    idxPoint %= point.Length;
+                    if (!loopMovement)
                     {
-                        idxPoint %= point.Length;
-                        if (!loopMovement)
-                        {
-                            moveMyself = false;
-                            return;
-                        }
-                    }
-                    else
-                        idxPoint %= point.Length;
-                    if (moveMyself)
-                    {
-                        // Transition from Idle to Moving
-                        animator.SetFloat("Blend", 1f);
-                        animState = NPCAnimationState.Walk;
-                        destination = GetValidNavMeshPosition(point[idxPoint].position);
-                        agent.SetDestination((Vector3)destination);
-                        agent.speed = speed;
+                        moveMyself = false;
                     }
                 }
-                return; // Exit early while idling
-            }
-            currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
-            HandleAnimationEndState();
-            if (point[idxPoint].faceTowards != null)
-            {
-                //Rotate
-                Vector3 targetPos = point[idxPoint].faceTowards.position;
-                targetPos.y = transform.position.y;
-                Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-                if (point[idxPoint].endState != NPCAnimationState.Sit)
-                    StartCoroutine(Rotate(targetRotation.y));
+                // Transition from Idle to Moving
+                destination = GetValidNavMeshPosition(point[idxPoint].position);
+                agent.SetDestination(destination.Value);
+                animator.SetFloat("Blend", 1f);
+                animState = NPCAnimationState.Walk;
+                idle = false;
             }
             else
             {
-                StartCoroutine(Rotate(point[idxPoint].transform.rotation.y));
+                currIdleTime = point[idxPoint].endPosition ? idleTime : 0.5f;
+                idle = true;
+                HandleAnimationEndState();
+                if (point[idxPoint].faceTowards != null)
+                {
+                    //Rotate
+                    Vector3 targetPos = point[idxPoint].faceTowards.position;
+                    targetPos.y = transform.position.y;
+                    Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+                    if (point[idxPoint].endState != NPCAnimationState.Sit)
+                        StartCoroutine(Rotate(Quaternion.LookRotation(targetPos).eulerAngles.y, 100f));
+                }
+                else
+                {
+                    StartCoroutine(Rotate(point[idxPoint].transform.rotation.y, 100f));
+                }
             }
         }
         else
@@ -473,7 +472,7 @@ public class NpcMovement : MovableObjects
                 targetPos.y = transform.position.y;
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
                 if(Quaternion.Angle(transform.rotation, targetRotation)>0)
-                    StartCoroutine(Rotate(targetRotation.eulerAngles.y));
+                    StartCoroutine(Rotate(targetRotation.eulerAngles.y, 10f));
             }
         }
         else if(!facePlayer)
@@ -596,24 +595,28 @@ public class NpcMovement : MovableObjects
             wasPausedLastFrame = true;
             return true;
         }
-        else if ((movementAllowed||moveMyself) && agent != null)
+        else
         {
-            agent.enabled = true;
-            if (destination == null)
+            if (wasPausedLastFrame)
             {
-                if (point.Length > idxPoint)
-                    destination = GetValidNavMeshPosition(point[idxPoint].position);
+                wasPausedLastFrame = false;
             }
-            agent.SetDestination((Vector3)destination);
-            animState = NPCAnimationState.Walk;
-            animator.SetFloat("Blend", 1f);
+            if ((movementAllowed||moveMyself) && agent != null)
+            {
+                agent.enabled = true;
+                if (destination == null)
+                {
+                    if (point.Length > idxPoint)
+                        destination = GetValidNavMeshPosition(point[idxPoint].position);
+                }
+                //Debug.Log($"{gameObject.name} destination: {destination.Value.x}");
+                agent.SetDestination(destination.Value);
+                animState = NPCAnimationState.Walk;
+                animator.SetFloat("Blend", 1f);
+            }
+            return false;
         }
-        if (wasPausedLastFrame)
-        {
-            wasPausedLastFrame = false;
-
-        }
-        return false;
+        
     }
     #endregion
 
