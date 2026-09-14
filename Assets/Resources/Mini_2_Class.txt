@@ -12,4 +12,4 @@ Teacher "Open your books, let’s start the lesson."
 PlayerFaceFront()
 Jessica "<style=\"Whispering\">I guess I’ll go.</style>"
 [w]FadeOut(1), [w]Wait(.5),[w]SwitchCam(PlayerCam), [w]Wait(1), [w]FadeIn(1)
-Jessica "I want to go to the bathroom." Objective(Class)
+Jessica "I want to go to the bathroom." Objective("2_Class")
