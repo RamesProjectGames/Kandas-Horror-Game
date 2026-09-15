@@ -10,7 +10,7 @@ public class FloatingText : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        mainCamera = Camera.main.transform;
+        mainCamera = GameObject.Find("UI Camera").transform;
         unit = transform.parent;
         worldSpaceCanvas = GameObject.Find("WorldCanvas").transform;
 
