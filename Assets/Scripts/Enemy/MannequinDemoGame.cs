@@ -566,16 +566,21 @@ public class MannequinDemoGame : MovableObjects
     private void TriggerPlayerReset()
     {
         CameraManager.SwitchCamera(playerCamera);
-        if(playerResetPosition == Vector3.zero)
+        var settingUI = FindAnyObjectByType<SettingsUI>();
+        if (settingUI != null)
         {
-            resetManager.ResetPlayer("Mannequin caught the player");
-            return;
+            settingUI.ShowGameover(true);
         }
-        var playerController = FindAnyObjectByType<PlayerController>();
-        if (playerController != null)
-        {
-            StartCoroutine(playerController.Teleport(playerResetPosition));
-        }
+        // if(playerResetPosition == Vector3.zero)
+        // {
+        //     resetManager.ResetPlayer("Mannequin caught the player");
+        //     return;
+        // }
+        // var playerController = FindAnyObjectByType<PlayerController>();
+        // if (playerController != null)
+        // {
+        //     StartCoroutine(playerController.Teleport(playerResetPosition));
+        // }
     }
 
     private void TriggerCaptureBlackScreen()
