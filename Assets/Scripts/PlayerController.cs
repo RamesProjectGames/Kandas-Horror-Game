@@ -53,6 +53,8 @@ public class PlayerController : MovableObjects
     private Transform originalFollowTarget;
     private Transform originalLookTarget;
 
+    float playerCenter;
+
     [Header("Bob Settings")]
     public float headBobAmplitude = 0.5f;
     public float headBobFrequency = 1.0f;
@@ -506,26 +508,53 @@ public class PlayerController : MovableObjects
             return;
         }
 
-        if (agent.enabled && !(SettingManager.Instance.isPaused || SettingManager.Instance.gameOver) && !DialogueSystem.IsConversationRunning)
+        if (agent.enabled && !(SettingManager.Instance.isPaused || SettingManager.Instance.gameOver))
         {
             //// Rotate body left/right using Look X input
-            transform.Rotate(Vector3.up * lookAction.action.ReadValue<Vector2>().x * SettingManager.Instance.settings.MouseSensitivity * lookSensitivity * Time.deltaTime);
-            HandleCrouch();
-            if (input != Vector3.zero)
+            if(!DialogueSystem.IsConversationRunning)
             {
-                if(isSprinting)
-                {
-                    stamina -= staminaDecayRate * Time.deltaTime;
-                    if (stamina <= 0f)
-                    {
-                        stamina = 0;
-                        isExhausted = true;
-                    }
-                }
-                agent.Move(moveSpd * Time.deltaTime * input);
-                transform.position = agent.nextPosition;
+                transform.Rotate(Vector3.up * lookAction.action.ReadValue<Vector2>().x * SettingManager.Instance.settings.MouseSensitivity * lookSensitivity * Time.deltaTime);
+                playerCenter = transform.rotation.eulerAngles.y;
             }
-            anim.SetFloat("MoveBlend", Mathf.CeilToInt(input.magnitude));
+            else if(DialogueSystem.Instance.cameraControl)
+            {
+                float input = lookAction.action.ReadValue<Vector2>().x
+                            * SettingManager.Instance.settings.MouseSensitivity
+                            * lookSensitivity
+                            * Time.deltaTime;
+
+                // Normalize angles between (0...360)
+                Vector3 euler = transform.rotation.eulerAngles;
+                float proposedY = euler.y + input;
+
+                // Clamp Rotation
+                float offset = Mathf.DeltaAngle(playerCenter, proposedY);
+                offset = Mathf.Clamp(offset, -45f, 45f);
+
+                float clampedY = playerCenter + offset;
+                transform.rotation = Quaternion.Euler(euler.x, clampedY, euler.z);
+
+                //transform.Rotate(Vector3.up * lookAction.action.ReadValue<Vector2>().x * SettingManager.Instance.settings.MouseSensitivity * lookSensitivity * Time.deltaTime);
+            }
+            if(!DialogueSystem.IsConversationRunning)
+            {
+                HandleCrouch();
+                if (input != Vector3.zero)
+                {
+                    if (isSprinting)
+                    {
+                        stamina -= staminaDecayRate * Time.deltaTime;
+                        if (stamina <= 0f)
+                        {
+                            stamina = 0;
+                            isExhausted = true;
+                        }
+                    }
+                    agent.Move(moveSpd * Time.deltaTime * input);
+                    transform.position = agent.nextPosition;
+                }
+                anim.SetFloat("MoveBlend", Mathf.CeilToInt(input.magnitude));
+            }
         }
     }
 
@@ -688,6 +717,7 @@ public class PlayerController : MovableObjects
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotSpd);
             yield return null;
         }
+        playerCenter = yrot;
     }
 
     public override IEnumerator Move(Vector3 pos, float speed = 150f)
