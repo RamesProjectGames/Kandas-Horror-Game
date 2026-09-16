@@ -46,7 +46,6 @@ public class ItemInteraction : MonoBehaviour
     [Header("Interaction")]
     [SerializeField] private bool showTextOnPickup = true;
     [SerializeField] private bool canInteractWhenHeld = false;
-    public bool controlCameraOnDialogue = false;
     public bool CanInteractWhenHeld => canInteractWhenHeld;
     [SerializeField] private InputActionReference interactAction;
     public UnityEvent onPickup;
@@ -576,21 +575,21 @@ public class ItemInteraction : MonoBehaviour
 
         if (bestMatch != null)
         {
-            DialogueSystem.Instance.OpenDialogue(bestMatch.Pair.dialogueAsset, controlCameraOnDialogue);
+            DialogueSystem.Instance.OpenDialogue(bestMatch.Pair.dialogueAsset);
         }
         else
         {
             ObjectiveDialoguePair fallback = objectiveDialoguePair.Find(x => x.objective[0] == "");
             if (fallback != null)
             {
-                DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset, controlCameraOnDialogue);
+                DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset);
             }
             else
             {
                 fallback = objectiveDialoguePair.Find(x => x.objective.Length == 0);
                 if (fallback != null)
                 {
-                    DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset, controlCameraOnDialogue);
+                    DialogueSystem.Instance.OpenDialogue(fallback.dialogueAsset);
                 }
             }
         }

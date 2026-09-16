@@ -1,6 +1,6 @@
+using Dialogue;
 using System.Collections;
 using System.Collections.Generic;
-using Dialogue;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
@@ -68,6 +68,7 @@ public class MannequinDemoGame : MovableObjects
     void Start()
     {
         originalPosition = transform.position;
+        originalPosition.y += .2f;
         playerSight = FindAnyObjectByType<PlayerSightInteraction>();
         sightDetection = GetComponent<EnemySightDetection>();
         playerTransform = playerSight?.transform;
@@ -94,8 +95,15 @@ public class MannequinDemoGame : MovableObjects
 
     void Update()
     {
-        if (playerSight == null || playerTransform == null || !CheckObjectives() || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver)
+        if (playerSight == null || playerTransform == null || !CheckObjectives() || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning)
+        {
+            agent.enabled = false;
             return;
+        }
+        else
+        {
+            agent.enabled = true;
+        }
 
         // Check if player can see this enemy (Weeping Angel behavior: moves when NOT observed)
         bool isPlayerLooking = IsPlayerLooking();
@@ -428,19 +436,16 @@ public class MannequinDemoGame : MovableObjects
         // If not at original position, navigate back
         if (distanceToOrigin > stoppingDistance)
         {
-            Teleport(originalPosition);
+            StartCoroutine(Teleport(originalPosition));
             if (animator != null)
             {
                 animator.SetFloat("MoveBlend", 0);
             }
         }
-        else
-        {
-            // Reached original position
-            isReturningToOrigin = false;
-            ReturnIdleAnimation();
-            StopMovement();
-        }
+        // Reached original position
+        isReturningToOrigin = false;
+        ReturnIdleAnimation();
+        StopMovement();
     }
 
     public void PlayCatchAnimation()
@@ -479,10 +484,10 @@ public class MannequinDemoGame : MovableObjects
         CameraManager.SwitchCamera(chokeCamera);
     }
     public void TriggerResetDoll()
-    {        
+    {
         // Reset mannequin to original position
-        transform.position = originalPosition;
-        
+        StartCoroutine(Teleport(originalPosition));
+
         // Reset NavMeshAgent
         if (navMeshAgent != null)
         {
@@ -601,31 +606,40 @@ public class MannequinDemoGame : MovableObjects
     #region Agent (auto) Movement
     public override IEnumerator Teleport(Vector3 pos)
     {
-        agent.enabled = false;
-        transform.position = pos;
-        //agent.Warp(pos);
-        yield return new WaitForSeconds(.1f);
-        agent.enabled = true;
-        agent.ResetPath();
+        if (agent != null)
+        {
+            agent.enabled = true;
+            agent.Warp(pos);
+            transform.position = pos;
+            agent.ResetPath();
+            yield return new WaitForEndOfFrame();
+            agent.enabled = true;
+        }
+        // Reached original position
+        isReturningToOrigin = false;
+        ReturnIdleAnimation();
+        StopMovement();
     }
     public override IEnumerator Rotate(float yrot, float rotSpd = 5f)
     {
         rotSpd = Mathf.Min(rotSpd, 1f);
         Quaternion targetRotation = Quaternion.Euler(0, yrot, 0);
-        while (Quaternion.Angle(transform.rotation, targetRotation) > 5f)
+        while (Quaternion.Angle(transform.rotation, targetRotation) >= 10f)
         {
-            // Putar secara bertahap dari rotasi saat ini ke rotasi target
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotSpd);
-            yield return null;
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpd * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
         }
-        // Snap to exact target
         transform.rotation = targetRotation;
     }
 
     public override IEnumerator Move(Vector3 pos, float speed = 150f)
     {
-        agent.SetDestination(pos);
-        agent.isStopped = false;
+        if (agent != null)
+        {
+            agent.enabled = true;
+            agent.speed = speed;
+            agent.SetDestination(pos);
+        }
         yield return new WaitForEndOfFrame();
     }
 

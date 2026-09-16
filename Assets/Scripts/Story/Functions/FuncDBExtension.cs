@@ -75,6 +75,7 @@ namespace TestingPurposes
             db.AddFunction("Wait", new Func<string, IEnumerator>(Wait));
             db.AddFunction("FadeIn", new Func<string, IEnumerator>(FadeIn));
             db.AddFunction("FadeOut", new Func<string, IEnumerator>(FadeOut));
+            db.AddFunction("AllowCamMovement", new Action<string>(AllowCamMovement));
             db.AddFunction("ShowDialogue", new Func<IEnumerator>(ShowDialogue));
             db.AddFunction("HideDialogue", new Func<IEnumerator>(HideDialogue));
             db.AddFunction("NextDialogue", new Action(NextDialogue));
@@ -414,6 +415,11 @@ namespace TestingPurposes
             {
                 yield return DialogueSystem.Instance.FadeToBlack(duration);
             }
+        }
+
+        private static void AllowCamMovement(string arg)
+        {
+            DialogueSystem.Instance.cameraControl = bool.Parse(arg);
         }
 
         private static void CompleteObjective(string arg)
@@ -1019,12 +1025,12 @@ namespace TestingPurposes
             GameObject.Find("HoleCam").GetComponent<CinemachineCamera>().Follow = endPos.transform;
             GameObject.Find("HoleCam").transform.position = startPos.position;
             SwitchCamera("HoleCam");
+            yield return new WaitForSeconds(.5f);
+            yield return TeleportObject(new string[] { "Player", "^x", endPos.position.x.ToString(), "^z", endPos.position.z.ToString() });
             while (Vector3.Distance(CameraManager.currentActiveCamera.transform.position, endPos.position) > .1f)
             {
                 CameraManager.currentActiveCamera.transform.position = Vector3.Lerp(CameraManager.currentActiveCamera.transform.position, endPos.position, Time.deltaTime * 2.0f);
-                yield return null;
             }
-            yield return TeleportObject(new string[] { "Player", "^x", endPos.position.x.ToString(), "^z", endPos.position.z.ToString() });
             RotateObject(new string[] { "Player", "^r", startPos.transform.rotation.y.ToString() });
             SwitchCamera("Player Camera");
             yield return new WaitForSeconds(1);
