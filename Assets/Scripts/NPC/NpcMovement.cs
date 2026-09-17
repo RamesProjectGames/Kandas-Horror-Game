@@ -424,7 +424,7 @@ public class NpcMovement : MovableObjects
             Vector3 targetPos = point[idxPoint].faceTowards.position;
             targetPos.y = transform.position.y;
             Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
-            if (point[idxPoint].endState == NPCAnimationState.Sit)
+            if (point[idxPoint].endState == NPCAnimationState.Sit && head != null)
             {
                 //Rotate
                 if (Mathf.Abs(targetRotation.y - transform.rotation.y) <= 45f)
@@ -442,7 +442,7 @@ public class NpcMovement : MovableObjects
         }
         else if ((point.Length < 1 || point[idxPoint].faceTowards == null) && DialogueSystem.IsConversationRunning && facePlayer)
         {
-            if (animState == NPCAnimationState.Sit)
+            if (animState == NPCAnimationState.Sit && head != null)
             {
                 Vector3 playerPos = FindAnyObjectByType<PlayerController>().transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(playerPos - transform.position);
@@ -477,7 +477,8 @@ public class NpcMovement : MovableObjects
         }
         else if(!facePlayer)
         {
-            head.localRotation = Quaternion.identity;
+            if(head != null)
+                head.localRotation = Quaternion.identity;
             if(point.Length > idxPoint && point[idxPoint] != null)
             {
                 Quaternion targetRot = transform.rotation;
@@ -514,7 +515,7 @@ public class NpcMovement : MovableObjects
 
     void OnAnimatorMove()
     {
-        if (animator == null) return;
+        if (animator == null && agent == null) return;
         // NavMeshAgent drives position. OnAnimatorMove just syncs
         // agent.nextPosition to the transform so the NavMesh stays consistent.
         agent.nextPosition = transform.position;

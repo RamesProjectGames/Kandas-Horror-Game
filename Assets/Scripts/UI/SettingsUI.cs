@@ -447,6 +447,11 @@ public class SettingsUI : MonoBehaviour
         FragmentManager.Instance.ClearCurrentChapterFragment();
         yield return StartCoroutine(DialogueSystem.Instance.FadeToBlack(0));
         FindAnyObjectByType<PlayerController>().ToggleRig(true);
+        PlayerController.canUseFlashlight = false;
+        FindAnyObjectByType<PlayerController>().TurnOffFlashlight();
+        AudioManager.Instance.StopAllAmbience();
+        AudioManager.Instance.StopAllSfx();
+        AudioManager.Instance.StopAllVoice();
 
         loadingPanel.SetActive(true);
 

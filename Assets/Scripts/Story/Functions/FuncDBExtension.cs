@@ -7,11 +7,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Cinemachine;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
-using static UnityEngine.Rendering.GPUSort;
 
 namespace Dialogue.Functions
 {
@@ -85,7 +83,8 @@ namespace TestingPurposes
             db.AddFunction("DemoComplete", new Action(DemoComplete));
             #endregion
             #region Misc Events
-            db.AddFunction("PlayVideo", new Action<string[]>(PlayVideo));
+            db.AddFunction("PlayVideoUI", new Func<string[], IEnumerator>(PlayVideoUI));
+            db.AddFunction("PlayVideo3D", new Action<string[]>(PlayVideo3D));
             db.AddFunction("PlayCutscene", new Func<string[], IEnumerator>(PlayCutscene));
             db.AddFunction("Glitch", new Func<string, IEnumerator>(Glitch));
             db.AddFunction("SwitchScene", new Action<string>(SwitchScene));
@@ -686,7 +685,16 @@ namespace TestingPurposes
         #endregion
 
         #region Misc Events
-        private static void PlayVideo(string[] args)
+        private static IEnumerator PlayVideoUI(string[] args)
+        {
+
+            DialogueSystem.Instance.vidPlayer.clip = null;
+            while(DialogueSystem.Instance.vidPlayer.isPlaying)
+            {
+                yield return null;
+            }
+        }
+        private static void PlayVideo3D(string[] args)
         {
 
         }

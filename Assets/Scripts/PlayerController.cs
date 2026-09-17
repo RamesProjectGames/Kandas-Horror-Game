@@ -796,9 +796,21 @@ public class PlayerController : MovableObjects
     }
     public void ToggleFlashlight()
     {
-        if (!canUseFlashlight || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning || CameraManager.currentActiveCamera != playerCam)
+        if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning || CameraManager.currentActiveCamera != playerCam)
             return;
-        flashlightEnabled = !flashlightEnabled;
+        if (!canUseFlashlight || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning || CameraManager.currentActiveCamera != playerCam)
+        {
+            flashlightEnabled = false;
+        }
+        else
+        {
+            flashlightEnabled = !flashlightEnabled;
+        }
+        flashlight.SetActive(flashlightEnabled);
+    }
+    public void TurnOffFlashlight()
+    {
+        flashlightEnabled = false;
         flashlight.SetActive(flashlightEnabled);
     }
     #endregion

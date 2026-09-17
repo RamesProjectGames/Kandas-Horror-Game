@@ -4,29 +4,33 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.Shapes;
+using UnityEngine.Video;
 using static Dialogue.TextArchitect;
 
 namespace Dialogue
 {
     public class DialogueSystem : MonoBehaviour
     {
+        public static DialogueSystem Instance { get; private set; }
+        #region Components and Flags
         public DialogueContainer dialogueContainer = new DialogueContainer();
         public ConvoManager convoManager { get; private set; }
+        public TextArchitect architect { get; private set; }
+        public VideoPlayer vidPlayer;
         public BuildMethod buildMethod = BuildMethod.typewriter;
         public bool isRunningConvo => convoManager != null && convoManager.isRunning;
-        public bool cameraControl;
-        public TextArchitect architect { get; private set; }
-
-        [SerializeField] private InputActionReference nextInput, enqDebugInput;
         public Coroutine screenCo;
+        public static bool IsConversationRunning => Instance != null && Instance.isRunningConvo;
+        #endregion
 
+        #region Input
         //Dialogue System Trigger Events for Player Input (and others)
+        [SerializeField] private InputActionReference nextInput, enqDebugInput;
         public delegate void DialogueSystemEvent();
         public event DialogueSystemEvent onUserPrompt;
         public DialoguePrompt dialoguePrompt;
-
-        public static DialogueSystem Instance { get; private set; }
-        public static bool IsConversationRunning => Instance != null && Instance.isRunningConvo;
+        public bool cameraControl;
+        #endregion
 
         //Initialize System
         private void Awake()
