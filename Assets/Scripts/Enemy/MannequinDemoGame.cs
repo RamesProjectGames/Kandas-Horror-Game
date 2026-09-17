@@ -25,6 +25,7 @@ public class MannequinDemoGame : MovableObjects
     public List<string> relatedObjectives = new List<string>(){"NurseReport"};
     [Header("Detection")]
     public bool canRoamAround = false;
+    [SerializeField] private MannequinDetectionBox detectionBox;
     [SerializeField] private Vector3 detectionBoxSize = new Vector3(20f, 5f, 20f);
     [SerializeField] private Vector3 detectionBoxOffset = Vector3.zero;
     [SerializeField] private LayerMask obstacleMask;
@@ -277,6 +278,12 @@ public class MannequinDemoGame : MovableObjects
             return true; // Ignore detection box and always move toward player
         }
 
+
+        if (detectionBox != null)
+        {
+            return detectionBox.isInDetectionRange;
+        }
+        
         // Check if player position is within detection box bounds (with offset)
         Vector3 boxCenter = transform.position + detectionBoxOffset;
         Vector3 relativePlayerPos = playerTransform.position - boxCenter;
