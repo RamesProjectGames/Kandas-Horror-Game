@@ -1596,6 +1596,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MCHouse-Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 7856553091362089997, guid: ef1780dcefe1ee340b1105ffc41b76e3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 08de9b4a56a80e34b80ba2f211e9c5fc, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5323,9 +5327,33 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4155025194359639264, guid: 51388de7ed1a2d84cbe9d50df2bd09ed, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3593571278932029547, guid: 51388de7ed1a2d84cbe9d50df2bd09ed, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3593571278932029547, guid: 51388de7ed1a2d84cbe9d50df2bd09ed, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0006
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 51388de7ed1a2d84cbe9d50df2bd09ed, type: 3}
       propertyPath: m_Name
       value: MCHouse-StoneTaman
+      objectReference: {fileID: 0}
+    - target: {fileID: 2820189588311751012, guid: 51388de7ed1a2d84cbe9d50df2bd09ed, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2820189588311751012, guid: 51388de7ed1a2d84cbe9d50df2bd09ed, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2820189588311751012, guid: 51388de7ed1a2d84cbe9d50df2bd09ed, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0006
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
