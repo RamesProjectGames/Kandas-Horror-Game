@@ -832,7 +832,8 @@ namespace TestingPurposes
                 DialogueSystem.Instance.convoManager.Enqueue(FileReader.ReadAsset("PostLunch"));
                 //GameObject.Find("Player").GetComponent<PlayerController>().EatMeds();
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
+            StopSFX();
         }
 
         private static void HidePlayerRig()
