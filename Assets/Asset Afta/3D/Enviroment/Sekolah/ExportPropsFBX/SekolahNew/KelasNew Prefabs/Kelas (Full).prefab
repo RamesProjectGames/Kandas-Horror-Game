@@ -547,7 +547,6 @@ MonoBehaviour:
   breakSound: {fileID: 0}
   showTextOnPickup: 1
   canInteractWhenHeld: 0
-  controlCameraOnDialogue: 0
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   onPickup:
     m_PersistentCalls:
@@ -1621,6 +1620,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7234452948446416722}
     m_Modifications:
+    - target: {fileID: 68770056968383732, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 80468901951050754, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 562259123129706563, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_DrawHalo
       value: 0
@@ -1701,9 +1708,17 @@ PrefabInstance:
       propertyPath: m_DrawHalo
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2192953735917709879, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2416280123993453436, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 2744959354018303958, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2960967579650868220, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1737,9 +1752,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3502138870013924083, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3647488000567683635, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665176815776192485, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873885172993029788, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3969883843939845944, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_Intensity
@@ -1777,6 +1804,10 @@ PrefabInstance:
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4329786610509923706, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4345283241233436403, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1788,6 +1819,10 @@ PrefabInstance:
     - target: {fileID: 4441741238326523397, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640178073332436811, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4856041858823171942, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_CastShadows
@@ -1873,9 +1908,21 @@ PrefabInstance:
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6509670917234350714, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6570227417778270893, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6644616838035096309, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7018303464204015620, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7068098364300702655, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_CastShadows
@@ -1893,9 +1940,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7463454812627891320, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7473279839967536197, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_DrawHalo
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7629486222372148838, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664675116261051684, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7782210365906252587, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1957,9 +2016,17 @@ PrefabInstance:
       propertyPath: m_BoundingSphereOverride.z
       value: 1.0318e-41
       objectReference: {fileID: 0}
+    - target: {fileID: 8530608414792897237, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8563886364230443193, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 8873271461365499555, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9034346963798837103, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_Intensity
@@ -1984,6 +2051,10 @@ PrefabInstance:
     - target: {fileID: 9061398953375241017, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_Name
       value: Kelas (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9182781086478231325, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11724373107757490, guid: 150be62c5a2947f419872412c410338a, type: 3}
       propertyPath: m_VersionIndex
@@ -2081,6 +2152,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7234452948446416722}
     m_Modifications:
+    - target: {fileID: 1431631870924536115, guid: 65023694426c1cb488dccabd5d75aa51, type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2330412853148971691, guid: 65023694426c1cb488dccabd5d75aa51, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.99999976
@@ -3348,7 +3423,6 @@ MonoBehaviour:
   breakSound: {fileID: 0}
   showTextOnPickup: 1
   canInteractWhenHeld: 0
-  controlCameraOnDialogue: 0
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   onPickup:
     m_PersistentCalls:
