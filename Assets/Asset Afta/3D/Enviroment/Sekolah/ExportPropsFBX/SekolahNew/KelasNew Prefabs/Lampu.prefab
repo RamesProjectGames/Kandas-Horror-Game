@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6316544659970206934}
   - component: {fileID: 5343686692792649497}
+  - component: {fileID: 571697251049617045}
+  - component: {fileID: 2212979808640420163}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -97,6 +99,131 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!82 &571697251049617045
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3536531560355592963}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &2212979808640420163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3536531560355592963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf431721c00648349a164a5c29581fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetLight: {fileID: 0}
+  flickerChance: 0.4
+  minIntensity: 0.2
+  maxIntensity: 1.2
+  intensityChangeSpeed: 6
+  minInterval: 0.05
+  maxInterval: 0.2
+  targetRenderer: {fileID: 990863961985405663}
+  lightOnMaterial: {fileID: 2100000, guid: 07d6558c9dfe2b74dbed032c1f56b9ea, type: 2}
+  lightOffMaterial: {fileID: 2100000, guid: 20e0c9d802a746440b3c2d10e0ae6556, type: 2}
+  materialIndex: 1
+  audioSource: {fileID: 571697251049617045}
+  flickerSounds: []
+  electricHumSound: {fileID: 8300000, guid: 2e0f9b0f46fccff45930a62fd272b4c7, type: 3}
+  sfxVolume: 1
+  randomizePitch: 1
 --- !u!1 &5900958238485624353
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +322,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
+--- !u!23 &990863961985405663 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 567d1ed570590a447a368ca71b494c86, type: 3}
+  m_PrefabInstance: {fileID: 1874012187559906907}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2128915484978948528 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 567d1ed570590a447a368ca71b494c86, type: 3}

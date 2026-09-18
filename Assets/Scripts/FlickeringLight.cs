@@ -28,16 +28,47 @@ public class FlickeringLight : MonoBehaviour
     public Material lightOffMaterial;
     public int materialIndex = 1;
 
+    [Header("Audio Settings")]
+    [Tooltip("Komponen AudioSource (bisa kosong jika dipasang di GameObject ini)")]
+    public AudioSource audioSource;
+
+    [Tooltip("Suara klik/pukulan listrik saat lampu flicker (bisa beberapa variasi audio)")]
+    public AudioClip[] flickerSounds;
+
+    [Tooltip("Suara hum/dengung listrik loop saat lampu menyala (opsional)")]
+    public AudioClip electricHumSound;
+
+    [Range(0f, 1f)]
+    public float sfxVolume = 0.7f;
+
+    [Tooltip("Acak sedikit pitch agar suara flicker tidak monoton")]
+    public bool randomizePitch = true;
+
     private float targetIntensity;
+    private AudioSource humAudioSource;
 
     private void Awake()
     {
         if (targetLight == null)
             targetLight = GetComponent<Light>();
 
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+
         if (targetLight != null)
         {
             targetIntensity = targetLight.intensity;
+        }
+
+        // Buat AudioSource khusus untuk Loop Suara Hum jika disediakan file-nya
+        if (electricHumSound != null)
+        {
+            humAudioSource = gameObject.AddComponent<AudioSource>();
+            humAudioSource.clip = electricHumSound;
+            humAudioSource.loop = true;
+            humAudioSource.playOnAwake = false;
+            humAudioSource.spatialBlend = 1f; // 3D Sound
+            humAudioSource.volume = sfxVolume * 0.5f;
         }
     }
 
@@ -75,14 +106,25 @@ public class FlickeringLight : MonoBehaviour
                     if (isOn)
                     {
                         targetIntensity = Random.Range(minIntensity, maxIntensity);
+
+                        // Play Hum Loop jika ada
+                        if (humAudioSource != null && !humAudioSource.isPlaying)
+                            humAudioSource.Play();
                     }
                     else
                     {
                         targetIntensity = 0f;
+
+                        // Stop Hum Loop saat lampu mati
+                        if (humAudioSource != null && humAudioSource.isPlaying)
+                            humAudioSource.Stop();
                     }
                 }
 
-                // Swap material at index 1
+                // Play SFX Click/Flicker
+                PlayFlickerSound();
+
+                // Swap material at specified index
                 if (targetRenderer != null &&
                     materialIndex >= 0 &&
                     materialIndex < targetRenderer.materials.Length)
@@ -92,6 +134,25 @@ public class FlickeringLight : MonoBehaviour
                     targetRenderer.materials = mats;
                 }
             }
+        }
+    }
+
+    private void PlayFlickerSound()
+    {
+        if (audioSource == null || flickerSounds == null || flickerSounds.Length == 0)
+            return;
+
+        // Ambil SFX acak dari array
+        AudioClip clip = flickerSounds[Random.Range(0, flickerSounds.Length)];
+
+        if (clip != null)
+        {
+            if (randomizePitch)
+            {
+                audioSource.pitch = Random.Range(0.85f, 1.15f);
+            }
+
+            audioSource.PlayOneShot(clip, sfxVolume);
         }
     }
 }
