@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.ProBuilder.Shapes;
-using UnityEngine.Video;
 using static Dialogue.TextArchitect;
 
 namespace Dialogue
@@ -16,7 +13,6 @@ namespace Dialogue
         public DialogueContainer dialogueContainer = new DialogueContainer();
         public ConvoManager convoManager { get; private set; }
         public TextArchitect architect { get; private set; }
-        public VideoPlayer vidPlayer;
         public BuildMethod buildMethod = BuildMethod.typewriter;
         public bool isRunningConvo => convoManager != null && convoManager.isRunning;
         public Coroutine screenCo;

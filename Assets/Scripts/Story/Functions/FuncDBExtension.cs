@@ -10,6 +10,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 namespace Dialogue.Functions
 {
@@ -687,13 +688,18 @@ namespace TestingPurposes
         #region Misc Events
         private static IEnumerator PlayVideoUI(string[] args)
         {
-
-            DialogueSystem.Instance.vidPlayer.clip = null;
-            while(DialogueSystem.Instance.vidPlayer.isPlaying)
+            VideoPlayer vidPlayer = UnityEngine.Object.FindObjectsByType<VideoPlayer>(sortMode: FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == args[0]);
+            if (!vidPlayer.isPrepared)
             {
-                yield return null;
+                vidPlayer.Prepare();
+            }
+            vidPlayer.Play();
+            while(vidPlayer.isPlaying)
+            {
+                yield return new WaitForEndOfFrame();
             }
         }
+
         private static void PlayVideo3D(string[] args)
         {
 
