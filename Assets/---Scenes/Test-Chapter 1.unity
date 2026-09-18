@@ -20343,7 +20343,7 @@ Transform:
   m_GameObject: {fileID: 108493474}
   serializedVersion: 2
   m_LocalRotation: {x: -0.19208533, y: 0.37432104, z: -0.079564385, w: -0.90369046}
-  m_LocalPosition: {x: 294.25, y: 1.5, z: 218}
+  m_LocalPosition: {x: 294.25, y: 1.5, z: 217.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -279567,6 +279567,11 @@ MonoBehaviour:
   lightOnMaterial: {fileID: 2100000, guid: 07d6558c9dfe2b74dbed032c1f56b9ea, type: 2}
   lightOffMaterial: {fileID: 2100000, guid: 20e0c9d802a746440b3c2d10e0ae6556, type: 2}
   materialIndex: 1
+  audioSource: {fileID: 0}
+  flickerSounds: []
+  electricHumSound: {fileID: 0}
+  sfxVolume: 0.7
+  randomizePitch: 1
 --- !u!1 &1919690352
 GameObject:
   m_ObjectHideFlags: 0

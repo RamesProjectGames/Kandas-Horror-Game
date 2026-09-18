@@ -593,7 +593,7 @@ public class PlayerController : MovableObjects
         anim.SetBool("Lunch", true);
         CameraManager.SwitchCamera(GameObject.Find("LunchCam").GetComponent<CinemachineCamera>());
         yield return new WaitForSeconds(1f);
-        yield return StartCoroutine(Teleport(new Vector3(293.5f, transform.position.y, 218.75f)));
+        yield return StartCoroutine(Teleport(new Vector3(293.5f, transform.position.y, 218.45f)));
         yield return StartCoroutine(Rotate(180f));
     }
 
@@ -789,9 +789,17 @@ public class PlayerController : MovableObjects
     #region Flashlight
     private void ToggleFlashlight(InputAction.CallbackContext ctx)
     {
-        if (!canUseFlashlight || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning || CameraManager.currentActiveCamera != playerCam)
+        if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning || CameraManager.currentActiveCamera != playerCam)
             return;
-        flashlightEnabled = !flashlightEnabled;
+        if (!canUseFlashlight || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning || CameraManager.currentActiveCamera != playerCam)
+        {
+            flashlightEnabled = false;
+        }
+        else
+        {
+            flashlightEnabled = !flashlightEnabled;
+        }
+        AudioManager.Instance.PlayOneShot2D(RuntimeManager.PathToEventReference("event:/SFX/FlashlightToggle"), 1, 1);
         flashlight.SetActive(flashlightEnabled);
     }
     public void ToggleFlashlight()
@@ -806,10 +814,12 @@ public class PlayerController : MovableObjects
         {
             flashlightEnabled = !flashlightEnabled;
         }
+        AudioManager.Instance.PlayOneShot2D(RuntimeManager.PathToEventReference("event:/SFX/FlashlightToggle"), 1, 1);
         flashlight.SetActive(flashlightEnabled);
     }
     public void TurnOffFlashlight()
     {
+        AudioManager.Instance.PlayOneShot2D(RuntimeManager.PathToEventReference("event:/SFX/FlashlightToggle"), 1, 1);
         flashlightEnabled = false;
         flashlight.SetActive(flashlightEnabled);
     }

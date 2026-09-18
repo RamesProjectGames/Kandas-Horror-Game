@@ -1,4 +1,4 @@
-Jessica "{c}This is so weird..." HideObject(KeyClassroom)
+Jessica "This is so weird..." PlaySFX(GrabKey ^v 1), HideObject(KeyClassroom)
 "{a}But anyway, I can’t do anything but go back to class..."
 ShowObject("Roaming Manequin Demo (1)"), OpenSpecificDoor("PintuKanan (ClassKey)"), OpenSpecificDoor("PintuKiri (ClassKey)"), CloseSpecificDoor("Tangga-PintuKanan (FindKey)"), CloseSpecificDoor("Tangga-PintuKiri (FindKey)")
 Jessica "!!!"

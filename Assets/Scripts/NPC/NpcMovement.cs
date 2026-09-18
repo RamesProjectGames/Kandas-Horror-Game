@@ -238,19 +238,6 @@ public class NpcMovement : MovableObjects
         {
             agent = gameObject.AddComponent<NavMeshAgent>();
         }
-        //blocker = GetComponent<NavMeshObstacle>();
-        //if(blocker == null)
-        //{
-        //    blocker = gameObject.AddComponent<NavMeshObstacle>();
-        //    blocker.center = new Vector3(0, .94f, 0);
-        //    blocker.shape = NavMeshObstacleShape.Capsule;
-        //    blocker.radius = .2f;
-        //    blocker.height = 1.745f;
-        //    blocker.carving = true;
-        //    blocker.carveOnlyStationary = true;
-        //}
-        if (blocker != null)
-            blocker.enabled = false;
 
         // NavMeshAgent must drive the transform because the animation has no root motion
         agent.updatePosition = true;
@@ -264,6 +251,20 @@ public class NpcMovement : MovableObjects
         if(destination != null)
             agent.SetDestination(destination.Value);
         agent.enabled = false;
+
+        //blocker = GetComponent<NavMeshObstacle>();
+        //if(blocker == null)
+        //{
+        //    blocker = gameObject.AddComponent<NavMeshObstacle>();
+        //    blocker.center = new Vector3(0, .94f, 0);
+        //    blocker.shape = NavMeshObstacleShape.Capsule;
+        //    blocker.radius = .2f;
+        //    blocker.height = 1.745f;
+        //    blocker.carving = true;
+        //    blocker.carveOnlyStationary = true;
+        //}
+        if (blocker != null)
+            blocker.enabled = false;
 
 
         ToggleNPCMovement();
