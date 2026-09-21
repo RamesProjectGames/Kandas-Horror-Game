@@ -72,9 +72,30 @@ public class FlickeringLight : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void OnEnable()
+    {
+        StartFlickering();
+    }
+
+    private void OnDisable()
+    {
+        StopFlickering();
+    }
+
+    public void StartFlickering()
     {
         StartCoroutine(FlickerRoutine());
+    }
+
+    public void StopFlickering()
+    {
+        StopCoroutine(FlickerRoutine());
+
+        targetIntensity = 0f;
+
+        // Stop Hum Loop saat lampu mati
+        if (humAudioSource != null && humAudioSource.isPlaying)
+            humAudioSource.Stop();
     }
 
     private void Update()
@@ -85,6 +106,16 @@ public class FlickeringLight : MonoBehaviour
         if (targetLight.enabled)
         {
             targetLight.intensity = Mathf.MoveTowards(targetLight.intensity, targetIntensity, intensityChangeSpeed * Time.deltaTime);
+        }
+
+        // Swap material at specified index
+        if (targetRenderer != null &&
+            materialIndex >= 0 &&
+            materialIndex < targetRenderer.materials.Length)
+        {
+            Material[] mats = targetRenderer.materials;
+            mats[materialIndex] = lightOffMaterial;
+            targetRenderer.materials = mats;
         }
     }
 

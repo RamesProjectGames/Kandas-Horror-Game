@@ -704,14 +704,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   footstepAudio:
     Guid:
-      Data1: 55876696
-      Data2: 1081161171
-      Data3: -1177958995
-      Data4: -687249498
-    Path: event:/SFX/PlayerFootsteps
+      Data1: -193628141
+      Data2: 1097986696
+      Data3: -40709984
+      Data4: -1952618164
+    Path: event:/SFX/ManequinMovement
   FootstepAudioData: []
   TerrainSoundTypes: []
-  Animator: {fileID: 0}
+  Animator: {fileID: 4536603029890229518}
   Enviroment:
     serializedVersion: 2
     m_Bits: 1
@@ -732,6 +732,7 @@ MonoBehaviour:
   agent: {fileID: 1340377957272672941}
   relatedObjectives: []
   canRoamAround: 0
+  detectionBox: {fileID: 0}
   detectionBoxSize: {x: 45, y: 4.53, z: 12.33}
   detectionBoxOffset: {x: 11.3, y: 1.25, z: 0}
   obstacleMask:

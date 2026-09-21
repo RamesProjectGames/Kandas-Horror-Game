@@ -1,7 +1,7 @@
 PlaySFX(RattleDoor ^v 0.4), [w]Wait(1)
 Jessica "Why is it locked?!"
 HideDialogue(), PlaySFX(RattleDoor ^v 0.6), [w]Wait(1), PlaySFX(RattleDoor ^v 0.8), [w]Wait(1), PlaySFX(RattleDoor ^v 1), [w]Wait(1)
-Jessica "Is there a key anywhere?"
+Jessica "Is there a key anywhere?" StartFlicker("Point Light - Tangga"), StartFlicker("Point Light - ClassroomKey")
 SwitchCam(ClassKeyCam), [w]Wait(1), ChangeCamFoV(ClassKeyCam ^fov 20)
 "!!"
 [w]ChangeCamFoV(ClassKeyCam ^fov 60), [w]FadeOut(1), SwitchCam("Player Camera"), Wait(0.5), [w]FadeIn(1), Objective(BackToClass1)

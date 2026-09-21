@@ -122,6 +122,8 @@ namespace TestingPurposes
             db.AddFunction("ThrowItem", new Action<string[]>(ThrowItem));
             db.AddFunction("TransferItem", new Action<string[]>(TransferItem));
             db.AddFunction("UpdateCheckpoint", new Action<string>(UpdateCheckpoint));
+            db.AddFunction("StartFlicker", new Action<string>(StartFlickeringLight));
+            db.AddFunction("StopFlicker", new Action<string>(StopFlickeringLight));
             #endregion
         }
 
@@ -130,7 +132,7 @@ namespace TestingPurposes
         private static IEnumerator TeleportObject(string[] args)
         {
             float x, y, z, rot;
-            var movableObjects = UnityEngine.Object.FindObjectsByType<MovableObjects>(sortMode: FindObjectsSortMode.None)
+            var movableObjects = UnityEngine.Object.FindObjectsByType<MovableObjects>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .ToList()
                 .FindAll(x => x.gameObject.name == args[0])
                 .Select(x => x.GetComponent<MovableObjects>());
@@ -152,7 +154,7 @@ namespace TestingPurposes
         private static void TeleportToWaypoint(string[] args)
         {
             int index;
-            var movableObjects = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None)
+            var movableObjects = UnityEngine.Object.FindObjectsByType<NpcMovement>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .ToList()
                 .FindAll(x => x.gameObject.name == args[0])
                 .Select(x => x.GetComponent<NpcMovement>());
@@ -167,7 +169,7 @@ namespace TestingPurposes
         private static IEnumerator RotateObject(string[] args)
         {
             float rot, rotSpd;
-            var movableObjects = UnityEngine.Object.FindObjectsByType<MovableObjects>(sortMode: FindObjectsSortMode.None)
+            var movableObjects = UnityEngine.Object.FindObjectsByType<MovableObjects>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .ToList()
                 .FindAll(x => x.gameObject.name == args[0])
                 .Select(x => x.GetComponent<MovableObjects>());
@@ -187,7 +189,7 @@ namespace TestingPurposes
         private static IEnumerator RotateNpcHead(string[] args)
         {
             float rot, rotSpd;
-            var movableObjects = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None)
+            var movableObjects = UnityEngine.Object.FindObjectsByType<NpcMovement>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .ToList()
                 .FindAll(x => x.gameObject.name == args[0])
                 .Select(x => x.GetComponent<NpcMovement>());
@@ -203,7 +205,7 @@ namespace TestingPurposes
         private static IEnumerator MoveObject(string[] args)
         {
             float x, y, z;
-            var movableObjects = UnityEngine.Object.FindObjectsByType<MovableObjects>(sortMode: FindObjectsSortMode.None)
+            var movableObjects = UnityEngine.Object.FindObjectsByType<MovableObjects>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .ToList()
                 .FindAll(x => x.gameObject.name == args[0])
                 .Select(x => x.GetComponent<MovableObjects>());
@@ -283,7 +285,7 @@ namespace TestingPurposes
 
         private static IEnumerator MoveToTargetWrapper(string[] args)
         {
-            var movableObjects = UnityEngine.Object.FindObjectsByType<MovingObject>(sortMode: FindObjectsSortMode.None)
+            var movableObjects = UnityEngine.Object.FindObjectsByType<MovingObject>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .ToList()
                 .FindAll(x => x.gameObject.name == args[0])
                 .Select(x => x.GetComponent<MovingObject>());
@@ -317,7 +319,7 @@ namespace TestingPurposes
 
         private static IEnumerator MoveBackToOriginalWrapper(string[] args)
         {
-            var movableObjects = UnityEngine.Object.FindObjectsByType<MovingObject>(sortMode: FindObjectsSortMode.None)
+            var movableObjects = UnityEngine.Object.FindObjectsByType<MovingObject>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .ToList()
                 .FindAll(x => x.gameObject.name == args[0])
                 .Select(x => x.GetComponent<MovingObject>());
@@ -355,7 +357,7 @@ namespace TestingPurposes
 
         private static void SwitchCamera(string arg)
         {
-            var eventCam = UnityEngine.Object.FindObjectsByType<CinemachineCamera>(sortMode: FindObjectsSortMode.None)
+            var eventCam = UnityEngine.Object.FindObjectsByType<CinemachineCamera>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .ToList()
                 .Find(x => x.gameObject.name == arg).GetComponent<CinemachineCamera>();
             CameraManager.SwitchCamera(eventCam);
@@ -363,7 +365,7 @@ namespace TestingPurposes
 
         private static IEnumerator ChangeCamFoV(string[] args)
         {
-            var eventCam = UnityEngine.Object.FindObjectsByType<CinemachineCamera>(sortMode: FindObjectsSortMode.None)
+            var eventCam = UnityEngine.Object.FindObjectsByType<CinemachineCamera>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .ToList()
                 .Find(x => x.gameObject.name == args[0]).GetComponent<CinemachineCamera>();
             FunctionParams funcParams = ConvertArgsToParams(args);
@@ -688,7 +690,7 @@ namespace TestingPurposes
         #region Misc Events
         private static IEnumerator PlayVideoUI(string[] args)
         {
-            VideoPlayer vidPlayer = UnityEngine.Object.FindObjectsByType<VideoPlayer>(sortMode: FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == args[0]);
+            VideoPlayer vidPlayer = UnityEngine.Object.FindObjectsByType<VideoPlayer>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == args[0]);
             if (!vidPlayer.isPrepared)
             {
                 vidPlayer.Prepare();
@@ -768,7 +770,7 @@ namespace TestingPurposes
             funcParams.TryGetValue(new string[] { "^s" }, out float speed, defaultValue: 1f);
             string npcName = args[0];
 
-            var matchingNpcs = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None)
+            var matchingNpcs = UnityEngine.Object.FindObjectsByType<NpcMovement>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .ToList()
                 .FindAll(x => x.gameObject.name == npcName)
                 .Select(x => x.GetComponent<NpcMovement>());
@@ -800,7 +802,7 @@ namespace TestingPurposes
             }
 
             string npcName = args[0];
-            var matchingNpcs = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None)
+            var matchingNpcs = UnityEngine.Object.FindObjectsByType<NpcMovement>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .ToList()
                 .FindAll(x => x.gameObject.name.Contains(npcName))
                 .Select(x => x.GetComponent<NpcMovement>());
@@ -857,7 +859,7 @@ namespace TestingPurposes
             Debug.Log("Hiding NPC Rig");
             var funcParams = ConvertArgsToParams(args);
             funcParams.TryGetValue(new string[] { "^t" }, out float delay, defaultValue: 0);
-            NpcMovement chara = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == args[0]);
+            NpcMovement chara = UnityEngine.Object.FindObjectsByType<NpcMovement>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == args[0]);
             if(chara != null)
             {
                 chara.StartCoroutine(chara.ToggleRig(false, delay));
@@ -875,7 +877,7 @@ namespace TestingPurposes
 
         private static void ShowNpcRig(string arg)
         {
-            NpcMovement chara = UnityEngine.Object.FindObjectsByType<NpcMovement>(sortMode: FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == arg);
+            NpcMovement chara = UnityEngine.Object.FindObjectsByType<NpcMovement>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == arg);
             if (chara != null)
             {
                 chara.StartCoroutine(chara.ToggleRig(true, 0));
@@ -897,7 +899,7 @@ namespace TestingPurposes
 
         private static void ToggleSpecificDoor(string arg = "")
         {
-            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg);
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg);
             foreach (Door door in doors)
             {
                 door.ToggleDoor();
@@ -911,7 +913,7 @@ namespace TestingPurposes
 
         private static void CloseSpecificDoor(string arg = "")
         {
-            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg);
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg);
             foreach(Door door in doors)
             {
                 door.CloseDoor();
@@ -920,7 +922,7 @@ namespace TestingPurposes
 
         private static void CloseAllDoors()
         {
-            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(sortMode: FindObjectsSortMode.None);
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             foreach (Door door in doors)
             {
                 door.CloseDoor();
@@ -934,7 +936,7 @@ namespace TestingPurposes
 
         private static void OpenSpecificDoor(string arg = "")
         {
-            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(sortMode: FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg);
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().FindAll(x => x.gameObject.name == arg);
             foreach (Door door in doors)
             {
                 door.OpenDoor();
@@ -942,7 +944,7 @@ namespace TestingPurposes
         }
         private static void OpenAllDoors()
         {
-            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(sortMode: FindObjectsSortMode.None);
+            IEnumerable<Door> doors = UnityEngine.Object.FindObjectsByType<Door>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             foreach (Door door in doors)
             {
                 door.OpenDoor();
@@ -1075,7 +1077,7 @@ namespace TestingPurposes
             if (string.IsNullOrWhiteSpace(name))
                 return null;
 
-            return UnityEngine.Object.FindObjectsByType<T>(sortMode: FindObjectsSortMode.None)
+            return UnityEngine.Object.FindObjectsByType<T>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .FirstOrDefault(x => x != null && x.gameObject != null && x.gameObject.name == name);
         }
 
@@ -1252,8 +1254,24 @@ namespace TestingPurposes
 
         private static void UpdateCheckpoint(string arg)
         {
-            Waypoint newCheckpoint = UnityEngine.Object.FindObjectsByType<Waypoint>(sortMode: FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == arg);
+            Waypoint newCheckpoint = UnityEngine.Object.FindObjectsByType<Waypoint>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == arg);
             UnityEngine.Object.FindAnyObjectByType<PlayerResetManager>().SetCheckpoint(newCheckpoint);
+        }
+
+        private static void StartFlickeringLight(string arg)
+        {
+            FlickeringLight light = UnityEngine.Object.FindObjectsByType<FlickeringLight>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == arg);
+            light.gameObject.SetActive(true);
+            light.enabled = true;
+            light.StartFlickering();
+        }
+
+        private static void StopFlickeringLight(string arg)
+        {
+            FlickeringLight light = UnityEngine.Object.FindObjectsByType<FlickeringLight>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == arg);
+            light.StopFlickering();
+            light.enabled = false;
+            light.gameObject.SetActive(false);
         }
         #endregion
     }

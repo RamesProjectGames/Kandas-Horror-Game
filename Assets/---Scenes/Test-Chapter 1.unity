@@ -169299,6 +169299,10 @@ PrefabInstance:
       propertyPath: m_BoundingSphereOverride.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2405433252360354229, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2960967579650868220, guid: 1507e4f85d163bf41a3207226c9d0bf1, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 127
@@ -172048,23 +172052,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4462173754431553157, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4462173754431553157, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
-      value: Mini_ToggleDoor
+      value: ToiletEvents
       objectReference: {fileID: 0}
     - target: {fileID: 4462173754431553157, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
-      value: Mini_RattleDoor
+      value: Mini_ToggleDoor
       objectReference: {fileID: 0}
     - target: {fileID: 4462173754431553157, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
-      value: ExploreSchool
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 4462173754431553157, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
-      value: OpenBathroomStall
+      value: ExploreSchool
       objectReference: {fileID: 0}
     - target: {fileID: 4471938674112367672, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -172620,23 +172624,23 @@ PrefabInstance:
       objectReference: {fileID: 1642204960}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: objectiveDialoguePair.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[0].dialogueAsset
-      value: Mini_RattleToiletDoor
+      value: ToiletEvents
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[1].dialogueAsset
-      value: 
+      value: Mini_RattleToiletDoor
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[2].dialogueAsset
-      value: Mini_ToggleDoor
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[3].dialogueAsset
-      value: Mini_RattleDoor
+      value: Mini_ToggleDoor
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: objectiveDialoguePair.Array.data[4].dialogueAsset
@@ -172656,19 +172660,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[0].objective.Array.data[0]'
-      value: RattleDoor
+      value: Bathroom
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[1].objective.Array.data[0]'
-      value: ToiletCry
+      value: RattleDoor
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[2].objective.Array.data[0]'
-      value: ExploreSchool
+      value: ToiletCry
       objectReference: {fileID: 0}
     - target: {fileID: 9002858240036955154, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: 'objectiveDialoguePair.Array.data[3].objective.Array.data[0]'
-      value: OpenBathroomStall
+      value: ExploreSchool
       objectReference: {fileID: 0}
     - target: {fileID: 9017531432961323109, guid: ba3fa56c0125f0a40aa6fb7acb3b58c2, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -195511,30 +195515,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1799980487}
     m_Modifications:
-    - target: {fileID: 318931140143302469, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 1231915554}
-    - target: {fileID: 318931140143302469, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_VersionIndex
-      value: 3022
-      objectReference: {fileID: 0}
-    - target: {fileID: 6484318647992442464, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 1916235572}
-    - target: {fileID: 6484318647992442464, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_VersionIndex
-      value: 2568
-      objectReference: {fileID: 0}
-    - target: {fileID: 6730896846054286062, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 1876004946}
-    - target: {fileID: 6730896846054286062, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_VersionIndex
-      value: 3022
-      objectReference: {fileID: 0}
     - target: {fileID: 5091989791383999225, guid: bb4ecdca714427f4c89f5a201449c765, type: 3}
       propertyPath: m_Name
       value: PagarDepan3_LOD0 (1)
@@ -195582,6 +195562,30 @@ PrefabInstance:
     - target: {fileID: 5611961292990154819, guid: bb4ecdca714427f4c89f5a201449c765, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 318931140143302469, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1231915554}
+    - target: {fileID: 318931140143302469, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_VersionIndex
+      value: 3022
+      objectReference: {fileID: 0}
+    - target: {fileID: 6484318647992442464, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1916235572}
+    - target: {fileID: 6484318647992442464, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2568
+      objectReference: {fileID: 0}
+    - target: {fileID: 6730896846054286062, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1876004946}
+    - target: {fileID: 6730896846054286062, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_VersionIndex
+      value: 3022
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -270906,7 +270910,7 @@ GameObject:
   - component: {fileID: 1856562851}
   m_Layer: 14
   m_Name: Manequin Demo
-  m_TagString: Enemy
+  m_TagString: Mannequin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -313079,7 +313083,7 @@ MonoBehaviour:
   landingAlertRadius: 10
   objectiveDialoguePair:
   - objective:
-    - Lunch
+    - ExploreSchool
     dialogueAsset: Mini_NurseReport
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
@@ -318265,16 +318269,7 @@ MonoBehaviour:
   landingAlertRadius: 0
   objectiveDialoguePair:
   - objective:
-    - Lunch
-    dialogueAsset: Mini_TeacherStudent
-  - objective:
-    - LunchTable
-    dialogueAsset: Mini_TeacherStudent
-  - objective:
-    - AfterLunchClass
-    dialogueAsset: Mini_TeacherStudent
-  - objective:
-    - Bathroom
+    - ExploreSchool
     dialogueAsset: Mini_TeacherStudent
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
@@ -321505,30 +321500,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1799980487}
     m_Modifications:
-    - target: {fileID: 318931140143302469, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 2072683023}
-    - target: {fileID: 318931140143302469, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_VersionIndex
-      value: 3022
-      objectReference: {fileID: 0}
-    - target: {fileID: 6484318647992442464, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 981296448}
-    - target: {fileID: 6484318647992442464, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_VersionIndex
-      value: 2568
-      objectReference: {fileID: 0}
-    - target: {fileID: 6730896846054286062, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 1752690958}
-    - target: {fileID: 6730896846054286062, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
-      propertyPath: m_VersionIndex
-      value: 3022
-      objectReference: {fileID: 0}
     - target: {fileID: 5091989791383999225, guid: bb4ecdca714427f4c89f5a201449c765, type: 3}
       propertyPath: m_Name
       value: PagarDepan3_LOD0
@@ -321576,6 +321547,30 @@ PrefabInstance:
     - target: {fileID: 5611961292990154819, guid: bb4ecdca714427f4c89f5a201449c765, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 318931140143302469, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2072683023}
+    - target: {fileID: 318931140143302469, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_VersionIndex
+      value: 3022
+      objectReference: {fileID: 0}
+    - target: {fileID: 6484318647992442464, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 981296448}
+    - target: {fileID: 6484318647992442464, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2568
+      objectReference: {fileID: 0}
+    - target: {fileID: 6730896846054286062, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1752690958}
+    - target: {fileID: 6730896846054286062, guid: 6f7688bc792667c42822b122c11a607f, type: 3}
+      propertyPath: m_VersionIndex
+      value: 3022
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -322029,10 +322024,7 @@ MonoBehaviour:
   landingAlertRadius: 0
   objectiveDialoguePair:
   - objective:
-    - Lunch
-    dialogueAsset: Mini_SoftChatty
-  - objective:
-    - LunchTable
+    - ExploreSchool
     dialogueAsset: Mini_SoftChatty
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
@@ -322163,16 +322155,7 @@ MonoBehaviour:
   landingAlertRadius: 0
   objectiveDialoguePair:
   - objective:
-    - Lunch
-    dialogueAsset: Mini_TeacherStudent
-  - objective:
-    - LunchTable
-    dialogueAsset: Mini_TeacherStudent
-  - objective:
-    - Bathroom
-    dialogueAsset: Mini_TeacherStudent
-  - objective:
-    - AfterLunchClass
+    - ExploreSchool
     dialogueAsset: Mini_TeacherStudent
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
@@ -322303,16 +322286,7 @@ MonoBehaviour:
   landingAlertRadius: 0
   objectiveDialoguePair:
   - objective:
-    - Lunch
-    dialogueAsset: Mini_Studying
-  - objective:
-    - LunchTable
-    dialogueAsset: Mini_Studying
-  - objective:
-    - AfterLunchClass
-    dialogueAsset: Mini_Studying
-  - objective:
-    - Bathroom
+    - ExploreSchool
     dialogueAsset: Mini_Studying
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
@@ -322379,16 +322353,7 @@ MonoBehaviour:
     - Leisurely
     dialogueAsset: Mini_Leisurely
   - objective:
-    - Lunch
-    dialogueAsset: Mini_LeisurelyDefault
-  - objective:
-    - LunchTable
-    dialogueAsset: Mini_LeisurelyDefault
-  - objective:
-    - AfterLunchClass
-    dialogueAsset: Mini_LeisurelyDefault
-  - objective:
-    - Bathroom
+    - ExploreSchool
     dialogueAsset: Mini_LeisurelyDefault
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
@@ -324423,13 +324388,7 @@ MonoBehaviour:
     - Laidback
     dialogueAsset: Mini_Laidback
   - objective:
-    - Lunch
-    dialogueAsset: Mini_LaidbackDefault
-  - objective:
-    - LunchTable
-    dialogueAsset: Mini_LaidbackDefault
-  - objective:
-    - Bathroom
+    - ExploreSchool
     dialogueAsset: Mini_LaidbackDefault
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
@@ -324554,10 +324513,7 @@ MonoBehaviour:
   landingAlertRadius: 0
   objectiveDialoguePair:
   - objective:
-    - Lunch
-    dialogueAsset: Mini_CompeSmart
-  - objective:
-    - LunchTable
+    - ExploreSchool
     dialogueAsset: Mini_CompeSmart
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
@@ -324688,16 +324644,7 @@ MonoBehaviour:
   landingAlertRadius: 0
   objectiveDialoguePair:
   - objective:
-    - Lunch
-    dialogueAsset: Mini_Lovestruck
-  - objective:
-    - LunchTable
-    dialogueAsset: Mini_Lovestruck
-  - objective:
-    - AfterLunchClass
-    dialogueAsset: Mini_Lovestruck
-  - objective:
-    - Bathroom
+    - ExploreSchool
     dialogueAsset: Mini_Lovestruck
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
@@ -324822,10 +324769,7 @@ MonoBehaviour:
   landingAlertRadius: 0
   objectiveDialoguePair:
   - objective:
-    - Lunch
-    dialogueAsset: Mini_LazyDelinquent
-  - objective:
-    - LunchTable
+    - ExploreSchool
     dialogueAsset: Mini_LazyDelinquent
   isDestructible: 0
   destructiblePrefab: {fileID: 0}
