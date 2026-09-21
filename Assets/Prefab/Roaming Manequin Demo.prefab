@@ -506,8 +506,8 @@ GameObject:
   - component: {fileID: 5854696781313672514}
   - component: {fileID: 1340377957272672941}
   - component: {fileID: 6479801943420045027}
-  - component: {fileID: 7017038136731397298}
   - component: {fileID: 6188008514688613300}
+  - component: {fileID: 404793886263700544}
   - component: {fileID: 301635729768581074}
   m_Layer: 14
   m_Name: Roaming Manequin Demo
@@ -690,33 +690,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 30
---- !u!114 &7017038136731397298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7911860494735938960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 759662f1d67e40b4fa30a6dc01253e9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  footstepAudio:
-    Guid:
-      Data1: -193628141
-      Data2: 1097986696
-      Data3: -40709984
-      Data4: -1952618164
-    Path: event:/SFX/ManequinMovement
-  FootstepAudioData: []
-  TerrainSoundTypes: []
-  Animator: {fileID: 4536603029890229518}
-  Enviroment:
-    serializedVersion: 2
-    m_Bits: 1
-  minFootstepInterval: 0.3
-  groundCheckDistance: 3
 --- !u!114 &6188008514688613300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -753,9 +726,29 @@ MonoBehaviour:
   captureFadeDuration: 0.2
   releaseFadeDuration: 0.35
   postResetBlackHoldDuration: 0.05
-  footstepManager: {fileID: 7017038136731397298}
+  footstepManager: {fileID: 404793886263700544}
+  footstep: 0
   contactThreshold: 1.75
   playerResetPosition: {x: 21.64, y: 0.18, z: -30.791}
+--- !u!114 &404793886263700544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7911860494735938960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85b4f81b6491c2a44ad0807d193787c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepAudio:
+    Guid:
+      Data1: -193628141
+      Data2: 1097986696
+      Data3: -40709984
+      Data4: -1952618164
+    Path: event:/SFX/ManequinMovement
 --- !u!114 &301635729768581074
 MonoBehaviour:
   m_ObjectHideFlags: 0
