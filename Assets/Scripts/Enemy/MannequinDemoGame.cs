@@ -49,7 +49,8 @@ public class MannequinDemoGame : MovableObjects
     [SerializeField] private float releaseFadeDuration = 0.35f;
     [SerializeField] private float postResetBlackHoldDuration = 0.05f;
     [Header("Footsteps")]
-    [SerializeField] private FootstepsSoundManager footstepManager;
+    [SerializeField] private MannequinFootstepManager footstepManager;
+    [SerializeField, ] private float footstep;
     private float lastFootstepValue;
     private CinemachineCamera playerCamera;
     private float previousSpeed;
@@ -77,10 +78,6 @@ public class MannequinDemoGame : MovableObjects
         resetManager = FindAnyObjectByType<PlayerResetManager>();
         playerCamera = GameObject.Find("Player Camera")?.GetComponent<CinemachineCamera>();
 
-        if (footstepManager == null)
-        {
-            footstepManager = GetComponent<FootstepsSoundManager>();
-        }
 
         if (navMeshAgent == null)
         {
@@ -342,7 +339,7 @@ public class MannequinDemoGame : MovableObjects
             return;
         }
 
-        float footstep = animator.GetFloat("Footstep");
+        footstep = animator.GetFloat("Footstep");
         if (Mathf.Abs(footstep) < 0.00001f)
         {
             footstep = 0f;
