@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{50422bbf-b457-48e9-80d8-e9c44c60f025}">
 		<property name="name">
-			<value>SchoolAmbienceOutside</value>
+			<value>SchoolAmbience</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -57,8 +57,11 @@
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{618ac22f-27a0-418c-b812-15626ae35c48}">
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
 		<property name="maximumDistance">
-			<value>75</value>
+			<value>9</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{143780c2-49a4-4dda-9cdc-9ec5896bbad2}" />

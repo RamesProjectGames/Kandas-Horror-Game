@@ -1,4 +1,5 @@
 using Dialogue;
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
@@ -465,6 +466,8 @@ public class MannequinDemoGame : MovableObjects
 
         // Trigger catch animation start event
         OnCatchAnimationStart?.Invoke();
+
+        AudioManager.Instance.PlayOneShot2D(RuntimeManager.PathToEventReference("event:/SFX/MannequinJumpscare"), 1, 1);
 
         if (animator != null)
         {
