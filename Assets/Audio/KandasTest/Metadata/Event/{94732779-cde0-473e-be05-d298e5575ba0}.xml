@@ -56,7 +56,11 @@
 			<destination>{1789c877-bba1-433a-9cb3-221b2c64bdab}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{6b439549-67b9-4a81-b83d-53be02a2e856}" />
+	<object class="EventAutomatableProperties" id="{6b439549-67b9-4a81-b83d-53be02a2e856}">
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{aedbab84-57d6-4556-ad8e-42677726e5fc}" />
 	<object class="Timeline" id="{3bada981-f685-4487-814e-7952bd023d49}">
 		<relationship name="modules">
