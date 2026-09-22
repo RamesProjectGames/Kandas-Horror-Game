@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.GPUSort;
 
 public class PlayerController : MovableObjects
 {
@@ -353,7 +352,7 @@ public class PlayerController : MovableObjects
 
                 input = (hor + ver).normalized;
             }
-            if (!isSprinting)
+            if (!isSprinting || input == Vector3.zero)
             {
                 stamina += staminaDecayRate * Time.deltaTime * (isCrouching ? sprintMulti : 1f);
             }
@@ -737,7 +736,7 @@ public class PlayerController : MovableObjects
     {
         isSprinting = false;
         isCrouching = false;
-        stamina = maxStamina;
+        //stamina = maxStamina;
         staminaFillImage.gameObject.SetActive(false);
 
         agent.height = standingHeight;

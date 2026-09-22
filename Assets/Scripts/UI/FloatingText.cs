@@ -36,5 +36,6 @@ public class FloatingText : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(direction);
         }
         transform.localPosition = unit.position + offset;
+        transform.localScale = Vector3.one;
     }
 }

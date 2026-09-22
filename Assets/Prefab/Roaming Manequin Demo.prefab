@@ -505,7 +505,6 @@ GameObject:
   - component: {fileID: 2866855190853089641}
   - component: {fileID: 5854696781313672514}
   - component: {fileID: 1340377957272672941}
-  - component: {fileID: 6479801943420045027}
   - component: {fileID: 6188008514688613300}
   - component: {fileID: 404793886263700544}
   - component: {fileID: 301635729768581074}
@@ -659,37 +658,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
---- !u!114 &6479801943420045027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7911860494735938960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 55876696
-      Data2: 1081161171
-      Data3: -1177958995
-      Data4: -687249498
-    Path: event:/SFX/PlayerFootsteps
-  Event: 
-  EventPlayTrigger: 0
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 30
 --- !u!114 &6188008514688613300
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1066,7 +1066,7 @@ namespace TestingPurposes
         private static void FetchFlashlight()
         {
             PlayerController.canUseFlashlight = true;
-            HideObject("Senter");
+            UnityEngine.Object.FindObjectsByType<ItemInteraction>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == "Senter").gameObject.SetActive(false);
             GameObject.Find("Player").GetComponent<PlayerController>().ToggleFlashlight();
         }
         #endregion

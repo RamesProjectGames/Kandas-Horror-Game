@@ -5,7 +5,7 @@
 			<value>MannequinJumpscare</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{8e441aaf-216b-4dd9-bac5-be46f41e10bd}</destination>
@@ -95,11 +95,9 @@
 	<object class="MixerBusEffectChain" id="{5c46118c-1ad9-4961-802f-1744b7ac8841}">
 		<relationship name="effects">
 			<destination>{a917d813-61b6-4a53-a1d8-152137304ce3}</destination>
-			<destination>{0243879e-77de-4004-adc8-0ca0467b0552}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{312ea304-4837-45d3-bdb5-fc704f0eb358}" />
 	<object class="MixerBusFader" id="{9c16619c-a371-4daa-8863-8e3eff047088}" />
 	<object class="MixerBusFader" id="{a917d813-61b6-4a53-a1d8-152137304ce3}" />
-	<object class="SpatialiserEffect" id="{0243879e-77de-4004-adc8-0ca0467b0552}" />
 </objects>

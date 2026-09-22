@@ -52,6 +52,7 @@ public class MannequinDemoGame : MovableObjects
     [Header("Footsteps")]
     [SerializeField] private MannequinFootstepManager footstepManager;
     [SerializeField, ] private float footstep;
+    public static string sfxPath = "event:/SFX/";
     private float lastFootstepValue;
     private CinemachineCamera playerCamera;
     private float previousSpeed;
@@ -467,7 +468,6 @@ public class MannequinDemoGame : MovableObjects
         // Trigger catch animation start event
         OnCatchAnimationStart?.Invoke();
 
-        AudioManager.Instance.PlayOneShot2D(RuntimeManager.PathToEventReference("event:/SFX/MannequinJumpscare"), 1, 1);
 
         if (animator != null)
         {
@@ -487,6 +487,7 @@ public class MannequinDemoGame : MovableObjects
     }
     public void SwitchPlayerPerspective()
     {
+        AudioManager.Instance.PlayOneShot2D(RuntimeManager.PathToEventReference(sfxPath+"MannequinJumpscare"), 1, 1);
         playerCamera = CameraManager.currentActiveCamera;
         CameraManager.SwitchCamera(chokeCamera);
     }
