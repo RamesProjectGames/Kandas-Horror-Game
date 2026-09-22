@@ -1,4 +1,5 @@
 using Dialogue;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
@@ -22,7 +23,6 @@ public class PlayerHiding : MonoBehaviour
 
     public CinemachineCamera originCamera;
     private bool isHiding = false;
-    public bool Hiding => isHiding;
     private bool isAnimatingHide = false;
     private HidingSpot currentHidingSpot;
     private Vector3 hidingPosition;
@@ -57,27 +57,31 @@ public class PlayerHiding : MonoBehaviour
         }        
 
         // Check for nearby hiding spots when not hiding
-        if (!isHiding && !isAnimatingHide)
-        {
-            DetectNearbyHidingSpots();
-        }
+        // if (!isHiding && !isAnimatingHide)
+        // {
+        //     DetectNearbyHidingSpots();
+        // }
 
         if (hidingUIText != null)
         {
+            if (interactAction != null && interactAction.action != null)
+            {
+                hidingUIText.GetComponent<TMP_Text>().text = $"Press {interactAction.action.GetBindingDisplayString(0)} to Unhide";
+            }
             hidingUIText.SetActive(isHiding);
         }
 
-        // Handle hiding input
+        // // Handle hiding input
         if (interactAction != null && interactAction.action.WasPerformedThisFrame())
         {
             if (isHiding)
             {
                 Unhide();
             }
-            else
-            {
-                TryHide();
-            }
+            // else
+            // {
+            //     TryHide();
+            // }
         }
 
     }
@@ -232,6 +236,12 @@ public class PlayerHiding : MonoBehaviour
         }
 
         currentHidingSpot = null;
+
+        var playerGrabInteraction = FindAnyObjectByType<PlayerGrabInteraction>(FindObjectsInactive.Include);
+        if (playerGrabInteraction != null)
+        {
+            playerGrabInteraction.ReleaseHeldItem();
+        }
 
         // when the player leaves a hiding spot, enemies should forget that they
         // once saw them concealed so they will resume normal vision behaviour

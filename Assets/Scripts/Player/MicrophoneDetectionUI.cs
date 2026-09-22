@@ -42,7 +42,7 @@ public class MicrophoneDetectionUI : MonoBehaviour
         }
 
         float currentLoudness = micManager.GetMicrophoneLoudness();
-        float threshold = EnemySoundDetection.Instance.GetCurrentRequiredThreshold();
+        float threshold = EnemySoundDetection.Instance != null ? EnemySoundDetection.Instance.GetCurrentRequiredThreshold() : .8f;
 
         // 1. Update Slider and Threshold Line Position
         loudnessSlider.value = currentLoudness;

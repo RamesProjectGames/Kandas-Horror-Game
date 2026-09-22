@@ -9,7 +9,6 @@ using UnityEngine;
 public class HidingSpot : MonoBehaviour
 {
     [Header("Hiding Spot Configuration")]
-    [SerializeField] private float interactionRadius = 2f;
     [SerializeField] private float hidingHeight = 1f; // Height offset for hiding position
     [SerializeField] private bool visualizationEnabled = true;
     [SerializeField] private CinemachineCamera hidingCamera;
@@ -62,18 +61,18 @@ public class HidingSpot : MonoBehaviour
             }
         }
     }
-    private void OnDrawGizmos()
-    {
-        if (!visualizationEnabled) return;
+    // private void OnDrawGizmos()
+    // {
+    //     if (!visualizationEnabled) return;
 
-        // Draw interaction radius
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position + Vector3.up * hidingHeight, interactionRadius);
+    //     // Draw interaction radius
+    //     Gizmos.color = Color.yellow;
+    //     Gizmos.DrawWireSphere(transform.position + Vector3.up * hidingHeight, interactionRadius);
 
-        // Draw hiding height reference
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.up * hidingHeight);
-    }
+    //     // Draw hiding height reference
+    //     Gizmos.color = Color.cyan;
+    //     Gizmos.DrawLine(transform.position, transform.position + Vector3.up * hidingHeight);
+    // }
 
     // private void OnDrawGizmosSelected()
     // {
@@ -119,6 +118,9 @@ public class HidingSpot : MonoBehaviour
             isBeingDiscovered = false;
             door?.CloseDoor(doorOpenDuration);
         }
+        var itemInteraction = GetComponent<ItemInteraction>();
+        itemInteraction?.SetAction(true);
+        itemInteraction?.HideUI();
 
         if (door != null)
         {
@@ -141,6 +143,9 @@ public class HidingSpot : MonoBehaviour
         void CompleteUnhide()
         {
             coll.enabled = true;
+            var itemInteraction = GetComponent<ItemInteraction>();
+            itemInteraction?.SetAction(false);
+            itemInteraction?.ShowUI();
             if (rb != null)
             {
                 rb.useGravity = true;
@@ -193,10 +198,10 @@ public class HidingSpot : MonoBehaviour
     /// <summary>
     /// Get the interaction radius for this hiding spot.
     /// </summary>
-    public float GetInteractionRadius()
-    {
-        return interactionRadius;
-    }
+    // public float GetInteractionRadius()
+    // {
+    //     return interactionRadius;
+    // }
 
     /// <summary>
     /// Called by enemy when it spots a hidden player and starts discovering the spot.
