@@ -56,16 +56,8 @@ public class EnemySoundDetection : MonoBehaviour
             float loudness = micManager.GetMicrophoneLoudness();
             HidingSpot hidingSpot = playerHiding.GetCurrentHidingSpot();
 
-            // Use the same buffer logic as your UI
-            float warningBuffer = 0.15f;
-
             if (loudness >= currentThreshold)
             {
-                enemyMovement.InvestigatePlayerSpot(hidingSpot);
-            }
-            else if (loudness >= (currentThreshold - warningBuffer))
-            {
-                // WARNING: Go inspect the hiding spot
                 enemyMovement.InvestigatePlayerSpot(hidingSpot);
             }
         }

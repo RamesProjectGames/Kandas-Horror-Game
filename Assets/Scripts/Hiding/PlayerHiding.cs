@@ -185,10 +185,10 @@ public class PlayerHiding : MonoBehaviour
         // transform.position = hidingPosition; // use world position to avoid parent-relative offsets
         isHiding = true;
 
-        // inform any enemies that currently can see the player that the player
-        // has just slipped into a hiding spot; they will become alerted to the
-        // hiding attempt.  Clear all previous flags first so that only this event
-        // matters.
+        // inform any enemies that can see the player that the player
+        // has just slipped into a hiding spot; they will become alerted to a
+        // hiding attempt.  Notify before any state changes that might clear
+        // canSeePlayer on enemy detectors.
         var allSight = FindObjectsByType<EnemySightDetection>(FindObjectsSortMode.None);
         foreach (var sight in allSight)
         {
@@ -262,8 +262,11 @@ public class PlayerHiding : MonoBehaviour
             return;
 
         isHiding = false;
-        // Play Momnster Locker Catch Here
-        
+        // if there are no animation
+        {
+            CameraManager.SwitchCamera(originCamera);            
+        }
+        // Play Monster Locker Catch Here or any other discovery animation
 
 
         // if (currentHidingSpot != null)
@@ -271,8 +274,7 @@ public class PlayerHiding : MonoBehaviour
         //     currentHidingSpot.UnhidePlayer();
         //     currentHidingSpot = null;
         // }
-        
-        // CameraManager.SwitchCamera(originCamera);
+
 
         if (playerRigidbody != null)
         {
