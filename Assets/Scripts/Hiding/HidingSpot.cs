@@ -105,35 +105,32 @@ public class HidingSpot : MonoBehaviour
     /// </summary>
     public void HidePlayer(GameObject player)
     {
+        void CompleteHide()
+        {
+            coll.enabled = false;
+            if (rb != null)
+            {
+                rb.useGravity = false;
+                rb.isKinematic = true;
+            }
+            isOccupied = true;
+            hiddenPlayer = player;
+            currentDiscoveryProgress = 0f;
+            isBeingDiscovered = false;
+            door?.CloseDoor(doorOpenDuration);
+        }
+
         if (door != null)
         {
             door.OpenDoorWithAction(doorOpenDuration, () =>
             {
-                CameraManager.SwitchCamera(hidingCamera);
+                CameraManager.SwitchCamera(hidingCamera, CompleteHide);
             });
         }
         else
         {
-                CameraManager.SwitchCamera(hidingCamera);            
+            CameraManager.SwitchCamera(hidingCamera, CompleteHide);
         }
-        CameraManager.CameraTransitionCompleted += (camera)=>{
-            if(camera == hidingCamera)
-            {
-                coll.enabled = false;
-                if (rb != null)
-                {
-                    rb.useGravity = false;
-                    rb.isKinematic = true;
-                }
-                isOccupied = true;
-                hiddenPlayer = player;
-                currentDiscoveryProgress = 0f;
-                isBeingDiscovered = false;
-                door?.CloseDoor(doorOpenDuration);
-                CameraManager.CameraTransitionCompleted -= null;
-            }
-        };        
-        
     }
 
     /// <summary>
@@ -141,35 +138,32 @@ public class HidingSpot : MonoBehaviour
     /// </summary>
     public void UnhidePlayer(CinemachineCamera originCamera)
     {
+        void CompleteUnhide()
+        {
+            coll.enabled = true;
+            if (rb != null)
+            {
+                rb.useGravity = true;
+                rb.isKinematic = false;
+            }
+            isOccupied = false;
+            hiddenPlayer = null;
+            currentDiscoveryProgress = 0f;
+            isBeingDiscovered = false;
+            door?.CloseDoor(doorOpenDuration);
+        }
+
         if (door != null)
         {
             door.OpenDoorWithAction(doorOpenDuration, () =>
             {
-                CameraManager.SwitchCamera(originCamera);
+                CameraManager.SwitchCamera(originCamera, CompleteUnhide);
             });
         }
         else
         {
-            
+            CameraManager.SwitchCamera(originCamera, CompleteUnhide);
         }
-        CameraManager.CameraTransitionCompleted += (camera) =>
-        {
-            if (camera == originCamera)
-            {
-                coll.enabled = true;
-                if (rb != null)
-                {
-                    rb.useGravity = true;
-                    rb.isKinematic = false;
-                }
-                isOccupied = false;
-                hiddenPlayer = null;
-                currentDiscoveryProgress = 0f;
-                isBeingDiscovered = false;
-                door?.CloseDoor(doorOpenDuration);
-                CameraManager.CameraTransitionCompleted -= null;
-            }
-        };
     }
 
     /// <summary>
