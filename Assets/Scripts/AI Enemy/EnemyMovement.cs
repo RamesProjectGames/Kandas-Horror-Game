@@ -37,7 +37,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     private bool hasLastSeenPlayerPosition = false;
     private Vector3 lastSeenPlayerPosition;
     private float nextDetectionTime = 0f;
-    private bool isPlayerDetected = false;
+    [SerializeField] private bool isPlayerDetected = false;
 
     // Pause tracking: used to detect pause/unpause transitions
     private bool wasPausedLastFrame = false;
@@ -287,9 +287,14 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         }
         else if (isPlayerHiding && fov.PlayerWasSpottedWhileHiding && !isDiscoveringSpot)
         {
-            // TRANSITION TO DISCOVERY: Player hid while in view
+            // RULE 3: Player hid while being chased - enemy already knows location, immediately force unhide
             HidingSpot spot = checkHiding.GetCurrentHidingSpot();
-            if (spot != null) StartDiscoveringHidingSpot(spot);
+            if (spot != null)
+            {
+                spot.DiscoverSpot();
+                GameObject player = spot.GetHiddenPlayer();
+                if (player != null) player.GetComponent<PlayerHiding>().ForceUnhide();
+            }
         }
         else if (hasLastSeenPlayerPosition)
         {
@@ -529,6 +534,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
         isDiscoveringSpot = true;
         targetHidingSpot = spot;
+        
         spot.StartDiscovery(this);
         agent.isStopped = false;
         agent.speed = pursueSpeed;

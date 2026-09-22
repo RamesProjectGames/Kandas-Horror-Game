@@ -144,7 +144,19 @@ public class EnemySightDetection : MonoBehaviour
     /// </summary>
     public void NotifyPlayerHidWhileVisible()
     {
-        if (canSeePlayer)
+        if (player == null) return;
+        if (!canSeePlayer)
+        {
+            playerWasSpottedWhileHiding = false;
+            return;
+        }
+        Vector3 enemyPos = transform.position;
+        Vector3 playerPos = player.transform.position;
+        Vector3 dir = (playerPos - enemyPos).normalized;
+        dir.y = 0;
+        float angle = Vector3.Angle(transform.forward, dir);
+        float dist = Vector3.Distance(enemyPos, playerPos);
+        if (angle < viewAngle / 2 && dist <= viewRadius)
             playerWasSpottedWhileHiding = true;
     }
 }
