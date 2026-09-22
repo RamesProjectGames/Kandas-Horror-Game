@@ -8,7 +8,6 @@ public class CameraManager : MonoBehaviour
 {
     static List<CinemachineCamera> cameras = new List<CinemachineCamera>();
     public static CinemachineCamera currentActiveCamera = null;
-    public static event Action<CinemachineCamera> CameraTransitionCompleted;
 
     private static CameraManager instance;
     private int transitionRequestId;
@@ -31,13 +30,13 @@ public class CameraManager : MonoBehaviour
         return currentActiveCamera == camera;
     }
 
-    public static void SwitchCamera(CinemachineCamera newCamera)
+    public static void SwitchCamera(CinemachineCamera newCamera, Action onTransitionCompleted = null)
     {
         if (newCamera == null)
         {
             return;
         }
-
+        
         newCamera.Priority = 10;
         currentActiveCamera = newCamera;
 
@@ -52,11 +51,11 @@ public class CameraManager : MonoBehaviour
         if (instance != null)
         {
             instance.transitionRequestId++;
-            instance.StartCoroutine(instance.WaitForCameraTransition(newCamera, instance.transitionRequestId));
+            instance.StartCoroutine(instance.WaitForCameraTransition(newCamera, instance.transitionRequestId, onTransitionCompleted));
         }
     }
 
-    private IEnumerator WaitForCameraTransition(CinemachineCamera targetCamera, int requestId)
+    private IEnumerator WaitForCameraTransition(CinemachineCamera targetCamera, int requestId, Action onTransitionCompleted)
     {
         yield return null;
 
@@ -68,7 +67,7 @@ public class CameraManager : MonoBehaviour
 
         if (requestId == transitionRequestId && currentActiveCamera == targetCamera)
         {
-            CameraTransitionCompleted?.Invoke(targetCamera);
+            onTransitionCompleted?.Invoke();
         }
     }
     public static void LookAt(Transform target)
