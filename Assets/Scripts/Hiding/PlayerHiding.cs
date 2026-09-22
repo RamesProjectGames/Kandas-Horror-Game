@@ -66,7 +66,7 @@ public class PlayerHiding : MonoBehaviour
         {
             if (interactAction != null && interactAction.action != null)
             {
-                hidingUIText.GetComponent<TMP_Text>().text = $"Press {interactAction.action.GetBindingDisplayString(0)} to Unhide";
+                hidingUIText.GetComponentInChildren<TMP_Text>().text = $"Press {interactAction.action.GetBindingDisplayString(0)} to Unhide";
             }
             hidingUIText.SetActive(isHiding);
         }
