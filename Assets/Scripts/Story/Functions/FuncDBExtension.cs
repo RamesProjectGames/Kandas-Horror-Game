@@ -1165,7 +1165,7 @@ namespace TestingPurposes
             }
 
             Vector3 direction = GetThrowDirection(thrower);
-            if (item.IsHeld)
+            if (item.IsInActions)
             {
                 thrower.TryThrowHeldItem(throwForce, direction);
                 return;
@@ -1240,7 +1240,7 @@ namespace TestingPurposes
                 return;
             }
 
-            if (item.IsHeld)
+            if (item.IsInActions)
             {
                 Debug.LogWarning($"TransferItem: item '{item.gameObject.name}' is already held elsewhere.");
                 return;

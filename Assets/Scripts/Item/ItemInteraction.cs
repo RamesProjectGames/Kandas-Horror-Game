@@ -77,7 +77,7 @@ public class ItemInteraction : MonoBehaviour
     private bool uiInitialized;
     private bool bindingTextInitialized;
 
-    public bool IsHeld { get; private set; }
+    public bool IsInActions { get; private set; }
 
     // Reusable non-alloc buffer
     private static readonly Collider[] alertHitsBuffer = new Collider[32];
@@ -114,7 +114,7 @@ public class ItemInteraction : MonoBehaviour
 
         hasBeenThrown = false;
         isBroken = false;
-        IsHeld = false;
+        IsInActions = false;
     }
 
     #endregion
@@ -166,7 +166,7 @@ public class ItemInteraction : MonoBehaviour
     public void ShowUI()
     {
         if (isBroken) return;
-        if (IsHeld) return;
+        if (IsInActions) return;
         if (!showTextOnPickup) return;
         if (pickupUI == null) return;
 
@@ -199,6 +199,10 @@ public class ItemInteraction : MonoBehaviour
     #endregion
 
     #region Interaction
+    public void SetAction(bool inAction)
+    {
+        IsInActions = inAction;
+    }
     public void Pickup(Transform holdPoint)
     {
         if (isBroken) return;
@@ -207,7 +211,7 @@ public class ItemInteraction : MonoBehaviour
         if (onPickup != null)
             onPickup.Invoke();
 
-        IsHeld = true;
+        SetAction(true);
         hasBeenThrown = false;
 
         if (col != null)
@@ -238,7 +242,7 @@ public class ItemInteraction : MonoBehaviour
     {
         if (isBroken) return;
 
-        IsHeld = false;
+        SetAction(false);
 
         if (col != null)
             col.enabled = true;
@@ -269,6 +273,29 @@ public class ItemInteraction : MonoBehaviour
         hasBeenThrown = true;
     }
 
+    public void Hide()
+    {
+        if (isBroken) return;
+
+        var playerHidingInteraction = FindAnyObjectByType<PlayerHiding>(FindObjectsInactive.Include);
+        var isHidden = playerHidingInteraction?.IsHiding();
+
+        if(!isHidden.HasValue || !isHidden.Value)
+        {
+            if (playerHidingInteraction != null)
+            {
+                playerHidingInteraction.TryHide();
+            }
+        }
+        else
+        {
+            if (playerHidingInteraction != null)
+            {
+                playerHidingInteraction.Unhide();
+            }
+        }
+    }
+
     #endregion
 
     #region Collision / Landing / Break
@@ -283,7 +310,7 @@ public class ItemInteraction : MonoBehaviour
 
     private void HandleThrownCollision(Collision collision)
     {
-        if (!hasBeenThrown || IsHeld)
+        if (!hasBeenThrown || IsInActions)
             return;
 
         // Ignore tiny "settle" bumps

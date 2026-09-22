@@ -19,6 +19,7 @@ public class PlayerGrabInteraction : MonoBehaviour
     public Transform holdPoint;
     [Tooltip("Optional camera whose forward vector will be used for throws. If not assigned the player transform is used.")]
     public Camera playerCamera;
+    public PlayerHiding playerHiding;
     public List<string> playerInteractionTexts = new List<string>();
     public TextMeshProUGUI bottomInteractText;
     public Slider throwpowerSlider;
@@ -61,6 +62,11 @@ public class PlayerGrabInteraction : MonoBehaviour
                         if(!npcInteract.facePlayer && npcInteract.animState != NPCAnimationState.Sit)
                             npcInteract.HandleAnimationEndState();
                         npcInteract.facePlayer = true;
+                    }
+                    currentItem.TryGetComponent(out HidingSpot hidingSpot);
+                    if (playerHiding != null && hidingSpot != null)
+                    {
+                        playerHiding.Hide(hidingSpot);
                     }
                     //GetComponent<PlayerController>().FaceObject(currentItem.transform);
                 }
@@ -150,7 +156,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
     public bool TryGrabItem(ItemInteraction item)
     {
-        if (item == null || heldItem != null || item.IsHeld)
+        if (item == null || heldItem != null || item.IsInActions)
             return false;
 
         heldItem = item;
@@ -198,6 +204,14 @@ public class PlayerGrabInteraction : MonoBehaviour
         item.Throw(throwDirection * Mathf.Max(0.1f, force));
         return true;
     }
+    public void ReleaseHeldItem()
+    {
+        if (heldItem != null)
+        {
+            heldItem.Drop();
+            heldItem = null;
+        }
+    }
 
     void DetectItemInteraction()
     {
@@ -216,7 +230,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            if (!hit.TryGetComponent(out ItemInteraction item) || item.IsHeld)
+            if (!hit.TryGetComponent(out ItemInteraction item) || item.IsInActions)
                 continue;
 
             Vector3 toItem = (hit.transform.position - visionPos).normalized;
