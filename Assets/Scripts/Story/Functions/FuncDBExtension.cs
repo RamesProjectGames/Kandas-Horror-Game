@@ -124,6 +124,8 @@ namespace TestingPurposes
             db.AddFunction("UpdateCheckpoint", new Action<string>(UpdateCheckpoint));
             db.AddFunction("StartFlicker", new Action<string>(StartFlickeringLight));
             db.AddFunction("StopFlicker", new Action<string>(StopFlickeringLight));
+            db.AddFunction("ShowActionText", new Action<string>(ShowActionText));
+            db.AddFunction("HideActionText", new Action(HideActionText));
             #endregion
         }
 
@@ -1272,6 +1274,16 @@ namespace TestingPurposes
             light.StopFlickering();
             light.enabled = false;
             light.gameObject.SetActive(false);
+        }
+
+        private static void ShowActionText(string arg)
+        {
+            GameObject.Find("Player").GetComponent<PlayerController>().ShowActionText(arg);
+        }
+
+        private static void HideActionText()
+        {
+            GameObject.Find("Player").GetComponent<PlayerController>().HideActionText();
         }
         #endregion
     }

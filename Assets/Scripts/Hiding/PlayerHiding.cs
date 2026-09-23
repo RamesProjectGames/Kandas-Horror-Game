@@ -17,7 +17,7 @@ public class PlayerHiding : MonoBehaviour
     [SerializeField] private LayerMask hidingSpotLayer;
 
     [Header("Animation Configuration")]
-    [SerializeField] private GameObject hidingUIText;
+    [SerializeField] private GameObject actionText;
     [SerializeField] private float hidingAnimationDuration = 1.5f;
     [SerializeField] private float rotationSpeed = 5f;
 
@@ -62,13 +62,13 @@ public class PlayerHiding : MonoBehaviour
         //     DetectNearbyHidingSpots();
         // }
 
-        if (hidingUIText != null)
+        if (actionText != null)
         {
             if (interactAction != null && interactAction.action != null)
             {
-                hidingUIText.GetComponentInChildren<TMP_Text>().text = $"Press {interactAction.action.GetBindingDisplayString(0)} to Unhide";
+                actionText.GetComponentInChildren<TMP_Text>().text = $"Stay Quiet it can hear you, press {interactAction.action.GetBindingDisplayString(0)} to Unhide";
             }
-            hidingUIText.SetActive(isHiding);
+            actionText.SetActive(isHiding);
         }
 
         // // Handle hiding input

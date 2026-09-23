@@ -2,6 +2,7 @@ using Dialogue;
 using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
@@ -108,12 +109,18 @@ public class PlayerController : MovableObjects
     [Header("Stamina")]
     public Slider staminaFillImage;
 
+    #region Flashlight Variables
     [Header("Flashlight")]
     [SerializeField] InputActionReference flashlightAction;
     public static bool canUseFlashlight = false;
     private bool flashlightEnabled = false;
     [SerializeField] GameObject flashlight;
+    #endregion
 
+    #region Action
+    [Header("Player Actions")]
+    public GameObject actionText;
+    #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -839,4 +846,21 @@ public class PlayerController : MovableObjects
         }
     }
     #endregion
+
+    public void ShowActionText(string text)
+    {
+        if (actionText != null)
+        {
+            actionText.GetComponentInChildren<TMP_Text>().text = text;
+            actionText.SetActive(true);
+        }
+    }
+
+    public void HideActionText()
+    {
+        if (actionText != null)
+        {
+            actionText.SetActive(false);
+        }
+    }
 }
