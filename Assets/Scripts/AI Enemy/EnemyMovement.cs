@@ -632,7 +632,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
         if(shouldMove)
         {
-            animator.SetFloat("LowerBody", 1f);
+            animator.SetFloat("LowerBody", 0.5f);
         }
         else
         {
