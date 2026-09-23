@@ -849,18 +849,12 @@ public class PlayerController : MovableObjects
 
     public void ShowActionText(string text)
     {
-        if (actionText != null)
-        {
-            actionText.GetComponentInChildren<TMP_Text>().text = text;
-            actionText.SetActive(true);
-        }
+        actionText.GetComponentInChildren<TMP_Text>().text = text;
+        actionText.SetActive(true);
     }
 
     public void HideActionText()
     {
-        if (actionText != null)
-        {
-            actionText.SetActive(false);
-        }
+        actionText.SetActive(false);
     }
 }

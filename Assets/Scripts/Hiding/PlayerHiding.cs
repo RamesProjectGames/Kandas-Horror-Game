@@ -62,15 +62,6 @@ public class PlayerHiding : MonoBehaviour
         //     DetectNearbyHidingSpots();
         // }
 
-        if (actionText != null)
-        {
-            if (interactAction != null && interactAction.action != null)
-            {
-                actionText.GetComponentInChildren<TMP_Text>().text = $"Stay Quiet it can hear you, press {interactAction.action.GetBindingDisplayString(0)} to Unhide";
-            }
-            actionText.SetActive(isHiding);
-        }
-
         // // Handle hiding input
         if (interactAction != null && interactAction.action.WasPerformedThisFrame())
         {
@@ -185,6 +176,15 @@ public class PlayerHiding : MonoBehaviour
         // transform.position = hidingPosition; // use world position to avoid parent-relative offsets
         isHiding = true;
 
+        if (actionText != null)
+        {
+            if (interactAction != null && interactAction.action != null)
+            {
+                actionText.GetComponentInChildren<TMP_Text>().text = $"Stay Quiet it can hear you, press {interactAction.action.GetBindingDisplayString(0)} to Unhide";
+            }
+            actionText.SetActive(true);
+        }
+
         // inform any enemies that can see the player that the player
         // has just slipped into a hiding spot; they will become alerted to a
         // hiding attempt.  Notify before any state changes that might clear
@@ -211,6 +211,11 @@ public class PlayerHiding : MonoBehaviour
             return;
 
         isHiding = false;
+
+        if (actionText != null)
+        {
+            actionText.SetActive(false);
+        }
 
         // Notify the hiding spot
         currentHidingSpot.UnhidePlayer(originCamera);

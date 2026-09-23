@@ -105,6 +105,7 @@ namespace Dialogue
 
         public void OpenDialogue(string assetName, bool allowCam = false)
         {
+            GameObject.Find("Player").GetComponent<PlayerController>().HideActionText();
             cameraControl = allowCam;
 
             if (string.IsNullOrWhiteSpace(assetName))
