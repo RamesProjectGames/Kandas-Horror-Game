@@ -21,4 +21,4 @@ Gossiping Student "It’s because of the recent long public holiday. No one was 
 Nonchalant Student "Is this one of the internet urban legend you keep falling for?"
 [w]ChangeCamFoV(GossipCam ^fov 60 ^t 3)
 [w]FadeOut(1), [w]Wait(0.5), [w]SwitchCam("Player Camera"), [w]Wait(1), [w]FadeIn(1)
-Jessica "<style=\"Whispering\">Looks like my food’s ready...</style>" [w]Objective(WaitingFood)
+Jessica "<style=\"Whispering\">Looks like my food’s ready...</style>" ChangeInteractionText("Ask to Sit Together"), [w]Objective(WaitingFood)
