@@ -395,6 +395,10 @@ public class PlayerController : MovableObjects
             PlayerSwitchManager.Instance.RegisterPlayer(this);
         }
     }
+    public CinemachineCamera GetPlayerCam()
+    {
+        return playerCam;
+    }
 
     public CinemachineCamera GetPlayerCam()
     {

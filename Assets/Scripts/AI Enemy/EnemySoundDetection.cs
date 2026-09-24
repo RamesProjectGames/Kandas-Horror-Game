@@ -13,6 +13,9 @@ public class EnemySoundDetection : MonoBehaviour
     [Header("Sensitivity Settings")]
     [SerializeField] private float minMicThreshold = 0.02f; // Silent (Enemy is touching the cupboard)
     [SerializeField] private float maxMicThreshold = 0.80f; // Loud (Enemy is at the edge of hearing)
+    [Header("Inspection Settings")]
+    [Range(0f, 1f)]
+    [SerializeField] private float inspectionConfidenceThreshold = 0.5f; // When 50% confident, enemy inspects the area
     
     [Header("References")]
     [SerializeField] private MicrophoneManager micManager;
@@ -52,15 +55,33 @@ public class EnemySoundDetection : MonoBehaviour
         float distance = Vector3.Distance(transform.position, playerHiding.transform.position);
         if (distance <= maxHearingRange)
         {
-            float currentThreshold = Mathf.Lerp(minMicThreshold, maxMicThreshold, distance / maxHearingRange);
-            float loudness = micManager.GetMicrophoneLoudness();
-            HidingSpot hidingSpot = playerHiding.GetCurrentHidingSpot();
+             float currentThreshold = Mathf.Lerp(minMicThreshold, maxMicThreshold, distance / maxHearingRange);
+             float loudness = micManager.GetMicrophoneLoudness();
+             HidingSpot hidingSpot = playerHiding.GetCurrentHidingSpot();
+
+            float confidence = loudness / currentThreshold;
 
             if (loudness >= currentThreshold)
             {
                 enemyMovement.InvestigatePlayerSpot(hidingSpot);
             }
+            else if (confidence >= inspectionConfidenceThreshold)
+            {
+                enemyMovement.InspectHidingSpotArea(hidingSpot, currentThreshold);
+            }
         }
+    }
+
+    public float GetCurrentConfidence()
+    {
+        if (playerHiding == null || !playerHiding.IsHiding() || micManager == null) return 0f;
+
+        float dist = Vector3.Distance(transform.position, playerHiding.transform.position);
+        if (dist > maxHearingRange) return 0f;
+
+        float threshold = Mathf.Lerp(minMicThreshold, maxMicThreshold, dist / maxHearingRange);
+        float loudness = micManager.GetMicrophoneLoudness();
+        return Mathf.Clamp01(loudness / threshold);
     }
 
     // This is for your UI to pull the current "Danger Line"
