@@ -400,6 +400,11 @@ public class PlayerController : MovableObjects
         return playerCam;
     }
 
+    public CinemachineCamera GetPlayerCam()
+    {
+        return playerCam;
+    }
+
     public void SetActivePlayer(bool active)
     {
         isActivePlayer = active;
