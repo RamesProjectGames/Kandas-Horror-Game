@@ -41,6 +41,13 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     private float nextDetectionTime = 0f;
     [SerializeField] private bool isPlayerDetected = false;
 
+    [Header("Spot Inspection")]
+    [SerializeField] private float inspectionOffsetDistance = 3f;
+    [SerializeField] private float inspectionDuration = 2f;
+    [SerializeField] private float inspectionCheckInterval = 0.3f;
+    private bool isInspectingSpot = false;
+    private Coroutine inspectionCoroutine;
+
     // Pause tracking: used to detect pause/unpause transitions
     private bool wasPausedLastFrame = false;
 
@@ -124,6 +131,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     void Update()
     {
         if (HandlePauseState()) return;
+
+        if (isInspectingSpot) return;
 
         if (attack != null && attack.canAttackPlayer)
         {
@@ -490,6 +499,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         detectedSound = false; // Important: Reset so the next throw can be detected
         isDiscoveringSpot = false; 
         isKilling = false;
+        CancelInspection();
         agent.isStopped = true;
         currIdleTime = idleTime; // Wait at the spot to "look around"
         
@@ -498,7 +508,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     }
     public void InvestigatePlayerSpot(HidingSpot spot)
     {
-        if (isDiscoveringSpot || isKilling || spot == null) return;
+        if (isDiscoveringSpot || isInspectingSpot || isKilling || spot == null) return;
 
         isDiscoveringSpot = true;
         targetHidingSpot = spot;
@@ -509,6 +519,101 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         agent.SetDestination(GetValidNavMeshPosition(spot.transform.position));
         
         // Debug.Log("Enemy is suspicious of a hiding spot...");
+    }
+
+    public void InspectHidingSpotArea(HidingSpot spot, float threshold)
+    {
+        if (isInspectingSpot || isDiscoveringSpot || isKilling || spot == null) return;
+        if (inspectionCoroutine != null) StopCoroutine(inspectionCoroutine);
+        isInspectingSpot = true;
+        detectedSound = false;
+        inspectionCoroutine = StartCoroutine(InspectSpotCoroutine(spot, threshold));
+    }
+
+    private IEnumerator InspectSpotCoroutine(HidingSpot spot, float threshold)
+    {
+        if (agent == null)
+        {
+            isInspectingSpot = false;
+            inspectionCoroutine = null;
+            yield break;
+        }
+
+        Vector3 spotPos = GetValidNavMeshPosition(spot.transform.position);
+        Vector3 dirFromSpot = (transform.position - spotPos).normalized;
+        Vector3 inspectPos = GetValidNavMeshPosition(spotPos + dirFromSpot * inspectionOffsetDistance);
+
+        agent.isStopped = false;
+        agent.speed = pursueSpeed;
+        agent.SetDestination(inspectPos);
+
+        while (!agent.pathPending && agent.remainingDistance > agent.stoppingDistance)
+        {
+            if (CheckMicThresholdExceeded(threshold))
+            {
+                CleanupInspectionAndInvestigate(spot);
+                yield break;
+            }
+            yield return new WaitForSeconds(inspectionCheckInterval);
+        }
+
+        agent.isStopped = true;
+        if (animator != null)
+        {
+            animator.SetFloat("LowerBody", 0f);
+            animator.SetFloat("UpperBody", 0.55f);
+        }
+
+        float elapsed = 0f;
+        while (elapsed < inspectionDuration)
+        {
+            if (CheckMicThresholdExceeded(threshold))
+            {
+                CleanupInspectionAndInvestigate(spot);
+                yield break;
+            }
+            elapsed += inspectionCheckInterval;
+            yield return new WaitForSeconds(inspectionCheckInterval);
+        }
+
+        if (CheckMicThresholdExceeded(threshold))
+        {
+            CleanupInspectionAndInvestigate(spot);
+            yield break;
+        }
+
+        if (animator != null) animator.SetFloat("UpperBody", 0f);
+        isInspectingSpot = false;
+        inspectionCoroutine = null;
+        agent.speed = speed;
+        SetPatrolOrRoamDestination();
+    }
+
+    private void CleanupInspectionAndInvestigate(HidingSpot spot)
+    {
+        if (animator != null) animator.SetFloat("UpperBody", 0f);
+        isInspectingSpot = false;
+        inspectionCoroutine = null;
+        agent.isStopped = false;
+        InvestigatePlayerSpot(spot);
+    }
+
+    public void CancelInspection()
+    {
+        if (inspectionCoroutine != null)
+        {
+            StopCoroutine(inspectionCoroutine);
+            inspectionCoroutine = null;
+        }
+        if (animator != null) animator.SetFloat("UpperBody", 0f);
+        isInspectingSpot = false;
+    }
+
+    private bool CheckMicThresholdExceeded(float threshold)
+    {
+        MicrophoneManager mic = MicrophoneManager.Instance;
+        if (mic == null) return false;
+        return mic.GetMicrophoneLoudness() >= threshold;
     }
     private void HandleNavigation()
     {
@@ -792,6 +897,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             isResumingAfterStopZone = false;
             detectedSound = false;
             isDiscoveringSpot = false;
+            CancelInspection();
             targetHidingSpot = null;
             hasLastSeenPlayerPosition = false;
             isPlayerDetected = false;
@@ -855,6 +961,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     {
         detectedSound = false;
         isDiscoveringSpot = false;
+        CancelInspection();
         targetHidingSpot = null;
         hasLastSeenPlayerPosition = false;
         isPlayerDetected = false;
@@ -995,6 +1102,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     {
         Debug.Log("Haha get stunned bozo");
         isStunned = true;
+        CancelInspection();
         agent.isStopped = true;
         currIdleTime = idleTime * PlayerGrabInteraction.GetThrowCharge();
 
