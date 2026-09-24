@@ -31,7 +31,7 @@ public class Door : MonoBehaviour
             OpenDoor();
     }
     [ContextMenu("Set Open Rotation")]
-    public void OpenDoor(float duration = 0.5f)
+    public void OpenDoor(float duration = 1.5f)
     {
         EventReference openSfx = RuntimeManager.PathToEventReference("event:/SFX/OpenDoor");
         EventReference closeSfx = RuntimeManager.PathToEventReference("event:/SFX/CloseDoor");

@@ -261,18 +261,23 @@ public class PlayerHiding : MonoBehaviour
     /// <summary>
     /// Force unhide the player when discovered (called by enemy/hiding spot).
     /// </summary>
-    public void ForceUnhide()
+    public void ForceUnhide(string spotType)
     {
         if (!isHiding)
             return;
 
         isHiding = false;
+        GetComponent<PlayerController>().isBeingGrab = true;
         // if there are no animation
-        {
-            CameraManager.SwitchCamera(originCamera);            
-        }
+        // {
+        //     CameraManager.SwitchCamera(originCamera);
+        // }
         // Play Monster Locker Catch Here or any other discovery animation
-
+        var enemyMovement = FindAnyObjectByType<EnemyMovement>(FindObjectsInactive.Include);
+        if (enemyMovement != null)
+        {
+            enemyMovement.PerformFinisher(spotType);
+        }
 
         // if (currentHidingSpot != null)
         // {

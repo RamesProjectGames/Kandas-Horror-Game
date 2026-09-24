@@ -5,6 +5,7 @@ using FMODUnity;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Windows;
+using Unity.Cinemachine;
 
 public class EnemyMovement : MovableObjects, IAudioRadiusListener
 {
@@ -14,6 +15,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     [SerializeField] EnemySightDetection fov;
     [SerializeField] EnemyAttack attack;
     [SerializeField] Animator animator;
+    [SerializeField] CinemachineCamera finisherCamera;
     bool detectedSound;
     private bool attackMovementHalted = false;
     public Vector3 soundSource;
@@ -293,7 +295,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             {
                 spot.DiscoverSpot();
                 GameObject player = spot.GetHiddenPlayer();
-                if (player != null) player.GetComponent<PlayerHiding>().ForceUnhide();
+                if (player != null) player.GetComponent<PlayerHiding>().ForceUnhide(spot.GetSpotType());
             }
         }
         else if (hasLastSeenPlayerPosition)
@@ -481,6 +483,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         }
         return false;
     }
+
+    #region Sound Investigation
     private void FinishSoundInvestigation()
     {
         detectedSound = false; // Important: Reset so the next throw can be detected
@@ -491,42 +495,6 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         
         // Queue up the next patrol point so it's ready when idle ends
         SetPatrolOrRoamDestination();
-    }
-    public void TriggerKillPlayer(Transform player)
-    {
-        if (isKilling) return;
-        
-        isKilling = true;
-        isDiscoveringSpot = false;
-        StopAllCoroutines();
-
-        StartCoroutine(KillRoutine(player));
-    }
-
-    private IEnumerator KillRoutine(Transform player, string killAnimationTrigger = "Attack")
-    {
-        agent.isStopped = false;
-        agent.speed = pursueSpeed;
-        
-        // Move to the player's exact position
-        while (Vector3.Distance(transform.position, player.transform.position) > 1.2f)
-        {
-            agent.SetDestination(GetValidNavMeshPosition(player.transform.position));
-            yield return null;
-        }
-
-        agent.isStopped = true;
-        
-        if(animator != null)
-        {
-            //Stop Movements
-            animator.SetFloat("LowerBody", 0f);
-            // Play Kill Animation
-            animator.SetTrigger(killAnimationTrigger); 
-        }
-
-
-        // Handle By Animation Event Handler, which will call the actual kill logic when the animation ends
     }
     public void InvestigatePlayerSpot(HidingSpot spot)
     {
@@ -600,6 +568,78 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         }
         SynchronizeAnimatorAndAgent();
     }
+    #endregion
+
+    #region Animation Triggers
+    public void TriggerKillPlayer()
+    {
+        var settingUI = FindAnyObjectByType<SettingsUI>();
+        if (settingUI != null)
+        {
+            settingUI.ShowGameover(true);
+        }
+        
+    }
+    
+    public void PerformFinisher(string finisherAnimationTrigger)
+    {
+        var filterFinisher = finisherAnimationTrigger.ToLower();
+        switch (filterFinisher)
+        {
+            case "locker":
+                if (animator != null)
+                {
+                    animator.SetFloat("UpperBody", Random.Range(.9f, .945f));
+                }
+                break;
+            case "table":
+                if (animator != null)
+                {
+                    animator.SetFloat("UpperBody", Random.Range(.95f, 1f));
+                }
+                break;
+        }
+    }
+    public void SwitchFinisherCam(bool isSwitch)
+    {
+        if(isSwitch)
+        {
+            if (finisherCamera != null)
+            {
+                CameraManager.SwitchCamera(finisherCamera);
+            }
+        }
+        else
+        {
+            var player = FindAnyObjectByType<PlayerController>();
+            var playerCamera = player?.GetPlayerCam();
+            if (playerCamera != null)
+            {
+                CameraManager.SwitchCamera(playerCamera);
+                player.isBeingGrab = false;
+            }
+        }
+    }
+    public void HandleDoorOpening(bool isOpening)
+    {
+        PlayerHiding checkHiding = fov.player.GetComponent<PlayerHiding>();
+        bool isPlayerHiding = checkHiding != null && checkHiding.IsHiding();
+        if (isPlayerHiding)
+        {
+            return;
+        }
+        HidingSpot spot = checkHiding.GetCurrentHidingSpot();
+        if (spot == null) return;
+        if (isOpening)
+        {
+            spot.Door.OpenDoor();
+        }
+        else
+        {
+            spot.Door.CloseDoor();
+        }
+    }
+    #endregion
     public void SynchronizeAnimatorAndAgent()
     {
         if(animator == null) return;
@@ -671,7 +711,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             {
                 targetHidingSpot.DiscoverSpot();
                 GameObject player = targetHidingSpot.GetHiddenPlayer();
-                if (player != null) player.GetComponent<PlayerHiding>().ForceUnhide();
+                if (player != null) player.GetComponent<PlayerHiding>().ForceUnhide(targetHidingSpot.GetSpotType());
                 
                 isDiscoveringSpot = false;
                 targetHidingSpot = null;
