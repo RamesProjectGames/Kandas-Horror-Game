@@ -10,9 +10,11 @@ public class HidingSpot : MonoBehaviour
 {
     [Header("Hiding Spot Configuration")]
     [SerializeField] private float hidingHeight = 1f; // Height offset for hiding position
+    [SerializeField] private string spotType;
     [SerializeField] private bool visualizationEnabled = true;
     [SerializeField] private CinemachineCamera hidingCamera;
     [SerializeField] private Door door;
+    public Door Door => door;
     [SerializeField] private float doorOpenDuration = 0.5f;
     private CinemachineInputAxisController inputController;
 
@@ -90,6 +92,7 @@ public class HidingSpot : MonoBehaviour
     //     }
     // }
     public CinemachineCamera GetHidingCamera() => hidingCamera;
+    public string GetSpotType() => spotType;
 
     /// <summary>
     /// Check if a player can hide in this spot.
