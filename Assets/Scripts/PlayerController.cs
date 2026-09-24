@@ -396,6 +396,11 @@ public class PlayerController : MovableObjects
         }
     }
 
+    public CinemachineCamera GetPlayerCam()
+    {
+        return playerCam;
+    }
+
     public void SetActivePlayer(bool active)
     {
         isActivePlayer = active;
