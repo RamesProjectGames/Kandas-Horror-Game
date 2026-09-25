@@ -563,7 +563,10 @@ public class PlayerController : MovableObjects
                     agent.Move(moveSpd * Time.deltaTime * input);
                     transform.position = agent.nextPosition;
                 }
-                anim.SetFloat("MoveBlend", Mathf.CeilToInt(input.magnitude));
+                if(anim.gameObject.activeInHierarchy)
+                {
+                    anim.SetFloat("MoveBlend", Mathf.CeilToInt(input.magnitude));
+                }
             }
         }
     }

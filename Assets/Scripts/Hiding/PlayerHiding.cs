@@ -1,3 +1,4 @@
+using System.Collections;
 using Dialogue;
 using TMPro;
 using Unity.Cinemachine;
@@ -32,6 +33,9 @@ public class PlayerHiding : MonoBehaviour
     private Animator animator;
     [SerializeField] private InputActionReference interactAction;
     private float hidingAnimationTimer = 0f;
+
+    [Header("Force Unhide Configuration")]
+    [SerializeField] private float finisherAnimationDuration = 1.0f;
 
     private void Start()
     {
@@ -139,61 +143,64 @@ public class PlayerHiding : MonoBehaviour
         isAnimatingHide = true;
         hidingAnimationTimer = 0f;
         currentHidingSpot = hidingSpot;
+        isHiding = true;
         // CameraManager.SwitchCamera(hidingSpot.GetHidingCamera());
-        var postProcessVolume = FindAnyObjectByType<PostProcessVolume>();
-        if (postProcessVolume != null)
-        {
-            postProcessVolume.profile.GetSetting<Vignette>().enabled.value = true;
-        }
+        
         // originalPosition = transform.position;
         // originalRotation = transform.rotation;
         // hidingPosition = hidingSpot.GetHidingPosition();
 
         // // Notify the hiding spot
-        hidingSpot.HidePlayer(gameObject);
+        hidingSpot.HidePlayer(gameObject, () =>
+        {
+            var postProcessVolume = FindAnyObjectByType<PostProcessVolume>();
+            if (postProcessVolume != null)
+            {
+                postProcessVolume.profile.GetSetting<Vignette>().enabled.value = true;
+            }
+
+            // Disable physics/collider during animation
+            if (playerRigidbody != null)
+            {
+                playerRigidbody.isKinematic = true;
+            }
+            if (playerCollider != null)
+            {
+                playerCollider.enabled = false;
+            }
+            if (agent != null)
+            {
+                agent.enabled = false;
+            }
+
+            // Move player to hiding position (can be done instantly or smoothly depending on animation)
+            // transform.position = hidingPosition; // use world position to avoid parent-relative offsets
+
+            if (actionText != null)
+            {
+                if (interactAction != null && interactAction.action != null)
+                {
+                    actionText.GetComponentInChildren<TMP_Text>().text = $"Stay Quiet it can hear you, press {interactAction.action.GetBindingDisplayString(0)} to Unhide";
+                }
+                actionText.SetActive(true);
+            }
+
+            // inform any enemies that can see the player that the player
+            // has just slipped into a hiding spot; they will become alerted to a
+            // hiding attempt.  Notify before any state changes that might clear
+            // canSeePlayer on enemy detectors.
+            
+        });
 
         // // Rotate player to look away from the cupboard (player faces opposite direction)
         // Vector3 directionToCupboard = (hidingPosition - transform.position).normalized;
         // Quaternion targetRotation = Quaternion.LookRotation(-directionToCupboard);
         // transform.rotation = targetRotation;
-       
-
-        // Disable physics/collider during animation
-        if (playerRigidbody != null)
-        {
-            playerRigidbody.isKinematic = true;
-        }
-        if (playerCollider != null)
-        {
-            playerCollider.enabled = false;
-        }
-        if (agent != null)
-        {
-            agent.enabled = false;
-        }
-
-        // Move player to hiding position (can be done instantly or smoothly depending on animation)
-        // transform.position = hidingPosition; // use world position to avoid parent-relative offsets
-        isHiding = true;
-
-        if (actionText != null)
-        {
-            if (interactAction != null && interactAction.action != null)
-            {
-                actionText.GetComponentInChildren<TMP_Text>().text = $"Stay Quiet it can hear you, press {interactAction.action.GetBindingDisplayString(0)} to Unhide";
-            }
-            actionText.SetActive(true);
-        }
-
-        // inform any enemies that can see the player that the player
-        // has just slipped into a hiding spot; they will become alerted to a
-        // hiding attempt.  Notify before any state changes that might clear
-        // canSeePlayer on enemy detectors.
         var allSight = FindObjectsByType<EnemySightDetection>(FindObjectsSortMode.None);
-        foreach (var sight in allSight)
-        {
-            sight.ResetSpottedFlag();
-        }
+        // foreach (var sight in allSight)
+        // {
+        //     sight.ResetSpottedFlag();
+        // }
         foreach (var sight in allSight)
         {
             sight.NotifyPlayerHidWhileVisible();
@@ -210,56 +217,57 @@ public class PlayerHiding : MonoBehaviour
         if (!isHiding || currentHidingSpot == null)
             return;
 
-        isHiding = false;
-
-        if (actionText != null)
-        {
-            actionText.SetActive(false);
-        }
-
         // Notify the hiding spot
-        currentHidingSpot.UnhidePlayer(originCamera);
-
-
-        var postProcessVolume = FindAnyObjectByType<PostProcessVolume>();
-        if (postProcessVolume != null)
+        currentHidingSpot.UnhidePlayer(originCamera, () =>
         {
-            postProcessVolume.profile.GetSetting<Vignette>().enabled.value = false;
-        }
+            isHiding = false;
 
-        if (playerRigidbody != null)
-        {
-            playerRigidbody.isKinematic = false;
-        }
-        if (playerCollider != null)
-        {
-            playerCollider.enabled = true;
-        }
-        if (agent != null)
-        {
-            agent.enabled = true;
-        }
+            if (actionText != null)
+            {
+                actionText.SetActive(false);
+            }
 
-        currentHidingSpot = null;
+            var postProcessVolume = FindAnyObjectByType<PostProcessVolume>();
+            if (postProcessVolume != null)
+            {
+                postProcessVolume.profile.GetSetting<Vignette>().enabled.value = false;
+            }
 
-        var playerGrabInteraction = FindAnyObjectByType<PlayerGrabInteraction>(FindObjectsInactive.Include);
-        if (playerGrabInteraction != null)
-        {
-            playerGrabInteraction.ReleaseHeldItem();
-        }
+            if (playerRigidbody != null)
+            {
+                playerRigidbody.isKinematic = false;
+            }
+            if (playerCollider != null)
+            {
+                playerCollider.enabled = true;
+            }
+            if (agent != null)
+            {
+                agent.enabled = true;
+            }
 
-        // when the player leaves a hiding spot, enemies should forget that they
-        // once saw them concealed so they will resume normal vision behaviour
-        foreach (var sight in FindObjectsByType<EnemySightDetection>(FindObjectsSortMode.None))
-        {
-            sight.ResetSpottedFlag();
-        }
+            currentHidingSpot = null;
 
+            var playerGrabInteraction = FindAnyObjectByType<PlayerGrabInteraction>(FindObjectsInactive.Include);
+            if (playerGrabInteraction != null)
+            {
+                playerGrabInteraction.ReleaseHeldItem();
+            }
+
+            // when the player leaves a hiding spot, enemies should forget that they
+            // once saw them concealed so they will resume normal vision behaviour
+            foreach (var sight in FindObjectsByType<EnemySightDetection>(FindObjectsSortMode.None))
+            {
+                sight.ResetSpottedFlag();
+            }
+        });
         Debug.Log("Player is no longer hiding!");
     }
 
     /// <summary>
     /// Force unhide the player when discovered (called by enemy/hiding spot).
+    /// Plays the enemy finisher animation, then after a delay switches the
+    /// camera back and restores player control.
     /// </summary>
     public void ForceUnhide(string spotType)
     {
@@ -267,24 +275,17 @@ public class PlayerHiding : MonoBehaviour
             return;
 
         isHiding = false;
-        GetComponent<PlayerController>().isBeingGrab = true;
-        // if there are no animation
-        // {
-        //     CameraManager.SwitchCamera(originCamera);
-        // }
-        // Play Monster Locker Catch Here or any other discovery animation
+        var playerController = GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.isBeingGrab = true;
+        }
+
         var enemyMovement = FindAnyObjectByType<EnemyMovement>(FindObjectsInactive.Include);
         if (enemyMovement != null)
         {
             enemyMovement.PerformFinisher(spotType);
         }
-
-        // if (currentHidingSpot != null)
-        // {
-        //     currentHidingSpot.UnhidePlayer();
-        //     currentHidingSpot = null;
-        // }
-
 
         if (playerRigidbody != null)
         {
@@ -299,7 +300,29 @@ public class PlayerHiding : MonoBehaviour
             agent.enabled = true;
         }
 
-        // Debug.Log("Player has been discovered and forced to unhide!");
+        // StartCoroutine(CompleteForceUnhide());
+    }
+
+    private IEnumerator CompleteForceUnhide()
+    {
+        yield return new WaitForSeconds(finisherAnimationDuration);
+
+        if (originCamera != null)
+        {
+            CameraManager.SwitchCamera(originCamera);
+        }
+
+        var playerController = GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.isBeingGrab = false;
+        }
+
+        if (currentHidingSpot != null)
+        {
+            currentHidingSpot.HandleForceUnhide();
+            currentHidingSpot = null;
+        }
     }
 
     /// <summary>

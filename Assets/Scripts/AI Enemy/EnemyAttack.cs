@@ -16,16 +16,18 @@ public class EnemyAttack : MonoBehaviour
     public float distanceToPlayer;
 
     private PlayerHiding hiding;
+    private EnemyMovement enemyMovement;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         hiding = player.GetComponent<PlayerHiding>();
         // animator = GetComponent<Animator>();
-        if (batCollider != null)
-        {
-            batCollider.enabled = false;
-        }
+        // if (batCollider != null)
+        // {
+        //     batCollider.enabled = false;
+        // }
+        enemyMovement = GetComponent<EnemyMovement>();
     }
 
     // Update is called once per frame
@@ -33,17 +35,17 @@ public class EnemyAttack : MonoBehaviour
     {
         // if (Application.isPlaying && (SettingManager.Instance.isPaused || DialogueSystem.Instance.isRunningConvo))
         //     return;
-        var batColliderValue = animator.GetFloat("ColliderActivation");
+        // var batColliderValue = animator.GetFloat("ColliderActivation");
 
-        if(Mathf.Abs(batColliderValue) < 0.0001f)
-        {
-            batColliderValue = 0f;
-        }
+        // if(Mathf.Abs(batColliderValue) < 0.0001f)
+        // {
+        //     batColliderValue = 0f;
+        // }
 
-        if (batCollider != null)
-        {
-            batCollider.enabled = batColliderValue >= 1f;
-        }
+        // if (batCollider != null)
+        // {
+        //     batCollider.enabled = batColliderValue >= 1f;
+        // }
             
         Vector3 enemyPos = transform.position;
         Vector3 playerPos = player.transform.position;
@@ -70,7 +72,14 @@ public class EnemyAttack : MonoBehaviour
         {
             if (!Physics.Raycast(transform.position, playerTarget, distanceToPlayer, obstacleMask))
             {
-                animator.SetFloat("UpperBody", 0.11f);
+                if(enemyMovement != null && enemyMovement.finisherAnimation != -1)
+                {                    
+                    animator.SetFloat("UpperBody", enemyMovement.finisherAnimation);
+                }
+                else
+                {
+                    animator.SetFloat("UpperBody", 0.11f);
+                }
                 canAttackPlayer = true;
             }
             else

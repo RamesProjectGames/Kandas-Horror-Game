@@ -62,7 +62,7 @@ public class EnemySightDetection : MonoBehaviour
         // flag is manually set (see NotifyPlayerHidWhileVisible).
         PlayerHiding playerHiding = player.GetComponent<PlayerHiding>();
         bool hiding = playerHiding != null && playerHiding.IsHiding();
-        if (hiding)
+        if (hiding && !playerWasSpottedWhileHiding)
         {
             ChangePlayerMaterial(Color.white);
             canSeePlayer = false;

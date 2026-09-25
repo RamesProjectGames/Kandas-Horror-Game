@@ -1,3 +1,4 @@
+using System;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -105,7 +106,7 @@ public class HidingSpot : MonoBehaviour
     /// <summary>
     /// Called when player hides in this spot.
     /// </summary>
-    public void HidePlayer(GameObject player)
+    public void HidePlayer(GameObject player, Action onComplete = null)
     {
         void CompleteHide()
         {
@@ -120,6 +121,7 @@ public class HidingSpot : MonoBehaviour
             currentDiscoveryProgress = 0f;
             isBeingDiscovered = false;
             door?.CloseDoor(doorOpenDuration);
+            onComplete?.Invoke();
         }
         var itemInteraction = GetComponent<ItemInteraction>();
         itemInteraction?.SetAction(true);
@@ -141,7 +143,7 @@ public class HidingSpot : MonoBehaviour
     /// <summary>
     /// Called when player leaves the hiding spot.
     /// </summary>
-    public void UnhidePlayer(CinemachineCamera originCamera)
+    public void UnhidePlayer(CinemachineCamera originCamera, Action onComplete = null)
     {
         void CompleteUnhide()
         {
@@ -159,6 +161,7 @@ public class HidingSpot : MonoBehaviour
             currentDiscoveryProgress = 0f;
             isBeingDiscovered = false;
             door?.CloseDoor(doorOpenDuration);
+            onComplete?.Invoke();
         }
 
         if (door != null)
@@ -267,6 +270,18 @@ public class HidingSpot : MonoBehaviour
         isBeingDiscovered = false;
         currentDiscoveryProgress = 0f;
         discoveringEnemy = null;
+    }
+
+    /// <summary>
+    /// Called when the enemy forces the player out of this hiding spot.
+    /// Opens the door and resets the spot for future use.
+    /// </summary>
+    public void HandleForceUnhide()
+    {
+        isOccupied = false;
+        hiddenPlayer = null;
+        door?.OpenDoor(doorOpenDuration);
+        ResetDiscoveryState();
     }
 
     /// <summary>

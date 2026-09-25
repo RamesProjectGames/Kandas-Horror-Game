@@ -31,6 +31,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     public bool shouldMove;
 
     [Header("Hiding Spot Detection")]
+    public float finisherAnimation = -1;
     [SerializeField] private float hidingSpotDetectionRadius = 15f;
     [SerializeField] private LayerMask hidingSpotLayer;
     [SerializeField] private float detectionCooldown = 1f;
@@ -683,7 +684,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         {
             settingUI.ShowGameover(true);
         }
-        
+        finisherAnimation = -1;
     }
     
     public void PerformFinisher(string finisherAnimationTrigger)
@@ -694,13 +695,13 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
             case "locker":
                 if (animator != null)
                 {
-                    animator.SetFloat("UpperBody", Random.Range(.9f, .945f));
+                    finisherAnimation = Random.Range(.9f, .945f);
                 }
                 break;
             case "table":
                 if (animator != null)
                 {
-                    animator.SetFloat("UpperBody", Random.Range(.95f, 1f));
+                    finisherAnimation = Random.Range(.95f, 1f);
                 }
                 break;
         }
@@ -723,6 +724,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
                 CameraManager.SwitchCamera(playerCamera);
                 player.isBeingGrab = false;
             }
+
         }
     }
     public void HandleDoorOpening(bool isOpening)

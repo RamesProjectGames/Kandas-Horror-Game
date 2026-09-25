@@ -55,9 +55,9 @@ public class EnemySoundDetection : MonoBehaviour
         float distance = Vector3.Distance(transform.position, playerHiding.transform.position);
         if (distance <= maxHearingRange)
         {
-             float currentThreshold = Mathf.Lerp(minMicThreshold, maxMicThreshold, distance / maxHearingRange);
-             float loudness = micManager.GetMicrophoneLoudness();
-             HidingSpot hidingSpot = playerHiding.GetCurrentHidingSpot();
+            float currentThreshold = Mathf.Lerp(minMicThreshold, maxMicThreshold, distance / maxHearingRange);
+            float loudness = micManager.GetMicrophoneLoudness();
+            HidingSpot hidingSpot = playerHiding.GetCurrentHidingSpot();
 
             float confidence = loudness / currentThreshold;
 
