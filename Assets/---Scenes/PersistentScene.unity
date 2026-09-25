@@ -6701,7 +6701,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0026626587}
+  m_AnchoredPosition: {x: 0, y: 0.0016479492}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -17553,7 +17553,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!225 &985247954
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -23229,7 +23229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e7d286001bdc1f94499806ee4b55eab7, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 921677043384223380, guid: e7d286001bdc1f94499806ee4b55eab7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -33619,23 +33619,6 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData:
-  - leftFootstepSound:
-    - {fileID: 8300000, guid: a6897bb5ab7305d42b823b752f9addd1, type: 3}
-    - {fileID: 8300000, guid: c13449c018e0b134891be072a9c084e8, type: 3}
-    - {fileID: 8300000, guid: 99b85b3f25c231448bec51ffb0a564d0, type: 3}
-    - {fileID: 8300000, guid: 204335f5a3bac584680b8fdb5ee5d98b, type: 3}
-    rightFootstepSound: []
-    surfaceType: 0
-  - leftFootstepSound:
-    - {fileID: 8300000, guid: f17e70a0fe51e5f41b01571b3c191806, type: 3}
-    - {fileID: 8300000, guid: 2ed371b1ecfe05640acaeb5bdade5241, type: 3}
-    - {fileID: 8300000, guid: 7689f5d92acbf2b4e9bd0e73d21316b5, type: 3}
-    rightFootstepSound:
-    - {fileID: 8300000, guid: ab66b02ee6840d94a992a0e82f82bf5f, type: 3}
-    - {fileID: 8300000, guid: 71a15bd38f99d614bbe2ab9d0cd2bd30, type: 3}
-    - {fileID: 8300000, guid: c4e0304beec89d2408a5dc9204eac1b4, type: 3}
-    surfaceType: 1
   TerrainSoundTypes:
   - terrainLayerNames:
     - Ground
@@ -33647,12 +33630,13 @@ MonoBehaviour:
     - Grass 2
     - Dirt&Leaf
     surfaceType: 2
-  Animator: {fileID: 0}
+  Animator: {fileID: 1234470051}
   Enviroment:
     serializedVersion: 2
     m_Bits: 9
   minFootstepInterval: 0.3
-  groundCheckDistance: 3
+  foot: {fileID: 405068812}
+  groundCheckDistance: 1
 --- !u!195 &1761790451
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -34461,7 +34445,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1800880767
 RectTransform:
   m_ObjectHideFlags: 0

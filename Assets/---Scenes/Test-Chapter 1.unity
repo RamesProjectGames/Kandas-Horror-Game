@@ -27651,28 +27651,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 707137550}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!64 &166365106
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2126068711524254683}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3526293208604910862, guid: a470a9cd25018bf479a3e8caa310d71a, type: 3}
 --- !u!43 &168618602
 Mesh:
   m_ObjectHideFlags: 0
@@ -39729,13 +39707,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 246087504}
   Enviroment:
     serializedVersion: 2
     m_Bits: 265
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &246087502
 MonoBehaviour:
@@ -56718,28 +56696,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 417082316}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!64 &418026149
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2126068711524254679}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -1743409504128434004, guid: a470a9cd25018bf479a3e8caa310d71a, type: 3}
 --- !u!4 &418556433 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fea53cd5911d4094a9ceeb004301275e, type: 3}
@@ -92274,6 +92230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hidingHeight: 1
+  spotType: 
   visualizationEnabled: 1
   hidingCamera: {fileID: 1846595894}
   door: {fileID: 0}
@@ -97319,13 +97276,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 741790607}
   Enviroment:
     serializedVersion: 2
     m_Bits: 265
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &741790605
 MonoBehaviour:
@@ -141604,13 +141561,13 @@ MonoBehaviour:
       Data3: 2010320037
       Data4: 2080663012
     Path: event:/SFX/ChaserFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 0}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &1016558881
 MonoBehaviour:
@@ -141700,6 +141657,7 @@ MonoBehaviour:
   fov: {fileID: 1016558882}
   attack: {fileID: 1016558885}
   animator: {fileID: 0}
+  finisherCamera: {fileID: 0}
   soundSource: {x: 0, y: 0, z: 0}
   speed: 4
   pursueSpeed: 3.75
@@ -141707,12 +141665,16 @@ MonoBehaviour:
   currIdleTime: 0
   stopZoneHoldTime: 1.5
   shouldMove: 0
+  finisherAnimation: -1
   hidingSpotDetectionRadius: 15
   hidingSpotLayer:
     serializedVersion: 2
     m_Bits: 1024
   detectionCooldown: 1
   isPlayerDetected: 0
+  inspectionOffsetDistance: 3
+  inspectionDuration: 2
+  inspectionCheckInterval: 0.3
   enemyAudioManager: {fileID: 0}
   monsterChaseAmbiance:
     Guid:
@@ -178465,13 +178427,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 1360418036}
   Enviroment:
     serializedVersion: 2
     m_Bits: 265
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &1360418034
 MonoBehaviour:
@@ -196210,28 +196172,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!64 &1533944305
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2126068711524254677}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3341729657951226117, guid: a470a9cd25018bf479a3e8caa310d71a, type: 3}
 --- !u!1 &1535182454
 GameObject:
   m_ObjectHideFlags: 0
@@ -229153,13 +229093,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 1744060767}
   Enviroment:
     serializedVersion: 2
     m_Bits: 265
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &1744060765
 MonoBehaviour:
@@ -239708,6 +239648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hidingHeight: 1
+  spotType: 
   visualizationEnabled: 1
   hidingCamera: {fileID: 800421130}
   door: {fileID: 0}
@@ -251405,6 +251346,7 @@ MonoBehaviour:
     m_Bits: 128
   minMicThreshold: 0.02
   maxMicThreshold: 0.8
+  inspectionConfidenceThreshold: 0.5
   micManager: {fileID: 0}
   playerHiding: {fileID: 0}
   enemyMovement: {fileID: 1016558883}
@@ -258454,13 +258396,13 @@ MonoBehaviour:
       Data3: -40709984
       Data4: -1952618164
     Path: event:/SFX/ManequinMovement
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 1755845230}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &1856562853
 MonoBehaviour:
@@ -300224,13 +300166,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 4491016198333590583}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!1 &277219175806702296
 GameObject:
@@ -300420,13 +300362,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 2920625550562033656}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &390456137214756657
 MonoBehaviour:
@@ -300447,13 +300389,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 2920625551011890822}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &390456137358742550
 MonoBehaviour:
@@ -300474,13 +300416,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 2920625549524293025}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &390456137710686030
 MonoBehaviour:
@@ -300501,13 +300443,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 2920625549408538361}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &390456137751844674
 MonoBehaviour:
@@ -300528,13 +300470,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 2920625549399365365}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &390456137756663284
 MonoBehaviour:
@@ -300555,13 +300497,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 2920625549395860547}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &390456137907047105
 MonoBehaviour:
@@ -300582,13 +300524,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 2920625550284475254}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &390456138224715033
 MonoBehaviour:
@@ -300609,13 +300551,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 2920625550000227502}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &394802083768284746
 MonoBehaviour:
@@ -306685,13 +306627,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 3338942341735947437}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &2080103879713198620
 MonoBehaviour:
@@ -306712,13 +306654,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 3338942341631033174}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &2080103879905492882
 MonoBehaviour:
@@ -306739,13 +306681,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 3338942341824615128}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &2080103880055298668
 MonoBehaviour:
@@ -306766,13 +306708,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 3338942343314257702}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &2080103880128612035
 MonoBehaviour:
@@ -306793,13 +306735,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 3338942343379184521}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &2080103880680812936
 MonoBehaviour:
@@ -306820,13 +306762,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 3338942342861036738}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &2080103880917022641
 MonoBehaviour:
@@ -306847,13 +306789,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 3338942343094098683}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &2080103880934985342
 MonoBehaviour:
@@ -306874,13 +306816,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 3338942343122297652}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &2081053728095218742
 MonoBehaviour:
@@ -307463,60 +307405,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 471885364006848542, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2126068711524254690}
-    - targetCorrespondingSourceObject: {fileID: 1285171745435285983, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 166365106}
-    - targetCorrespondingSourceObject: {fileID: 5336854005268636900, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2126068711524254688}
-    - targetCorrespondingSourceObject: {fileID: 6355728701675936981, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2126068711524254686}
-    - targetCorrespondingSourceObject: {fileID: 1034410449059365884, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 418026149}
-    - targetCorrespondingSourceObject: {fileID: 6616389152426045622, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1533944305}
-    - targetCorrespondingSourceObject: {fileID: 1270396951918650921, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2126068711524254675}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
---- !u!1 &2126068711524254673 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1270396951918650921, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-  m_PrefabInstance: {fileID: 2126068711524254672}
-  m_PrefabAsset: {fileID: 0}
 --- !u!108 &2126068711524254674 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 262309569990217851, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
   m_PrefabInstance: {fileID: 2126068711524254672}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2126068711524254675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2126068711524254673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e14c79a3f40ea7b4583c6cbf377b1e02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  surfaceType: 0
 --- !u!108 &2126068711524254676 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 2732576248630314312, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-  m_PrefabInstance: {fileID: 2126068711524254672}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2126068711524254677 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6616389152426045622, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
   m_PrefabInstance: {fileID: 2126068711524254672}
   m_PrefabAsset: {fileID: 0}
 --- !u!108 &2126068711524254678 stripped
@@ -307524,102 +307422,11 @@ Light:
   m_CorrespondingSourceObject: {fileID: 7282690512326505383, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
   m_PrefabInstance: {fileID: 2126068711524254672}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2126068711524254679 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1034410449059365884, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-  m_PrefabInstance: {fileID: 2126068711524254672}
-  m_PrefabAsset: {fileID: 0}
 --- !u!108 &2126068711524254680 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 13108844884279740, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
   m_PrefabInstance: {fileID: 2126068711524254672}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2126068711524254681 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6355728701675936981, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-  m_PrefabInstance: {fileID: 2126068711524254672}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2126068711524254682 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5336854005268636900, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-  m_PrefabInstance: {fileID: 2126068711524254672}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2126068711524254683 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1285171745435285983, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-  m_PrefabInstance: {fileID: 2126068711524254672}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2126068711524254684 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 471885364006848542, guid: fa48d7f581c531543848c734eb1e84a8, type: 3}
-  m_PrefabInstance: {fileID: 2126068711524254672}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &2126068711524254686
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2126068711524254681}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 419008222868714796, guid: a470a9cd25018bf479a3e8caa310d71a, type: 3}
---- !u!64 &2126068711524254688
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2126068711524254682}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 2541350746323071994, guid: a470a9cd25018bf479a3e8caa310d71a, type: 3}
---- !u!64 &2126068711524254690
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2126068711524254684}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 6790165310345399404, guid: a470a9cd25018bf479a3e8caa310d71a, type: 3}
 --- !u!114 &2148484228299690464 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4981823996536923155, guid: 1632c793e0170b7459b64aa64e7efe88, type: 3}
@@ -310436,13 +310243,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 0}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!33 &4248732890104011558
 MeshFilter:
