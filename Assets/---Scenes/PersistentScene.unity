@@ -6701,7 +6701,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0016479492}
+  m_AnchoredPosition: {x: 0, y: 0.00019836426}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &415318067
@@ -17498,6 +17498,54 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_AlphaFadeSpeed: 0.15
+--- !u!1 &978424199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 978424200}
+  - component: {fileID: 978424201}
+  m_Layer: 0
+  m_Name: InstrcutionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &978424200
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978424199}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1056521399}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &978424201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978424199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abd2e9c9a7bb00f438e5201229b3e3b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextInstructionAction: {fileID: 8712969094662661329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  prevInstructionAction: {fileID: -5501032764017835335, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  instructionPanel: {fileID: 1037204609}
+  instructions: []
 --- !u!1 &980616813
 GameObject:
   m_ObjectHideFlags: 0
@@ -17553,7 +17601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!225 &985247954
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -19545,6 +19593,7 @@ Transform:
   - {fileID: 1409828932}
   - {fileID: 1515251016}
   - {fileID: 2102581998}
+  - {fileID: 978424200}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1062230017
@@ -23229,7 +23278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e7d286001bdc1f94499806ee4b55eab7, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 921677043384223380, guid: e7d286001bdc1f94499806ee4b55eab7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -26477,7 +26526,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1398217840
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33522,6 +33571,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 449879f0-9b55-4672-b50e-0809d4db51fc
     m_ActionName: 'Player/FlashlightToggle[/Keyboard/f]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a973ee82-4d4c-4206-a881-0e89cc86a693
+    m_ActionName: 'Player/Next[/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 42ecfd7b-b632-46bb-be55-a386bb36777e
+    m_ActionName: 'Player/Prev[/Keyboard/leftArrow]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -33714,6 +33771,8 @@ MonoBehaviour:
   currentItem: {fileID: 0}
   throwAction: {fileID: -2799977855788558582, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   interAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  nextAction: {fileID: 8712969094662661329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  prevAction: {fileID: -5501032764017835335, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!114 &1761790455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34445,7 +34504,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1800880767
 RectTransform:
   m_ObjectHideFlags: 0

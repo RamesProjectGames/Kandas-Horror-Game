@@ -27,7 +27,10 @@ public class PlayerGrabInteraction : MonoBehaviour
     public ItemInteraction currentItem;
     private ItemInteraction heldItem;
     public ItemInteraction HeldItem => heldItem;
-    [SerializeField] private InputActionReference throwAction, interAction;
+    [SerializeField] private InputActionReference throwAction, interAction, nextAction, prevAction;
+
+    private List<ItemInteraction> detectedItems = new List<ItemInteraction>();
+    private int currentIndex = 0;
 
     // runtime state for charging a throw
     private static float throwCharge;
@@ -35,11 +38,6 @@ public class PlayerGrabInteraction : MonoBehaviour
     void Start()
     {
         throwpowerSlider.gameObject.SetActive(false);
-        if(throwAction != null)
-        {
-            string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
-            AddPlayerInteractionTexts($"Press {bindingDisplay} to throw");
-        }
     }
 
     void Update()
@@ -48,6 +46,16 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning)
             return;
+
+        if (nextAction != null && nextAction.action.WasPerformedThisFrame())
+        {
+            NavigateItems(+1);
+        }
+        if (prevAction != null && prevAction.action.WasPerformedThisFrame())
+        {
+            NavigateItems(-1);
+        }
+
         if (interAction != null && interAction.action.WasPerformedThisFrame())
         {
             if (currentItem != null)
@@ -59,7 +67,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                     currentItem.TryGetComponent(out NpcMovement npcInteract);
                     if (npcInteract != null)
                     {
-                        if(!npcInteract.facePlayer && npcInteract.animState != NPCAnimationState.Sit)
+                        if (!npcInteract.facePlayer && npcInteract.animState != NPCAnimationState.Sit)
                             npcInteract.HandleAnimationEndState();
                         npcInteract.facePlayer = true;
                     }
@@ -84,11 +92,11 @@ public class PlayerGrabInteraction : MonoBehaviour
                 }
             }
         }
-        
+
         // handle charging and releasing a throw
         if (throwAction != null)
         {
-            
+
             // accumulate charge while the button is held and we have an item
             if (throwAction.action.IsPressed() && heldItem != null)
             {
@@ -115,7 +123,7 @@ public class PlayerGrabInteraction : MonoBehaviour
             }
             throwpowerSlider.value = throwCharge / maxThrowChargeTime;
         }
-        
+
         if (heldItem != null)
         {
             string interactionText = "";
@@ -132,7 +140,7 @@ public class PlayerGrabInteraction : MonoBehaviour
     }
     public void AddPlayerInteractionTexts(string newText)
     {
-        if(string.IsNullOrEmpty(newText) || playerInteractionTexts.Contains(newText))
+        if (string.IsNullOrEmpty(newText) || playerInteractionTexts.Contains(newText))
         {
             return;
         }
@@ -212,22 +220,38 @@ public class PlayerGrabInteraction : MonoBehaviour
             heldItem = null;
         }
     }
-
+    public void ThrowItemInstruction(bool isHolding)
+    {
+        if (isHolding)
+        {
+            if (throwAction != null)
+            {
+                string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
+                InstructionManager.Instance.AddInstruction($"Press {bindingDisplay} to throw");
+            }
+        }
+        else
+        {
+            if (throwAction != null)
+            {
+                string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
+                InstructionManager.Instance.RemoveInstruction($"Press {bindingDisplay} to throw");
+            }
+        }
+    }
     void DetectItemInteraction()
     {
-        if(SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning)
+        if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning)
         {
-            if(currentItem != null)
+            if (currentItem != null)
                 currentItem.HideUI();
             return;
         }
-        ItemInteraction bestItem = null;
-        float bestDistance = float.MaxValue;
-
         Vector3 visionPos = (CameraManager.currentActiveCamera != null) ? CameraManager.currentActiveCamera.transform.position : transform.position;
 
         Collider[] hits = Physics.OverlapSphere(visionPos, pickupRadius, pickupLayer | interactableLayer | fragmentLayer, QueryTriggerInteraction.Collide);
 
+        detectedItems.Clear();
         foreach (Collider hit in hits)
         {
             if (!hit.TryGetComponent(out ItemInteraction item) || item.IsInActions)
@@ -240,27 +264,39 @@ public class PlayerGrabInteraction : MonoBehaviour
             // Only detect front cone
             if (dot >= frontDotThreshold)
             {
-                float distance = Vector3.Distance(visionPos, hit.transform.position);
-                if (distance < bestDistance)
+                if ((interactableLayer & (1 << item.gameObject.layer)) != 0 || (fragmentLayer & (1 << item.gameObject.layer)) != 0)
                 {
-                    if ((interactableLayer & (1 << item.gameObject.layer)) != 0 || (fragmentLayer & (1 << item.gameObject.layer)) != 0)
-                    {
-                        if(item.IsDialogueRelevant())
-                        {
-                            bestDistance = distance;
-                            bestItem = item;
-                        }
-                    }
-                    else if ((pickupLayer & (1 << item.gameObject.layer)) != 0)
-                    {
-                        bestDistance = distance;
-                        bestItem = item;
-                    }
+                    if (item.IsDialogueRelevant())
+                        detectedItems.Add(item);
+                }
+                else if ((pickupLayer & (1 << item.gameObject.layer)) != 0)
+                {
+                    detectedItems.Add(item);
                 }
             }
         }
 
-        if (bestItem != currentItem)
+        // Sort detected items by distance so navigation order is deterministic
+        detectedItems.Sort((a, b) =>
+        {
+            float da = Vector3.Distance(visionPos, a.transform.position);
+            float db = Vector3.Distance(visionPos, b.transform.position);
+            return da.CompareTo(db);
+        });
+
+        if (detectedItems.Count > 0)
+        {
+            if (currentIndex < 0 || currentIndex >= detectedItems.Count)
+                currentIndex = 0;
+        }
+        else
+        {
+            currentIndex = 0;
+        }
+
+        ItemInteraction newCurrent = (detectedItems.Count > 0) ? detectedItems[currentIndex] : null;
+
+        if (newCurrent != currentItem)
         {
             if (currentItem != null)
             {
@@ -269,18 +305,45 @@ public class PlayerGrabInteraction : MonoBehaviour
                 currentItem.TryGetComponent(out NpcMovement npcInteract);
                 if (npcInteract != null)
                 {
-                    if(npcInteract.facePlayer && npcInteract.animState != NPCAnimationState.Sit)
+                    if (npcInteract.facePlayer && npcInteract.animState != NPCAnimationState.Sit)
                         npcInteract.HandleAnimationEndState();
                     npcInteract.facePlayer = false;
                 }
             }
 
-            currentItem = bestItem;
+            currentItem = newCurrent;
 
             if (currentItem != null)
                 currentItem.ShowUI();
         }
-        else if(currentItem != null && !currentItem.pickupUI.activeSelf)
+        else if (currentItem != null && !currentItem.pickupUI.activeSelf)
+            currentItem.ShowUI();
+    }
+
+    void NavigateItems(int direction)
+    {
+        if (detectedItems == null || detectedItems.Count == 0)
+            return;
+
+        if (currentItem != null)
+        {
+            currentItem.HideUI();
+
+            currentItem.TryGetComponent(out NpcMovement npcInteract);
+            if (npcInteract != null)
+            {
+                if (npcInteract.facePlayer && npcInteract.animState != NPCAnimationState.Sit)
+                    npcInteract.HandleAnimationEndState();
+                npcInteract.facePlayer = false;
+            }
+        }
+
+        currentIndex = (currentIndex + direction) % detectedItems.Count;
+        if (currentIndex < 0)
+            currentIndex += detectedItems.Count;
+
+        currentItem = detectedItems[currentIndex];
+        if (currentItem != null)
             currentItem.ShowUI();
     }
     //void DetectFragmentItem()

@@ -666,6 +666,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 391663763}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &59951065
 MonoBehaviour:
@@ -686,13 +689,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 59951068}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &59951066
 MonoBehaviour:
@@ -1349,6 +1352,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 744708188}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &132881479
 MonoBehaviour:
@@ -1369,13 +1375,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 132881482}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &132881480
 MonoBehaviour:
@@ -3031,6 +3037,7 @@ RectTransform:
   - {fileID: 1273207786}
   - {fileID: 342034996}
   - {fileID: 1979447015}
+  - {fileID: 1411458529}
   m_Father: {fileID: 1141059021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3093,6 +3100,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 147673205}
     m_Modifications:
+    - target: {fileID: 655106866791009638, guid: 731b19e222f18ac4fbc9cbb4086adf51, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3531383314209217644, guid: 731b19e222f18ac4fbc9cbb4086adf51, type: 3}
       propertyPath: m_Name
       value: Hidding-Locker
@@ -3337,6 +3348,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 2082513052}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!1 &260852434
 GameObject:
@@ -3591,14 +3605,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 95
+  m_fontSize: 109.85
   m_fontSizeBase: 95
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 200
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -5637,6 +5651,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1215377689}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &445610419
 MonoBehaviour:
@@ -5657,13 +5674,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 445610422}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &445610420
 MonoBehaviour:
@@ -6905,6 +6922,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 946890867}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!54 &570588029
 Rigidbody:
@@ -10117,7 +10137,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 395.73535}
+  m_SizeDelta: {x: 0, y: 473.85535}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &754388750
 MonoBehaviour:
@@ -10938,13 +10958,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 782622245}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &782622241
 MonoBehaviour:
@@ -11208,6 +11228,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1797886089}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &782622252
 MonoBehaviour:
@@ -11894,13 +11917,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 839349917}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &839349915
 MonoBehaviour:
@@ -14165,6 +14188,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1604939110}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!54 &1029970610
 Rigidbody:
@@ -14803,7 +14829,6 @@ GameObject:
   - component: {fileID: 1073169381}
   - component: {fileID: 1073169380}
   - component: {fileID: 1073169385}
-  - component: {fileID: 1073169386}
   m_Layer: 9
   m_Name: Pick Up Ball
   m_TagString: Untagged
@@ -14975,24 +15000,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   pickupText: {fileID: 1962492965}
-  buttonInteractionText: {fileID: 0}
+  buttonInteractionText: {fileID: 581208001}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
---- !u!208 &1073169386
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1073169379}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!1 &1089462854
 GameObject:
   m_ObjectHideFlags: 0
@@ -15793,6 +15805,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1028066463}
   buttonInteractionText: {fileID: 2011524592}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!1 &1140269323
 GameObject:
@@ -16345,6 +16360,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1177440516}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &1146319610
 MonoBehaviour:
@@ -16365,13 +16383,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 1146319613}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &1146319611
 MonoBehaviour:
@@ -17887,6 +17905,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1866465848}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!1 &1230543912
 GameObject:
@@ -18869,6 +18890,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1857825148}
   buttonInteractionText: {fileID: 1089462856}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!54 &1290578298
 Rigidbody:
@@ -20613,7 +20637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 989cee9c559c17e4eb8bdcdfcff59b9e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1503024422856331008, guid: 989cee9c559c17e4eb8bdcdfcff59b9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -21401,13 +21425,13 @@ MonoBehaviour:
       Data3: 2010320037
       Data4: 2080663012
     Path: event:/SFX/ChaserFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 1356706259}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &1356706255
 MonoBehaviour:
@@ -21681,6 +21705,38 @@ MonoBehaviour:
         - m_Target: {fileID: 1440919808}
           m_TargetAssemblyTypeName: UnityEngine.BoxCollider, UnityEngine
           m_MethodName: set_enabled
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventId: Stun
+    onEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1356706257}
+          m_TargetAssemblyTypeName: EnemyMovement, Assembly-CSharp
+          m_MethodName: SetStunned
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+  - eventId: Recover Stun
+    onEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1356706257}
+          m_TargetAssemblyTypeName: EnemyMovement, Assembly-CSharp
+          m_MethodName: SetStunned
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -22170,6 +22226,139 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a80806fd5169e34698b0539e9f4acf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1411458528
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1411458529}
+  - component: {fileID: 1411458532}
+  - component: {fileID: 1411458531}
+  - component: {fileID: 1411458530}
+  m_Layer: 5
+  m_Name: Exit Button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1411458529
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411458528}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1842952086}
+  m_Father: {fileID: 221133363}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -125, y: -125}
+  m_SizeDelta: {x: 175, y: 175}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1411458530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411458528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1411458531}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1365992718}
+        m_TargetAssemblyTypeName: PinSystem, Assembly-CSharp
+        m_MethodName: ClosePanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1411458531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411458528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 26fb454f78845a546ab588eac6b60cdc, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1411458532
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411458528}
+  m_CullTransparentMesh: 1
 --- !u!1 &1420537000
 GameObject:
   m_ObjectHideFlags: 0
@@ -24428,6 +24617,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 603361765}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!65 &1626556623
 BoxCollider:
@@ -24603,6 +24795,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 757253137}
   buttonInteractionText: {fileID: 797418994}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!54 &1634395299
 Rigidbody:
@@ -24954,6 +25149,9 @@ MonoBehaviour:
         m_CallState: 2
   pickupText: {fileID: 761604735}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!54 &1689464519
 Rigidbody:
@@ -25897,13 +26095,13 @@ MonoBehaviour:
       Data3: 2010320037
       Data4: 2080663012
     Path: event:/SFX/ChaserFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 0}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!1 &1743473174
 GameObject:
@@ -27032,6 +27230,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1934289495}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &1801769416
 MonoBehaviour:
@@ -27052,13 +27253,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 1801769419}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &1801769417
 MonoBehaviour:
@@ -27347,6 +27548,142 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
   offset: {x: 0.5, y: 1.45, z: -0.1100006}
+--- !u!1 &1842952085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1842952086}
+  - component: {fileID: 1842952088}
+  - component: {fileID: 1842952087}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1842952086
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842952085}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1411458529}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1842952087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842952085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Exit
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 7ed3cd3b8efdd5a4ea2c23d6cda8d69a, type: 2}
+  m_sharedMaterial: {fileID: 1713135745287748299, guid: 7ed3cd3b8efdd5a4ea2c23d6cda8d69a, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 58.3
+  m_fontSizeBase: 24
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 18
+  m_fontSizeMax: 100
+  m_fontStyle: 1
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 40, y: 40, z: 40, w: 40}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1842952088
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842952085}
+  m_CullTransparentMesh: 1
 --- !u!1 &1850969581
 GameObject:
   m_ObjectHideFlags: 0
@@ -28127,6 +28464,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 169496558}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &1891176346
 MonoBehaviour:
@@ -28147,13 +28487,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 1891176349}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &1891176347
 MonoBehaviour:
@@ -30911,6 +31251,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1153122373}
   buttonInteractionText: {fileID: 131822070}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!54 &1986009862
 Rigidbody:
@@ -32075,13 +32418,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 2064587897}
   Enviroment:
     serializedVersion: 2
     m_Bits: 1
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &2064587895
 MonoBehaviour:
@@ -32612,6 +32955,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 586340267}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &2119057200
 MonoBehaviour:
@@ -32632,13 +32978,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 2119057203}
   Enviroment:
     serializedVersion: 2
     m_Bits: 8
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &2119057201
 MonoBehaviour:
@@ -34951,6 +35297,9 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 152704849}
   buttonInteractionText: {fileID: 337920762}
+  highlightColor: {r: 1, g: 0.95, b: 0.5, a: 1}
+  pickupBackground: {fileID: 0}
+  buttonBackground: {fileID: 0}
   player: {fileID: 0}
 --- !u!64 &3217391557492743534
 MeshCollider:
@@ -39847,6 +40196,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1325954134}
+  - {fileID: 1068299187}
   - {fileID: 147673205}
   - {fileID: 1356706244}
   - {fileID: 1733759643}
@@ -39866,7 +40216,6 @@ SceneRoots:
   - {fileID: 1380882256}
   - {fileID: 1141059021}
   - {fileID: 600990095}
-  - {fileID: 1068299187}
   - {fileID: 1163635194}
   - {fileID: 1948267561887797961}
   - {fileID: 1073169384}

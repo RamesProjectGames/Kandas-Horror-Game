@@ -42,6 +42,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     private float nextDetectionTime = 0f;
     [SerializeField] private bool isPlayerDetected = false;
 
+    public bool IsChasingPlayer => isPlayerDetected || hasLastSeenPlayerPosition || isDiscoveringSpot;
+
     [Header("Spot Inspection")]
     [SerializeField] private float inspectionOffsetDistance = 3f;
     [SerializeField] private float inspectionDuration = 2f;
@@ -151,16 +153,8 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
 
         if(isStunned)
         {
-            currIdleTime -= Time.deltaTime;
-            if (currIdleTime <= 0)
-            {
-                // Transition from Idle to Moving
-                agent.isStopped = false;
+            agent.isStopped = false;
                 agent.speed = speed;
-
-                isStunned = false;
-                
-            }
             return; // Exit early while idling
         }
 
@@ -1103,6 +1097,7 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
     public void GetStunned()
     {
         Debug.Log("Haha get stunned bozo");
+        animator.SetFloat("UpperBody",0.85f);
         isStunned = true;
         CancelInspection();
         agent.isStopped = true;
@@ -1111,6 +1106,10 @@ public class EnemyMovement : MovableObjects, IAudioRadiusListener
         if (stunnedAudioRoutine != null)
             StopCoroutine(stunnedAudioRoutine);
         stunnedAudioRoutine = StartCoroutine(PlayStunnedAudioSequence());
+    }
+    public void SetStunned(bool stunned)
+    {
+        isStunned = stunned;
     }
     #endregion
 }

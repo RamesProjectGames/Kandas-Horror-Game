@@ -176,20 +176,22 @@ public class PlayerHiding : MonoBehaviour
             // Move player to hiding position (can be done instantly or smoothly depending on animation)
             // transform.position = hidingPosition; // use world position to avoid parent-relative offsets
 
-            if (actionText != null)
+            // if (actionText != null)
+            // {
+            //     actionText.SetActive(true);
+            // }
+
+            if (interactAction != null && interactAction.action != null)
             {
-                if (interactAction != null && interactAction.action != null)
-                {
-                    actionText.GetComponentInChildren<TMP_Text>().text = $"Stay Quiet it can hear you, press {interactAction.action.GetBindingDisplayString(0)} to Unhide";
-                }
-                actionText.SetActive(true);
+                InstructionManager.Instance.AddInstruction($"Stay Quiet it can hear you, press {interactAction.action.GetBindingDisplayString(0)} to Unhide");
+                // actionText.GetComponentInChildren<TMP_Text>().text = $"Stay Quiet it can hear you, press {interactAction.action.GetBindingDisplayString(0)} to Unhide";
             }
 
             // inform any enemies that can see the player that the player
             // has just slipped into a hiding spot; they will become alerted to a
             // hiding attempt.  Notify before any state changes that might clear
             // canSeePlayer on enemy detectors.
-            
+
         });
 
         // // Rotate player to look away from the cupboard (player faces opposite direction)
@@ -222,10 +224,12 @@ public class PlayerHiding : MonoBehaviour
         {
             isHiding = false;
 
-            if (actionText != null)
-            {
-                actionText.SetActive(false);
-            }
+            // if (actionText != null)
+            // {
+            //     actionText.SetActive(false);
+            // }
+
+            InstructionManager.Instance.RemoveInstruction($"Stay Quiet it can hear you, press {interactAction.action.GetBindingDisplayString(0)} to Unhide");
 
             var postProcessVolume = FindAnyObjectByType<PostProcessVolume>();
             if (postProcessVolume != null)
