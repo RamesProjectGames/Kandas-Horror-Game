@@ -1278,12 +1278,12 @@ namespace TestingPurposes
 
         private static void ShowActionText(string arg)
         {
-            GameObject.Find("Player").GetComponent<PlayerController>().ShowActionText(arg);
+            InstructionManager.Instance.AddInstruction(arg);
         }
 
         private static void HideActionText()
         {
-            GameObject.Find("Player").GetComponent<PlayerController>().HideActionText();
+            InstructionManager.Instance.ClearInstructions();
         }
         #endregion
     }
