@@ -39,7 +39,6 @@ public class MannequinDemoGame : MovableObjects
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float stoppingDistance = 0.5f;
-    private NavMeshAgent navMeshAgent;
 
     [Header("Catch Animation")]
     [SerializeField] private bool randomizeIdleAnimation;
@@ -76,19 +75,19 @@ public class MannequinDemoGame : MovableObjects
         playerSight = FindAnyObjectByType<PlayerSightInteraction>();
         sightDetection = GetComponent<EnemySightDetection>();
         playerTransform = playerSight?.transform;
-        navMeshAgent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
         resetManager = FindAnyObjectByType<PlayerResetManager>();
         playerCamera = GameObject.Find("Player Camera")?.GetComponent<CinemachineCamera>();
 
 
-        if (navMeshAgent == null)
+        if (agent == null)
         {
-            navMeshAgent = gameObject.AddComponent<NavMeshAgent>();
+            agent = gameObject.AddComponent<NavMeshAgent>();
         }
 
         // Configure NavMeshAgent
-        navMeshAgent.speed = moveSpeed;
-        navMeshAgent.stoppingDistance = stoppingDistance;
+        agent.speed = moveSpeed;
+        agent.stoppingDistance = stoppingDistance;
         ReturnIdleAnimation();
 
     }
@@ -97,12 +96,12 @@ public class MannequinDemoGame : MovableObjects
     {
         if (playerSight == null || playerTransform == null || !CheckObjectives() || SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning)
         {
-            agent.enabled = false;
+            agent.isStopped = true;
             return;
         }
         else
         {
-            agent.enabled = true;
+            agent.isStopped = false;
         }
 
         // Check if player can see this enemy (Weeping Angel behavior: moves when NOT observed)
@@ -373,10 +372,10 @@ public class MannequinDemoGame : MovableObjects
             return; // Cannot move - path is blocked
         }
 
-        if (navMeshAgent != null)
+        if (agent != null)
         {
-            navMeshAgent.isStopped = false;
-            navMeshAgent.SetDestination(playerTransform.position);
+            agent.isStopped = false;
+            agent.SetDestination(playerTransform.position);
         }
 
         if (animator != null)
@@ -389,11 +388,11 @@ public class MannequinDemoGame : MovableObjects
 
     private void StopMovement()
     {
-        if (navMeshAgent != null)
+        if (agent != null)
         {
-            navMeshAgent.isStopped = true;
-            navMeshAgent.velocity = Vector3.zero;
-            navMeshAgent.ResetPath();
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+            agent.ResetPath();
         }
 
         if (footstepManager != null)
@@ -497,11 +496,11 @@ public class MannequinDemoGame : MovableObjects
         StartCoroutine(Teleport(originalPosition));
 
         // Reset NavMeshAgent
-        if (navMeshAgent != null)
+        if (agent != null)
         {
-            navMeshAgent.isStopped = true;
-            navMeshAgent.velocity = Vector3.zero;
-            navMeshAgent.ResetPath();
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+            agent.ResetPath();
         }
         
         isAnimatingCatch = false;
@@ -616,12 +615,10 @@ public class MannequinDemoGame : MovableObjects
     {
         if (agent != null)
         {
-            agent.enabled = true;
             agent.Warp(pos);
             transform.position = pos;
             agent.ResetPath();
             yield return new WaitForEndOfFrame();
-            agent.enabled = true;
         }
         // Reached original position
         isReturningToOrigin = false;
@@ -644,7 +641,6 @@ public class MannequinDemoGame : MovableObjects
     {
         if (agent != null)
         {
-            agent.enabled = true;
             agent.speed = speed;
             agent.SetDestination(pos);
         }
