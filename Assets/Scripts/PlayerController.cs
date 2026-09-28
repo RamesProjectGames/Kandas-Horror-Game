@@ -121,7 +121,27 @@ public class PlayerController : MovableObjects
     [Header("Player Actions")]
     public GameObject actionText;
     #endregion
+    private void OnEnable()
+    {
+        sprintAction.action.performed += OnSprintPerformed;
+        crouchAction.action.performed += OnCrouchPerformed;
+    }
+    private void OnDisable()
+    {
+        sprintAction.action.performed -= OnSprintPerformed;
+        crouchAction.action.performed -= OnCrouchPerformed;
+    }
+    private void OnSprintPerformed(InputAction.CallbackContext context)
+    {
+        if (SettingManager.Instance.settings.SprintToggle)
+            isSprinting = !isSprinting;
+    }
 
+    private void OnCrouchPerformed(InputAction.CallbackContext context)
+    {
+        if (SettingManager.Instance.settings.CrouchToggle)
+            isCrouching = !isCrouching;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -274,37 +294,37 @@ public class PlayerController : MovableObjects
             }
             else
             {
-                if (sprintAction != null && sprintAction.action.WasPressedThisFrame() && !isExhausted)
-                {
-                    isSprinting = true;
-                }
-                else
-                {
-                    isSprinting = false;
-                }
+                // if (sprintAction != null && sprintAction.action.WasPressedThisFrame() && !isExhausted)
+                // {
+                //     isSprinting = true;
+                // }
+                // else
+                // {
+                //     isSprinting = false;
+                // }
             }
-            if (!SettingManager.Instance.settings.CrouchToggle)
-            {
-                // Hold crouch
-                isCrouching = crouchAction != null && crouchAction.action.IsPressed();
-            }
-            else
-            {
-                // Toggle crouch
-                if (crouchAction != null && crouchAction.action.WasPressedThisFrame())
-                {
-                    if (isCrouching)
-                    {
-                        // Try to stand up only if there is room
-                        if (CanStandUp())
-                            isCrouching = false;
-                    }
-                    else
-                    {
-                        isCrouching = true;
-                    }
-                }
-            }
+            // if (!SettingManager.Instance.settings.CrouchToggle)
+            // {
+            //     // Hold crouch
+            //     isCrouching = crouchAction != null && crouchAction.action.IsPressed();
+            // }
+            // else
+            // {
+            //     // Toggle crouch
+            //     if (crouchAction != null && crouchAction.action.WasPressedThisFrame())
+            //     {
+            //         if (isCrouching)
+            //         {
+            //             // Try to stand up only if there is room
+            //             if (CanStandUp())
+            //                 isCrouching = false;
+            //         }
+            //         else
+            //         {
+            //             isCrouching = true;
+            //         }
+            //     }
+            // }
             if (isExhausted)
             {
                 moveSpd = speed / (sprintMulti * sprintMulti);

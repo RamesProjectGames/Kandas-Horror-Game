@@ -88,11 +88,13 @@ public class AttackItem : MonoBehaviour
         }
         if(isHeld)
         {
-            playerGrabInteraction.AddPlayerInteractionTexts($"Press {interactAction.action.GetBindingDisplayString(0)} to Attack");            
+            InstructionManager.Instance.AddInstruction($"Press {interactAction.action.GetBindingDisplayString(0)} to Attack");
+            // playerGrabInteraction.AddPlayerInteractionTexts($"Press {interactAction.action.GetBindingDisplayString(0)} to Attack");            
         }
         else
         {
-            playerGrabInteraction.RemovePlayerInteractionTexts($"Press {interactAction.action.GetBindingDisplayString(0)} to Attack");
+            InstructionManager.Instance.RemoveInstruction($"Press {interactAction.action.GetBindingDisplayString(0)} to Attack");
+            // playerGrabInteraction.RemovePlayerInteractionTexts($"Press {interactAction.action.GetBindingDisplayString(0)} to Attack");
         }
     }
     public void PerformAttack()

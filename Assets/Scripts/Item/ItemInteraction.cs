@@ -57,6 +57,12 @@ public class ItemInteraction : MonoBehaviour
     [SerializeField] private TMP_Text pickupText;
     [SerializeField] private TMP_Text buttonInteractionText;
 
+    [Header("Highlight")]
+    [SerializeField] private Color highlightColor = new Color(0.3f, 1f, 0.3f, 1f);
+
+    private Color originalPickupTextColor = Color.white;
+    private Color originalButtonTextColor = Color.white;
+
     [Header("Optional References")]
     [SerializeField] private Transform player;
 
@@ -76,6 +82,7 @@ public class ItemInteraction : MonoBehaviour
     private bool isBroken;
     private bool uiInitialized;
     private bool bindingTextInitialized;
+    private bool isHighlighted;
 
     public bool IsInActions { get; private set; }
 
@@ -111,6 +118,11 @@ public class ItemInteraction : MonoBehaviour
 
         if (pickupUI != null)
             pickupUI.SetActive(false);
+
+        if (pickupText != null)
+            originalPickupTextColor = pickupText.color;
+        if (buttonInteractionText != null)
+            originalButtonTextColor = buttonInteractionText.color;
 
         hasBeenThrown = false;
         isBroken = false;
@@ -174,12 +186,30 @@ public class ItemInteraction : MonoBehaviour
             InitializePickupUI();
 
         pickupUI.SetActive(true);
+        SetHighlight(true);
     }
 
     public void HideUI()
     {
+        SetHighlight(false);
         if (pickupUI != null)
             pickupUI.SetActive(false);
+    }
+
+    public void SetHighlight(bool enabled)
+    {
+        if (pickupText == null && buttonInteractionText == null)
+            return;
+
+        if (enabled == isHighlighted)
+            return;
+
+        isHighlighted = enabled;
+
+        if (pickupText != null)
+            pickupText.color = enabled ? highlightColor : originalPickupTextColor;
+        if (buttonInteractionText != null)
+            buttonInteractionText.color = enabled ? highlightColor : originalButtonTextColor;
     }
 
     //private void ToggleMarker()
@@ -675,7 +705,7 @@ public class ItemInteraction : MonoBehaviour
             EnemyMovement[] enemies = FindObjectsByType<EnemyMovement>(FindObjectsSortMode.None);
             for (int i = 0; i < enemies.Length; i++)
             {
-                if (enemies[i] != null)
+                if (enemies[i] != null && !enemies[i].IsChasingPlayer)
                     enemies[i].OnEnterAudioRadius(gameObject);
             }
 
@@ -697,7 +727,7 @@ public class ItemInteraction : MonoBehaviour
             if (hit == null) continue;
 
             EnemyMovement enemy = hit.GetComponent<EnemyMovement>();
-            if (enemy != null)
+            if (enemy != null && !enemy.IsChasingPlayer)
             {
                 enemy.OnEnterAudioRadius(gameObject);
             }
