@@ -37,6 +37,11 @@ public class PlayerHiding : MonoBehaviour
     [Header("Force Unhide Configuration")]
     [SerializeField] private float finisherAnimationDuration = 1.0f;
 
+    /// <summary>
+    /// Raised when the player finishes leaving a hiding spot (manual unhide or force unhide).
+    /// </summary>
+    public event System.Action OnUnhideFinished;
+
     private void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
@@ -69,7 +74,7 @@ public class PlayerHiding : MonoBehaviour
         // // Handle hiding input
         if (interactAction != null && interactAction.action.WasPerformedThisFrame())
         {
-            if (isHiding)
+            if (isHiding && !isAnimatingHide)
             {
                 Unhide();
             }
@@ -264,6 +269,8 @@ public class PlayerHiding : MonoBehaviour
             {
                 sight.ResetSpottedFlag();
             }
+
+            OnUnhideFinished?.Invoke();
         });
         Debug.Log("Player is no longer hiding!");
     }
@@ -303,6 +310,10 @@ public class PlayerHiding : MonoBehaviour
         {
             agent.enabled = true;
         }
+
+        currentHidingSpot = null;
+
+        OnUnhideFinished?.Invoke();
 
         // StartCoroutine(CompleteForceUnhide());
     }

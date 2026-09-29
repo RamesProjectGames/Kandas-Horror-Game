@@ -186,7 +186,6 @@ public class ItemInteraction : MonoBehaviour
             InitializePickupUI();
 
         pickupUI.SetActive(true);
-        SetHighlight(true);
     }
 
     public void HideUI()
