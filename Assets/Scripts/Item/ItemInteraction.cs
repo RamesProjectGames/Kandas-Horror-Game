@@ -14,6 +14,7 @@ public class ItemInteraction : MonoBehaviour
 {
     [Header("Throwing")]
     [SerializeField] private float throwForce = 10f;
+    [SerializeField] private float throwTorque = 5f;
 
     [Header("Pickup UI")]
     public GameObject pickupUI;
@@ -264,6 +265,8 @@ public class ItemInteraction : MonoBehaviour
         // Optional: keep your original scale logic if needed
         transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
+        
+
         HideUI();
     }
 
@@ -299,6 +302,7 @@ public class ItemInteraction : MonoBehaviour
         onThrow?.Invoke();
 
         rb.AddForce(direction * throwForce, ForceMode.Impulse);
+        rb.AddTorque(Vector3.up * throwTorque, ForceMode.Impulse);
         hasBeenThrown = true;
     }
 

@@ -98,6 +98,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                     {
                         heldItem = currentItem;
                         heldItem.Pickup(holdPoint);
+                        ThrowItemInstruction(true);
                         interactionLock = IsInspecting() ? InteractionLockType.Inspecting : InteractionLockType.HoldingItem;
                     }
                 }
@@ -133,6 +134,7 @@ public class PlayerGrabInteraction : MonoBehaviour
                     Vector3 direction = (CameraManager.currentActiveCamera != null) ? CameraManager.currentActiveCamera.transform.forward : transform.forward;
                     heldItem.Throw(direction * forceMag);
                     heldItem = null;
+                    ThrowItemInstruction(false);
                     interactionLock = InteractionLockType.None;
                 }
 
@@ -142,12 +144,12 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         if (heldItem != null)
         {
-            string interactionText = "";
-            for (int i = 0; i < playerInteractionTexts.Count; i++)
-            {
-                interactionText += playerInteractionTexts[i] + (i < playerInteractionTexts.Count - 1 ? " or \n" : "");
-            }
-            bottomInteractText.text = interactionText;
+            // string interactionText = "";
+            // for (int i = 0; i < playerInteractionTexts.Count; i++)
+            // {
+            //     interactionText += playerInteractionTexts[i] + (i < playerInteractionTexts.Count - 1 ? " or \n" : "");
+            // }
+            // bottomInteractText.text = interactionText;
         }
         else
         {
@@ -218,6 +220,8 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         heldItem = item;
         item.Pickup(holdPoint);
+        ThrowItemInstruction(true);
+        interactionLock = IsInspecting() ? InteractionLockType.Inspecting : InteractionLockType.HoldingItem;
         return true;
     }
 
@@ -233,6 +237,8 @@ public class PlayerGrabInteraction : MonoBehaviour
         heldItem = null;
         target.heldItem = item;
         item.Pickup(target.holdPoint);
+        ThrowItemInstruction(false);
+        target.ThrowItemInstruction(true);
         return true;
     }
 
@@ -244,6 +250,7 @@ public class PlayerGrabInteraction : MonoBehaviour
         Vector3 throwDirection = direction.sqrMagnitude > 0.001f ? direction.normalized : transform.forward;
         heldItem.Throw(throwDirection * Mathf.Max(0.1f, force));
         heldItem = null;
+        ThrowItemInstruction(false);
         interactionLock = InteractionLockType.None;
         return true;
     }
@@ -268,26 +275,26 @@ public class PlayerGrabInteraction : MonoBehaviour
         {
             heldItem.Drop();
             heldItem = null;
+            ThrowItemInstruction(false);
             interactionLock = InteractionLockType.None;
         }
     }
     public void ThrowItemInstruction(bool isHolding)
     {
+        if (throwAction == null || throwAction.action == null)
+            return;
+
+        if (InstructionManager.Instance == null)
+            return;
+
+        string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
         if (isHolding)
         {
-            if (throwAction != null)
-            {
-                string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
-                InstructionManager.Instance.AddInstruction($"Press {bindingDisplay} to throw");
-            }
+            InstructionManager.Instance.AddInstruction($"Press {bindingDisplay} to throw");
         }
         else
         {
-            if (throwAction != null)
-            {
-                string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
-                InstructionManager.Instance.RemoveInstruction($"Press {bindingDisplay} to throw");
-            }
+            InstructionManager.Instance.RemoveInstruction($"Press {bindingDisplay} to throw");
         }
     }
     void DetectItemInteraction()
