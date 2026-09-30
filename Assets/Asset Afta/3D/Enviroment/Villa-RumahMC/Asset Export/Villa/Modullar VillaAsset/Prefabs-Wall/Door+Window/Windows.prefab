@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 00c0a3919d3b01b4a98ab8c4e0727e96, type: 3}
       propertyPath: m_Name
-      value: Wall-Windows
+      value: Windows
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -58,14 +58,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 00c0a3919d3b01b4a98ab8c4e0727e96, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5908481447894118062}
+      addedObject: {fileID: 659315241082308487}
   m_SourcePrefab: {fileID: 100100000, guid: 00c0a3919d3b01b4a98ab8c4e0727e96, type: 3}
 --- !u!1 &166238471018220159 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 00c0a3919d3b01b4a98ab8c4e0727e96, type: 3}
   m_PrefabInstance: {fileID: 1049322030736258862}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &5908481447894118062
+--- !u!65 &659315241082308487
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,5 +84,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.02, y: 0.00325, z: 0.029999994}
-  m_Center: {x: 0.01, y: 2.9103825e-10, z: 0.014999997}
+  m_Size: {x: 0.02, y: 0.00325, z: 0.03999999}
+  m_Center: {x: 0.01, y: 2.9103825e-10, z: 0.019999996}

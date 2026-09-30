@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 40c44749ae8230a4e82519c2ac2f2f48, type: 3}
       propertyPath: m_Name
-      value: Pillar-1
+      value: Wall-Pillar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -58,14 +58,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 40c44749ae8230a4e82519c2ac2f2f48, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8869339815512456001}
+      addedObject: {fileID: 4513549317661251065}
   m_SourcePrefab: {fileID: 100100000, guid: 40c44749ae8230a4e82519c2ac2f2f48, type: 3}
 --- !u!1 &1014623528048196316 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 40c44749ae8230a4e82519c2ac2f2f48, type: 3}
   m_PrefabInstance: {fileID: 204284213822605197}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &8869339815512456001
+--- !u!65 &4513549317661251065
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,5 +84,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.01, y: 0.009999998, z: 0.029999994}
-  m_Center: {x: 0, y: 0, z: 0.014999997}
+  m_Size: {x: 0.010250001, y: 0.010249998, z: 0.03999999}
+  m_Center: {x: 4.656613e-10, y: 0, z: 0.019999996}
