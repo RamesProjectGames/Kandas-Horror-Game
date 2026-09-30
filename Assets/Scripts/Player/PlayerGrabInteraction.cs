@@ -27,10 +27,18 @@ public class PlayerGrabInteraction : MonoBehaviour
     public ItemInteraction currentItem;
     private ItemInteraction heldItem;
     public ItemInteraction HeldItem => heldItem;
-    [SerializeField] private InputActionReference throwAction, interAction, nextAction, prevAction;
+    [SerializeField] private InputActionReference throwAction, interAction;
 
     private List<ItemInteraction> detectedItems = new List<ItemInteraction>();
+    private List<ItemInteraction> prevDetectedItems = new List<ItemInteraction>();
     private int currentIndex = 0;
+
+    [System.Serializable]
+    private enum InteractionLockType { None, Hiding, HoldingItem, Inspecting }
+    [SerializeField]
+    private InteractionLockType interactionLock = InteractionLockType.None;
+
+    public bool IsInteractionLocked => interactionLock != InteractionLockType.None;
 
     // runtime state for charging a throw
     private static float throwCharge;
@@ -38,6 +46,7 @@ public class PlayerGrabInteraction : MonoBehaviour
     void Start()
     {
         throwpowerSlider.gameObject.SetActive(false);
+        SubscribeToInteractions();
     }
 
     void Update()
@@ -47,23 +56,22 @@ public class PlayerGrabInteraction : MonoBehaviour
         if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning)
             return;
 
-        if (nextAction != null && nextAction.action.WasPerformedThisFrame())
+        if (Mouse.current != null)
         {
-            NavigateItems(+1);
-        }
-        if (prevAction != null && prevAction.action.WasPerformedThisFrame())
-        {
-            NavigateItems(-1);
+            Vector2 scroll = Mouse.current.scroll.ReadValue();
+            if (Mathf.Abs(scroll.y) > 0.01f)
+            {
+                NavigateItems(scroll.y > 0 ? +1 : -1);
+            }
         }
 
-        if (interAction != null && interAction.action.WasPerformedThisFrame())
+        if (interAction != null && interAction.action.WasPerformedThisFrame() && !IsInteractionLocked)
         {
             if (currentItem != null)
             {
                 if ((interactableLayer & (1 << currentItem.gameObject.layer)) != 0 || (fragmentLayer & (1 << currentItem.gameObject.layer)) != 0)
                 {
                     currentItem.onInteract.Invoke();
-                    currentItem.HideUI();
                     currentItem.TryGetComponent(out NpcMovement npcInteract);
                     if (npcInteract != null)
                     {
@@ -75,6 +83,12 @@ public class PlayerGrabInteraction : MonoBehaviour
                     if (playerHiding != null && hidingSpot != null)
                     {
                         playerHiding.Hide(hidingSpot);
+                        if (playerHiding.IsHiding())
+                            interactionLock = InteractionLockType.Hiding;
+                    }
+                    else if (IsInspecting())
+                    {
+                        interactionLock = InteractionLockType.Inspecting;
                     }
                     //GetComponent<PlayerController>().FaceObject(currentItem.transform);
                 }
@@ -84,6 +98,8 @@ public class PlayerGrabInteraction : MonoBehaviour
                     {
                         heldItem = currentItem;
                         heldItem.Pickup(holdPoint);
+                        ThrowItemInstruction(true);
+                        interactionLock = IsInspecting() ? InteractionLockType.Inspecting : InteractionLockType.HoldingItem;
                     }
                 }
                 else if (currentItem.CanInteractWhenHeld && heldItem != null)
@@ -118,6 +134,8 @@ public class PlayerGrabInteraction : MonoBehaviour
                     Vector3 direction = (CameraManager.currentActiveCamera != null) ? CameraManager.currentActiveCamera.transform.forward : transform.forward;
                     heldItem.Throw(direction * forceMag);
                     heldItem = null;
+                    ThrowItemInstruction(false);
+                    interactionLock = InteractionLockType.None;
                 }
 
             }
@@ -126,12 +144,12 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         if (heldItem != null)
         {
-            string interactionText = "";
-            for (int i = 0; i < playerInteractionTexts.Count; i++)
-            {
-                interactionText += playerInteractionTexts[i] + (i < playerInteractionTexts.Count - 1 ? " or \n" : "");
-            }
-            bottomInteractText.text = interactionText;
+            // string interactionText = "";
+            // for (int i = 0; i < playerInteractionTexts.Count; i++)
+            // {
+            //     interactionText += playerInteractionTexts[i] + (i < playerInteractionTexts.Count - 1 ? " or \n" : "");
+            // }
+            // bottomInteractText.text = interactionText;
         }
         else
         {
@@ -162,6 +180,39 @@ public class PlayerGrabInteraction : MonoBehaviour
         throwCharge = 0f;
     }
 
+    private static bool IsInspecting()
+    {
+        var inspectUI = InspectManagerUI.Instance;
+        return inspectUI != null && inspectUI.InspectObjectUI != null && inspectUI.InspectObjectUI.activeSelf;
+    }
+
+    private void SubscribeToInteractions()
+    {
+        if (playerHiding != null)
+            playerHiding.OnUnhideFinished += HandleUnhideFinished;
+
+        var inspectUI = InspectManagerUI.Instance;
+        if (inspectUI != null)
+            inspectUI.OnInspectionClosed += HandleUnhideFinished;
+    }
+
+    private void OnDisable()
+    {
+        interactionLock = InteractionLockType.None;
+
+        if (playerHiding != null)
+            playerHiding.OnUnhideFinished -= HandleUnhideFinished;
+
+        var inspectUI = InspectManagerUI.Instance;
+        if (inspectUI != null)
+            inspectUI.OnInspectionClosed -= HandleUnhideFinished;
+    }
+
+    private void HandleUnhideFinished()
+    {
+        interactionLock = InteractionLockType.None;
+    }
+
     public bool TryGrabItem(ItemInteraction item)
     {
         if (item == null || heldItem != null || item.IsInActions)
@@ -169,6 +220,8 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         heldItem = item;
         item.Pickup(holdPoint);
+        ThrowItemInstruction(true);
+        interactionLock = IsInspecting() ? InteractionLockType.Inspecting : InteractionLockType.HoldingItem;
         return true;
     }
 
@@ -184,6 +237,8 @@ public class PlayerGrabInteraction : MonoBehaviour
         heldItem = null;
         target.heldItem = item;
         item.Pickup(target.holdPoint);
+        ThrowItemInstruction(false);
+        target.ThrowItemInstruction(true);
         return true;
     }
 
@@ -195,6 +250,8 @@ public class PlayerGrabInteraction : MonoBehaviour
         Vector3 throwDirection = direction.sqrMagnitude > 0.001f ? direction.normalized : transform.forward;
         heldItem.Throw(throwDirection * Mathf.Max(0.1f, force));
         heldItem = null;
+        ThrowItemInstruction(false);
+        interactionLock = InteractionLockType.None;
         return true;
     }
 
@@ -218,33 +275,33 @@ public class PlayerGrabInteraction : MonoBehaviour
         {
             heldItem.Drop();
             heldItem = null;
+            ThrowItemInstruction(false);
+            interactionLock = InteractionLockType.None;
         }
     }
     public void ThrowItemInstruction(bool isHolding)
     {
+        if (throwAction == null || throwAction.action == null)
+            return;
+
+        if (InstructionManager.Instance == null)
+            return;
+
+        string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
         if (isHolding)
         {
-            if (throwAction != null)
-            {
-                string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
-                InstructionManager.Instance.AddInstruction($"Press {bindingDisplay} to throw");
-            }
+            InstructionManager.Instance.AddInstruction($"Press {bindingDisplay} to throw");
         }
         else
         {
-            if (throwAction != null)
-            {
-                string bindingDisplay = throwAction.action.GetBindingDisplayString(0);
-                InstructionManager.Instance.RemoveInstruction($"Press {bindingDisplay} to throw");
-            }
+            InstructionManager.Instance.RemoveInstruction($"Press {bindingDisplay} to throw");
         }
     }
     void DetectItemInteraction()
     {
         if (SettingManager.Instance.isPaused || SettingManager.Instance.gameOver || DialogueSystem.IsConversationRunning)
         {
-            if (currentItem != null)
-                currentItem.HideUI();
+            HideAllDetectedUI();
             return;
         }
         Vector3 visionPos = (CameraManager.currentActiveCamera != null) ? CameraManager.currentActiveCamera.transform.position : transform.position;
@@ -300,8 +357,6 @@ public class PlayerGrabInteraction : MonoBehaviour
         {
             if (currentItem != null)
             {
-                currentItem.HideUI();
-
                 currentItem.TryGetComponent(out NpcMovement npcInteract);
                 if (npcInteract != null)
                 {
@@ -312,12 +367,48 @@ public class PlayerGrabInteraction : MonoBehaviour
             }
 
             currentItem = newCurrent;
-
-            if (currentItem != null)
-                currentItem.ShowUI();
         }
-        else if (currentItem != null && !currentItem.pickupUI.activeSelf)
-            currentItem.ShowUI();
+
+        // Show the prompt UI for every available interaction, but only highlight the selected one.
+        for (int i = 0; i < detectedItems.Count; i++)
+        {
+            ItemInteraction item = detectedItems[i];
+            item.ShowUI();
+            item.SetHighlight(item == currentItem);
+        }
+
+        // Hide the UI of items that are no longer available.
+        for (int i = 0; i < prevDetectedItems.Count; i++)
+        {
+            ItemInteraction item = prevDetectedItems[i];
+            if (item != null && !detectedItems.Contains(item))
+            {
+                item.SetHighlight(false);
+                item.HideUI();
+            }
+        }
+
+        prevDetectedItems.Clear();
+        prevDetectedItems.AddRange(detectedItems);
+    }
+
+    private void HideAllDetectedUI()
+    {
+        for (int i = 0; i < prevDetectedItems.Count; i++)
+        {
+            if (prevDetectedItems[i] != null)
+            {
+                prevDetectedItems[i].SetHighlight(false);
+                prevDetectedItems[i].HideUI();
+            }
+        }
+        prevDetectedItems.Clear();
+
+        if (currentItem != null)
+        {
+            currentItem.SetHighlight(false);
+            currentItem.HideUI();
+        }
     }
 
     void NavigateItems(int direction)
@@ -327,7 +418,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         if (currentItem != null)
         {
-            currentItem.HideUI();
+            currentItem.SetHighlight(false);
 
             currentItem.TryGetComponent(out NpcMovement npcInteract);
             if (npcInteract != null)
@@ -344,7 +435,7 @@ public class PlayerGrabInteraction : MonoBehaviour
 
         currentItem = detectedItems[currentIndex];
         if (currentItem != null)
-            currentItem.ShowUI();
+            currentItem.SetHighlight(true);
     }
     //void DetectFragmentItem()
     //{

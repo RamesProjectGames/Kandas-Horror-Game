@@ -5,6 +5,12 @@ using UnityEngine;
 public class InspectManagerUI : MonoBehaviour
 {
     public static InspectManagerUI Instance;
+
+    /// <summary>
+    /// Raised when the inspection view is closed.
+    /// </summary>
+    public event System.Action OnInspectionClosed;
+
     public GameObject InspectObjectUI;
     public TextMeshProUGUI itemTitle;
     public TextMeshProUGUI  itemDescription;
@@ -45,6 +51,7 @@ public class InspectManagerUI : MonoBehaviour
         InspectUI(false);
         itemTitle.text = "";
         itemDescription.text = "";
+        OnInspectionClosed?.Invoke();
         if (DialogueSystem.IsConversationRunning)
             DialogueSystem.Instance.dialogueContainer.ShowDialogue();
     }
