@@ -17,6 +17,8 @@ public class MicrophoneManager : MonoBehaviour
     [SerializeField] private int frequencyBands = 64;
     [SerializeField] private float loudnessSmoothing = 0.1f;
     [SerializeField] private float peakFrequencyWeight = 1.5f;
+    [SerializeField] private float loudnessAttackSpeed = 12f;
+    [SerializeField] private float loudnessReleaseSpeed = 4f;
 
     [Header("Editor Testing")]
     [SerializeField] private bool useManualLoudness;
@@ -27,6 +29,7 @@ public class MicrophoneManager : MonoBehaviour
     private bool isRecording = false;
     private float[] audioBuffer;
     private int activeRecordingDevice = -1;
+    private float smoothedLoudness;
     
     private bool isInitialized = false;
 
@@ -272,15 +275,58 @@ public class MicrophoneManager : MonoBehaviour
                 float rms = Mathf.Sqrt(sum / shortSamples.Length);
 
                 // Convert to dB
-                float db = 20f * Mathf.Log10(rms);
+                float db = rms > 0.0001f
+                ? 20f * Mathf.Log10(rms)
+                : -80f;
 
-                // Clamp human voice range
-                db = Mathf.Clamp(db, -60f, 0f);
+                // -----------------------------------------
+                // HORROR MICROPHONE CALIBRATION
+                // -----------------------------------------
 
-                // Normalize
-                float normalized = Mathf.InverseLerp(-50f, -20f, db) * SettingManager.Instance.settings.MicrophoneSensitivity;
+                // Ignore very quiet background noise.
+                const float noiseFloor = -55f;
 
-                return normalized;
+                // Maximum loudness that reaches 1.0.
+                const float maxVoiceDb = -15f;
+
+                if (db <= noiseFloor)
+                    return 0f;
+
+                // Convert dB -> 0..1
+                float normalized = Mathf.InverseLerp(
+                    noiseFloor,
+                    maxVoiceDb,
+                    db
+                );
+
+                // Apply microphone sensitivity.
+                float sensitivity = SettingManager.Instance.settings.MicrophoneSensitivity;
+
+                // Sensitivity > 1 makes microphone more sensitive.
+                // Sensitivity < 1 makes microphone less sensitive.
+                normalized *= sensitivity;
+
+                // Clamp before applying curve.
+                normalized = Mathf.Clamp01(normalized);
+
+                // Horror-game response curve.
+                // Makes quiet sounds easier to detect while preventing
+                // the meter from immediately hitting 1.0.
+                normalized = Mathf.Pow(normalized, 0.7f);
+
+                float targetLoudness = Mathf.Clamp01(normalized);
+
+float speed = targetLoudness > smoothedLoudness
+    ? loudnessAttackSpeed
+    : loudnessReleaseSpeed;
+
+smoothedLoudness = Mathf.MoveTowards(
+    smoothedLoudness,
+    targetLoudness,
+    speed * Time.deltaTime
+);
+
+return smoothedLoudness;
             }
 
             recordingSound.unlock(ptr1, ptr2, len1, len2);

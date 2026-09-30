@@ -30,8 +30,7 @@ public class SettingData
 	// Control Settings
 	public string AudioInputDeviceName = ""; // Name of the selected input device
 	public int AudioOutputDeviceIndex = 0; // Index in available outputs (if supported)
-    [Range(100, 500)]
-    public float MicrophoneSensitivity = 500f;
+    public float MicrophoneSensitivity = 1f; // 0 = only shouting is heard, 0.5 = neutral, 1 = whispers are heard
     [Range(0.1f, 100)]
     public float MouseSensitivity = 25.0f;
 	public bool SprintToggle = false; // false = hold to sprint, true = toggle
