@@ -30,7 +30,7 @@ public class SettingData
 	// Control Settings
 	public string AudioInputDeviceName = ""; // Name of the selected input device
 	public int AudioOutputDeviceIndex = 0; // Index in available outputs (if supported)
-    public float MicrophoneSensitivity = 1f; // 0 = only shouting is heard, 0.5 = neutral, 1 = whispers are heard
+    public float MicrophoneSensitivity = 0.75f; // 0 = only shouting is heard, 0.5 = neutral, 1 = whispers are heard
     [Range(0.1f, 100)]
     public float MouseSensitivity = 25.0f;
 	public bool SprintToggle = false; // false = hold to sprint, true = toggle
@@ -46,7 +46,7 @@ public class SettingData
     [Range(0, 1)]
     public float AmbienceVolume = 1.0f;
     [Range(0, 1)]
-    public float SoundEffectVolume = 1.0f;
+    public float SoundEffectVolume = 0.75f;
     [Range(0, 1)]
     public float MobVolume = 1.0f;
 

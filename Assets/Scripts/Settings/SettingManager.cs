@@ -318,7 +318,7 @@ public class SettingManager : MonoBehaviour
         settings.Dithering = false;
         settings.Bloom = vram >= 2000;
         settings.Grain = true;
-        settings.gamma = minimumGammaIntensity;
+        settings.gamma = 0;
         settings.MotionBlur = vram >= 2000;
         settings.VertexJitter = true;
 
@@ -333,8 +333,8 @@ public class SettingManager : MonoBehaviour
 
     #region Control Settings Methods
 
-    public float minimumMicrophoneVolume = .25f;
-    public float maximumMicrophoneVolume = 1f;
+    public float minimumMicrophoneVolume = .75f;
+    public float maximumMicrophoneVolume = 500f;
     public float minimumMouseSensitivity = 0.1f;
     public float maximumMouseSensitivity = 100f;
     bool isRebinding = false;
@@ -415,7 +415,7 @@ public class SettingManager : MonoBehaviour
     {
         settings.AudioInputDeviceName = "";
         settings.AudioOutputDeviceIndex = 0;
-        settings.MicrophoneSensitivity = 100f;
+        //settings.MicrophoneSensitivity = .75f;
         settings.MouseSensitivity = 1.0f;
         settings.SprintToggle = false;
         settings.CrouchToggle = false;
