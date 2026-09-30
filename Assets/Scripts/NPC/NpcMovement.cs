@@ -252,7 +252,7 @@ public class NpcMovement : MovableObjects
             agent.SetDestination(destination.Value);
         agent.enabled = false;
 
-        //blocker = GetComponent<NavMeshObstacle>();
+        blocker = GetComponent<NavMeshObstacle>();
         //if(blocker == null)
         //{
         //    blocker = gameObject.AddComponent<NavMeshObstacle>();

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
@@ -124,8 +125,8 @@ namespace TestingPurposes
             db.AddFunction("UpdateCheckpoint", new Action<string>(UpdateCheckpoint));
             db.AddFunction("StartFlicker", new Action<string>(StartFlickeringLight));
             db.AddFunction("StopFlicker", new Action<string>(StopFlickeringLight));
-            db.AddFunction("ShowActionText", new Action<string>(ShowActionText));
-            db.AddFunction("HideActionText", new Action(HideActionText));
+            db.AddFunction("ShowActionText", new Func<string[], IEnumerator>(ShowActionText));
+            db.AddFunction("HideActionText", new Func<string, IEnumerator>(HideActionText));
             #endregion
         }
 
@@ -1051,6 +1052,7 @@ namespace TestingPurposes
                 CameraManager.currentActiveCamera.transform.position = Vector3.Lerp(CameraManager.currentActiveCamera.transform.position, endPos.position, Time.deltaTime * 2.0f);
             }
             RotateObject(new string[] { "Player", "^r", startPos.transform.rotation.y.ToString() });
+            yield return new WaitForSeconds(.5f);
             SwitchCamera("Player Camera");
             yield return new WaitForSeconds(1);
             GameObject.Find("HoleCam").GetComponent<CinemachineCamera>().Follow = startPos.transform;
@@ -1070,6 +1072,8 @@ namespace TestingPurposes
             PlayerController.canUseFlashlight = true;
             UnityEngine.Object.FindObjectsByType<ItemInteraction>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList().Find(x => x.gameObject.name == "Senter").gameObject.SetActive(false);
             GameObject.Find("Player").GetComponent<PlayerController>().ToggleFlashlight();
+            InstructionManager.Instance.AddInstruction($"Press {InputSystem.actions.FindAction("FlashlightToggle").GetBindingDisplayString(0)} to Toggle Flashlight");
+            InstructionManager.Instance.StartCoroutine(HideActionText("10"));
         }
         #endregion
 
@@ -1276,13 +1280,18 @@ namespace TestingPurposes
             light.gameObject.SetActive(false);
         }
 
-        private static void ShowActionText(string arg)
+        private static IEnumerator ShowActionText(string[] args)
         {
-            InstructionManager.Instance.AddInstruction(arg);
+            var funcParams = ConvertArgsToParams(args);
+            funcParams.TryGetValue(new[] { "^t"}, out float delay, defaultValue: 0);
+            yield return new WaitForSeconds(delay);
+            InstructionManager.Instance.AddInstruction(args[0]);
         }
 
-        private static void HideActionText()
+        private static IEnumerator HideActionText(string arg)
         {
+            float delay = float.TryParse(arg, out delay) ? delay : 0;
+            yield return new WaitForSeconds(delay);
             InstructionManager.Instance.ClearInstructions();
         }
         #endregion

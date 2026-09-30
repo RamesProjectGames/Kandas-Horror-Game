@@ -61,7 +61,7 @@ public class FootstepsSoundManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (!Application.isPlaying)
+        if (!Application.isPlaying || foot == null)
             return;
 
         Vector3 origin = foot.position - Vector3.down * .5f;

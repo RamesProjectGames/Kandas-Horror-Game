@@ -112,6 +112,7 @@ namespace Dialogue
         #region Handling Dialogues
         IEnumerator RunDialogue(DialogueStructure line)
         {
+            InstructionManager.Instance.ClearInstructions();
             ds.dialogueContainer.ShowDialogue();
             if (line.hasSpeaker)
             {
