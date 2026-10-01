@@ -84,8 +84,12 @@ namespace Dialogue.LogicLines
             },
             {"DoorAttempts", x =>
                 {
-                    Debug.Log($"{DialogueEvents.DoorAttempts} attempts");
                     return DialogueEvents.DoorAttempts.ToString();
+                }
+            },
+            {"FlashlightHeld", x =>
+                {
+                    return PlayerController.canUseFlashlight.ToString();
                 }
             }
         };
