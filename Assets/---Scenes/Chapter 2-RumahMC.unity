@@ -150,68 +150,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1572326461}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &184158501
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 8612369247472882154}
-    m_Modifications:
-    - target: {fileID: 8572102513886240278, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -22.449438
-      objectReference: {fileID: 0}
-    - target: {fileID: 8572102513886240278, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.7331989
-      objectReference: {fileID: 0}
-    - target: {fileID: 8572102513886240278, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 7.7864714
-      objectReference: {fileID: 0}
-    - target: {fileID: 8572102513886240278, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8572102513886240278, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8572102513886240278, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8572102513886240278, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8572102513886240278, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8572102513886240278, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8572102513886240278, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9060654749977429164, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-      propertyPath: m_Name
-      value: (Prb)Stove
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
---- !u!4 &184158502 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8572102513886240278, guid: 3e3c34c03ce58074fbfcfcdf18b4dda8, type: 3}
-  m_PrefabInstance: {fileID: 184158501}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &187233531
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,6 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  throwTorque: 5
   pickupUI: {fileID: 1646782584}
   itemInteractionText: Pick Up
   globalAlert: 0
@@ -461,6 +400,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1646782582}
   buttonInteractionText: {fileID: 1646782583}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!65 &623823754
 BoxCollider:
@@ -532,6 +472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  throwTorque: 5
   pickupUI: {fileID: 1791650580}
   itemInteractionText: Pick Up
   globalAlert: 0
@@ -567,6 +508,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1791650578}
   buttonInteractionText: {fileID: 1791650579}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!65 &847486056
 BoxCollider:
@@ -794,6 +736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  throwTorque: 5
   pickupUI: {fileID: 1020825616}
   itemInteractionText: Pick Up
   globalAlert: 0
@@ -829,6 +772,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1020825614}
   buttonInteractionText: {fileID: 1020825615}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!65 &1572326463
 BoxCollider:
@@ -870,13 +814,13 @@ MonoBehaviour:
       Data3: -1177958995
       Data4: -687249498
     Path: event:/SFX/PlayerFootsteps
-  FootstepAudioData: []
   TerrainSoundTypes: []
   Animator: {fileID: 0}
   Enviroment:
     serializedVersion: 2
     m_Bits: 0
   minFootstepInterval: 0.3
+  foot: {fileID: 0}
   groundCheckDistance: 3
 --- !u!114 &1572326465
 MonoBehaviour:
@@ -1275,6 +1219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  throwTorque: 5
   pickupUI: {fileID: 398179508}
   itemInteractionText: Pick Up
   globalAlert: 0
@@ -1310,6 +1255,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 398179506}
   buttonInteractionText: {fileID: 398179507}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!65 &2014832828
 BoxCollider:
@@ -1627,17 +1573,9 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3f799c39708974e4bad0cbea83c070c9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4409902096209596005, guid: ef17805546a89a54998a3bacd313681a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 184158502}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef17805546a89a54998a3bacd313681a, type: 3}
---- !u!4 &8612369247472882154 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4409902096209596005, guid: ef17805546a89a54998a3bacd313681a, type: 3}
-  m_PrefabInstance: {fileID: 8612369247472882153}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8886361599869986779
 Transform:
   m_ObjectHideFlags: 0
