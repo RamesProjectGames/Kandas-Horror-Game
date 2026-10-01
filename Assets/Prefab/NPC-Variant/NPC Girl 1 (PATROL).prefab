@@ -1117,7 +1117,13 @@ MonoBehaviour:
   isWalkingParam: isWalking
   footstepAudioSource: {fileID: 4947155673850831995}
   footstepSounds:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 7846582aa074bb6479c8d11a7bf2a016, type: 3}
+  - {fileID: 8300000, guid: e95140c0d89908048bfbe48ce4da648b, type: 3}
+  - {fileID: 8300000, guid: 87ff1442b8687eb4a9ef3b5a55a074d5, type: 3}
+  - {fileID: 8300000, guid: e5cdae7dbf4fff746bd93ebcac48540c, type: 3}
+  - {fileID: 8300000, guid: 8c18bd5c83ba7aa49a216ee35050ba89, type: 3}
+  - {fileID: 8300000, guid: 006351d274669384aa05f077a18f4100, type: 3}
+  - {fileID: 8300000, guid: cc39ac82374275345b7cfb967181757b, type: 3}
   stepInterval: 0.5
 --- !u!82 &4947155673850831995
 AudioSource:
@@ -1140,10 +1146,10 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 5
+  MaxDistance: 10
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0

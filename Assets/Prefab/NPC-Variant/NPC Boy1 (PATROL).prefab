@@ -8,30 +8,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: pickupUI
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: pickupText
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: buttonInteractionText
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: animState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: loopMovement
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
-      propertyPath: point.Array.size
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 1385080420974066408, guid: 47e556c3d7447a34e98c6753a1cdaa9a, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -108,6 +84,30 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 61710fa6761dbd442bbfd9bf5ab2b09a, type: 2}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: pickupUI
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: pickupText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414524446743079529, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: buttonInteractionText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: animState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: loopMovement
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622265638776377449, guid: 4503a988b03975f4eb706590388fa537, type: 3}
+      propertyPath: point.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 359056577144051791, guid: 47e556c3d7447a34e98c6753a1cdaa9a, type: 3}
     m_RemovedGameObjects:
@@ -179,7 +179,14 @@ MonoBehaviour:
   waitOnTrigger: 1
   isWalkingParam: isWalking
   footstepAudioSource: {fileID: 8506350733833931900}
-  footstepSounds: []
+  footstepSounds:
+  - {fileID: 8300000, guid: 7846582aa074bb6479c8d11a7bf2a016, type: 3}
+  - {fileID: 8300000, guid: e95140c0d89908048bfbe48ce4da648b, type: 3}
+  - {fileID: 8300000, guid: 87ff1442b8687eb4a9ef3b5a55a074d5, type: 3}
+  - {fileID: 8300000, guid: e5cdae7dbf4fff746bd93ebcac48540c, type: 3}
+  - {fileID: 8300000, guid: 8c18bd5c83ba7aa49a216ee35050ba89, type: 3}
+  - {fileID: 8300000, guid: 006351d274669384aa05f077a18f4100, type: 3}
+  - {fileID: 8300000, guid: cc39ac82374275345b7cfb967181757b, type: 3}
   stepInterval: 0.5
 --- !u!82 &8506350733833931900
 AudioSource:
@@ -202,10 +209,10 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 350
+  MinDistance: 5
+  MaxDistance: 10
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -213,23 +220,23 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.5
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -2.0008
+      outSlope: -2.0008
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.5002
+      outSlope: -0.5002
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

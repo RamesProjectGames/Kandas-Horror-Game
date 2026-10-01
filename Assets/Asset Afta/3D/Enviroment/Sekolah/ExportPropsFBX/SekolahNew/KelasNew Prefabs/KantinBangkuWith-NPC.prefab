@@ -535,6 +535,10 @@ PrefabInstance:
       value: BangkuKantin
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3f8ef8dce98168d4991841623e08369a, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3f8ef8dce98168d4991841623e08369a, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
       objectReference: {fileID: 0}
@@ -610,6 +614,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  throwTorque: 5
   pickupUI: {fileID: 1593766142832423812}
   itemInteractionText: Ask to Sit Together
   globalAlert: 0
@@ -660,6 +665,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 3835964085150235410}
   buttonInteractionText: {fileID: 549469783570048710}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!4 &6672353858867814312 stripped
 Transform:

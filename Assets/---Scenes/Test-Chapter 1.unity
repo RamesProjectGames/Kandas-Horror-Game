@@ -28874,6 +28874,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1744060772}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.000051901272
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0.0042780614
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.000041434174
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_Name
+      value: Mannequin
+      objectReference: {fileID: 0}
     - target: {fileID: -8819002650498093851, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -3.2292178
@@ -29405,26 +29425,6 @@ PrefabInstance:
     - target: {fileID: 9058197165084068119, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 62.160095
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.000051901272
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0.0042780614
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.000041434174
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_Name
-      value: Mannequin
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -32258,6 +32258,26 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 2705670734420036593, guid: 0a122fd83355726449bdd7ced67f028a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.0004925257
+      objectReference: {fileID: 0}
+    - target: {fileID: 2705670734420036593, guid: 0a122fd83355726449bdd7ced67f028a, type: 3}
+      propertyPath: m_Size.z
+      value: 0.004948881
+      objectReference: {fileID: 0}
+    - target: {fileID: 2705670734420036593, guid: 0a122fd83355726449bdd7ced67f028a, type: 3}
+      propertyPath: m_Center.x
+      value: 0.000019841194
+      objectReference: {fileID: 0}
+    - target: {fileID: 2705670734420036593, guid: 0a122fd83355726449bdd7ced67f028a, type: 3}
+      propertyPath: m_Center.y
+      value: 0.009556976
+      objectReference: {fileID: 0}
+    - target: {fileID: 2705670734420036593, guid: 0a122fd83355726449bdd7ced67f028a, type: 3}
+      propertyPath: m_Center.z
+      value: 0.0014756278
+      objectReference: {fileID: 0}
     - target: {fileID: 2974615080018578902, guid: 0a122fd83355726449bdd7ced67f028a, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
@@ -32385,6 +32405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 404804298}
   itemInteractionText: View
   globalAlert: 0
@@ -32435,6 +32456,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1856174339}
   buttonInteractionText: {fileID: 1854795580}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!199 &205504301
 ParticleSystemRenderer:
@@ -42241,6 +42263,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.000120330296
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0.32547048
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.00004864731
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_Name
+      value: Mannequin
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -8819002650498093851, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 22.13167
@@ -42772,26 +42814,6 @@ PrefabInstance:
     - target: {fileID: 9058197165084068119, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 78.99559
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.000120330296
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0.32547048
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.00004864731
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_Name
-      value: Mannequin
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -46461,10 +46483,6 @@ PrefabInstance:
     - target: {fileID: 8409846610910303741, guid: ce5b460da622456419a1551bc28d17ce, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8506350733833931900, guid: ce5b460da622456419a1551bc28d17ce, type: 3}
-      propertyPath: MaxDistance
-      value: 350
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -53079,16 +53097,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!208 &372196017
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -54068,11 +54086,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5362600275617194949, guid: 1632c793e0170b7459b64aa64e7efe88, type: 3}
       propertyPath: offset.x
-      value: 0
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 5362600275617194949, guid: 1632c793e0170b7459b64aa64e7efe88, type: 3}
       propertyPath: offset.y
       value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5362600275617194949, guid: 1632c793e0170b7459b64aa64e7efe88, type: 3}
+      propertyPath: offset.z
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7350114669987802245, guid: 1632c793e0170b7459b64aa64e7efe88, type: 3}
       propertyPath: m_Name
@@ -54436,16 +54458,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!1 &393529366
 GameObject:
   m_ObjectHideFlags: 0
@@ -66050,8 +66072,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!1 &511001698
 GameObject:
   m_ObjectHideFlags: 0
@@ -85437,16 +85459,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!43 &697170209
 Mesh:
   m_ObjectHideFlags: 0
@@ -89077,6 +89099,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1360418041}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.00016065587
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0.5167479
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.00005193849
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_Name
+      value: Mannequin
+      objectReference: {fileID: 0}
     - target: {fileID: -8819002650498093851, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 22.317797
@@ -89608,26 +89650,6 @@ PrefabInstance:
     - target: {fileID: 9058197165084068119, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 1.1660546
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.00016065587
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0.5167479
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.00005193849
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_Name
-      value: Mannequin
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -91961,6 +91983,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 679014765}
   itemInteractionText: Hide
   globalAlert: 0
@@ -92008,6 +92031,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 615145505}
   buttonInteractionText: {fileID: 115349139}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &739356098
 MonoBehaviour:
@@ -116735,16 +116759,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!43 &855966116
 Mesh:
   m_ObjectHideFlags: 0
@@ -117219,16 +117243,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!1 &866513814
 GameObject:
   m_ObjectHideFlags: 0
@@ -122724,16 +122748,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!1 &922994463
 GameObject:
   m_ObjectHideFlags: 0
@@ -130614,16 +130638,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!1001 &992262240
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -151624,16 +151648,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!1001 &1129375926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -151835,16 +151859,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!1 &1131946137
 GameObject:
   m_ObjectHideFlags: 0
@@ -153901,16 +153925,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!43 &1160712101
 Mesh:
   m_ObjectHideFlags: 0
@@ -175110,6 +175134,10 @@ PrefabInstance:
       value: BangkuKantin (18)
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3f8ef8dce98168d4991841623e08369a, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3f8ef8dce98168d4991841623e08369a, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
       objectReference: {fileID: 0}
@@ -179688,6 +179716,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 246087509}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.000051901272
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0.0042780614
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.000041434174
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_Name
+      value: Mannequin
+      objectReference: {fileID: 0}
     - target: {fileID: -8819002650498093851, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -3.2292178
@@ -180219,26 +180267,6 @@ PrefabInstance:
     - target: {fileID: 9058197165084068119, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 62.160095
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.000051901272
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0.0042780614
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.000041434174
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_Name
-      value: Mannequin
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -181653,16 +181681,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!1001 &1394306763
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -188008,16 +188036,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!43 &1452307826
 Mesh:
   m_ObjectHideFlags: 0
@@ -199946,6 +199974,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  throwTorque: 5
   pickupUI: {fileID: 131497286}
   itemInteractionText: Wait for Fried Rice
   globalAlert: 0
@@ -199999,6 +200028,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 142681170}
   buttonInteractionText: {fileID: 407035879}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!65 &1569496698
 BoxCollider:
@@ -208289,6 +208319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  throwTorque: 5
   pickupUI: {fileID: 1698658945}
   itemInteractionText: Have Lunch
   globalAlert: 0
@@ -208342,6 +208373,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 387472263}
   buttonInteractionText: {fileID: 1580867492}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!65 &1601301791
 BoxCollider:
@@ -220605,16 +220637,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!1001 &1658896865
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -223939,6 +223971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  throwTorque: 5
   pickupUI: {fileID: 1308870822}
   itemInteractionText: Ask to Sit Together
   globalAlert: 0
@@ -223989,6 +224022,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1308870820}
   buttonInteractionText: {fileID: 1308870821}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!65 &1702308203
 BoxCollider:
@@ -224704,16 +224738,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!1 &1709783208
 GameObject:
   m_ObjectHideFlags: 0
@@ -230595,6 +230629,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1856562859}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.0002466836
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 1.2917318
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.000059007896
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_Name
+      value: Mannequin
+      objectReference: {fileID: 0}
     - target: {fileID: -8819002650498093851, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 22.048035
@@ -231126,26 +231180,6 @@ PrefabInstance:
     - target: {fileID: 9058197165084068119, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 29.204796
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.0002466836
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 1.2917318
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.000059007896
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_Name
-      value: Mannequin
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -231786,6 +231820,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 1499955311}
   itemInteractionText: Sit down
   globalAlert: 0
@@ -231842,6 +231877,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1630531413}
   buttonInteractionText: {fileID: 626287781}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!199 &1761342341
 ParticleSystemRenderer:
@@ -239111,6 +239147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 1545228178}
   itemInteractionText: Hide
   globalAlert: 0
@@ -239149,6 +239186,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 0}
   buttonInteractionText: {fileID: 0}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &1786614200
 MonoBehaviour:
@@ -245849,6 +245887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  throwTorque: 5
   pickupUI: {fileID: 237815170}
   itemInteractionText: Buy Fried Rice
   globalAlert: 0
@@ -245902,6 +245941,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 373963908}
   buttonInteractionText: {fileID: 1766016169}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!199 &1797274638
 ParticleSystemRenderer:
@@ -261850,16 +261890,16 @@ MonoBehaviour:
       Data4: 636510284
     Path: event:/Ambience/SchoolAmbience
   Event: 
-  EventPlayTrigger: 3
-  EventStopTrigger: 4
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 10
+  OverrideMaxDistance: 25
 --- !u!1 &1878831907
 GameObject:
   m_ObjectHideFlags: 0
@@ -263039,6 +263079,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 741790612}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -0.00022750489
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 11.593903
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.00003281958
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
+      propertyPath: m_Name
+      value: Mannequin
+      objectReference: {fileID: 0}
     - target: {fileID: -8819002650498093851, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 21.351574
@@ -263570,26 +263630,6 @@ PrefabInstance:
     - target: {fileID: 9058197165084068119, guid: 860b109d4204c204bb80f402972cbdae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 19.79371
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -0.00022750489
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 11.593903
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.00003281958
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: cdf22e503669fed43a0ee600d8e5f8fe, type: 3}
-      propertyPath: m_Name
-      value: Mannequin
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -285641,6 +285681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  throwTorque: 5
   pickupUI: {fileID: 256494280}
   itemInteractionText: Cross Gate
   globalAlert: 0
@@ -285691,6 +285732,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 1753494552}
   buttonInteractionText: {fileID: 586501072}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!199 &2113285019
 ParticleSystemRenderer:
@@ -294426,6 +294468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 571486633}
   itemInteractionText: Submit Quiz
   globalAlert: 0
@@ -294476,6 +294519,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 318235755}
   buttonInteractionText: {fileID: 2053634893}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!199 &2145741309
 ParticleSystemRenderer:
@@ -300220,6 +300264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  throwTorque: 5
   pickupUI: {fileID: 574985490}
   itemInteractionText: Read Report
   globalAlert: 0
@@ -300270,6 +300315,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 993217340}
   buttonInteractionText: {fileID: 1485791351}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!65 &919132148605102375
 BoxCollider:
@@ -305406,6 +305452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4380870078757919605}
   itemInteractionText: Talk
   globalAlert: 0
@@ -305456,6 +305503,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 2148484228299690464}
   buttonInteractionText: {fileID: 1957289122695026495}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!33 &1563183788238016239
 MeshFilter:
@@ -308938,6 +308986,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4060593906439728683}
   itemInteractionText: Talk
   globalAlert: 0
@@ -308988,6 +309037,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 5397279092299197577}
   buttonInteractionText: {fileID: 952027162650830859}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &3986244989321299864
 MonoBehaviour:
@@ -309002,6 +309052,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4060593907013457749}
   itemInteractionText: Talk
   globalAlert: 0
@@ -309055,6 +309106,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 5397279092883150327}
   buttonInteractionText: {fileID: 952027163090014581}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &3986244989900373198
 MonoBehaviour:
@@ -309069,6 +309121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4060593905429343235}
   itemInteractionText: Talk
   globalAlert: 0
@@ -309119,6 +309172,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 5397279093444914849}
   buttonInteractionText: {fileID: 952027163653876259}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &3986244990151062294
 MonoBehaviour:
@@ -309133,6 +309187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4060593905142866907}
   itemInteractionText: Talk
   globalAlert: 0
@@ -309186,6 +309241,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 5397279093697700217}
   buttonInteractionText: {fileID: 952027163904697851}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &3986244990483150489
 MonoBehaviour:
@@ -309200,6 +309256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4060593905893631572}
   itemInteractionText: Talk
   globalAlert: 0
@@ -309250,6 +309307,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 5397279093902386422}
   buttonInteractionText: {fileID: 952027164251791476}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &3986244990503953443
 MonoBehaviour:
@@ -309264,6 +309322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4060593905897403630}
   itemInteractionText: Talk
   globalAlert: 0
@@ -309317,6 +309376,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 5397279093915334220}
   buttonInteractionText: {fileID: 952027164256416462}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &3986244990507527829
 MonoBehaviour:
@@ -309331,6 +309391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4060593905902288472}
   itemInteractionText: Talk
   globalAlert: 0
@@ -309378,6 +309439,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 5397279093911567610}
   buttonInteractionText: {fileID: 952027164260972664}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &3986244990900891073
 MonoBehaviour:
@@ -309392,6 +309454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4060593905506827532}
   itemInteractionText: Talk
   globalAlert: 0
@@ -309451,6 +309514,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 5397279094051176366}
   buttonInteractionText: {fileID: 952027164406872876}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!1 &4060593905142866907 stripped
 GameObject:
@@ -309545,6 +309609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 6858106553453978545}
   itemInteractionText: Talk
   globalAlert: 0
@@ -309592,6 +309657,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 7411185766830965095}
   buttonInteractionText: {fileID: 8523895669684667716}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &4173134316464427730
 MonoBehaviour:
@@ -311303,6 +311369,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4151319070289497349}
   itemInteractionText: Talk
   globalAlert: 0
@@ -311356,6 +311423,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 9155773865896505443}
   buttonInteractionText: {fileID: 5251489113590119984}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &5414524447062057306
 MonoBehaviour:
@@ -311370,6 +311438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4151319070216081834}
   itemInteractionText: Talk
   globalAlert: 0
@@ -311417,6 +311486,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 9155773865969921228}
   buttonInteractionText: {fileID: 5251489113520956063}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &5414524447244586119
 MonoBehaviour:
@@ -311431,6 +311501,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4151319070037982327}
   itemInteractionText: Talk
   globalAlert: 0
@@ -311481,6 +311552,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 9155773866215391505}
   buttonInteractionText: {fileID: 5251489112801447746}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &5414524447272760648
 MonoBehaviour:
@@ -311495,6 +311567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4151319069990700472}
   itemInteractionText: Talk
   globalAlert: 0
@@ -311548,6 +311621,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 9155773866178525406}
   buttonInteractionText: {fileID: 5251489112773260941}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &5414524447546854078
 MonoBehaviour:
@@ -311562,6 +311636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4151319069736794702}
   itemInteractionText: Talk
   globalAlert: 0
@@ -311612,6 +311687,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 9155773866449995560}
   buttonInteractionText: {fileID: 5251489113034508667}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &5414524448524682404
 MonoBehaviour:
@@ -311626,6 +311702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4151319071175930964}
   itemInteractionText: Talk
   globalAlert: 0
@@ -311673,6 +311750,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 9155773865077967154}
   buttonInteractionText: {fileID: 5251489111789356897}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &5414524448569182929
 MonoBehaviour:
@@ -311687,6 +311765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4151319070859852321}
   itemInteractionText: Talk
   globalAlert: 0
@@ -311737,6 +311816,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 9155773865394046791}
   buttonInteractionText: {fileID: 5251489112012114196}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!114 &5414524448732703018
 MonoBehaviour:
@@ -311751,6 +311831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 0
+  throwTorque: 5
   pickupUI: {fileID: 4151319070947727834}
   itemInteractionText: Talk
   globalAlert: 0
@@ -311810,6 +311891,7 @@ MonoBehaviour:
       m_Calls: []
   pickupText: {fileID: 9155773865222022332}
   buttonInteractionText: {fileID: 5251489112117177071}
+  highlightColor: {r: 0.3, g: 1, b: 0.3, a: 1}
   player: {fileID: 0}
 --- !u!1 &5420049762270305307
 GameObject:
