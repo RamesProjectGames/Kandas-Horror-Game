@@ -7,7 +7,7 @@ public class Objective : MonoBehaviour
 {
     public ObjectiveData objectiveData;
     public TextMeshProUGUI objectiveText;
-    const string bulletpoint = "<space=5px>•<space=10px> ";
+    const string bulletpoint = "•<space=10px> ";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
