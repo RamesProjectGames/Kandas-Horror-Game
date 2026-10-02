@@ -379,11 +379,14 @@ public class NpcMovement : MovableObjects
                     }
                 }
                 // Transition from Idle to Moving
-                destination = GetValidNavMeshPosition(point[idxPoint].position);
-                agent.SetDestination(destination.Value);
-                animator.SetFloat("Blend", 1f);
-                animState = NPCAnimationState.Walk;
-                idle = false;
+                if(point.Length > idxPoint && point[idxPoint] != null)
+                {
+                    destination = GetValidNavMeshPosition(point[idxPoint].position);
+                    agent.SetDestination(destination.Value);
+                    animator.SetFloat("Blend", 1f);
+                    animState = NPCAnimationState.Walk;
+                    idle = false;
+                }
             }
             else
             {
