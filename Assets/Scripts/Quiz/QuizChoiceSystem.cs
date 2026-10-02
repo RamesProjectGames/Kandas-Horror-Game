@@ -213,6 +213,7 @@ public class QuizChoiceSystem : MonoBehaviour
         currentQuestionIndex++;
         if(currentQuestionIndex > quizQuestions.Count - 1)
         {
+            ObjectiveManager.Instance.CompleteObjective("DoQuiz");
             onQuizCompleted?.Invoke();
             return;
         }
@@ -226,6 +227,7 @@ public class QuizChoiceSystem : MonoBehaviour
         wrongAnswers.Add(currentQuestion.questionText);
         if (currentQuestionIndex > quizQuestions.Count -1 )
         {
+            ObjectiveManager.Instance.CompleteObjective("DoQuiz");
             onQuizCompleted?.Invoke();
             return;
         }
